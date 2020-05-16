@@ -20,16 +20,32 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Model/Player.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Infrastructure/CompositionRoot.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/View/UnitView.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/View/UI/BattleSetupUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Model/Unit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/View/TileView.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Controller/BattleSetupController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/View/AutoReferencer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/View/BoardView.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/View/BenchView.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Scripts/Infrastructure/CompositionRoot.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/View/TileView.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/View/BoardView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/View/ИутсрМшуц.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/View/UI/SetupBattleUI.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/View/AutoReferencer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/View/UI/BattleSetupUI.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Model/Unit.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/View/UnitView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Infrastructure/CompositionRoot.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Model/Player.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Controller/BattleSetupController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/View/BenchView.cs" />
       </list>
     </option>
   </component>
@@ -71,7 +87,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1589630893762</updated>
-      <workItem from="1589630944179" duration="1157000" />
+      <workItem from="1589630944179" duration="4686000" />
     </task>
     <servers />
   </component>
@@ -93,5 +109,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="496" y="235" key="run.anything.popup" timestamp="1589633539047">
+      <screen x="0" y="0" width="1680" height="1020" />
+    </state>
+    <state x="496" y="235" key="run.anything.popup/0.0.1680.1020@0.0.1680.1020" timestamp="1589633539047" />
   </component>
 </project>

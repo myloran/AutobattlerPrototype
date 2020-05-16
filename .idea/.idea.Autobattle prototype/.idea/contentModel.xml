@@ -6,19 +6,36 @@
     <e p="D:\dev\Projects\Autobattle prototype\Autobattle prototype" t="IncludeRecursive">
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
+          <e p="Controller" t="Include">
+            <e p="BattleSetupController.cs" t="Include" />
+            <e p="Controller.asmdef" t="Include" />
+          </e>
           <e p="Infrastructure" t="Include">
             <e p="CompositionRoot.cs" t="Include" />
             <e p="Infrastructure.asmdef" t="Include" />
           </e>
+          <e p="Model" t="Include">
+            <e p="Model.asmdef" t="Include" />
+            <e p="Player.cs" t="Include" />
+            <e p="Unit.cs" t="Include" />
+          </e>
           <e p="View" t="Include">
+            <e p="AutoReferencer.cs" t="Include" />
+            <e p="BenchView.cs" t="Include" />
             <e p="BoardView.cs" t="Include" />
             <e p="TileView.cs" t="Include" />
+            <e p="UI" t="Include">
+              <e p="BattleSetupUI.cs" t="Include" />
+            </e>
+            <e p="UnitView.cs" t="Include" />
             <e p="View.asmdef" t="Include" />
           </e>
         </e>
       </e>
       <e p="Autobattle prototype.sln" t="IncludeFlat" />
+      <e p="Controller.csproj" t="IncludeRecursive" />
       <e p="Infrastructure.csproj" t="IncludeRecursive" />
+      <e p="NewAssembly.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
