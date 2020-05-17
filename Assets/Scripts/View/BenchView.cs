@@ -4,7 +4,6 @@ namespace View {
   public class BenchView : MonoBehaviour {
     public TileView TilePrebab;
     public Transform StartPoint;
-    public UnitView UnitPrefab;
     
     void Start() {
       for (int x = 0; x < 10; x++) {
@@ -14,11 +13,15 @@ namespace View {
       }
     }
 
-    public void AddUnit() {
+    public void Init(UnitViewFactory factory) {
+      unitFactory = factory;
+    }
+
+    public void AddUnit(string name) {
       for (int x = 0; x < 10; x++) {
         if (units[x] != null) continue;
-        
-        units[x] = Instantiate(UnitPrefab, TilePosition(x), Quaternion.identity);
+
+        units[x] = unitFactory.Create(name, TilePosition(x));
         break;
       }
     }
@@ -27,5 +30,6 @@ namespace View {
 
     readonly TileView[] tiles = new TileView[10];
     readonly UnitView[] units = new UnitView[10];
+    UnitViewFactory unitFactory;
   }
 }

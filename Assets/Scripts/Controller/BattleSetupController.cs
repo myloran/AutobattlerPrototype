@@ -18,9 +18,10 @@ namespace Controller {
     }
 
     void AddUnit() {
+      
       var unit = new Unit();
       var isAdded = player1.AddUnit(unit);
-      if (isAdded) BenchView.AddUnit();
+      if (isAdded) BenchView.AddUnit(BattleSetupUI.GetSelectedUnit);
     }
 
     void OnDestroy() {

@@ -1,4 +1,7 @@
+using System;
+
 namespace Shared {
+  [Serializable]
   public class UnitInfo {
     public string Name;
     public float Health;
