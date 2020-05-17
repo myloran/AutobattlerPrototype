@@ -1,0 +1,8 @@
+{
+  "Name" : "Treant",
+  "Health" : 550,
+  "Armor" : 3,
+  "Damage" : 50,
+  "AttackSpeed" : 0.5,
+  "MoveSpeed" : 1
+}
