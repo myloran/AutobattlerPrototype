@@ -18,6 +18,7 @@ namespace View.UI {
       DUnit.options.AddRange(options);
     }
 
-    public string GetSelectedUnit => DUnit.options[DUnit.value].text;
+    public string GetSelectedUnitName => DUnit.options[DUnit.value].text;
+    public int GetSelectedPlayerId => DPlayer.value;
   }
 }

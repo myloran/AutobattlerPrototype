@@ -9,7 +9,7 @@ namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
     public BattleSetupController BattleSetupController;
     public BattleSetupUI BattleSetupUI;
-    public BenchView BenchView;
+    public BenchView BenchView1, BenchView2;
     public UnitViewFactory UnitViewFactory;
 
     void Start() {
@@ -17,11 +17,12 @@ namespace Infrastructure {
       var units = unitDataLoader.Load();
       UnitViewFactory.Init(units);
       BattleSetupUI.Init(units.Keys.ToList());
-      BenchView.Init(UnitViewFactory);
-      
-      var player1 = new Player();
-      var player2 = new Player();
-      BattleSetupController.Init(player1, player2);
+      BenchView1.Init(UnitViewFactory);
+      BenchView2.Init(UnitViewFactory);
+
+      var players = new[] {new Player(), new Player()};
+      var benches = new[] {BenchView1, BenchView2};
+      BattleSetupController.Init(players, benches);
     }
   }
 }
