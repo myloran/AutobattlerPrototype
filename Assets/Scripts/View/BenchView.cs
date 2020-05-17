@@ -26,6 +26,16 @@ namespace View {
       }
     }
     
+    public void RemoveUnit() {
+      for (int x = 9; x >= 0; x--) {
+        if (units[x] == null) continue;
+        
+        Destroy(units[x].gameObject);
+        units[x] = null;
+        break;
+      }
+    }
+    
     Vector3 TilePosition(int x) => StartPoint.position + new Vector3(x, 0, 0);
 
     readonly TileView[] tiles = new TileView[10];

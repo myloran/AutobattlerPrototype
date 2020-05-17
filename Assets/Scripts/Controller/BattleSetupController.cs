@@ -1,7 +1,5 @@
-using System;
 using Model;
 using UnityEngine;
-using UnityEngine.Serialization;
 using View;
 using View.UI;
 
@@ -15,17 +13,23 @@ namespace Controller {
       this.player1 = player1;
       this.player2 = player2;
       BattleSetupUI.BAdd.onClick.AddListener(AddUnit);
+      BattleSetupUI.BRemove.onClick.AddListener(RemoveUnit);
     }
 
     void AddUnit() {
-      
       var unit = new Unit();
       var isAdded = player1.AddUnit(unit);
       if (isAdded) BenchView.AddUnit(BattleSetupUI.GetSelectedUnit);
     }
+    
+    void RemoveUnit() {
+      var isRemoved = player1.RemoveUnit();
+      if (isRemoved) BenchView.RemoveUnit();
+    }
 
     void OnDestroy() {
       BattleSetupUI.BAdd.onClick.RemoveListener(AddUnit);
+      BattleSetupUI.BRemove.onClick.RemoveListener(RemoveUnit);
     }
   }
 }
