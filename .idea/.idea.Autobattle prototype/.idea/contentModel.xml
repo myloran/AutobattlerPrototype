@@ -13,11 +13,16 @@
           <e p="Infrastructure" t="Include">
             <e p="CompositionRoot.cs" t="Include" />
             <e p="Infrastructure.asmdef" t="Include" />
+            <e p="UnitDataLoader.cs" t="Include" />
           </e>
           <e p="Model" t="Include">
             <e p="Model.asmdef" t="Include" />
             <e p="Player.cs" t="Include" />
             <e p="Unit.cs" t="Include" />
+          </e>
+          <e p="Shared" t="Include">
+            <e p="Shared.asmdef" t="Include" />
+            <e p="UnitInfo.cs" t="Include" />
           </e>
           <e p="View" t="Include">
             <e p="AutoReferencer.cs" t="Include" />
@@ -28,6 +33,7 @@
               <e p="BattleSetupUI.cs" t="Include" />
             </e>
             <e p="UnitView.cs" t="Include" />
+            <e p="UnitViewFactory.cs" t="Include" />
             <e p="View.asmdef" t="Include" />
           </e>
         </e>
@@ -38,6 +44,7 @@
       <e p="NewAssembly.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
+      <e p="Shared.csproj" t="IncludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
       <e p="View.csproj" t="IncludeRecursive" />
     </e>
