@@ -1,37 +1,43 @@
+using System;
+using System.Collections.Generic;
 using Model;
-using UnityEngine;
+using Shared;
 using View;
 using View.UI;
 
 namespace Controller {
-  public class BattleSetupController : MonoBehaviour {
-    public BattleSetupUI BattleSetupUI;
-    BenchView[] benches;
-    Player[] players;
-
-    public void Init(Player[] players, BenchView[] benches) {
+  public class BattleSetupController : IDisposable {
+    public BattleSetupController(Player[] players, BenchView[] benches, 
+      Dictionary<string, UnitInfo> unitInfos, BattleSetupUI battleSetupUI) {
       this.players = players;
       this.benches = benches;
-      BattleSetupUI.BAdd.onClick.AddListener(AddUnit);
-      BattleSetupUI.BRemove.onClick.AddListener(RemoveUnit);
+      this.unitInfos = unitInfos;
+      this.battleSetupUI = battleSetupUI;
+      battleSetupUI.BAdd.onClick.AddListener(AddUnit);
+      battleSetupUI.BRemove.onClick.AddListener(RemoveUnit);
     }
 
     void AddUnit() {
-      var unit = new Unit();
-      var id = BattleSetupUI.GetSelectedPlayerId;
-      var isAdded = players[id].AddUnit(unit);
-      if (isAdded) benches[id].AddUnit(BattleSetupUI.GetSelectedUnitName);
+      var unit = new Unit {Info = unitInfos[battleSetupUI.GetSelectedUnitName], Level = 1};
+      var id = battleSetupUI.GetSelectedPlayerId;
+      var (isAdded, coord) = benches[id].AddUnit(battleSetupUI.GetSelectedUnitName);
+      if (isAdded) players[id].AddUnit(unit, coord); 
     }
     
     void RemoveUnit() {
-      var id = BattleSetupUI.GetSelectedPlayerId;
-      var isRemoved = players[id].RemoveUnit();
-      if (isRemoved) benches[id].RemoveUnit();
+      var id = battleSetupUI.GetSelectedPlayerId;
+      var (isRemoved, coord) = benches[id].RemoveUnit();
+      if (isRemoved) players[id].RemoveUnit(coord);
     }
 
-    void OnDestroy() {
-      BattleSetupUI.BAdd.onClick.RemoveListener(AddUnit);
-      BattleSetupUI.BRemove.onClick.RemoveListener(RemoveUnit);
+    public void Dispose() {
+      battleSetupUI.BAdd.onClick.RemoveListener(AddUnit);
+      battleSetupUI.BRemove.onClick.RemoveListener(RemoveUnit);
     }
+
+    readonly BattleSetupUI battleSetupUI;
+    readonly BenchView[] benches;
+    readonly Dictionary<string, UnitInfo> unitInfos;
+    readonly Player[] players;
   }
 }

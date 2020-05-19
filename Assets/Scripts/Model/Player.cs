@@ -1,22 +1,40 @@
 using System.Collections.Generic;
+using Shared;
+using UnityEngine;
 
 namespace Model {
   public class Player {
-    public bool AddUnit(Unit unit) {
-      if (BenchUnits.Count >= 10) return false;
-      
-      BenchUnits.Add(unit);
-      return true;
+    public void AddUnit(Unit unit, Coord coord) {
+      benchUnits[coord] = unit;
     }
     
-    public bool RemoveUnit() {
-      if (BenchUnits.Count <= 0) return false;
-      
-      BenchUnits.RemoveAt(BenchUnits.Count - 1);
-      return true;
+    public void RemoveUnit(Coord coord) {
+      benchUnits.Remove(coord);
     }
-    
-    List<Unit> BoardUnits = new List<Unit>(10);
-    List<Unit> BenchUnits = new List<Unit>(10);
+
+    public void MoveUnit(Coord from, Coord to) {
+      var fromDict = from.Y < 0 ? benchUnits : boardUnits;
+      var toDict = to.Y < 0 ? benchUnits : boardUnits;
+        
+      if (!fromDict.ContainsKey(from)) {
+        Debug.LogError($"Dict does not have unit at coord: {from}");
+        return;
+      }
+      var fromUnit = fromDict[from];
+      
+      if (toDict.ContainsKey(to)) {
+        fromDict[from] = toDict[to];  
+        toDict[to] = fromUnit;
+        //swap unit coords as well
+      }
+      else {
+        fromDict.Remove(from);
+        toDict.Add(to, fromUnit);
+        //add coord to unit itself
+      }
+    }
+
+    readonly Dictionary<Coord, Unit> boardUnits = new Dictionary<Coord, Unit>(10);
+    readonly Dictionary<Coord, Unit> benchUnits = new Dictionary<Coord, Unit>(10);
   }
 }

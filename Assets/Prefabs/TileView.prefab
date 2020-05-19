@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7637489155492404251}
   - component: {fileID: 1010704678623444914}
   - component: {fileID: 2122847529300981312}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TileView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &2122847529300981312
@@ -107,5 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e09e9a06b398e14e9662bfbd88ea9f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Unit: {fileID: 0}
   X: 0
   Y: 0
+  material: {fileID: 2100000, guid: dd251277d87adce428dc2c23dda46dbc, type: 2}
