@@ -15,9 +15,16 @@ namespace Controller {
     }
 
     void Awake() => cam = Camera.main;
-    void OnMouseDown() => dragging = true;
     
+    void OnMouseDown() {
+      if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;
+      
+      dragging = true;
+    }
+
     void OnMouseUp() {
+      if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;
+      
       dragging = false;
       oldTile?.Unhighlight();
         
@@ -28,12 +35,11 @@ namespace Controller {
       player.MoveUnit(from, to);
       
       if (oldTile?.Unit != null) {
-        unit.Tile.PlaceUnit(oldTile.Unit);
+        oldTile.SwapUnits(unit);
       }
       else {
-        unit.Tile.Unit = null;
+        oldTile.MoveUnitHere(unit);
       }
-      oldTile?.PlaceUnit(unit);
     }
 
     void Update() {
@@ -47,7 +53,7 @@ namespace Controller {
       var mousePosition = ray.GetPoint(enter);
       transform.position = mousePosition + new Vector3(0, 1, 0);
 
-      var tile = closestTileFinder.Find(mousePosition);
+      var tile = closestTileFinder.Find(mousePosition, (EPlayer)battleSetupUI.GetSelectedPlayerId);
       
       if (IsNewTile(tile)) {
         oldTile?.Unhighlight();
