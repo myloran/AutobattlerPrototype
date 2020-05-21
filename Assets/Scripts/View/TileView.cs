@@ -17,11 +17,38 @@ public class TileView : MonoBehaviour {
     Y = y;
     return this;
   }
-  
-  public void PlaceUnit(UnitView unit) {
-    Holder.Place(unit, this);
-    Unit = unit;
+
+  public void MoveUnitHere(UnitView fromUnit) {
+    var fromTile = fromUnit.Tile;
+    fromTile.UnplaceUnitFromHolder();
+    fromTile.UnplaceUnitFromTile();
+    PlaceUnitToTile(fromUnit);
+    PlaceUnitToHolder();
+  }
+
+  public void SwapUnits(UnitView fromUnit) {
+    var fromTile = fromUnit.Tile;
+    fromTile.UnplaceUnitFromHolder();
+    UnplaceUnitFromHolder();
+    fromTile.PlaceUnitToTile(Unit);
+    PlaceUnitToTile(fromUnit);
+    fromTile.PlaceUnitToHolder();
+    PlaceUnitToHolder();
+  }
+
+  public void PlaceUnitToHolder() => Holder.Place(Unit, this);
+  public void UnplaceUnitFromHolder() => Holder.Unplace(Unit, this);
+
+  public void PlaceUnitToTile(UnitView unit) {
     unit.Tile = this;
+    Unit = unit;
+  }
+
+  public void UnplaceUnitFromTile() {
+    if (Unit == null) return;
+    
+    Unit.Tile = null;
+    Unit = null;
   }
 
   public void Highlight() => material.color = Color.green;
