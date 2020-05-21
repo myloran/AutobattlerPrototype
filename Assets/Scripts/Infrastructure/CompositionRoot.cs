@@ -23,8 +23,8 @@ namespace Infrastructure {
       BattleSetupUI.Init(units.Keys.ToList());
       var tileViewFactory = new TileViewFactory(TileView);
       BoardView.Init(tileViewFactory);
-      BenchView1.Init(unitViewFactoryDecorator, tileViewFactory);
-      BenchView2.Init(unitViewFactoryDecorator, tileViewFactory);
+      BenchView1.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.First);
+      BenchView2.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.Second);
 
       var benches = new[] {BenchView1, BenchView2};
       var battleSetupController = new BattleSetupController(players, benches, units, BattleSetupUI);

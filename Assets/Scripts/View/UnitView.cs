@@ -6,6 +6,7 @@ namespace View {
     public TileView Tile;
     public UnitInfo Info;
     public float Height = 0.25f;
+    public EPlayer Player;
     public int Level = 1;
   }
 }

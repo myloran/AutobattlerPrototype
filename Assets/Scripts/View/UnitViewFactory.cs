@@ -9,10 +9,12 @@ namespace View {
       this.unitPrefab = unitPrefab;
     }
 
-    public UnitView Create(string name, Vector3 position, TileView tile) {
+    public UnitView Create(string name, Vector3 position, TileView tile, EPlayer player) {
       var unit = Object.Instantiate(unitPrefab, position.WithY(unitPrefab.Height), Quaternion.identity);
       unit.Info = unitInfos[name];
       unit.Tile = tile;
+      unit.Player = player;
+      tile.Unit = unit;
       return unit;
     }
 

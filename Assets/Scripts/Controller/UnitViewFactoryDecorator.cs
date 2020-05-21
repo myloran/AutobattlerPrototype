@@ -13,8 +13,8 @@ namespace Controller {
       this.decorator = decorator;
     }
     
-    public UnitView Create(string name, Vector3 position, TileView tile) {
-      var unit = decorator.Create(name, position, tile);
+    public UnitView Create(string name, Vector3 position, TileView tile, EPlayer player) {
+      var unit = decorator.Create(name, position, tile, player);
       unit.GetComponent<UnitDragController>().Init(closestTileFinder, battleSetupUI, players, unit);
       return unit;
     }
