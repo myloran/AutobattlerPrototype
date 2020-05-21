@@ -8,14 +8,14 @@ namespace View {
       this.bench2 = bench2;
     }
 
-    public TileView Find(Vector3 position) {
-      if (position.z - 0.5f < bench1.StartZPosition)
+    public TileView Find(Vector3 position, EPlayer selectedPlayer) {
+      if (position.z - 0.5f < bench1.StartZPosition && selectedPlayer == bench1.Player)
         return bench1.FindClosestTile(position);
       
-      if (position.z + 0.5f > bench2.StartZPosition)
+      if (position.z + 0.5f > bench2.StartZPosition  && selectedPlayer == bench2.Player)
         return bench2.FindClosestTile(position);
       
-      return board.FindClosestTile(position);
+      return board.FindClosestTile(position, selectedPlayer);
     }
 
     public bool IsBench(Vector3 position) => 
