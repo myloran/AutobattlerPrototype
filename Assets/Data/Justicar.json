@@ -1,8 +1,0 @@
-{
-  "Name" : "Justicar",
-  "Health" : 500,
-  "Armor" : 2,
-  "Damage" : 70,
-  "AttackSpeed" : 0.6,
-  "MoveSpeed" : 1
-}

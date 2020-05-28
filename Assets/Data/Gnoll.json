@@ -1,8 +1,0 @@
-{
-  "Name" : "Gnoll",
-  "Health" : 450,
-  "Armor" : 1,
-  "Damage" : 90,
-  "AttackSpeed" : 0.8,
-  "MoveSpeed" : 1
-}

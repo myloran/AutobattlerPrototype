@@ -1,8 +1,0 @@
-{
-  "Name" : "Valkyrie",
-  "Health" : 450,
-  "Armor" : 2,
-  "Damage" : 75,
-  "AttackSpeed" : 0.73,
-  "MoveSpeed" : 1
-}
