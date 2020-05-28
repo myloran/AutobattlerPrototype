@@ -1,33 +1,62 @@
 ﻿using System.Linq;
 using Controller;
+using Controller.Save;
+using Controller.Visitors;
 using Model;
+using Model.NBattleSimulation;
+using Model.NUnit;
+using Shared;
 using UnityEngine;
 using View;
 using View.UI;
+using FibonacciHeap;
+using Model.NAI.UnitCommands;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
     public BattleSetupUI BattleSetupUI;
+    public BattleSaveUI BattleSaveUI;
     public BoardView BoardView;
     public BenchView BenchView1, BenchView2;
     public UnitView UnitView;
     public TileView TileView;
 
     void Start() {
-      var unitDataLoader = new UnitDataLoader();
+      var unitDataLoader = new UnitInfoLoader();
       var units = unitDataLoader.Load();
-      var players = new[] {new Player(), new Player()};
+      var saveDataLoader = new SaveInfoLoader();
+      var saves = saveDataLoader.Load();
+      var decisionFactory = new DecisionFactory();
+      var unitFactory = new UnitFactory(units, decisionFactory);
+      var players = new[] {new Player(unitFactory), new Player(unitFactory)};
       var closestTileFinder = new ClosestTileFinder(BoardView, BenchView1, BenchView2);
       var unitViewFactory = new UnitViewFactory(units, UnitView);
-      var unitViewFactoryDecorator = new UnitViewFactoryDecorator(closestTileFinder, BattleSetupUI, players, unitViewFactory);
-      BattleSetupUI.Init(units.Keys.ToList());
+      
+      var unitViewFactoryDecorator = new UnitViewFactoryDecorator(closestTileFinder, 
+        BattleSetupUI, players, unitViewFactory);
+      
       var tileViewFactory = new TileViewFactory(TileView);
-      BoardView.Init(tileViewFactory);
+      BattleSetupUI.Init(units.Keys.ToList());
+      BattleSaveUI.Init(saves.Keys.ToList());
+      BoardView.Init(tileViewFactory, unitViewFactoryDecorator);
       BenchView1.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.First);
       BenchView2.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.Second);
-
+      
       var benches = new[] {BenchView1, BenchView2};
-      var battleSetupController = new BattleSetupController(players, benches, units, BattleSetupUI);
+      var battleSaveController = new BattleSaveController(players, benches, BoardView, 
+        BattleSaveUI, saveDataLoader, saves);
+
+      var board = new Board();
+      var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
+      var aiContext = new AiContext(players, board, aiHeap);
+      var battleSimulation = new BattleSimulation(aiContext);
+      var displayToViewActionVisitor = new DisplayToViewActionVisitor(BoardView);
+      
+      var displayToViewCommandVisitor = new DisplayToViewCommandVisitor(
+        displayToViewActionVisitor);
+      
+      var battleSetupController = new BattleSetupController(players, benches, 
+        BattleSetupUI, battleSimulation, displayToViewCommandVisitor);
     }
   }
 }
