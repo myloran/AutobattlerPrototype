@@ -1,3 +1,15 @@
-﻿{
-	"name": "Shared"
+{
+    "name": "Shared",
+    "references": [
+        "GUID:274ace330c83660bf9d794592a06a80a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
