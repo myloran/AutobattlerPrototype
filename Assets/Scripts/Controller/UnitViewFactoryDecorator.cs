@@ -1,4 +1,6 @@
 using Model;
+using Model.NBattleSimulation;
+using Shared;
 using UnityEngine;
 using View;
 using View.UI;

@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using Shared;
 using UnityEngine;
+using View.Exts;
 using static UnityEngine.Mathf;
 
 namespace View {
@@ -12,14 +14,15 @@ namespace View {
     void Start() {
       for (int x = 0; x < 8; x++) {
         for (int y = 0; y < 6; y++) {
-          tiles[x, y] = tileViewFactory.Create(StartPoint.position + new Vector3(x, 0, y),
+          tiles[x, y] = tileFactory.Create(StartPoint.position + new Vector3(x, 0, y),
             x, y, this);
         }
       }
     }  
     
-    public void Init(TileViewFactory tileViewFactory) {
-      this.tileViewFactory = tileViewFactory;
+    public void Init(TileViewFactory tileFactory, IUnitViewFactory unitFactory) {
+      this.tileFactory = tileFactory;
+      this.unitFactory = unitFactory;
     }
     
     public TileView FindClosestTile(Vector3 position, EPlayer selectedPlayer) {
@@ -44,9 +47,47 @@ namespace View {
     public void Unplace(UnitView unit, TileView tile) {
       units.Remove(new Coord(tile.X, tile.Y));
     }
-    
+
+    public void Clear() {
+      foreach (var unit in units.Values) {
+        Destroy(unit.gameObject);
+      }
+      units.Clear();
+    }
+
+    public void AddUnit(string name, Coord coord, EPlayer player) {
+      var position = TilePosition(coord.X, coord.Y);
+      var tile = tiles[coord.X, coord.Y];
+      units[coord] = unitFactory.Create(name, position, tile, player);
+    }
+
+    public void Move(Coord from, Coord to, float time) {
+      Debug.Log("ok");
+      this.time = time;
+      endTime = Time.realtimeSinceStartup + time;
+      this.from = from;
+      this.to = to;
+      StartCoroutine(MoveCoroutine());
+    }
+
+    IEnumerator MoveCoroutine() {
+      var height = units[@from].Height;
+      var fromPosition = tiles[from.X, @from.Y].transform.position.WithY(height);
+      var toPosition = tiles[to.X, @to.Y].transform.position.WithY(height);
+      
+      while (Time.realtimeSinceStartup < endTime) {
+        var t = time - (endTime - Time.realtimeSinceStartup) / time;
+        units[from].transform.position = Vector3.Lerp(fromPosition, toPosition, t);
+
+        yield return null;
+      }
+    }
+
+    float time, endTime;
+    Coord from, to;
     readonly TileView[,] tiles = new TileView[8, 6];
     readonly Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>(10);
-    TileViewFactory tileViewFactory;
+    TileViewFactory tileFactory;
+    IUnitViewFactory unitFactory;
   }
 }

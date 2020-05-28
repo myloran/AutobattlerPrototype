@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Shared;
 using UnityEngine;
+using View.Exts;
 
 namespace View {
   public class BenchView : MonoBehaviour, IUnitHolder {
@@ -35,6 +36,9 @@ namespace View {
       return (false, default);
     }
     
+    public void AddUnit(string name, Coord coord) => 
+      units[coord] = unitFactory.Create(name, TilePosition(coord.X), tiles[coord.X], Player);
+
     public (bool, Coord) RemoveUnit() {
       for (int x = 9; x >= 0; x--) {
         var coord = new Coord(x, -1);
@@ -65,7 +69,14 @@ namespace View {
     public void Unplace(UnitView unit, TileView tile) {
       units.Remove(new Coord(tile.X, tile.Y));
     }
-    
+
+    public void Clear() {
+      foreach (var unit in units.Values) {
+        Destroy(unit.gameObject);
+      }
+      units.Clear();
+    }
+
     readonly TileView[] tiles = new TileView[10];
     readonly Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>(10);
     IUnitViewFactory unitFactory;

@@ -5,20 +5,20 @@ using UnityEngine.UI;
 
 namespace View.UI {
   public class BattleSetupUI : AutoReferencer<BattleSetupUI> {
-    public TMP_Dropdown DUnit,
-      DPlayer;
+    public TMP_Dropdown DUnits,
+      DPlayers;
 
     public Button BAdd,
       BRemove,
       BStartBattle;
 
-    public void Init(List<string> names) {
+    public void Init(IEnumerable<string> names) {
       var options = names.Select(n => new TMP_Dropdown.OptionData(n));
-      DUnit.options.Clear();
-      DUnit.options.AddRange(options);
+      DUnits.options.Clear();
+      DUnits.options.AddRange(options);
     }
 
-    public string GetSelectedUnitName => DUnit.options[DUnit.value].text;
-    public int GetSelectedPlayerId => DPlayer.value;
+    public string GetSelectedUnitName => DUnits.options[DUnits.value].text;
+    public int GetSelectedPlayerId => DPlayers.value;
   }
 }
