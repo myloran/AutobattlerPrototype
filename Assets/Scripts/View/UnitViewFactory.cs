@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Shared;
 using UnityEngine;
+using View.Exts;
 
 namespace View {
   public class UnitViewFactory : IUnitViewFactory {
