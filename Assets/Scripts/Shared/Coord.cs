@@ -1,10 +1,11 @@
 using System;
 using MessagePack;
+using static UnityEngine.Mathf;
 
 namespace Shared {
   [Serializable]
   [MessagePackObject]
-  public class Coord {
+  public struct Coord {
     public static Coord Invalid = new Coord(-1, -1);
     [Key(0)] public int X; 
     [Key(1)] public int Y;
@@ -29,7 +30,7 @@ namespace Shared {
     }
 
     [IgnoreMember] public float SqrMagnitude => X * X + Y * Y; 
-    [IgnoreMember] public Coord Normalized => new Coord(X > 0 ? 1 : 0, Y > 0 ? 1 : 0);
+    [IgnoreMember] public Coord Normalized => new Coord(Clamp(X, -1, 1), Clamp(Y, -1, 1));
 
     public static Coord operator +(Coord a, Coord b) => new Coord(a.X + b.X, a.Y + b.Y);
     public static Coord operator -(Coord a, Coord b) => new Coord(a.X - b.X, a.Y - b.Y);
