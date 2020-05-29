@@ -62,29 +62,12 @@ namespace View {
     }
 
     public void Move(Coord from, Coord to, float time) {
-      Debug.Log("ok");
-      this.time = time;
-      endTime = Time.realtimeSinceStartup + time;
-      this.from = from;
-      this.to = to;
-      StartCoroutine(MoveCoroutine());
+      var fromUnit = units[from];
+      var fromTile = tiles[from.X, from.Y];
+      var toTile = tiles[to.X, to.Y];
+      var moveRoutine = new MoveRoutine(fromUnit, fromTile, toTile, time, this);
     }
-
-    IEnumerator MoveCoroutine() {
-      var height = units[@from].Height;
-      var fromPosition = tiles[from.X, @from.Y].transform.position.WithY(height);
-      var toPosition = tiles[to.X, @to.Y].transform.position.WithY(height);
-      
-      while (Time.realtimeSinceStartup < endTime) {
-        var t = time - (endTime - Time.realtimeSinceStartup) / time;
-        units[from].transform.position = Vector3.Lerp(fromPosition, toPosition, t);
-
-        yield return null;
-      }
-    }
-
-    float time, endTime;
-    Coord from, to;
+    
     readonly TileView[,] tiles = new TileView[8, 6];
     readonly Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>(10);
     TileViewFactory tileFactory;
