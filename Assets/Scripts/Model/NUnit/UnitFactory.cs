@@ -8,9 +8,9 @@ namespace Model.NUnit {
       this.decisionFactory = decisionFactory;
     }
     
-    public Unit Create(string name, int playerId) {
+    public Unit Create(string name, Coord coord, int playerId) {
       var info = infos[name];
-      var movement = new CMovement(info.MoveSpeed);
+      var movement = new CMovement(coord, info.MoveSpeed);
       var attack = new CAttack(movement, info.Damage, info.AttackSpeed, info.AttackRange * info.AttackRange);
       var health = new CHealth(info.Health, info.Armor);
       

@@ -13,12 +13,12 @@ namespace Model.NBattleSimulation {
     }
     
     public void AddBenchUnit(string name, Coord coord, int playerId) => 
-      BenchUnits[coord] = unitFactory.Create(name, playerId);
+      BenchUnits[coord] = unitFactory.Create(name, coord, playerId);
 
     public void RemoveBenchUnit(Coord coord) => BenchUnits.Remove(coord);
     
     public void AddBoardUnit(string name, Coord coord, int playerId) => 
-      BoardUnits[coord] = unitFactory.Create(name, playerId);
+      BoardUnits[coord] = unitFactory.Create(name, coord, playerId);
 
     public void RemoveBoardUnit(Coord coord) => BoardUnits.Remove(coord);
     

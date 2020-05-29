@@ -9,7 +9,8 @@ namespace Model.NUnit {
     public Coord TakenCoord = Coord.Invalid;
     public Coord Coord;
     
-    public CMovement(float speed) {
+    public CMovement(Coord coord, float speed) {
+      StartingCoord = coord;
       this.speed = speed;
     }
 
