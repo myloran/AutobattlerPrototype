@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Model.NUnit;
 using Shared;
-using UnityEngine;
 
 namespace Model.NBattleSimulation {
   public class Player {
@@ -32,7 +31,7 @@ namespace Model.NBattleSimulation {
       var toDict = to.Y < 0 ? BenchUnits : BoardUnits;
         
       if (!fromDict.ContainsKey(from)) {
-        Debug.LogError($"Dict does not have unit at coord: {from}");
+        // Debug.LogError($"Dict does not have unit at coord: {from}");
         return;
       }
       var fromUnit = fromDict[from];
