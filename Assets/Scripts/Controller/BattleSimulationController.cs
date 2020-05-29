@@ -1,13 +1,10 @@
-using Model.NAI.Visitors;
 using Model.NBattleSimulation;
 using View;
 
 namespace Controller {
   public class BattleSimulationController {
-    public BattleSimulationController(BattleSimulation simulation, ICommandVisitor visitor,
-        BattleSimulationUI ui) {
+    public BattleSimulationController(BattleSimulation simulation, BattleSimulationUI ui) {
       this.simulation = simulation;
-      this.visitor = visitor;
       ui.BPrepareBattle.Sub(StartBattle);
       ui.BExecuteNextDecision.Sub(ExecuteNextDecision);
     }
@@ -16,10 +13,9 @@ namespace Controller {
 
     void ExecuteNextDecision() {
       simulation.ExecuteNextDecision();
-      simulation.Command.Accept(visitor);
+      // simulation.Command.Accept(visitor);
     }
     
     readonly BattleSimulation simulation;
-    readonly ICommandVisitor visitor;
   }
 }

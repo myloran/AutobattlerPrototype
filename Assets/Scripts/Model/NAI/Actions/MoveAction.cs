@@ -1,19 +1,16 @@
-using Model.NAI.UnitCommands;
-using Model.NAI.Visitors;
 using Model.NBattleSimulation;
+using Model.NBattleSimulation.Commands;
 using Model.NDecisionTree;
 using Model.NUnit;
-using Shared;
-using UnityEngine;
+using PlasticFloor.EventBus;
 
 namespace Model.NAI.Actions {
   public class MoveAction : IDecisionTreeNode {
-    public MoveUnitView MoveUnitView;
-    
-    public MoveAction(CMovement movement, CTarget target, CAi ai) {
+    public MoveAction(CMovement movement, CTarget target, CAi ai, IEventBus bus) {
       this.movement = movement;
       this.target = target;
       this.ai = ai;
+      this.bus = bus;
     }
     
     public IDecisionTreeNode MakeDecision(AiContext context) {
@@ -23,10 +20,9 @@ namespace Model.NAI.Actions {
       
       if (context.IsTileEmpty(newCoord)) {
         var time = movement.TimeToMove(isDiagonalMove);
-        context.Board.Units[newCoord] = context.Board.Units[movement.Coord];
-        movement.TakenCoord = newCoord;
-        MoveUnitView = new MoveUnitView(movement.Coord, newCoord, time);
-        var moveCommand = new MoveCommand(context.Board, movement, newCoord); 
+        var startMoveCommand = new StartMoveCommand(context.Board, movement, newCoord, bus);
+        context.AiHeap[context.CurrentTime] = startMoveCommand;
+        var moveCommand = new EndMoveCommand(context.Board, movement, newCoord); 
         context.AiHeap[context.CurrentTime + time] = moveCommand;
         var decisionCommand = new MakeDecisionCommand(ai, context);
         context.AiHeap[context.CurrentTime + time] = decisionCommand;
@@ -34,10 +30,9 @@ namespace Model.NAI.Actions {
       return this;
     }
     
-    public void Accept(IActionVisitor visitor) => visitor.VisitMoveAction(this);
-
     readonly CMovement movement;
     readonly CTarget target;
     readonly CAi ai;
+    readonly IEventBus bus;
   }
 }

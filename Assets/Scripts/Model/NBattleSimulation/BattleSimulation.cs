@@ -1,4 +1,4 @@
-using Model.NAI.UnitCommands;
+using Model.NBattleSimulation.Commands;
 
 namespace Model.NBattleSimulation {
   public class BattleSimulation {

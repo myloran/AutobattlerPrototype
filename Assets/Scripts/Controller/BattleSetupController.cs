@@ -1,5 +1,4 @@
 using System;
-using Model.NAI.Visitors;
 using Model.NBattleSimulation;
 using View;
 using View.UI;
@@ -37,6 +36,5 @@ namespace Controller {
     readonly BattleSimulation simulation;
     readonly BenchView[] benches;
     readonly Player[] players;
-    readonly ICommandVisitor visitor;
   }
 }

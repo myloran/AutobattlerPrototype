@@ -1,4 +1,3 @@
-using Model.NAI.Visitors;
 using Model.NBattleSimulation;
 
 namespace Model.NDecisionTree {
@@ -14,8 +13,6 @@ namespace Model.NDecisionTree {
       var branch = GetBranch() ? trueNode : falseNode;
       return branch.MakeDecision(context);
     }
-
-    public void Accept(IActionVisitor visitor) { }
 
     readonly IDecisionTreeNode trueNode, falseNode;
   }

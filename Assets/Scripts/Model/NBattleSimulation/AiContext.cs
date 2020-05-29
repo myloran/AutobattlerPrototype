@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using FibonacciHeap;
-using Model.NAI.UnitCommands;
+using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using Shared;
 

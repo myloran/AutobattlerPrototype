@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using Controller;
 using Controller.Save;
-using Controller.Visitors;
-using Model;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using Shared;
@@ -10,7 +8,9 @@ using UnityEngine;
 using View;
 using View.UI;
 using FibonacciHeap;
-using Model.NAI.UnitCommands;
+using Model.NBattleSimulation.Commands;
+using PlasticFloor.EventBus;
+using Shared.Events;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
@@ -28,7 +28,11 @@ namespace Infrastructure {
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
       
-      var decisionFactory = new DecisionFactory();
+      var eventBus = new EventBus();
+      var movementController = new MovementController();
+      eventBus.Register(movementController);
+      
+      var decisionFactory = new DecisionFactory(eventBus);
       var unitFactory = new UnitFactory(units, decisionFactory);
       var players = new[] {new Player(unitFactory), new Player(unitFactory)};
       var closestTileFinder = new ClosestTileFinder(BoardView, BenchView1, BenchView2);
@@ -53,11 +57,9 @@ namespace Infrastructure {
       var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
       var aiContext = new AiContext(players, board, aiHeap);
       var battleSimulation = new BattleSimulation(aiContext);
-      var displayToViewActionVisitor = new DisplayToViewActionVisitor(BoardView);
-      var displayToViewCommandVisitor = new DisplayToViewCommandVisitor(displayToViewActionVisitor);
 
-      var battleSimulationController = new BattleSimulationController(battleSimulation, 
-        displayToViewCommandVisitor, BattleSimulationUI);
+      var battleSimulationController = new BattleSimulationController(battleSimulation,
+        BattleSimulationUI);
     }
   }
 }

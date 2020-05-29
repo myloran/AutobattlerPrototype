@@ -1,9 +1,7 @@
-using Model.NAI.Visitors;
-using Model.NBattleSimulation;
 using Model.NDecisionTree;
 using Model.NUnit;
 
-namespace Model.NAI.UnitCommands {
+namespace Model.NBattleSimulation.Commands {
   public class MakeDecisionCommand : ICommand {
     public IDecisionTreeNode Decision { get; private set; }
     
@@ -13,7 +11,6 @@ namespace Model.NAI.UnitCommands {
     }
 
     public void Execute() => Decision = ai.MakeDecision(context);
-    public void Accept(ICommandVisitor visitor) => visitor.VisitMakeDecisionCommand(this);
 
     readonly CAi ai;
     readonly AiContext context;

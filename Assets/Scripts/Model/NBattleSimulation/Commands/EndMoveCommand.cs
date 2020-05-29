@@ -1,11 +1,9 @@
-using Model.NAI.Visitors;
-using Model.NBattleSimulation;
 using Model.NUnit;
 using Shared;
 
-namespace Model.NAI.UnitCommands {
-  public class MoveCommand : ICommand {
-    public MoveCommand(Board board, CMovement movement, Coord newCoord) {
+namespace Model.NBattleSimulation.Commands {
+  public class EndMoveCommand : ICommand {
+    public EndMoveCommand(Board board, CMovement movement, Coord newCoord) {
       this.board = board;
       this.movement = movement;
       this.newCoord = newCoord;
@@ -16,8 +14,6 @@ namespace Model.NAI.UnitCommands {
       movement.Coord = newCoord;
       movement.TakenCoord = Coord.Invalid;
     }
-
-    public void Accept(ICommandVisitor visitor) { }
 
     readonly Board board;
     readonly CMovement movement;

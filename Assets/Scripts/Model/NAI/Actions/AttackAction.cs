@@ -1,4 +1,3 @@
-using Model.NAI.Visitors;
 using Model.NBattleSimulation;
 using Model.NDecisionTree;
 using UnityEngine;
@@ -10,7 +9,5 @@ namespace Model.NAI.Actions {
       Debug.Log("AttackAction");
       return this;
     }
-
-    public void Accept(IActionVisitor visitor) => visitor.VisitAttackAction(this);
   }
 }
