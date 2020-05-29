@@ -11,7 +11,7 @@ using View.UI;
 using FibonacciHeap;
 using Model.NBattleSimulation.Commands;
 using PlasticFloor.EventBus;
-using Shared.Events;
+using Shared.Shared.Client.Events;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {

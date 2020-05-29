@@ -1,33 +1,29 @@
-using System.Collections;
+using Shared.Shared.Client;
 using UnityEngine;
 using View.Exts;
 
 namespace View {
-  public class MoveRoutine /*: ITick*/ {
-    public MoveRoutine(UnitView fromUnit, TileView fromTile, TileView toTile, float time, MonoBehaviour obj) {
-      this.time = time;
-      endTime = Time.realtimeSinceStartup + time;
+  public class MoveRoutine : ITick {
+    public MoveRoutine(UnitView fromUnit, TileView fromTile, TileView toTile, 
+        float startTime, float duration) {
       this.fromUnit = fromUnit;
-      this.fromTile = fromTile;
-      this.toTile = toTile;
-      obj.StartCoroutine(MoveCoroutine());
-    }
-    
-    IEnumerator MoveCoroutine() {
+      this.duration = duration;
+      this.startTime = startTime;
+      endTime = startTime + duration;
       var height = fromUnit.Height;
-      var fromPosition = fromTile.transform.position.WithY(height);
-      var toPosition = toTile.transform.position.WithY(height);
-      
-      while (Time.realtimeSinceStartup < endTime) {
-        var t = time - (endTime - Time.realtimeSinceStartup) / time;
-        fromUnit.transform.position = Vector3.Lerp(fromPosition, toPosition, t);
-
-        yield return null;
-      }
+      fromPosition = fromTile.transform.position.WithY(height);
+      toPosition = toTile.transform.position.WithY(height);
     }
     
-    readonly float time, endTime;
+    public void Update(float time) {
+      var timeClamped = Mathf.Clamp(time, startTime, endTime);
+      var durationPassed = timeClamped - startTime;
+      var t = durationPassed / duration;
+      fromUnit.transform.position = Vector3.Lerp(fromPosition, toPosition, t);
+    }
+    
     readonly UnitView fromUnit;
-    readonly TileView fromTile, toTile;
+    readonly Vector3 fromPosition, toPosition;
+    readonly float duration, startTime, endTime;
   }
 }

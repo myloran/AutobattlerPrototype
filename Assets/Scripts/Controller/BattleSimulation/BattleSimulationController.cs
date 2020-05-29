@@ -1,4 +1,5 @@
 using Model.NBattleSimulation;
+using Shared.Shared.Client;
 using View;
 
 namespace Controller.BattleSimulation {
@@ -15,8 +16,8 @@ namespace Controller.BattleSimulation {
     void StartBattle() => simulation.PrepareBattle();
 
     void ExecuteNextDecision() {
-      simulation.ExecuteNextDecision();
       viewSimulation.Update(context.CurrentTime);
+      simulation.ExecuteNextDecision();
     }
     
     readonly Model.NBattleSimulation.BattleSimulation simulation;

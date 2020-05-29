@@ -20,13 +20,15 @@ namespace Model.NAI.Actions {
       
       if (context.IsTileEmpty(newCoord)) {
         var time = movement.TimeToMove(isDiagonalMove);
-        var startMoveCommand = new StartMoveCommand(context.Board, movement, newCoord,
+        var startMoveCommand = new StartMoveCommand(context.Board, movement, newCoord
 // #if Client
-          context.CurrentTime, time, bus
+          , context.CurrentTime, time, bus
 // #endif
         );
         context.AiHeap[context.CurrentTime] = startMoveCommand;
-        var moveCommand = new EndMoveCommand(context.Board, movement, newCoord); 
+        var moveCommand = new EndMoveCommand(context.Board, movement, newCoord
+          , bus
+        ); 
         context.AiHeap[context.CurrentTime + time] = moveCommand;
         var decisionCommand = new MakeDecisionCommand(ai, context);
         context.AiHeap[context.CurrentTime + time] = decisionCommand;

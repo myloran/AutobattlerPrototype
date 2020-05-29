@@ -1,7 +1,7 @@
 using Model.NUnit;
 using PlasticFloor.EventBus;
 using Shared;
-using Shared.Events;
+using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class StartMoveCommand : ICommand {
@@ -19,7 +19,9 @@ namespace Model.NBattleSimulation.Commands {
       var units = board.Units;
       units[newCoord] = units[movement.Coord];
       movement.TakenCoord = newCoord;
+// #if Client
       bus.Raise(new StartMoveEvent(movement.Coord, newCoord, startingTime, duration));
+// #endif
     }
 
     readonly Board board;

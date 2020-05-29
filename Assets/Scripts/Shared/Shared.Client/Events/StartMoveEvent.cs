@@ -1,7 +1,7 @@
 using Model.NBattleSimulation;
 using PlasticFloor.EventBus;
 
-namespace Shared.Events {
+namespace Shared.Shared.Client.Events {
   public class StartMoveEvent : IEvent {
     public Coord From { get; }
     public Coord To { get; }
