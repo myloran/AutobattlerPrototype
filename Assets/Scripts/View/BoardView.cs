@@ -61,11 +61,11 @@ namespace View {
       units[coord] = unitFactory.Create(name, position, tile, player);
     }
 
-    public void Move(Coord from, Coord to, float time) {
+    public MoveRoutine Move(Coord from, Coord to, float time) {
       var fromUnit = units[from];
       var fromTile = tiles[from.X, from.Y];
       var toTile = tiles[to.X, to.Y];
-      var moveRoutine = new MoveRoutine(fromUnit, fromTile, toTile, time, this);
+      return new MoveRoutine(fromUnit, fromTile, toTile, time, this);
     }
     
     readonly TileView[,] tiles = new TileView[8, 6];

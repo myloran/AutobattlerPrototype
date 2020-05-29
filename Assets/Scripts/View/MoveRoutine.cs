@@ -3,7 +3,7 @@ using UnityEngine;
 using View.Exts;
 
 namespace View {
-  public class MoveRoutine {
+  public class MoveRoutine /*: ITick*/ {
     public MoveRoutine(UnitView fromUnit, TileView fromTile, TileView toTile, float time, MonoBehaviour obj) {
       this.time = time;
       endTime = Time.realtimeSinceStartup + time;

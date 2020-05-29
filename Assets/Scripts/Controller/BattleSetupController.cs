@@ -33,7 +33,6 @@ namespace Controller {
     }
 
     readonly BattleSetupUI ui;
-    readonly BattleSimulation simulation;
     readonly BenchView[] benches;
     readonly Player[] players;
   }

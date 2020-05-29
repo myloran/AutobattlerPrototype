@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Controller;
+using Controller.BattleSimulation;
 using Controller.Save;
 using Model.NBattleSimulation;
 using Model.NUnit;
@@ -29,8 +30,9 @@ namespace Infrastructure {
       var saves = saveDataLoader.Load();
       
       var eventBus = new EventBus();
-      var movementController = new MovementController();
-      eventBus.Register(movementController);
+      var movementController = new MovementController(BoardView);
+      eventBus.Register<StartMoveEvent>(movementController);
+      eventBus.Register<EndMoveEvent>(movementController);
                
       var decisionFactory = new DecisionFactory(eventBus);
       var unitFactory = new UnitFactory(units, decisionFactory);
@@ -59,7 +61,7 @@ namespace Infrastructure {
       var battleSimulation = new BattleSimulation(aiContext);
 
       var battleSimulationController = new BattleSimulationController(battleSimulation,
-        BattleSimulationUI);
+        BattleSimulationUI, movementController, aiContext);
     }
   }
 }
