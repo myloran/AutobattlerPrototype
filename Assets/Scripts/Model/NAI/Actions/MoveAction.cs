@@ -31,7 +31,6 @@ namespace Model.NAI.Actions {
         var decisionCommand = new MakeDecisionCommand(ai, context);
         context.AiHeap[context.CurrentTime + time] = decisionCommand;
       }
-      Debug.Log("MoveAction");
       return this;
     }
     

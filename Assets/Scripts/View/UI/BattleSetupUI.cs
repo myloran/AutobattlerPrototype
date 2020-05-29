@@ -9,8 +9,7 @@ namespace View.UI {
       DPlayers;
 
     public Button BAdd,
-      BRemove,
-      BStartBattle;
+      BRemove;
 
     public void Init(IEnumerable<string> names) {
       var options = names.Select(n => new TMP_Dropdown.OptionData(n));

@@ -7,43 +7,33 @@ using View.UI;
 namespace Controller {
   public class BattleSetupController : IDisposable {
     public BattleSetupController(Player[] players, BenchView[] benches, 
-      BattleSetupUI battleSetupUI, BattleSimulation simulation, ICommandVisitor visitor) {
+        BattleSetupUI ui) {
       this.players = players;
       this.benches = benches;
-      this.battleSetupUI = battleSetupUI;
-      this.simulation = simulation;
-      this.visitor = visitor;
-      battleSetupUI.BAdd.onClick.AddListener(AddUnit);
-      battleSetupUI.BRemove.onClick.AddListener(RemoveUnit);
-      battleSetupUI.BStartBattle.onClick.AddListener(StartBattle);
+      this.ui = ui;
+      ui.BAdd.onClick.AddListener(AddUnit);
+      ui.BRemove.onClick.AddListener(RemoveUnit);
     }
 
     void AddUnit() {
-      var playerId = battleSetupUI.GetSelectedPlayerId;
-      var name = battleSetupUI.GetSelectedUnitName;
+      var playerId = ui.GetSelectedPlayerId;
+      var name = ui.GetSelectedUnitName;
       var (isAdded, coord) = benches[playerId].AddUnit(name);
       if (isAdded) players[playerId].AddBenchUnit(name, coord, playerId); 
     }
     
     void RemoveUnit() {
-      var id = battleSetupUI.GetSelectedPlayerId;
+      var id = ui.GetSelectedPlayerId;
       var (isRemoved, coord) = benches[id].RemoveUnit();
       if (isRemoved) players[id].RemoveBenchUnit(coord);
     }
 
-    void StartBattle() {
-      simulation.PrepareBattle();
-      simulation.ExecuteNextDecision();
-      simulation.Command.Accept(visitor);
-    }
-
     public void Dispose() {
-      battleSetupUI.BAdd.onClick.RemoveListener(AddUnit);
-      battleSetupUI.BRemove.onClick.RemoveListener(RemoveUnit);
-      battleSetupUI.BStartBattle.onClick.RemoveListener(StartBattle);
+      ui.BAdd.onClick.RemoveListener(AddUnit);
+      ui.BRemove.onClick.RemoveListener(RemoveUnit);
     }
 
-    readonly BattleSetupUI battleSetupUI;
+    readonly BattleSetupUI ui;
     readonly BattleSimulation simulation;
     readonly BenchView[] benches;
     readonly Player[] players;

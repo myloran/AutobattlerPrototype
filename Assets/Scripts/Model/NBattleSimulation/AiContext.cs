@@ -20,9 +20,8 @@ namespace Model.NBattleSimulation {
       AiHeap = aiHeap;
     }
 
-    public IEnumerable<Unit> EnemyUnits(EPlayer player) {
-      return players[(int) player.Opposite()].BoardUnits.Values;
-    }
+    public IEnumerable<Unit> EnemyUnits(EPlayer player) => 
+      players[(int) player.Opposite()].BoardUnits.Values;
 
     public bool IsTileEmpty(Coord coord) => !Board.Units.ContainsKey(coord);
   }

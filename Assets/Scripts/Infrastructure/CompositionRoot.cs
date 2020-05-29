@@ -16,6 +16,7 @@ namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
     public BattleSetupUI BattleSetupUI;
     public BattleSaveUI BattleSaveUI;
+    public BattleSimulationUI BattleSimulationUI;
     public BoardView BoardView;
     public BenchView BenchView1, BenchView2;
     public UnitView UnitView;
@@ -26,6 +27,7 @@ namespace Infrastructure {
       var units = unitDataLoader.Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
+      
       var decisionFactory = new DecisionFactory();
       var unitFactory = new UnitFactory(units, decisionFactory);
       var players = new[] {new Player(unitFactory), new Player(unitFactory)};
@@ -43,6 +45,7 @@ namespace Infrastructure {
       BenchView2.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.Second);
       
       var benches = new[] {BenchView1, BenchView2};
+      var battleSetupController = new BattleSetupController(players, benches, BattleSetupUI);
       var battleSaveController = new BattleSaveController(players, benches, BoardView, 
         BattleSaveUI, saveDataLoader, saves);
 
@@ -51,12 +54,10 @@ namespace Infrastructure {
       var aiContext = new AiContext(players, board, aiHeap);
       var battleSimulation = new BattleSimulation(aiContext);
       var displayToViewActionVisitor = new DisplayToViewActionVisitor(BoardView);
-      
-      var displayToViewCommandVisitor = new DisplayToViewCommandVisitor(
-        displayToViewActionVisitor);
-      
-      var battleSetupController = new BattleSetupController(players, benches, 
-        BattleSetupUI, battleSimulation, displayToViewCommandVisitor);
+      var displayToViewCommandVisitor = new DisplayToViewCommandVisitor(displayToViewActionVisitor);
+
+      var battleSimulationController = new BattleSimulationController(battleSimulation, 
+        displayToViewCommandVisitor, BattleSimulationUI);
     }
   }
 }
