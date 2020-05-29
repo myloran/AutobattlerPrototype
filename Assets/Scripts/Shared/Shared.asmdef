@@ -1,8 +1,7 @@
 {
     "name": "Shared",
     "references": [
-        "GUID:274ace330c83660bf9d794592a06a80a",
-        "GUID:b72556d161ba5d041ad771e034217327"
+        "GUID:274ace330c83660bf9d794592a06a80a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
