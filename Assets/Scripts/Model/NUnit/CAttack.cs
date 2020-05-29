@@ -1,7 +1,6 @@
 using System;
 using Model.NBattleSimulation;
 using Shared;
-using UnityEngine;
 
 namespace Model.NUnit {
   public class CAttack {
@@ -17,7 +16,7 @@ namespace Model.NUnit {
     }
 
     public bool CanAttack => true;
-    public TimePoint AttackTime => Math.Abs(Speed) > Mathf.Epsilon 
+    public TimePoint AttackTime => Math.Abs(Speed) > float.Epsilon 
       ? new TimePoint(1 / Speed) : 999;
 
     public bool IsWithinAttackRange(CMovement target) => 

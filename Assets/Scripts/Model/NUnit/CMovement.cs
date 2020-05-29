@@ -1,10 +1,10 @@
+using System;
 using Shared;
-using UnityEngine;
 
 namespace Model.NUnit {
   public class CMovement {
     public static float Straight => 1;
-    public static float Diagonal => Mathf.Sqrt(2);
+    public static float Diagonal => (float)Math.Sqrt(2);
     public Coord StartingCoord;
     public Coord TakenCoord = Coord.Invalid;
     public Coord Coord;

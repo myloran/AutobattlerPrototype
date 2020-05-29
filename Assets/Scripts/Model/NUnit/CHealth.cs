@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Model.NUnit {
   public class CHealth {
     public float StartingHealth;
@@ -20,7 +18,7 @@ namespace Model.NUnit {
     public void CalculateDamage(float damage) {
       var damageDealt = damage - damage * Armor / (Armor + 10);
       Health -= damageDealt;
-      Mathf.Clamp(Health, 0f, StartingHealth);
+      MathExt.Clamp(Health, 0f, StartingHealth);
     }
   }
 }

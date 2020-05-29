@@ -31,7 +31,7 @@ namespace Infrastructure {
       var eventBus = new EventBus();
       var movementController = new MovementController();
       eventBus.Register(movementController);
-      
+               
       var decisionFactory = new DecisionFactory(eventBus);
       var unitFactory = new UnitFactory(units, decisionFactory);
       var players = new[] {new Player(unitFactory), new Player(unitFactory)};
