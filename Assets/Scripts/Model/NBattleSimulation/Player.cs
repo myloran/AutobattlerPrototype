@@ -31,7 +31,7 @@ namespace Model.NBattleSimulation {
       var toDict = to.Y < 0 ? BenchUnits : BoardUnits;
         
       if (!fromDict.ContainsKey(from)) {
-        // Debug.LogError($"Dict does not have unit at coord: {from}");
+        log.Error($"Dict does not have unit at coord: {from}");
         return;
       }
       var fromUnit = fromDict[from];
@@ -50,5 +50,6 @@ namespace Model.NBattleSimulation {
     }
 
     readonly UnitFactory unitFactory;
+    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(Player));
   }
 }

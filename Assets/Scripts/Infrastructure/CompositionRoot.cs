@@ -10,6 +10,7 @@ using View;
 using View.UI;
 using FibonacciHeap;
 using Model.NBattleSimulation.Commands;
+using Okwy.Logging;
 using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
 
@@ -24,6 +25,7 @@ namespace Infrastructure {
     public TileView TileView;
 
     void Start() {
+      MainLog.DefaultInit();
       var unitDataLoader = new UnitInfoLoader();
       var units = unitDataLoader.Load();
       var saveDataLoader = new SaveInfoLoader();

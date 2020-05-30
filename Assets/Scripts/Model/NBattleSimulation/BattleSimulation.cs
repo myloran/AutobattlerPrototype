@@ -1,4 +1,5 @@
 using Model.NBattleSimulation.Commands;
+using Okwy.Logging;
 
 namespace Model.NBattleSimulation {
   public class BattleSimulation {
@@ -20,6 +21,10 @@ namespace Model.NBattleSimulation {
 
     public void ExecuteNextDecision() {
       var node = context.AiHeap.RemoveMin();
+      if (node == null) {
+        log.Info("The battle is over");
+        return;
+      }
       context.CurrentTime = node.Key;
       Command = node.Data;
       Command.Execute();
@@ -31,5 +36,6 @@ namespace Model.NBattleSimulation {
     public bool IsFinished;
 
     readonly AiContext context;
+    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(BattleSimulation));
   }
 }
