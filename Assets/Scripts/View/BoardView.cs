@@ -14,7 +14,8 @@ namespace View {
     void Start() {
       for (int x = 0; x < 8; x++) {
         for (int y = 0; y < 6; y++) {
-          tiles[x, y] = tileFactory.Create(StartPoint.position + new Vector3(x, 0, y),
+          var coord = new Coord(x, y);
+          tiles[coord] = tileFactory.Create(StartPoint.position + new Vector3(x, 0, y), 
             x, y, this);
         }
       }
@@ -30,17 +31,18 @@ namespace View {
       var indexX = RoundToInt(indexPosition.x);
       var indexY = RoundToInt(indexPosition.z);
       var x = Clamp(indexX, 0, 7);
-      var z = selectedPlayer == EPlayer.First
+      var y = selectedPlayer == EPlayer.First
         ? Clamp(indexY, 0, 2)
         : Clamp(indexY, 3, 5);
+      var coord = new Coord(x, y);
 
-      return tiles[x, z];
+      return tiles[coord];
     }
     
-    Vector3 TilePosition(int x, int z) => StartPoint.position + new Vector3(x, 0, z);
+    Vector3 TilePosition(Coord coord) => StartPoint.position + new Vector3(coord.X, 0, coord.Y);
 
     public void Place(UnitView unit, TileView tile) {
-      unit.transform.position = TilePosition(tile.X, tile.Y).WithY(unit.Height);
+      unit.transform.position = TilePosition(new Coord(tile.X, tile.Y)).WithY(unit.Height);
       units[new Coord(tile.X, tile.Y)] = unit;
     }
     
@@ -56,19 +58,22 @@ namespace View {
     }
 
     public void AddUnit(string name, Coord coord, EPlayer player) {
-      var position = TilePosition(coord.X, coord.Y);
-      var tile = tiles[coord.X, coord.Y];
+      var position = TilePosition(coord);
+      var tile = tiles[coord];
       units[coord] = unitFactory.Create(name, position, tile, player);
     }
 
-    public MoveRoutine MoveUnit(Coord from, Coord to, float startingTime, float time) {
+    public void Move(Coord from, Coord to) {
       var fromUnit = units[from];
-      var fromTile = tiles[from.X, from.Y];
-      var toTile = tiles[to.X, to.Y];
-      return new MoveRoutine(fromUnit, fromTile, toTile, startingTime, time);
+      fromUnit.transform.position = TilePosition(to).WithY(fromUnit.Height);
+      units[to] = fromUnit;
+      units.Remove(from);
     }
-    
-    readonly TileView[,] tiles = new TileView[8, 6];
+
+    public MoveRoutine MoveRoutine(Coord from, Coord to, float startingTime, float time) => 
+      new MoveRoutine(units[from], tiles[from], tiles[to], startingTime, time);
+
+    readonly Dictionary<Coord, TileView> tiles = new Dictionary<Coord, TileView>(8 * 6);
     readonly Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>(10);
     TileViewFactory tileFactory;
     IUnitViewFactory unitFactory;

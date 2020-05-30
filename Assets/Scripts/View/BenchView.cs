@@ -12,7 +12,8 @@ namespace View {
     
     void Start() {
       for (int x = 0; x < 10; x++) {
-        tiles[x] = tileFactory.Create(TilePosition(x), x, -1, this);
+        var coord = new Coord(x, -1);
+        tiles[coord] = tileFactory.Create(TilePosition(x), x, -1, this);
       }
     }
 
@@ -29,7 +30,7 @@ namespace View {
         var coord = new Coord(x, -1);
         if (units.ContainsKey(coord)) continue;
 
-        units[coord] = unitFactory.Create(name, TilePosition(x), tiles[x], Player);
+        units[coord] = unitFactory.Create(name, TilePosition(x), tiles[coord], Player);
         return (true, new Coord(x, -1));
       }
 
@@ -37,7 +38,7 @@ namespace View {
     }
     
     public void AddUnit(string name, Coord coord) => 
-      units[coord] = unitFactory.Create(name, TilePosition(coord.X), tiles[coord.X], Player);
+      units[coord] = unitFactory.Create(name, TilePosition(coord.X), tiles[coord], Player);
 
     public (bool, Coord) RemoveUnit() {
       for (int x = 9; x >= 0; x--) {
@@ -56,9 +57,10 @@ namespace View {
     public TileView FindClosestTile(Vector3 position) {
       var indexPosition = position - StartPoint.position;
       var index = Mathf.RoundToInt(indexPosition.x);
-      var indexClamped = Mathf.Clamp(index, 0, 9);
+      var indexClamped = Mathf.Clamp(index, 0, 9);  
+      var coord = new Coord(indexClamped, -1);
       
-      return tiles[indexClamped];
+      return tiles[coord];
     }
     
     public void Place(UnitView unit, TileView tile) {
@@ -77,7 +79,7 @@ namespace View {
       units.Clear();
     }
 
-    readonly TileView[] tiles = new TileView[10];
+    readonly Dictionary<Coord, TileView> tiles = new Dictionary<Coord, TileView>(10);
     readonly Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>(10);
     IUnitViewFactory unitFactory;
     TileViewFactory tileFactory;
