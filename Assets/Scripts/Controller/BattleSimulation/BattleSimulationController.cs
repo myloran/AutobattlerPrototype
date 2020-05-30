@@ -16,8 +16,8 @@ namespace Controller.BattleSimulation {
     void StartBattle() => simulation.PrepareBattle();
 
     void ExecuteNextDecision() {
-      viewSimulation.Update(context.CurrentTime);
       simulation.ExecuteNextDecision();
+      // viewSimulation.Update(context.CurrentTime);
     }
     
     readonly Model.NBattleSimulation.BattleSimulation simulation;

@@ -13,11 +13,12 @@ namespace Controller.BattleSimulation {
     }
     
     public void HandleEvent(StartMoveEvent e) {
-      routines[e.From] = board.MoveUnit(e.From, e.To, e.StartingTime, e.Duration);
+      routines[e.From] = board.MoveRoutine(e.From, e.To, e.StartingTime, e.Duration);
     }
 
     public void HandleEvent(EndMoveEvent e) {
       routines.Remove(e.From);
+      board.Move(e.From, e.To);
     }
 
     public void Update(float time) {

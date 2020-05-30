@@ -13,7 +13,6 @@ namespace Model.NBattleSimulation {
       
       foreach (var unit in context.Board.Units.Values) {
         unit.Reset();
-        // unit.Ai.MakeDecision(context);
         var decisionCommand = new MakeDecisionCommand(unit.Ai, context);
         context.AiHeap[0] = decisionCommand;
       }
