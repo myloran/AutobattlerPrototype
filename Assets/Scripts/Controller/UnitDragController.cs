@@ -27,19 +27,19 @@ namespace Controller {
       if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;
       
       dragging = false;
-      oldTile?.Unhighlight();
+      lastTile?.Unhighlight();
         
       var player = players[battleSetupUI.GetSelectedPlayerId];
       var from = new Coord(unit.Tile.X, unit.Tile.Y);
-      var to = new Coord(oldTile.X, oldTile.Y);
+      var to = new Coord(lastTile.X, lastTile.Y);
       
       player.MoveUnit(from, to);
       
-      if (oldTile?.Unit != null) {
-        oldTile.SwapUnits(unit);
+      if (lastTile?.Unit != null) {
+        unit.SwapWith(lastTile.Unit);
       }
       else {
-        oldTile.MoveUnitHere(unit);
+        unit.MoveTo(lastTile);
       }
     }
 
@@ -57,7 +57,7 @@ namespace Controller {
       var tile = closestTileFinder.Find(mousePosition, (EPlayer)battleSetupUI.GetSelectedPlayerId);
       
       if (IsNewTile(tile)) {
-        oldTile?.Unhighlight();
+        lastTile?.Unhighlight();
         tile.Highlight();
         //   //if swap previous, cancel it
         //   if (tile.Unit != null) {
@@ -66,15 +66,15 @@ namespace Controller {
         //   //swap units if tile with unit
       }
 
-      oldTile = tile;
+      lastTile = tile;
     }
 
-    bool IsNewTile(TileView tile) => tile.X != oldTile?.X || tile.Y != oldTile?.Y;
+    bool IsNewTile(TileView tile) => tile.X != lastTile?.X || tile.Y != lastTile?.Y;
 
     Camera cam;
     bool dragging;
     UnitView unit;
-    TileView oldTile;
+    TileView lastTile;
     ClosestTileFinder closestTileFinder;
     BattleSetupUI battleSetupUI;
     Player[] players;

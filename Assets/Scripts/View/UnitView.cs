@@ -8,5 +8,8 @@ namespace View {
     public float Height = 0.25f;
     public EPlayer Player;
     public int Level = 1;
+
+    public void SwapWith(UnitView unit) => Tile.SwapUnits(unit);
+    public void MoveTo(TileView tile) => tile.MoveUnitHere(this);
   }
 }
