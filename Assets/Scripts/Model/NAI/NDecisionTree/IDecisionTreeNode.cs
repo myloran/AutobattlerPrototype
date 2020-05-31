@@ -1,6 +1,6 @@
 using Model.NBattleSimulation;
 
-namespace Model.NDecisionTree {
+namespace Model.NAI.NDecisionTree {
   public interface IDecisionTreeNode {
     IDecisionTreeNode MakeDecision(AiContext context);
   }

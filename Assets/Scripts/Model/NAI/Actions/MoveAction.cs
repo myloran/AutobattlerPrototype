@@ -1,6 +1,6 @@
+using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
-using Model.NDecisionTree;
 using Model.NUnit;
 using PlasticFloor.EventBus;
 

@@ -70,6 +70,8 @@ namespace View {
       units.Remove(from);
     }
 
+    public UnitView GetUnit(Coord coord) => units[coord];
+
     public MoveRoutine MoveRoutine(Coord from, Coord to, float startingTime, float time) => 
       new MoveRoutine(units[from], tiles[from], tiles[to], startingTime, time);
 

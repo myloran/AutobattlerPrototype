@@ -20,6 +20,9 @@ namespace Model.NBattleSimulation {
       AiHeap = aiHeap;
     }
 
+    public void InsertCommand(ICommand command, float time = 0) => 
+      AiHeap[CurrentTime + time] = command;
+
     public IEnumerable<Unit> EnemyUnits(EPlayer player) => 
       players[(int) player.Opposite()].BoardUnits.Values;
 

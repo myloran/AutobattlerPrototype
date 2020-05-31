@@ -1,5 +1,5 @@
+using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
-using Model.NDecisionTree;
 
 namespace Model.NUnit {
   public class CAi {

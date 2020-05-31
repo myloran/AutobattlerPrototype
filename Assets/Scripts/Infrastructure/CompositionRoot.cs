@@ -16,9 +16,12 @@ using Shared.Shared.Client.Events;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
+    public DebugUIController DebugUIController;
+    public RaycastController RaycastController;
     public BattleSetupUI BattleSetupUI;
     public BattleSaveUI BattleSaveUI;
     public BattleSimulationUI BattleSimulationUI;
+    public UnitTooltipUI UnitTooltipUI;
     public BoardView BoardView;
     public BenchView BenchView1, BenchView2;
     public UnitView UnitView;
@@ -30,11 +33,15 @@ namespace Infrastructure {
       var units = unitDataLoader.Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
+
+      DebugUIController.Init(BattleSetupUI, BattleSaveUI, BattleSimulationUI);
       
       var eventBus = new EventBus();
       var movementController = new MovementController(BoardView);
+      var attackController = new AttackController(BoardView);
       eventBus.Register<StartMoveEvent>(movementController);
       eventBus.Register<EndMoveEvent>(movementController);
+      eventBus.Register<ApplyDamageEvent>(attackController);
                
       var decisionFactory = new DecisionFactory(eventBus);
       var unitFactory = new UnitFactory(units, decisionFactory);
@@ -42,8 +49,20 @@ namespace Infrastructure {
       var closestTileFinder = new ClosestTileFinder(BoardView, BenchView1, BenchView2);
       var unitViewFactory = new UnitViewFactory(units, UnitView);
       
+      var board = new Board();
+      var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
+      var aiContext = new AiContext(players, board, aiHeap);
+      var battleSimulation = new BattleSimulation(aiContext);
+
+      var battleSimulationController = new BattleSimulationController(battleSimulation,
+        BattleSimulationUI, movementController, aiContext);
+      
+      var unitTooltipController = new UnitTooltipController(battleSimulationController,
+        UnitTooltipUI);
+      RaycastController.Init(unitTooltipController);
+      
       var unitViewFactoryDecorator = new UnitViewFactoryDecorator(closestTileFinder, 
-        BattleSetupUI, players, unitViewFactory);
+        BattleSetupUI, players, unitTooltipController, unitViewFactory);
       
       var tileViewFactory = new TileViewFactory(TileView);
       BattleSetupUI.Init(units.Keys.ToList());
@@ -56,14 +75,6 @@ namespace Infrastructure {
       var battleSetupController = new BattleSetupController(players, benches, BattleSetupUI);
       var battleSaveController = new BattleSaveController(players, benches, BoardView, 
         BattleSaveUI, saveDataLoader, saves);
-
-      var board = new Board();
-      var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
-      var aiContext = new AiContext(players, board, aiHeap);
-      var battleSimulation = new BattleSimulation(aiContext);
-
-      var battleSimulationController = new BattleSimulationController(battleSimulation,
-        BattleSimulationUI, movementController, aiContext);
     }
   }
 }

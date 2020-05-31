@@ -20,7 +20,7 @@ namespace Controller {
     
     void OnMouseDown() {
       if (unitTooltipController.IsBattleStarted) {
-        unitTooltipController.Show();
+        unitTooltipController.Show(unit.Info);
         return;
       }
       if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;

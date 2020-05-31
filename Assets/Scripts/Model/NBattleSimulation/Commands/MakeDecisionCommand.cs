@@ -1,4 +1,4 @@
-using Model.NDecisionTree;
+using Model.NAI.NDecisionTree;
 using Model.NUnit;
 
 namespace Model.NBattleSimulation.Commands {

@@ -1,5 +1,5 @@
+using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
-using Model.NDecisionTree;
 using Model.NUnit;
 
 namespace Model.NAI.Actions {

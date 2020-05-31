@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2526077738319670124}
   - component: {fileID: 7106694951565096669}
   - component: {fileID: 8858225740447158605}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: UnitView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,12 +107,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2938eef4c47488f99eccc804fbf4e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Tile: {fileID: 0}
   Info:
     Name: 
     Health: 0
     Armor: 0
+    Damage: 0
     AttackSpeed: 0
+    AttackRange: 0
     MoveSpeed: 0
+    AttackAnimationSpeed: 0
+  Height: 0.25
+  Player: 0
+  Level: 1
 --- !u!114 &8858225740447158605
 MonoBehaviour:
   m_ObjectHideFlags: 0

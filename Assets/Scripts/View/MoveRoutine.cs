@@ -3,7 +3,7 @@ using UnityEngine;
 using View.Exts;
 
 namespace View {
-  public class MoveRoutine : ITick {
+  public class MoveRoutine : ISimulationTick {
     public MoveRoutine(UnitView fromUnit, TileView fromTile, TileView toTile, 
         float startTime, float duration) {
       this.fromUnit = fromUnit;
@@ -15,7 +15,7 @@ namespace View {
       toPosition = toTile.transform.position.WithY(height);
     }
     
-    public void Update(float time) {
+    public void SimulationTick(float time) {
       var timeClamped = Mathf.Clamp(time, startTime, endTime);
       var durationPassed = timeClamped - startTime;
       var t = durationPassed / duration;

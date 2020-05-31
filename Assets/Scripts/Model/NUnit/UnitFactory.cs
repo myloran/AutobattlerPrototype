@@ -11,7 +11,7 @@ namespace Model.NUnit {
     public Unit Create(string name, Coord coord, int playerId) {
       var info = infos[name];
       var movement = new CMovement(coord, info.MoveSpeed);
-      var attack = new CAttack(movement, info.Damage, info.AttackSpeed, info.AttackRange * info.AttackRange);
+      var attack = new CAttack(movement, info.Damage, info.AttackSpeed, info.AttackRange * info.AttackRange, info.AttackAnimationSpeed);
       var health = new CHealth(info.Health, info.Armor);
       
       var unit = new Unit {

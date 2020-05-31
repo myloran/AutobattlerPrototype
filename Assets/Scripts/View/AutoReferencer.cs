@@ -15,7 +15,7 @@ public class AutoReferencer<T> : MonoBehaviour where T : Component {
     SetReferences();
   }
 
-  public void SetReferences() {
+  void SetReferences() {
     foreach (var field in typeof(T).GetFields()) { //.Where(_ => _.GetValue(this) == null)
       var names = transform.name.Split(Separator);
       foreach (var name in names)

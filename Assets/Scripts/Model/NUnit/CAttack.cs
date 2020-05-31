@@ -5,27 +5,34 @@ using Shared;
 namespace Model.NUnit {
   public class CAttack {
     public float Damage;
-    public float Speed;
+    public float AnimationSpeed;
+    public float AttackSpeed;
     public float SqrRange;
     
-    public CAttack(CMovement movement, float damage, float speed, float sqrRange) {
+    public CAttack(CMovement movement, float damage, float speed, float sqrRange, float animationSpeed) {
       this.movement = movement;
       Damage = damage;
-      Speed = speed;
+      AttackSpeed = speed;
       SqrRange = sqrRange;
+      AnimationSpeed = animationSpeed;
     }
 
-    public bool CanAttack => true;
-    public TimePoint AttackTime => Math.Abs(Speed) > float.Epsilon 
-      ? new TimePoint(1 / Speed) : 999;
+    public bool IsAnimationPlayed(float currentTime) => lastAttackTime + AnimationSpeed >= currentTime;
+    
+    public TimePoint AttackTime => Math.Abs(AttackSpeed) > float.Epsilon 
+      ? new TimePoint(1 / AttackSpeed) : 999;
 
-    public bool IsWithinAttackRange(CMovement target) => 
-      CoordExt.SqrDistance(movement.Coord, target.Coord) < SqrRange;
+    public bool IsWithinAttackRange(CMovement target) {
+      return CoordExt.SqrDistance(movement.Coord, target.Coord) <= SqrRange;
+    }
+
+    public void StartAttack(float startTime) => lastAttackTime = startTime;
 
     public void Attack(CHealth health) {
-      health.CalculateDamage(Damage);
+      health.TakeDamage(Damage);
     }
 
     readonly CMovement movement;
+    float lastAttackTime;
   }
 }

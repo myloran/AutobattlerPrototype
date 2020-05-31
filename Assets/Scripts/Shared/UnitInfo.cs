@@ -12,5 +12,6 @@ namespace Shared {
     [Key(4)] public float AttackSpeed;
     [Key(5)] public float AttackRange;
     [Key(6)] public float MoveSpeed;
+    [Key(7)] public float AttackAnimationSpeed;
   }
 }

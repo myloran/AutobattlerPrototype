@@ -7,7 +7,7 @@ using View;
 
 namespace Controller.BattleSimulation {
   public class MovementController : IEventHandler<StartMoveEvent>, 
-      IEventHandler<EndMoveEvent>, ITick {
+      IEventHandler<EndMoveEvent>, ISimulationTick {
     public MovementController(BoardView board) {
       this.board = board;
     }
@@ -21,9 +21,9 @@ namespace Controller.BattleSimulation {
       board.Move(e.From, e.To);
     }
 
-    public void Update(float time) {
+    public void SimulationTick(float time) {
       foreach (var routine in routines.Values) {
-        routine.Update(time);
+        routine.SimulationTick(time);
       }
     }
 
