@@ -14,8 +14,8 @@ TagManager:
   - 
   - 
   - Terrain
-  - 
-  - 
+  - GlobalCollider
+  - Unit
   - 
   - 
   - 

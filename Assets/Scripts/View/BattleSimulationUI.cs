@@ -4,5 +4,7 @@ namespace View {
   public class BattleSimulationUI : AutoReferencer<BattleSimulationUI> {
     public Button BPrepareBattle,
       BExecuteNextDecision;
+
+    public Toggle OStartBattle;
   }
 }

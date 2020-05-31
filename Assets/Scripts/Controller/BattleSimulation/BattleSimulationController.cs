@@ -1,18 +1,27 @@
 using Model.NBattleSimulation;
 using Shared.Shared.Client;
+using UniRx;
 using View;
 
 namespace Controller.BattleSimulation {
   public class BattleSimulationController {
+    public bool IsBattleStarted;
+
     public BattleSimulationController(Model.NBattleSimulation.BattleSimulation simulation, BattleSimulationUI ui,
-        ITick viewSimulation, AiContext context) {
+        ISimulationTick viewSimulation, AiContext context) {
       this.simulation = simulation;
       this.viewSimulation = viewSimulation;
       this.context = context;
       ui.BPrepareBattle.Sub(StartBattle);
+      ui.OStartBattle.onValueChanged.AsObservable().Subscribe(StartB).AddTo(ui.OStartBattle);
       ui.BExecuteNextDecision.Sub(ExecuteNextDecision);
     }
-    
+
+    void StartB(bool isOn) {
+      simulation.PrepareBattle();
+      IsBattleStarted = isOn;
+    }
+
     void StartBattle() => simulation.PrepareBattle();
 
     void ExecuteNextDecision() {
@@ -21,7 +30,7 @@ namespace Controller.BattleSimulation {
     }
     
     readonly Model.NBattleSimulation.BattleSimulation simulation;
-    readonly ITick viewSimulation;
+    readonly ISimulationTick viewSimulation;
     readonly AiContext context;
   }
 }

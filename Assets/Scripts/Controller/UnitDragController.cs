@@ -1,4 +1,4 @@
-using Model;
+using Controller.BattleSimulation;
 using Model.NBattleSimulation;
 using Shared;
 using UnityEngine;
@@ -7,26 +7,32 @@ using View.UI;
 
 namespace Controller {
   public class UnitDragController : MonoBehaviour {
-    public void Init(ClosestTileFinder closestTileFinder, BattleSetupUI battleSetupUI, 
-        Player[] players, UnitView unit) {
+    public void Init(ClosestTileFinder closestTileFinder, BattleSetupUI battleSetupUI,
+      Player[] players, UnitTooltipController unitTooltipController, UnitView unit) {
       this.closestTileFinder = closestTileFinder;
       this.battleSetupUI = battleSetupUI;
       this.players = players;
+      this.unitTooltipController = unitTooltipController;
       this.unit = unit;
     }
 
     void Awake() => cam = Camera.main;
     
     void OnMouseDown() {
+      if (unitTooltipController.IsBattleStarted) {
+        unitTooltipController.Show();
+        return;
+      }
       if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;
       
-      dragging = true;
+      isDragging = true;
     }
 
     void OnMouseUp() {
+      if (unitTooltipController.IsBattleStarted) return;
       if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;
       
-      dragging = false;
+      isDragging = false;
       lastTile?.Unhighlight();
         
       var player = players[battleSetupUI.GetSelectedPlayerId];
@@ -44,7 +50,8 @@ namespace Controller {
     }
 
     void Update() {
-      if (!dragging) return;
+      if (unitTooltipController.IsBattleStarted) return;
+      if (!isDragging) return;
 
       var plane = new Plane(Vector3.up, new Vector3(0, 0, 0));
       var ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -72,11 +79,12 @@ namespace Controller {
     bool IsNewTile(TileView tile) => tile.X != lastTile?.X || tile.Y != lastTile?.Y;
 
     Camera cam;
-    bool dragging;
+    bool isDragging;
     UnitView unit;
     TileView lastTile;
     ClosestTileFinder closestTileFinder;
     BattleSetupUI battleSetupUI;
     Player[] players;
+    UnitTooltipController unitTooltipController;
   }
 }
