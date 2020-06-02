@@ -8,24 +8,30 @@ namespace Model.NUnit {
     public DecisionFactory(EventBus bus) => this.bus = bus;
 
     public IDecisionTreeNode Create(Unit unit) {
-      var startAttackAction = new StartAttackAction(unit.Attack, unit.Ai);
-      var endAttackAction = new EndAttackAction(unit, bus);
-      var moveAction = new MoveAction(unit.Movement, unit.Target, unit.Ai, bus);
+      var startAttackAction = WithLogging(new StartAttackAction(unit, bus));
+      var endAttackAction = WithLogging(new EndAttackAction(unit, bus));
+      var moveAction = WithLogging(new MoveAction(unit, bus));
+      var nullAction = WithLogging(new NullAction(unit, bus));
       
-      var isAttackAnimationPlayed = new IsAttackAnimationPlayed(
-        startAttackAction, endAttackAction, unit.Attack);
+      var isAttackAnimationPlayed = WithLogging(new IsAttackAnimationPlayed(
+        endAttackAction, startAttackAction, unit.Attack));
       
-      var isWithinAttackRangeDecision = new IsWithinAttackRange(
-        isAttackAnimationPlayed, moveAction, unit.Attack, unit.Target);
+      var isWithinAttackRangeDecision = WithLogging(new IsWithinAttackRange(
+        isAttackAnimationPlayed, moveAction, unit.Attack, unit.Target));
       
-      var findNearestTargetAction = new FindNearestTargetAction(
-        isWithinAttackRangeDecision, unit.Target, unit.Stats);
+      var findNearestTargetAction = WithLogging(new FindNearestTargetAction(
+        unit, bus, isWithinAttackRangeDecision));
       
-      var decision = new HasTarget(
-        isWithinAttackRangeDecision, findNearestTargetAction, unit.Target);
+      var hasTarget = WithLogging(new HasTarget(
+        isWithinAttackRangeDecision, findNearestTargetAction, unit.Target));
+
+      var isAlive = WithLogging(new IsAlive(
+        hasTarget, nullAction, unit.Health));
       
-      return decision;
+      return hasTarget;
     }
+    
+    IDecisionTreeNode WithLogging(IDecisionTreeNode decision) => new LoggingDecorator(decision);
     
     readonly EventBus bus;
   }

@@ -5,7 +5,7 @@ using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
 using View;
 
-namespace Controller.BattleSimulation {
+namespace Controller.NBattleSimulation {
   public class MovementController : IEventHandler<StartMoveEvent>, 
       IEventHandler<EndMoveEvent>, ISimulationTick {
     public MovementController(BoardView board) {

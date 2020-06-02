@@ -12,7 +12,7 @@ namespace View {
 
     public UnitView Create(string name, Vector3 position, TileView tile, EPlayer player) {
       var unit = Object.Instantiate(unitPrefab, position.WithY(unitPrefab.Height), Quaternion.identity);
-      unit.Info = unitInfos[name];
+      unit.Info = new UnitInfo(unitInfos[name]);
       unit.Tile = tile;
       unit.Player = player;
       tile.Unit = unit;

@@ -20,7 +20,7 @@ namespace Model.NUnit {
         Attack = attack,
         Movement = movement,
         Target = new CTarget(movement),
-        Ai = new CAi(attack, health),
+        Ai = new CAi(),
         Stats = new CStats(1, (EPlayer)playerId)
       };
 

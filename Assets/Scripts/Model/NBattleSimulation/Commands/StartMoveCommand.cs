@@ -16,8 +16,8 @@ namespace Model.NBattleSimulation.Commands {
     }
 
     public void Execute() {
-      var units = board.Units;
-      units[newCoord] = units[movement.Coord];
+      var unit = board.GetUnitAt(movement.Coord);
+      board.AddUnit(newCoord, unit);
       movement.TakenCoord = newCoord;
 // #if Client
       bus.Raise(new StartMoveEvent(movement.Coord, newCoord, startingTime, duration));

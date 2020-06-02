@@ -9,5 +9,7 @@ namespace Shared.Shared.Client.Events {
       From = @from;
       To = to;
     }
+    
+    public override string ToString() => $"{nameof(From)}: {From}, {nameof(To)}: {To}";
   }
 }

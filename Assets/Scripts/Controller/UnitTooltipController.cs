@@ -1,4 +1,4 @@
-using Controller.BattleSimulation;
+using Controller.NBattleSimulation;
 using Shared;
 using View;
 using View.Exts;

@@ -1,4 +1,3 @@
-using Model.NBattleSimulation;
 using PlasticFloor.EventBus;
 
 namespace Shared.Shared.Client.Events {
@@ -14,5 +13,7 @@ namespace Shared.Shared.Client.Events {
       StartingTime = startingTime;
       Duration = duration;
     }
+    
+    public override string ToString() => $"{nameof(From)}: {From}, {nameof(To)}: {To}, {nameof(StartingTime)}: {StartingTime}, {nameof(Duration)}: {Duration}";
   }
 }

@@ -9,5 +9,7 @@ namespace Shared.Shared.Client.Events {
       Health = health;
       Coord = coord;
     }
+
+    public override string ToString() => $"{nameof(Health)}: {Health}, {nameof(Coord)}: {Coord}";
   }
 }

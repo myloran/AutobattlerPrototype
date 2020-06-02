@@ -13,5 +13,18 @@ namespace Shared {
     [Key(5)] public float AttackRange;
     [Key(6)] public float MoveSpeed;
     [Key(7)] public float AttackAnimationSpeed;
+
+    public UnitInfo() { }
+
+    public UnitInfo(UnitInfo info) {
+      Name = info.Name;
+      Health = info.Health;
+      Armor = info.Armor;
+      Damage = info.Damage;
+      AttackSpeed = info.AttackSpeed;
+      AttackRange = info.AttackRange;
+      MoveSpeed = info.MoveSpeed;
+      AttackAnimationSpeed = info.AttackAnimationSpeed;
+    }
   }
 }

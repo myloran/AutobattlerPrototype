@@ -18,7 +18,7 @@ namespace Model.NUnit {
     public void TakeDamage(float damage) {
       var damageDealt = damage - damage * Armor / (Armor + 10);
       Health -= damageDealt;
-      MathExt.Clamp(Health, 0f, StartingHealth);
+      Health = MathExt.Clamp(Health, 0f, StartingHealth);
     }
   }
 }

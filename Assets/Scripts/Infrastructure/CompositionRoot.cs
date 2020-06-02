@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Controller;
-using Controller.BattleSimulation;
+using Controller.NBattleSimulation;
 using Controller.Save;
 using Model.NBattleSimulation;
 using Model.NUnit;
@@ -37,12 +37,6 @@ namespace Infrastructure {
       DebugUIController.Init(BattleSetupUI, BattleSaveUI, BattleSimulationUI);
       
       var eventBus = new EventBus();
-      var movementController = new MovementController(BoardView);
-      var attackController = new AttackController(BoardView);
-      eventBus.Register<StartMoveEvent>(movementController);
-      eventBus.Register<EndMoveEvent>(movementController);
-      eventBus.Register<ApplyDamageEvent>(attackController);
-               
       var decisionFactory = new DecisionFactory(eventBus);
       var unitFactory = new UnitFactory(units, decisionFactory);
       var players = new[] {new Player(unitFactory), new Player(unitFactory)};
@@ -51,11 +45,18 @@ namespace Infrastructure {
       
       var board = new Board();
       var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
-      var aiContext = new AiContext(players, board, aiHeap);
+      var aiContext = new AiContext(board, aiHeap);
       var battleSimulation = new BattleSimulation(aiContext);
+      
+      var movementController = new MovementController(BoardView);
+      var attackController = new AttackController(BoardView, UnitTooltipUI);
+      eventBus.Register<StartMoveEvent>(movementController);
+      eventBus.Register<EndMoveEvent>(movementController);
+      eventBus.Register<ApplyDamageEvent>(attackController);
+      eventBus.Register<DeathEvent>(attackController);
 
       var battleSimulationController = new BattleSimulationController(battleSimulation,
-        BattleSimulationUI, movementController, aiContext);
+        BattleSimulationUI, movementController, aiContext, players);
       
       var unitTooltipController = new UnitTooltipController(battleSimulationController,
         UnitTooltipUI);

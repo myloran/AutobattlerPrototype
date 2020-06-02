@@ -34,8 +34,10 @@ namespace Shared {
 
     public static Coord operator +(Coord a, Coord b) => new Coord(a.X + b.X, a.Y + b.Y);
     public static Coord operator -(Coord a, Coord b) => new Coord(a.X - b.X, a.Y - b.Y);
+    public static bool operator ==(Coord a, Coord b) => a.X == b.X && a.Y == b.Y;
+    public static bool operator !=(Coord a, Coord b) => a.X != b.X || a.Y != b.Y;
 
-    // public override string ToString() => $"{nameof(X)}:{X}, {nameof(Y)}:{Y}";
+    public override string ToString() => $"{nameof(X)}:{X}, {nameof(Y)}:{Y}";
   }
 
   public static class CoordExt {

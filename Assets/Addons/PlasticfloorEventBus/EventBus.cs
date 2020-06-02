@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace PlasticFloor.EventBus {
   /// <summary>
@@ -49,7 +50,10 @@ namespace PlasticFloor.EventBus {
 
     void HandleWithRegisteredDelegates<TEvent>(TEvent @event, bool safe = false) where TEvent : IEvent {
       if (_handlers.ContainsKey(typeof(TEvent)))
-        _handlers[typeof(TEvent)].ForEach(h => ExecuteHandler((EventHandlerDelegate<TEvent>) h, @event, safe));
+        _handlers[typeof(TEvent)].ForEach(h => {
+          ExecuteHandler((EventHandlerDelegate<TEvent>) h, @event, safe);
+          Debug.Log(typeof(TEvent).Name + " " + @event);
+        });
     }
 
     void HandleWithHandlerProviders<TEvent>(TEvent e, bool safe = false) where TEvent : IEvent {

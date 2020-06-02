@@ -14,7 +14,7 @@ namespace Model.NBattleSimulation.Commands {
 
     public void Execute() {
       var fromCoord = movement.Coord;
-      board.Units.Remove(movement.Coord);
+      board.RemoveUnitAt(movement.Coord);
       movement.Coord = newCoord;
       movement.TakenCoord = Coord.Invalid;
       bus.Raise(new EndMoveEvent(fromCoord, newCoord));

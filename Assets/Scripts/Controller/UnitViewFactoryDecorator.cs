@@ -1,4 +1,3 @@
-using Controller.BattleSimulation;
 using Model;
 using Model.NBattleSimulation;
 using Shared;

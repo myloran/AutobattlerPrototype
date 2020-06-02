@@ -1,6 +1,6 @@
 using System;
 
-namespace Model.NBattleSimulation {
+namespace Shared {
   public struct TimePoint : IComparable<TimePoint> {
     public readonly float Point;
     
@@ -10,5 +10,7 @@ namespace Model.NBattleSimulation {
     public static implicit operator float(TimePoint value) => value.Point;
 
     public int CompareTo(TimePoint other) => Point.CompareTo(other.Point);
+
+    public override string ToString() => $"{Point}";
   }
 }

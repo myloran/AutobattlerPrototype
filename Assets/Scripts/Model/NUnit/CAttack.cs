@@ -22,15 +22,11 @@ namespace Model.NUnit {
     public TimePoint AttackTime => Math.Abs(AttackSpeed) > float.Epsilon 
       ? new TimePoint(1 / AttackSpeed) : 999;
 
-    public bool IsWithinAttackRange(CMovement target) {
-      return CoordExt.SqrDistance(movement.Coord, target.Coord) <= SqrRange;
-    }
+    public bool IsWithinAttackRange(CMovement target) => 
+      CoordExt.SqrDistance(movement.Coord, target.Coord) <= SqrRange;
 
     public void StartAttack(float startTime) => lastAttackTime = startTime;
-
-    public void Attack(CHealth health) {
-      health.TakeDamage(Damage);
-    }
+    public void EndAttack() => lastAttackTime = 0;
 
     readonly CMovement movement;
     float lastAttackTime;

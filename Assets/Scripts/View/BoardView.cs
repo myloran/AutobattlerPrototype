@@ -8,7 +8,7 @@ using static UnityEngine.Mathf;
 namespace View {
   public class BoardView : MonoBehaviour, IUnitHolder {
     [SerializeField] Transform StartPoint;
-
+    public readonly Dictionary<Coord, UnitView> Units = new Dictionary<Coord, UnitView>(10);
     public EUnitHolder Type { get; } = EUnitHolder.Board;
 
     void Start() {
@@ -43,40 +43,38 @@ namespace View {
 
     public void Place(UnitView unit, TileView tile) {
       unit.transform.position = TilePosition(new Coord(tile.X, tile.Y)).WithY(unit.Height);
-      units[new Coord(tile.X, tile.Y)] = unit;
+      Units[new Coord(tile.X, tile.Y)] = unit;
     }
     
     public void Unplace(UnitView unit, TileView tile) {
-      units.Remove(new Coord(tile.X, tile.Y));
+      Units.Remove(new Coord(tile.X, tile.Y));
     }
 
     public void Clear() {
-      foreach (var unit in units.Values) {
+      foreach (var unit in Units.Values) {
         Destroy(unit.gameObject);
       }
-      units.Clear();
+      Units.Clear();
     }
 
     public void AddUnit(string name, Coord coord, EPlayer player) {
       var position = TilePosition(coord);
       var tile = tiles[coord];
-      units[coord] = unitFactory.Create(name, position, tile, player);
+      Units[coord] = unitFactory.Create(name, position, tile, player);
     }
 
     public void Move(Coord from, Coord to) {
-      var fromUnit = units[from];
+      var fromUnit = Units[from];
       fromUnit.transform.position = TilePosition(to).WithY(fromUnit.Height);
-      units[to] = fromUnit;
-      units.Remove(from);
+      Units[to] = fromUnit;
+      Units.Remove(from);
     }
 
-    public UnitView GetUnit(Coord coord) => units[coord];
 
     public MoveRoutine MoveRoutine(Coord from, Coord to, float startingTime, float time) => 
-      new MoveRoutine(units[from], tiles[from], tiles[to], startingTime, time);
+      new MoveRoutine(Units[from], tiles[from], tiles[to], startingTime, time);
 
     readonly Dictionary<Coord, TileView> tiles = new Dictionary<Coord, TileView>(8 * 6);
-    readonly Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>(10);
     TileViewFactory tileFactory;
     IUnitViewFactory unitFactory;
   }
