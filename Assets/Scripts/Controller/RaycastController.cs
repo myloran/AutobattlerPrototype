@@ -16,6 +16,7 @@ namespace Controller {
       if (Input.GetMouseButtonDown(0)) {
         var ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out _, 100, unitLayer)) return;
+        if (UIExt.IsPointerOverUIElement()) return;
         
         if (Physics.Raycast(ray, out _, 100, globalLayer)) {
           controller.Hide();
