@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FibonacciHeap;
+using MinMaxHeap;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using Shared;
@@ -11,6 +12,8 @@ namespace Model.NBattleSimulation {
     public TimePoint CurrentTime;
 
     public Board Board;
+    // public readonly MinHeap<TimePoint, ICommand> AiHeap;
+    // public readonly FibonacciHeap<ICommand, TimePoint> AiHeap;
     public readonly FibonacciHeap<ICommand, TimePoint> AiHeap;
     
     public AiContext(Board board, FibonacciHeap<ICommand, TimePoint> aiHeap) {
@@ -18,8 +21,22 @@ namespace Model.NBattleSimulation {
       AiHeap = aiHeap;
     }
 
-    public void InsertCommand(ICommand command, float time = 0) => 
-      AiHeap[CurrentTime + time] = command;
+    public void InsertCommand(ICommand command, float time = 0) {
+      var node = AiHeap.Min();
+      var nextTime = CurrentTime + time;
+      
+      if (node != null) {
+        var minTime = node.Key;
+        if (nextTime.IsEqualTo(minTime)) {
+          AiHeap.RemoveMin();
+          AiHeap[time] = new CompositeCommand(node.Data, command);
+          return;
+        }
+      }
+      
+      AiHeap[nextTime] = command;
+      // AiHeap.
+    }
 
     public IEnumerable<Unit> EnemyUnits(EPlayer player) =>
       Board.GetPlayerUnits(player.Opposite());
@@ -36,12 +53,13 @@ namespace Model.NBattleSimulation {
     public void Reset(Player player1, Player player2) {
       Board.Reset(player1, player2);
       IsPlayerDead = false;
+      CurrentTime = 0;
       CheckBattleIsOver();
       
       foreach (var unit in Board.GetUnits()) {
         unit.Reset();
         var decisionCommand = new MakeDecisionCommand(unit.Ai, this, 0);
-        AiHeap[0] = decisionCommand;
+        InsertCommand(decisionCommand);
       }
     }
   }

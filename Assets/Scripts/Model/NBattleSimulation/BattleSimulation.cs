@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using MinMaxHeap;
+
 namespace Model.NBattleSimulation {
   public class BattleSimulation {
     public bool IsBattleOver { get; private set; }
@@ -9,6 +12,18 @@ namespace Model.NBattleSimulation {
     public void PrepareBattle(Player player1, Player player2) {
       context.Reset(player1, player2);
       IsBattleOver = context.IsPlayerDead;
+      
+      var heap = new MinHeap<string, int>();
+      heap.Add("item1", 3);
+      // heap.Add("item2", 4);
+      heap.Add("item3", 5);
+      heap.ChangeValue("item2", 1);
+      var x = heap.ExtractMin().Value;
+      log.Info($"x: {x}");
+      x = heap.ExtractMin().Value;
+      log.Info($"x: {x}");
+      x = heap.ExtractMin().Value;
+      log.Info($"x: {x}");
     }
 
     public void ExecuteNextDecision() {
@@ -28,6 +43,7 @@ namespace Model.NBattleSimulation {
 
       context.CurrentTime = time;
       command.Execute();
+      log.Info($"{context.CurrentTime}: {command}");
     }
 
     readonly AiContext context;

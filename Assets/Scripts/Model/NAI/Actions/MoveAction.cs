@@ -1,3 +1,4 @@
+using System;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
@@ -17,6 +18,7 @@ namespace Model.NAI.Actions {
       var isDiagonalMove = vector.X != 0 && vector.Y != 0;
       var newCoord = movement.Coord + vector.Normalized;
       
+      //check target in that tile
       if (context.IsTileEmpty(newCoord)) {
         var time = movement.TimeToMove(isDiagonalMove);
         var startMoveCommand = new StartMoveCommand(context.Board, movement, newCoord
@@ -24,7 +26,7 @@ namespace Model.NAI.Actions {
           , context.CurrentTime, time, Bus
 // #endif
         );
-        context.AiHeap[context.CurrentTime] = startMoveCommand;
+        context.InsertCommand(startMoveCommand);
         var moveCommand = new EndMoveCommand(context.Board, movement, newCoord
           , Bus
         ); 
@@ -33,7 +35,8 @@ namespace Model.NAI.Actions {
         context.InsertCommand(decisionCommand, time);
       }
       else {
-        var time = context.CurrentTime - Unit.Target.Unit.Ai.NextDecisionTime;
+        var time = /*context.CurrentTime - */Unit.Target.Unit.Ai.NextDecisionTime;
+        // var timeClamped = Math.Max(time, 0);
         var decisionCommand = new MakeDecisionCommand(ai, context, time);
         context.InsertCommand(decisionCommand, time);
       }

@@ -25,10 +25,10 @@ namespace Model.NUnit {
       var hasTarget = WithLogging(new HasTarget(
         isWithinAttackRangeDecision, findNearestTargetAction, unit.Target));
 
-      // var isAlive = WithLogging(new IsAlive(
-      //   hasTarget, nullAction, unit.Health));
+      var isAlive = WithLogging(new IsAlive(
+        hasTarget, nullAction, unit.Health));
       
-      return hasTarget;
+      return isAlive;
     }
     
     IDecisionTreeNode WithLogging(IDecisionTreeNode decision) => new LoggingDecorator(decision);

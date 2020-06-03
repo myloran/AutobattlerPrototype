@@ -8,7 +8,7 @@ namespace Model.NBattleSimulation.Commands {
     public MakeDecisionCommand(CAi ai, AiContext context, float time) {
       this.ai = ai;
       this.context = context;
-      ai.NextDecisionTime = context.CurrentTime + time;
+      ai.NextDecisionTime = time;
     }
 
     public void Execute() => Decision = ai.MakeDecision(context);

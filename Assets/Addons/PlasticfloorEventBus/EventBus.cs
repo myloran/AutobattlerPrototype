@@ -52,7 +52,7 @@ namespace PlasticFloor.EventBus {
       if (_handlers.ContainsKey(typeof(TEvent)))
         _handlers[typeof(TEvent)].ForEach(h => {
           ExecuteHandler((EventHandlerDelegate<TEvent>) h, @event, safe);
-          Debug.Log(typeof(TEvent).Name + " " + @event);
+          // Debug.Log(typeof(TEvent).Name + " " + @event);
         });
     }
 
