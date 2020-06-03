@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Shared;
 using UnityEngine;
@@ -6,28 +5,28 @@ using View.Exts;
 using static UnityEngine.Mathf;
 
 namespace View {
-  public class BoardView : MonoBehaviour, IUnitHolder {
-    [SerializeField] Transform StartPoint;
+  public class BoardView : IUnitHolder {
+    Transform startPoint;
     public readonly Dictionary<Coord, UnitView> Units = new Dictionary<Coord, UnitView>(10);
     public EUnitHolder Type { get; } = EUnitHolder.Board;
+    
+    public BoardView() { }
 
-    void Start() {
+    public void Init(Transform startPoint, TileViewFactory tileFactory, IUnitViewFactory unitFactory) {
+      this.startPoint = startPoint;
+      this.unitFactory = unitFactory;
+      
       for (int x = 0; x < 8; x++) {
         for (int y = 0; y < 6; y++) {
           var coord = new Coord(x, y);
-          tiles[coord] = tileFactory.Create(StartPoint.position + new Vector3(x, 0, y), 
+          tiles[coord] = tileFactory.Create(startPoint.position + new Vector3(x, 0, y), 
             x, y, this);
         }
       }
-    }  
-    
-    public void Init(TileViewFactory tileFactory, IUnitViewFactory unitFactory) {
-      this.tileFactory = tileFactory;
-      this.unitFactory = unitFactory;
     }
     
     public TileView FindClosestTile(Vector3 position, EPlayer selectedPlayer) {
-      var indexPosition = position - StartPoint.position;
+      var indexPosition = position - startPoint.position;
       var indexX = RoundToInt(indexPosition.x);
       var indexY = RoundToInt(indexPosition.z);
       var x = Clamp(indexX, 0, 7);
@@ -39,7 +38,7 @@ namespace View {
       return tiles[coord];
     }
     
-    Vector3 TilePosition(Coord coord) => StartPoint.position + new Vector3(coord.X, 0, coord.Y);
+    public Vector3 TilePosition(Coord coord) => startPoint.position + new Vector3(coord.X, 0, coord.Y);
 
     public void Place(UnitView unit, TileView tile) {
       unit.transform.position = TilePosition(new Coord(tile.X, tile.Y)).WithY(unit.Height);
@@ -52,7 +51,7 @@ namespace View {
 
     public void Clear() {
       foreach (var unit in Units.Values) {
-        Destroy(unit.gameObject);
+        Object.Destroy(unit.gameObject);
       }
       Units.Clear();
     }
@@ -75,7 +74,6 @@ namespace View {
       new MoveRoutine(Units[from], tiles[from], tiles[to], startingTime, time);
 
     readonly Dictionary<Coord, TileView> tiles = new Dictionary<Coord, TileView>(8 * 6);
-    TileViewFactory tileFactory;
     IUnitViewFactory unitFactory;
   }
 }

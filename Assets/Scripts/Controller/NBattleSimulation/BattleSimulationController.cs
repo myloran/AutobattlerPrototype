@@ -31,7 +31,7 @@ namespace Controller.NBattleSimulation {
 
     void ExecuteNextDecision() {
       simulation.ExecuteNextDecision();
-      // viewSimulation.SimulationTick(context.CurrentTime);
+      viewSimulation.SimulationTick(context.CurrentTime);
 
       if (simulation.IsBattleOver) {
         ui.BExecuteNextDecision.Disable();

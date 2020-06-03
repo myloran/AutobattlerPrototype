@@ -16,13 +16,14 @@ using Shared.Shared.Client.Events;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
+    public UpdateInput UpdateInput;
     public DebugUIController DebugUIController;
     public RaycastController RaycastController;
     public BattleSetupUI BattleSetupUI;
     public BattleSaveUI BattleSaveUI;
     public BattleSimulationUI BattleSimulationUI;
     public UnitTooltipUI UnitTooltipUI;
-    public BoardView BoardView;
+    public Transform BoardStartPoint;
     public BenchView BenchView1, BenchView2;
     public UnitView UnitView;
     public TileView TileView;
@@ -40,16 +41,24 @@ namespace Infrastructure {
       var decisionFactory = new DecisionFactory(eventBus);
       var unitFactory = new UnitFactory(units, decisionFactory);
       var players = new[] {new Player(unitFactory), new Player(unitFactory)};
-      var closestTileFinder = new ClosestTileFinder(BoardView, BenchView1, BenchView2);
-      var unitViewFactory = new UnitViewFactory(units, UnitView);
       
+      var unitViewFactory = new UnitViewFactory(units, UnitView);
+      var tileViewFactory = new TileViewFactory(TileView);
+      
+      var boardView = new BoardView();
+      var closestTileFinder = new ClosestTileFinder(boardView, BenchView1, BenchView2);
+
       var board = new Board();
       var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
       var aiContext = new AiContext(board, aiHeap);
       var battleSimulation = new BattleSimulation(aiContext);
+            
+      var unitDebugController = new UnitDebugController(board, boardView);
+      var updateController = new UpdateController(unitDebugController);
+      UpdateInput.Init(updateController);
       
-      var movementController = new MovementController(BoardView);
-      var attackController = new AttackController(BoardView, UnitTooltipUI);
+      var movementController = new MovementController(boardView);
+      var attackController = new AttackController(boardView, UnitTooltipUI);
       eventBus.Register<StartMoveEvent>(movementController);
       eventBus.Register<EndMoveEvent>(movementController);
       eventBus.Register<ApplyDamageEvent>(attackController);
@@ -65,16 +74,16 @@ namespace Infrastructure {
       var unitViewFactoryDecorator = new UnitViewFactoryDecorator(closestTileFinder, 
         BattleSetupUI, players, unitTooltipController, unitViewFactory);
       
-      var tileViewFactory = new TileViewFactory(TileView);
+      boardView.Init(BoardStartPoint, tileViewFactory, unitViewFactoryDecorator);
+      
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
-      BoardView.Init(tileViewFactory, unitViewFactoryDecorator);
       BenchView1.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.First);
       BenchView2.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.Second);
       
       var benches = new[] {BenchView1, BenchView2};
       var battleSetupController = new BattleSetupController(players, benches, BattleSetupUI);
-      var battleSaveController = new BattleSaveController(players, benches, BoardView, 
+      var battleSaveController = new BattleSaveController(players, benches, boardView, 
         BattleSaveUI, saveDataLoader, saves);
     }
   }
