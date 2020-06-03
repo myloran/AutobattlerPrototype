@@ -12,8 +12,6 @@ namespace Model.NBattleSimulation {
     public TimePoint CurrentTime;
 
     public Board Board;
-    // public readonly MinHeap<TimePoint, ICommand> AiHeap;
-    // public readonly FibonacciHeap<ICommand, TimePoint> AiHeap;
     public readonly FibonacciHeap<ICommand, TimePoint> AiHeap;
     
     public AiContext(Board board, FibonacciHeap<ICommand, TimePoint> aiHeap) {
@@ -22,20 +20,36 @@ namespace Model.NBattleSimulation {
     }
 
     public void InsertCommand(ICommand command, float time = 0) {
-      var node = AiHeap.Min();
       var nextTime = CurrentTime + time;
       
-      if (node != null) {
-        var minTime = node.Key;
-        if (nextTime.IsEqualTo(minTime)) {
-          AiHeap.RemoveMin();
-          AiHeap[time] = new CompositeCommand(node.Data, command);
-          return;
-        }
+      if (nodes.ContainsKey(nextTime)) {
+        var existingNode = nodes[nextTime];
+        var existingCommand = existingNode.Data;
+        existingNode.Data = new CompositeCommand(existingCommand, command);
+        return;
+      }
+
+      var node = new FibonacciHeapNode<ICommand, TimePoint>(command, nextTime);
+      AiHeap.Insert(node);
+      nodes[nextTime] = node;
+    }
+
+    public (bool, ICommand) RemoveMin() {
+      var node = AiHeap.RemoveMin();
+      if (node == null) {
+        log.Info("The battle is over");
+        return (true, default);
+      }
+      var time = node.Key;
+      
+      if (IsPlayerDead && time > PlayerDeathTime) {
+        return (true, default);
       }
       
-      AiHeap[nextTime] = command;
-      // AiHeap.
+      var command = node.Data;
+      CurrentTime = time;
+      nodes.Remove(CurrentTime);
+      return (false, command);
     }
 
     public IEnumerable<Unit> EnemyUnits(EPlayer player) =>
@@ -62,5 +76,10 @@ namespace Model.NBattleSimulation {
         InsertCommand(decisionCommand);
       }
     }
+        
+    Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>> nodes = 
+      new Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>>();
+
+    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(AiContext));
   }
 }

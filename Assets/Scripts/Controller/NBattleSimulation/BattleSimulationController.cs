@@ -30,7 +30,7 @@ namespace Controller.NBattleSimulation {
     }
 
     void ExecuteNextDecision() {
-      simulation.ExecuteNextDecision();
+      simulation.ExecuteNextCommand();
       viewSimulation.SimulationTick(context.CurrentTime);
 
       if (simulation.IsBattleOver) {
