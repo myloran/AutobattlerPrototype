@@ -4,7 +4,7 @@ using Shared;
 using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
-  public class StartMoveCommand : ICommand {
+  public class StartMoveCommand : BaseCommand {
     public StartMoveCommand(Board board, CMovement movement, Coord newCoord,
         TimePoint startingTime, float duration, IEventBus bus) {
       this.board = board;
@@ -15,7 +15,7 @@ namespace Model.NBattleSimulation.Commands {
       this.bus = bus;
     }
 
-    public void Execute() {
+    public override void Execute() {
       var unit = board.GetUnitAt(movement.Coord);
       board.AddUnit(newCoord, unit);
       movement.TakenCoord = newCoord;

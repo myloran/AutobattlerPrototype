@@ -53,7 +53,7 @@ namespace Infrastructure {
       var aiContext = new AiContext(board, aiHeap);
       var battleSimulation = new BattleSimulation(aiContext);
             
-      var unitDebugController = new UnitDebugController(board, boardView);
+      var unitDebugController = new TargetDebugController(board, boardView);
       var updateController = new UpdateController(unitDebugController);
       UpdateInput.Init(updateController);
       

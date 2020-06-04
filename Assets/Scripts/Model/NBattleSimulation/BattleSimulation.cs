@@ -15,8 +15,9 @@ namespace Model.NBattleSimulation {
       var (isBattleOver, command) = context.RemoveMin();
       IsBattleOver = isBattleOver;
       if (IsBattleOver) return;
-      command.Execute();
+      
       log.Info($"{context.CurrentTime}: {command}");
+      command.Execute();
     }
 
     readonly AiContext context;

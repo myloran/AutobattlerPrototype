@@ -2,7 +2,7 @@ using Model.NAI.NDecisionTree;
 using Model.NUnit;
 
 namespace Model.NBattleSimulation.Commands {
-  public class MakeDecisionCommand : ICommand {
+  public class MakeDecisionCommand : BaseCommand {
     public IDecisionTreeNode Decision { get; private set; }
     
     public MakeDecisionCommand(CAi ai, AiContext context, float time) {
@@ -11,7 +11,7 @@ namespace Model.NBattleSimulation.Commands {
       ai.NextDecisionTime = time;
     }
 
-    public void Execute() => Decision = ai.MakeDecision(context);
+    public override void Execute() => Decision = ai.MakeDecision(context);
 
     readonly CAi ai;
     readonly AiContext context;

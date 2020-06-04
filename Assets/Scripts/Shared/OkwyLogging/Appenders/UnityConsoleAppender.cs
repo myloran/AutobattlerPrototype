@@ -21,8 +21,18 @@ namespace Okwy.Logging.Appenders {
         //    this.formatter = formatter;
         //    this.consoleColors = consoleColors; }
 
-        public void WriteLine(Logger logger, LogLevel logLevel, string message) {
-            if (formatter != null) Debug.Log(formatter.FormatMessage(logger, logLevel, message));
-            else Debug.Log(message); }
+        public void WriteLine(Logger logger, LogLevel logLevel, string message) =>
+            LogMessage(formatter != null 
+                ? formatter.FormatMessage(logger, logLevel, message) 
+                : message, logLevel);
+
+        void LogMessage(string message, LogLevel lvl) {
+            if (lvl == LogLevel.Error)
+                Debug.LogError(message);
+            else if (lvl == LogLevel.Warn)
+                Debug.LogWarning(message);
+            else
+                Debug.Log(message);
+        }
     }
 }

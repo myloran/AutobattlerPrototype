@@ -5,6 +5,8 @@ using View;
 using View.UI;
 
 namespace Controller {
+  //show tooltip, show unit model, dragging, player validation, move/swap unit,
+  //tile highlight, find tile
   public class UnitDragController : MonoBehaviour {
     public void Init(ClosestTileFinder closestTileFinder, BattleSetupUI battleSetupUI,
       Player[] players, UnitTooltipController unitTooltipController, UnitView unit) {
@@ -19,7 +21,10 @@ namespace Controller {
     
     void OnMouseDown() {
       if (unitTooltipController.IsBattleStarted) {
-        unitTooltipController.Show(unit.Info);
+        // if (isDebug)
+        //   unitDebugController.Show();
+        // else
+          unitTooltipController.Show(unit.Info);
         return;
       }
       if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;

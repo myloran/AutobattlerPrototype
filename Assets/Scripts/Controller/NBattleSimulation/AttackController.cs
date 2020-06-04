@@ -14,6 +14,10 @@ namespace Controller.NBattleSimulation {
     }
 
     public void HandleEvent(ApplyDamageEvent e) {
+      if (!board.Units.ContainsKey(e.Coord)) {
+        log.Error("No unit view at coord:");
+        return;
+      }
       board.Units[e.Coord].Info.Health = e.Health;
       // unitTooltipUI.SetHealth(e.Health);
     }
@@ -29,5 +33,6 @@ namespace Controller.NBattleSimulation {
 
     readonly BoardView board;
     readonly UnitTooltipUI unitTooltipUI;
+    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(AttackController));
   }
 }

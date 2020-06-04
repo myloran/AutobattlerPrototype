@@ -3,7 +3,7 @@ using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
-  public class ApplyDamageCommand : ICommand {
+  public class ApplyDamageCommand : BaseCommand {
     public ApplyDamageCommand(CHealth health, float damage, CMovement movement, 
         DeathCommand deathCommand, IEventBus bus) {
       this.health = health;
@@ -13,7 +13,7 @@ namespace Model.NBattleSimulation.Commands {
       this.bus = bus;
     }
 
-    public void Execute() {
+    public override void Execute() {
       health.TakeDamage(damage);
       
       if (!health.IsAlive) 
