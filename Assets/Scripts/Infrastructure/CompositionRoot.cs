@@ -22,7 +22,7 @@ namespace Infrastructure {
     public BattleSimulationUI BattleSimulationUI;
     public UnitTooltipUI UnitTooltipUI;
     public Transform BoardStartPoint;
-    public BenchView BenchView1, BenchView2;
+    public Transform Bench1StartingPoint, Bench2StartingPoint;
     public UnitView UnitView;
     public TileView TileView;
 
@@ -42,7 +42,9 @@ namespace Infrastructure {
       var tileViewFactory = new TileViewFactory(TileView);
       
       var boardView = new BoardView();
-      var closestTileFinder = new ClosestTileFinder(boardView, BenchView1, BenchView2);
+      var benchView1 = new BenchView();
+      var benchView2 = new BenchView();
+      var closestTileFinder = new ClosestTileFinder(boardView, benchView1, benchView2);
                   
       var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
       var battleStateController = new BattleStateController(BattleSimulationUI);
@@ -50,6 +52,10 @@ namespace Infrastructure {
         BattleSetupUI, players, unitTooltipController, unitViewFactory, battleStateController);
       
       boardView.Init(BoardStartPoint, tileViewFactory, unitViewFactoryDecorator);
+      benchView1.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.First, 
+        Bench1StartingPoint);
+      benchView2.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.Second, 
+        Bench2StartingPoint);
       
       var board = new Board();
       var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
@@ -80,10 +86,8 @@ namespace Infrastructure {
 
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
-      BenchView1.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.First);
-      BenchView2.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.Second);
       
-      var benches = new[] {BenchView1, BenchView2};
+      var benches = new[] {benchView1, benchView2};
       var battleSetupController = new BattleSetupController(players, benches, BattleSetupUI);
       var battleSaveController = new BattleSaveController(players, benches, boardView, 
         BattleSaveUI, saveDataLoader, saves);
