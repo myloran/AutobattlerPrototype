@@ -21,12 +21,9 @@ namespace Model.NAI.Actions {
       //check target in that tile
       if (context.IsTileEmpty(newCoord)) {
         var time = movement.TimeToMove(isDiagonalMove);
-        var startMoveCommand = new StartMoveCommand(context.Board, movement, newCoord
-// #if Client
-          , context.CurrentTime, time, Bus
-// #endif
-        );
-        context.InsertCommand(startMoveCommand);
+        new StartMoveCommand(context.Board, movement, newCoord, context.CurrentTime, 
+          time, Bus
+        ).Execute();
         var moveCommand = new EndMoveCommand(context.Board, movement, newCoord
           , Bus
         ); 
