@@ -20,11 +20,6 @@ namespace Model.NBattleSimulation {
       BoardUnits[coord] = unitFactory.Create(name, coord, playerId);
 
     public void RemoveBoardUnit(Coord coord) => BoardUnits.Remove(coord);
-    
-    // public void AddUnit(string name, Coord coord, int playerId) => 
-    //   BenchUnits[coord] = unitFactory.Create(name, playerId);
-    //
-    // public void RemoveUnit(Coord coord) => BenchUnits.Remove(coord);
 
     public void MoveUnit(Coord from, Coord to) {
       var fromDict = from.Y < 0 ? BenchUnits : BoardUnits;
@@ -34,19 +29,30 @@ namespace Model.NBattleSimulation {
         log.Error($"Dict does not have unit at coord: {from}");
         return;
       }
-      var fromUnit = fromDict[from];
+      var unit = fromDict[from];
+      var hasUnitAtDestination = toDict.ContainsKey(to);
       
-      if (toDict.ContainsKey(to)) {
-        fromDict[from] = toDict[to];
-        fromDict[from].Movement.StartingCoord = from;
-        toDict[to] = fromUnit;
-        toDict[to].Movement.StartingCoord = to;
+      if (hasUnitAtDestination) {
+        SwapUnits(@from, to, fromDict, toDict, unit);
       }
       else {
-        fromDict.Remove(from);
-        toDict[to] = fromUnit;
-        toDict[to].Movement.StartingCoord = to;
+        MoveUnit(@from, to, fromDict, toDict, unit);
       }
+    }
+
+    void MoveUnit(Coord @from, Coord to, Dictionary<Coord, Unit> fromDict, 
+        Dictionary<Coord, Unit> toDict, Unit fromUnit) {
+      fromDict.Remove(@from);
+      toDict[to] = fromUnit;
+      toDict[to].Movement.StartingCoord = to;
+    }
+
+    void SwapUnits(Coord from, Coord to, Dictionary<Coord, Unit> fromDict, 
+        Dictionary<Coord, Unit> toDict, Unit fromUnit) {
+      fromDict[@from] = toDict[to];
+      fromDict[@from].Movement.StartingCoord = @from;
+      toDict[to] = fromUnit;
+      toDict[to].Movement.StartingCoord = to;
     }
 
     readonly UnitFactory unitFactory;
