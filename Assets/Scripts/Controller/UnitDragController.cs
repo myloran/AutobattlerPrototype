@@ -1,3 +1,4 @@
+using Controller.NBattleSimulation;
 using Model.NBattleSimulation;
 using Shared;
 using UnityEngine;
@@ -9,18 +10,20 @@ namespace Controller {
   //tile highlight, find tile
   public class UnitDragController : MonoBehaviour {
     public void Init(ClosestTileFinder closestTileFinder, BattleSetupUI battleSetupUI,
-      Player[] players, UnitTooltipController unitTooltipController, UnitView unit) {
+        Player[] players, UnitTooltipController unitTooltipController, UnitView unit,
+        BattleStateController battleStateController) {
       this.closestTileFinder = closestTileFinder;
       this.battleSetupUI = battleSetupUI;
       this.players = players;
       this.unitTooltipController = unitTooltipController;
       this.unit = unit;
+      this.battleStateController = battleStateController;
     }
 
     void Awake() => cam = Camera.main;
     
     void OnMouseDown() {
-      if (unitTooltipController.IsBattleStarted) {
+      if (battleStateController.IsBattleStarted) {
         // if (isDebug)
         //   unitDebugController.Show();
         // else
@@ -33,7 +36,7 @@ namespace Controller {
     }
 
     void OnMouseUp() {
-      if (unitTooltipController.IsBattleStarted) return;
+      if (battleStateController.IsBattleStarted) return;
       if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;
       
       isDragging = false;
@@ -54,7 +57,7 @@ namespace Controller {
     }
 
     void Update() {
-      if (unitTooltipController.IsBattleStarted) return;
+      if (battleStateController.IsBattleStarted) return;
       if (!isDragging) return;
 
       var plane = new Plane(Vector3.up, new Vector3(0, 0, 0));
@@ -90,5 +93,6 @@ namespace Controller {
     BattleSetupUI battleSetupUI;
     Player[] players;
     UnitTooltipController unitTooltipController;
+    BattleStateController battleStateController;
   }
 }

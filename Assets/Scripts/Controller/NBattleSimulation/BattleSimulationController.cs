@@ -6,8 +6,6 @@ using View.Exts;
 
 namespace Controller.NBattleSimulation {
   public class BattleSimulationController {
-    public bool IsBattleStarted;
-
     public BattleSimulationController(BattleSimulation simulation, BattleSimulationUI ui,
         ISimulationTick viewSimulation, AiContext context, Player[] players) {
       this.simulation = simulation;
@@ -15,15 +13,14 @@ namespace Controller.NBattleSimulation {
       this.viewSimulation = viewSimulation;
       this.context = context;
       this.players = players;
-      ui.OStartBattle.onValueChanged.AsObservable().Subscribe(StartBattle).AddTo(ui.OStartBattle);
+        
+      ui.OStartBattle.onValueChanged.AsObservable().Where(b => b)
+        .Subscribe(StartBattle).AddTo(ui.OStartBattle);
       ui.BExecuteNextDecision.Sub(ExecuteNextDecision);
       ui.BExecuteAllDecisions.Sub(ExecuteAllDecisions);
     }
 
     void StartBattle(bool isOn) {
-      IsBattleStarted = isOn;
-      if (!isOn) return;
-      
       simulation.PrepareBattle(players[0], players[1]);
       ui.BExecuteNextDecision.interactable = !simulation.IsBattleOver;
       ui.BExecuteAllDecisions.interactable = !simulation.IsBattleOver;

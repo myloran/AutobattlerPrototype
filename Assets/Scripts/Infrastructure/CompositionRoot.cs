@@ -17,8 +17,6 @@ using Shared.Shared.Client.Events;
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
     public UpdateInput UpdateInput;
-    public DebugUIController DebugUIController;
-    public RaycastController RaycastController;
     public BattleSetupUI BattleSetupUI;
     public BattleSaveUI BattleSaveUI;
     public BattleSimulationUI BattleSimulationUI;
@@ -34,8 +32,6 @@ namespace Infrastructure {
       var units = unitDataLoader.Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
-
-      DebugUIController.Init(BattleSetupUI, BattleSaveUI, BattleSimulationUI);
       
       var eventBus = new EventBus();
       var decisionFactory = new DecisionFactory(eventBus);
@@ -47,14 +43,29 @@ namespace Infrastructure {
       
       var boardView = new BoardView();
       var closestTileFinder = new ClosestTileFinder(boardView, BenchView1, BenchView2);
-
+                  
+      var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
+      var battleStateController = new BattleStateController(BattleSimulationUI);
+      var unitViewFactoryDecorator = new UnitViewFactoryDecorator(closestTileFinder, 
+        BattleSetupUI, players, unitTooltipController, unitViewFactory, battleStateController);
+      
+      boardView.Init(BoardStartPoint, tileViewFactory, unitViewFactoryDecorator);
+      
       var board = new Board();
       var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
       var aiContext = new AiContext(board, aiHeap);
       var battleSimulation = new BattleSimulation(aiContext);
+
+      var mainCamera = Camera.main;
+      var globalLayer = LayerMask.GetMask("Terrain", "GlobalCollider");
+      var unitLayer = LayerMask.GetMask("Unit");
+      var raycastController = new RaycastController(mainCamera, globalLayer, unitLayer, 
+        unitTooltipController);
             
+      var debugUIController = new DebugUIController(BattleSetupUI, BattleSaveUI, BattleSimulationUI);
       var unitDebugController = new TargetDebugController(board, boardView);
-      var updateController = new UpdateController(unitDebugController);
+      var updateController = new UpdateController(unitDebugController, debugUIController, 
+        raycastController);
       UpdateInput.Init(updateController);
       
       var movementController = new MovementController(boardView);
@@ -66,16 +77,7 @@ namespace Infrastructure {
 
       var battleSimulationController = new BattleSimulationController(battleSimulation,
         BattleSimulationUI, movementController, aiContext, players);
-      
-      var unitTooltipController = new UnitTooltipController(battleSimulationController,
-        UnitTooltipUI);
-      RaycastController.Init(unitTooltipController);
-      
-      var unitViewFactoryDecorator = new UnitViewFactoryDecorator(closestTileFinder, 
-        BattleSetupUI, players, unitTooltipController, unitViewFactory);
-      
-      boardView.Init(BoardStartPoint, tileViewFactory, unitViewFactoryDecorator);
-      
+
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
       BenchView1.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.First);

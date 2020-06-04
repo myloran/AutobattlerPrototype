@@ -1,33 +1,31 @@
 using UnityEngine;
 
 namespace Controller {
-  public class RaycastController : MonoBehaviour {
-    void Awake() {
-      cam = Camera.main;
-      globalLayer = LayerMask.GetMask("Terrain", "GlobalCollider");
-      unitLayer = LayerMask.GetMask("Unit");
-    }
-
-    public void Init(UnitTooltipController controller) {
+  public class RaycastController : ITick {
+    public RaycastController(Camera camera, int globalLayer, int unitLayer, 
+        UnitTooltipController controller) {
+      this.camera = camera;
+      this.globalLayer = globalLayer;
+      this.unitLayer = unitLayer;
       this.controller = controller;
     }
 
-    void Update() {
-      if (Input.GetMouseButtonDown(0)) {
-        var ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out _, 100, unitLayer)) return;
-        if (UIExt.IsPointerOverUIElement()) return;
+    public void Tick() {
+      if (!Input.GetMouseButtonDown(0)) return;
+      
+      var ray = camera.ScreenPointToRay(Input.mousePosition);
+      if (Physics.Raycast(ray, out _, 100, unitLayer)) return;
+      if (UIExt.IsPointerOverUIElement()) return;
         
-        if (Physics.Raycast(ray, out _, 100, globalLayer)) {
-          controller.Hide();
-        }
+      if (Physics.Raycast(ray, out _, 100, globalLayer)) {
+        controller.Hide();
       }
     }
-    
-    UnitTooltipController controller;
-    Camera cam;
-    int globalLayer;
-    int unitLayer;
+
+    readonly UnitTooltipController controller;
+    readonly Camera camera;
+    readonly int globalLayer;
+    readonly int unitLayer;
     static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(RaycastController));
   }
 }

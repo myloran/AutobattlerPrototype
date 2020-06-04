@@ -3,15 +3,15 @@ using View;
 using View.UI;
 
 namespace Controller {
-  public class DebugUIController : MonoBehaviour {
-    public void Init(BattleSetupUI battleSetupUI, BattleSaveUI battleSaveUI, 
+  public class DebugUIController : ITick {
+    public DebugUIController(BattleSetupUI battleSetupUI, BattleSaveUI battleSaveUI, 
         BattleSimulationUI battleSimulationUI) {
       this.battleSetupUI = battleSetupUI;
       this.battleSaveUI = battleSaveUI;
       this.battleSimulationUI = battleSimulationUI;
     }
-    
-    public void Update() {
+
+    public void Tick() {
       if (Input.GetKeyDown(KeyCode.F1)) {
         isBattleSetupUIOn = !isBattleSetupUIOn;
         battleSetupUI.gameObject.SetActive(isBattleSetupUIOn);
@@ -26,9 +26,10 @@ namespace Controller {
       }
     }
 
-    BattleSetupUI battleSetupUI;
-    BattleSaveUI battleSaveUI;
-    BattleSimulationUI battleSimulationUI;
+    readonly BattleSetupUI battleSetupUI;
+    readonly BattleSaveUI battleSaveUI;
+    readonly BattleSimulationUI battleSimulationUI;
+    
     bool isBattleSetupUIOn,
       isBattleSaveUIOn,
       isBattleSimulationUIOn;
