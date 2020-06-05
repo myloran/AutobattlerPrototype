@@ -6,10 +6,8 @@ namespace View {
       this.tilePrefab = tilePrefab;
     }
 
-    public TileView Create(Vector3 position, int x, int y, IUnitHolder unitHolder) {
-      return Object.Instantiate(tilePrefab, position, Quaternion.Euler(90, 0, 0))
-        .Init(unitHolder, x, y);
-    }
+    public TileView Create(Vector3 position) =>
+      Object.Instantiate(tilePrefab, position, Quaternion.Euler(90, 0, 0));
 
     readonly TileView tilePrefab;
   }

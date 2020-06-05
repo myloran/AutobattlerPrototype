@@ -3,25 +3,31 @@ using Model.NBattleSimulation;
 using Shared;
 using UnityEngine;
 using View;
+using View.Presenters;
 using View.UI;
 
 namespace Controller {
   //show tooltip, show unit model, dragging, player validation, move/swap unit,
   //tile highlight, find tile
   public class UnitDragController : MonoBehaviour {
-    public void Init(ClosestTileFinder closestTileFinder, BattleSetupUI battleSetupUI,
-        Player[] players, UnitTooltipController unitTooltipController, UnitView unit,
+    public void Init(TilePresenter tilePresenter, BattleSetupUI battleSetupUI,
+        Player[] players, PlayerPresenter[] playerPresenters, UnitTooltipController unitTooltipController, UnitView unit,
         BattleStateController battleStateController) {
-      this.closestTileFinder = closestTileFinder;
+      this.tilePresenter = tilePresenter;
       this.battleSetupUI = battleSetupUI;
       this.players = players;
+      this.playerPresenters = playerPresenters;
       this.unitTooltipController = unitTooltipController;
       this.unit = unit;
       this.battleStateController = battleStateController;
+      
+      startCoord = tilePresenter.FindClosestCoord(transform.position, unit.Player);
     }
 
-    void Awake() => cam = Camera.main;
-    
+    void Awake() { //TODO: remove
+      cam = Camera.main;
+    }
+
     void OnMouseDown() {
       if (battleStateController.IsBattleStarted) {
         // if (isDebug)
@@ -37,23 +43,19 @@ namespace Controller {
 
     void OnMouseUp() {
       if (battleStateController.IsBattleStarted) return;
-      if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;
+      var selectedPlayerId = battleSetupUI.GetSelectedPlayerId;
+      if (unit.Player != (EPlayer)selectedPlayerId) return;
       
       isDragging = false;
-      lastTile?.Unhighlight();
+      tilePresenter.TileAt(lastCoord).Unhighlight();
         
-      var player = players[battleSetupUI.GetSelectedPlayerId];
-      var from = new Coord(unit.Tile.X, unit.Tile.Y);
-      var to = new Coord(lastTile.X, lastTile.Y);
+      var player = players[selectedPlayerId];
+      player.MoveUnit(startCoord, lastCoord);
       
-      player.MoveUnit(from, to);
-      
-      if (lastTile?.Unit != null) {
-        unit.SwapWith(lastTile.Unit);
-      }
-      else {
-        unit.MoveTo(lastTile);
-      }
+      var playerPresenter = playerPresenters[selectedPlayerId];
+      playerPresenter.MoveUnit(startCoord, lastCoord);
+
+      startCoord = lastCoord;
     }
 
     void Update() {
@@ -68,11 +70,13 @@ namespace Controller {
       var mousePosition = ray.GetPoint(enter);
       transform.position = mousePosition + new Vector3(0, 1, 0);
 
-      var tile = closestTileFinder.Find(mousePosition, (EPlayer)battleSetupUI.GetSelectedPlayerId);
+      var coord = tilePresenter.FindClosestCoord(mousePosition, (EPlayer)battleSetupUI.GetSelectedPlayerId);
       
-      if (IsNewTile(tile)) {
-        lastTile?.Unhighlight();
-        tile.Highlight();
+      if (coord != lastCoord) {
+        if (lastCoord != Coord.Invalid)
+          tilePresenter.TileAt(lastCoord).Unhighlight();
+        
+        tilePresenter.TileAt(coord).Highlight();
         //   //if swap previous, cancel it
         //   if (tile.Unit != null) {
         //     SwapUnits(tile, oldTile);
@@ -80,18 +84,18 @@ namespace Controller {
         //   //swap units if tile with unit
       }
 
-      lastTile = tile;
+      lastCoord = coord;
     }
-
-    bool IsNewTile(TileView tile) => tile.X != lastTile?.X || tile.Y != lastTile?.Y;
 
     Camera cam;
     bool isDragging;
     UnitView unit;
-    TileView lastTile;
-    ClosestTileFinder closestTileFinder;
+    Coord startCoord;
+    Coord lastCoord = Coord.Invalid;
+    TilePresenter tilePresenter;
     BattleSetupUI battleSetupUI;
     Player[] players;
+    PlayerPresenter[] playerPresenters;
     UnitTooltipController unitTooltipController;
     BattleStateController battleStateController;
   }

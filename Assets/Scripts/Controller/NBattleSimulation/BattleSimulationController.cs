@@ -3,17 +3,21 @@ using Shared.Shared.Client;
 using UniRx;
 using View;
 using View.Exts;
+using View.Presenters;
 
 namespace Controller.NBattleSimulation {
   public class BattleSimulationController {
     public BattleSimulationController(BattleSimulation simulation, BattleSimulationUI ui,
-        ISimulationTick viewSimulation, AiContext context, Player[] players) {
+      ISimulationTick viewSimulation, AiContext context, Player[] players,
+      BaseBoard<UnitView, PlayerPresenter> boardPresenter, PlayerPresenter[] playerPresenters) {
       this.simulation = simulation;
       this.ui = ui;
       this.viewSimulation = viewSimulation;
       this.context = context;
       this.players = players;
-        
+      this.boardPresenter = boardPresenter;
+      this.playerPresenters = playerPresenters;
+
       ui.OStartBattle.onValueChanged.AsObservable().Where(b => b)
         .Subscribe(StartBattle).AddTo(ui.OStartBattle);
       ui.BExecuteNextDecision.Sub(ExecuteNextDecision);
@@ -22,6 +26,7 @@ namespace Controller.NBattleSimulation {
 
     void StartBattle(bool isOn) {
       simulation.PrepareBattle(players[0], players[1]);
+      boardPresenter.Reset(playerPresenters[0], playerPresenters[1]);
       ui.BExecuteNextDecision.interactable = !simulation.IsBattleOver;
       ui.BExecuteAllDecisions.interactable = !simulation.IsBattleOver;
     }
@@ -47,5 +52,7 @@ namespace Controller.NBattleSimulation {
     readonly ISimulationTick viewSimulation;
     readonly AiContext context;
     readonly Player[] players;
+    readonly BaseBoard<UnitView, PlayerPresenter> boardPresenter;
+    readonly PlayerPresenter[] playerPresenters;
   }
 }

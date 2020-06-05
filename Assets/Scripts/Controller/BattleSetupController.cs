@@ -1,14 +1,16 @@
 using System;
 using Model.NBattleSimulation;
+using Shared;
 using View;
+using View.Presenters;
 using View.UI;
 
 namespace Controller {
   public class BattleSetupController : IDisposable {
-    public BattleSetupController(Player[] players, BenchView[] benches, 
+    public BattleSetupController(Player[] players, PlayerPresenter[] presenters, 
         BattleSetupUI ui) {
       this.players = players;
-      this.benches = benches;
+      this.presenters = presenters;
       this.ui = ui;
       ui.BAdd.onClick.AddListener(AddUnit);
       ui.BRemove.onClick.AddListener(RemoveUnit);
@@ -17,14 +19,15 @@ namespace Controller {
     void AddUnit() {
       var playerId = ui.GetSelectedPlayerId;
       var name = ui.GetSelectedUnitName;
-      var (isAdded, coord) = benches[playerId].AddUnit(name);
+      var (isAdded, coord) = presenters[playerId].BenchUnits
+        .InstantiateToStart(name, (EPlayer)playerId);
       if (isAdded) players[playerId].AddBenchUnit(name, coord, playerId); 
     }
     
     void RemoveUnit() {
       var id = ui.GetSelectedPlayerId;
-      var (isRemoved, coord) = benches[id].RemoveUnit();
-      if (isRemoved) players[id].RemoveBenchUnit(coord);
+      var coord = presenters[id].BenchUnits.DestroyFromEnd();
+      players[id].RemoveBenchUnit(coord);
     }
 
     public void Dispose() {
@@ -33,7 +36,7 @@ namespace Controller {
     }
 
     readonly BattleSetupUI ui;
-    readonly BenchView[] benches;
+    readonly PlayerPresenter[] presenters;
     readonly Player[] players;
   }
 }

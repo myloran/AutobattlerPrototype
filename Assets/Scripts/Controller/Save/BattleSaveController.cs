@@ -5,15 +5,15 @@ using Model.NBattleSimulation;
 using Model.NUnit;
 using Shared;
 using View;
+using View.Presenters;
 using View.UI;
 
 namespace Controller.Save {
   public class BattleSaveController : IDisposable {
-    public BattleSaveController(Player[] players, BenchView[] benches, BoardView board,
+    public BattleSaveController(Player[] players, PlayerPresenter[] playerPresenters,
       BattleSaveUI ui, SaveInfoLoader saveInfoLoader, Dictionary<string, SaveInfo> saves) {
       this.players = players;
-      this.benches = benches;
-      this.board = board;
+      this.playerPresenters = playerPresenters;
       this.ui = ui;
       this.saveInfoLoader = saveInfoLoader;
       this.saves = saves;
@@ -35,34 +35,35 @@ namespace Controller.Save {
     }
 
     Dictionary<Coord, string> GetUnits(Dictionary<Coord, Unit> dict) => dict
-      .Select(pair => (pair.Key, pair.Value.Info.Name))
-      .ToDictionary(kvp => kvp.Key, kvp => kvp.Name);
+      .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Info.Name);
 
     void Load() {
-      players[0].BenchUnits.Clear();
-      players[1].BenchUnits.Clear();
-      players[0].BoardUnits.Clear();
-      players[1].BoardUnits.Clear();
-      benches[0].Clear();
-      benches[1].Clear();
-      board.Clear();
+      foreach (var player in players) {
+        player.BenchUnits.Clear();
+        player.BoardUnits.Clear();
+      }
+      foreach (var player in playerPresenters) {
+        player.BenchUnits.Clear();
+        player.BoardUnits.Clear();
+      }
       
       var save = saves[ui.GetSelectedSaveName];
-      foreach (var unit in save.Player1BenchUnits) {
-        players[0].AddBenchUnit(unit.Value, unit.Key, 0);
-        benches[0].AddUnit(unit.Value, unit.Key);
+      
+      foreach (var (coord, name) in save.Player1BenchUnits) {
+        players[0].AddBenchUnit(name, coord, 0);
+        playerPresenters[0].BenchUnits.Instantiate(name, coord, EPlayer.First);
       }
-      foreach (var unit in save.Player2BenchUnits) {
-        players[1].AddBenchUnit(unit.Value, unit.Key, 1);
-        benches[1].AddUnit(unit.Value, unit.Key);
+      foreach (var (coord, name) in save.Player2BenchUnits) {
+        players[1].AddBenchUnit(name, coord, 1);
+        playerPresenters[1].BenchUnits.Instantiate(name, coord, EPlayer.Second);
       }
-      foreach (var unit in save.Player1BoardUnits) {
-        players[0].AddBoardUnit(unit.Value, unit.Key, 0);
-        board.AddUnit(unit.Value, unit.Key, EPlayer.First);
+      foreach (var (coord, name) in save.Player1BoardUnits) {
+        players[0].AddBoardUnit(name, coord, 0);
+        playerPresenters[0].BoardUnits.Instantiate(name, coord, EPlayer.First);
       }
-      foreach (var unit in save.Player2BoardUnits) {
-        players[1].AddBoardUnit(unit.Value, unit.Key, 1);
-        board.AddUnit(unit.Value, unit.Key, EPlayer.Second);
+      foreach (var (coord, name) in save.Player2BoardUnits) {
+        players[1].AddBoardUnit(name, coord, 1);
+        playerPresenters[1].BoardUnits.Instantiate(name, coord, EPlayer.Second);
       }
     }
     
@@ -77,8 +78,7 @@ namespace Controller.Save {
     readonly BattleSaveUI ui;
     readonly SaveInfoLoader saveInfoLoader;
     readonly Dictionary<string, SaveInfo> saves;
-    readonly BenchView[] benches;
-    readonly BoardView board;
     readonly Player[] players;
+    readonly PlayerPresenter[] playerPresenters;
   }
 }

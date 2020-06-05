@@ -13,6 +13,7 @@ using Model.NBattleSimulation.Commands;
 using Okwy.Logging;
 using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
+using View.Presenters;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
@@ -21,8 +22,7 @@ namespace Infrastructure {
     public BattleSaveUI BattleSaveUI;
     public BattleSimulationUI BattleSimulationUI;
     public UnitTooltipUI UnitTooltipUI;
-    public Transform BoardStartPoint;
-    public Transform Bench1StartingPoint, Bench2StartingPoint;
+    public TileStartPoints TileStartPoints;
     public UnitView UnitView;
     public TileView TileView;
 
@@ -38,25 +38,34 @@ namespace Infrastructure {
       var unitFactory = new UnitFactory(units, decisionFactory);
       var players = new[] {new Player(unitFactory), new Player(unitFactory)};
       
-      var unitViewFactory = new UnitViewFactory(units, UnitView);
       var tileViewFactory = new TileViewFactory(TileView);
       
-      var boardView = new BoardView();
-      var benchView1 = new BenchView();
-      var benchView2 = new BenchView();
-      var closestTileFinder = new ClosestTileFinder(boardView, benchView1, benchView2);
+      BattleSetupUI.Init(units.Keys.ToList());
+      BattleSaveUI.Init(saves.Keys.ToList());
+      
+      var tilePresenter = new TilePresenter(TileStartPoints, tileViewFactory);
+      var playerPresenter1 = new PlayerPresenter();
+      var playerPresenter2 = new PlayerPresenter();
+      var playerPresenters = new[] {playerPresenter1, playerPresenter2};
                   
       var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
       var battleStateController = new BattleStateController(BattleSimulationUI);
-      var unitViewFactoryDecorator = new UnitViewFactoryDecorator(closestTileFinder, 
-        BattleSetupUI, players, unitTooltipController, unitViewFactory, battleStateController);
+      var unitViewFactory = new UnitViewFactory(units, UnitView, tilePresenter);
+      var unitViewFactoryDecorator = new UnitViewFactoryDecorator(tilePresenter, 
+        BattleSetupUI, players, playerPresenters, unitTooltipController, unitViewFactory, battleStateController);
       
-      boardView.Init(BoardStartPoint, tileViewFactory, unitViewFactoryDecorator);
-      benchView1.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.First, 
-        Bench1StartingPoint);
-      benchView2.Init(unitViewFactoryDecorator, tileViewFactory, EPlayer.Second, 
-        Bench2StartingPoint);
-      
+      var board1UnitDict = new UnitViewDict(unitViewFactoryDecorator);
+      var bench1UnitDict = new UnitViewDict(unitViewFactoryDecorator);
+      var board2UnitDict = new UnitViewDict(unitViewFactoryDecorator);
+      var bench2UnitDict = new UnitViewDict(unitViewFactoryDecorator);
+      var player1Units = new UnitViewDict(unitViewFactoryDecorator);
+      var player2Units = new UnitViewDict(unitViewFactoryDecorator);
+      var allUnitsDict = new UnitViewDict(unitViewFactoryDecorator);
+      var boardPresenter = new BoardPresenter(allUnitsDict, player1Units, player2Units,
+          tilePresenter);
+      playerPresenter1.Init(tilePresenter, board1UnitDict, bench1UnitDict);
+      playerPresenter2.Init(tilePresenter, board2UnitDict, bench2UnitDict);
+
       var board = new Board();
       var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
       var aiContext = new AiContext(board, aiHeap);
@@ -69,27 +78,25 @@ namespace Infrastructure {
         unitTooltipController);
             
       var debugUIController = new DebugUIController(BattleSetupUI, BattleSaveUI, BattleSimulationUI);
-      var unitDebugController = new TargetDebugController(board, boardView);
+      var unitDebugController = new TargetDebugController(board, tilePresenter);
       var updateController = new UpdateController(unitDebugController, debugUIController, 
         raycastController);
       UpdateInput.Init(updateController);
       
-      var movementController = new MovementController(boardView);
-      var attackController = new AttackController(boardView, UnitTooltipUI);
+      var movementController = new MovementController(boardPresenter, tilePresenter);
+      var attackController = new AttackController(boardPresenter, UnitTooltipUI);
       eventBus.Register<StartMoveEvent>(movementController);
       eventBus.Register<EndMoveEvent>(movementController);
       eventBus.Register<ApplyDamageEvent>(attackController);
       eventBus.Register<DeathEvent>(attackController);
 
       var battleSimulationController = new BattleSimulationController(battleSimulation,
-        BattleSimulationUI, movementController, aiContext, players);
+        BattleSimulationUI, movementController, aiContext, players, boardPresenter,
+        playerPresenters);
 
-      BattleSetupUI.Init(units.Keys.ToList());
-      BattleSaveUI.Init(saves.Keys.ToList());
-      
-      var benches = new[] {benchView1, benchView2};
-      var battleSetupController = new BattleSetupController(players, benches, BattleSetupUI);
-      var battleSaveController = new BattleSaveController(players, benches, boardView, 
+      var battleSetupController = new BattleSetupController(players, playerPresenters, 
+        BattleSetupUI);
+      var battleSaveController = new BattleSaveController(players, playerPresenters, 
         BattleSaveUI, saveDataLoader, saves);
     }
   }
