@@ -39,6 +39,16 @@ namespace Controller {
       }
     }
 
+    public (bool isHit, Vector3 position) RaycastPlane() {
+      var plane = new Plane(Vector3.up, new Vector3(0, 0, 0));
+      var ray = camera.ScreenPointToRay(Input.mousePosition);
+
+      var isHit = plane.Raycast(ray, out var enter);
+      var position = ray.GetPoint(enter);
+      
+      return (isHit, position);
+    }
+
     readonly UnitTooltipController controller;
     readonly Camera camera;
     readonly int globalLayer;

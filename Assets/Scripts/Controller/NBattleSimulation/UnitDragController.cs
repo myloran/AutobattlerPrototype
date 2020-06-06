@@ -11,8 +11,7 @@ namespace Controller.NBattleSimulation {
     public UnitDragController(TilePresenter tilePresenter, BattleSetupUI battleSetupUI,
         Player[] players, PlayerPresenter[] playerPresenters, 
         UnitTooltipController unitTooltipController, 
-        BattleStateController battleStateController, RaycastController raycastController, 
-        Camera cam) {
+        BattleStateController battleStateController, RaycastController raycastController) {
       this.tilePresenter = tilePresenter;
       this.battleSetupUI = battleSetupUI;
       this.players = players;
@@ -20,7 +19,6 @@ namespace Controller.NBattleSimulation {
       this.unitTooltipController = unitTooltipController;
       this.battleStateController = battleStateController;
       this.raycastController = raycastController;
-      this.cam = cam;
     }
     
     public void Init() {
@@ -50,7 +48,7 @@ namespace Controller.NBattleSimulation {
       isDragging = true;
             
       if (lastCoord == Coord.Invalid) 
-        StartCoord = tilePresenter.FindClosestCoord(unit.transform.position, unit.Player);
+        startCoord = tilePresenter.FindClosestCoord(unit.transform.position, unit.Player);
     }
     
     void EndDrag() {
@@ -62,24 +60,21 @@ namespace Controller.NBattleSimulation {
       tilePresenter.TileAt(lastCoord).Unhighlight();
       
       var player = players[selectedPlayerId];
-      player.MoveUnit(StartCoord, lastCoord);
+      player.MoveUnit(startCoord, lastCoord);
       
       var playerPresenter = playerPresenters[selectedPlayerId];
-      playerPresenter.MoveUnit(StartCoord, lastCoord);
+      playerPresenter.MoveUnit(startCoord, lastCoord);
       
       lastCoord = Coord.Invalid;
     }
-    
-    public void Drag() {
+
+    void Drag() {
       if (battleStateController.IsBattleStarted) return;
       if (!isDragging) return;
 
-      var plane = new Plane(Vector3.up, new Vector3(0, 0, 0));
-      var ray = cam.ScreenPointToRay(Input.mousePosition);
-
-      if (!plane.Raycast(ray, out var enter)) return;
-
-      var mousePosition = ray.GetPoint(enter);
+      var (isHit, mousePosition) = raycastController.RaycastPlane();
+      if (!isHit) return;
+      
       unit.transform.position = mousePosition + new Vector3(0, 1, 0);
 
       var coord = tilePresenter.FindClosestCoord(mousePosition, (EPlayer)battleSetupUI.GetSelectedPlayerId);
@@ -99,17 +94,16 @@ namespace Controller.NBattleSimulation {
       lastCoord = coord;
     }
 
-    RaycastController raycastController;
-    Camera cam;
+    readonly RaycastController raycastController;
+    readonly TilePresenter tilePresenter;
+    readonly BattleSetupUI battleSetupUI;
+    readonly Player[] players;
+    readonly PlayerPresenter[] playerPresenters;
+    readonly UnitTooltipController unitTooltipController;
+    readonly BattleStateController battleStateController;
     bool isDragging;
-    public Coord StartCoord;
+    Coord startCoord;
     Coord lastCoord = Coord.Invalid;
-    TilePresenter tilePresenter;
-    BattleSetupUI battleSetupUI;
-    Player[] players;
-    PlayerPresenter[] playerPresenters;
-    UnitTooltipController unitTooltipController;
-    BattleStateController battleStateController;
     UnitView unit;
   }
 }

@@ -63,16 +63,14 @@ namespace Infrastructure {
       var aiContext = new AiContext(board, 
         new FibonacciHeap<ICommand, TimePoint>(float.MinValue));
 
-      var mainCamera = Camera.main;
-      
-      var raycastController = new RaycastController(mainCamera, 
+      var raycastController = new RaycastController(Camera.main, 
         LayerMask.GetMask("Terrain", "GlobalCollider"), 
         LayerMask.GetMask("Unit"), 
         unitTooltipController);
       
       var unitDragController2 = new UnitDragController(tilePresenter, BattleSetupUI,
         players, playerPresenters, unitTooltipController, 
-        new BattleStateController(BattleSimulationUI), raycastController, mainCamera);
+        new BattleStateController(BattleSimulationUI), raycastController);
       
       UpdateInput.Init(new UpdateController(
         new TargetDebugController(board, tilePresenter), 
