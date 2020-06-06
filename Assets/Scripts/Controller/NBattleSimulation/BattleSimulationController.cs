@@ -1,4 +1,5 @@
 using Model.NBattleSimulation;
+using Shared;
 using Shared.Shared.Client;
 using UniRx;
 using View;

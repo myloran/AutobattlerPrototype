@@ -1,6 +1,4 @@
-using Shared;
-
-namespace View.Presenters {
+namespace Shared {
   public abstract class BasePlayer<TUnit> : IPlayer<TUnit> {
     public IUnitDict<TUnit> BoardUnits { get; private set; }
     public IUnitDict<TUnit> BenchUnits { get; private set; }
@@ -43,7 +41,7 @@ namespace View.Presenters {
       toDict[to] = fromUnit;
     }
 
-    protected abstract void OnChangeCoord(Coord coord, TUnit unit);
+    protected virtual void OnChangeCoord(Coord coord, TUnit unit) { }
 
     static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(BasePlayer<TUnit>));
   }

@@ -1,6 +1,4 @@
-using Shared;
-
-namespace View.Presenters {
+namespace Shared {
   public interface IPlayer<TUnit> {
     IUnitDict<TUnit> BoardUnits { get; }
     IUnitDict<TUnit> BenchUnits { get; }

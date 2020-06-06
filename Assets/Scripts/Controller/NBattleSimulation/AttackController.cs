@@ -1,4 +1,5 @@
 using PlasticFloor.EventBus;
+using Shared;
 using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
 using UnityEngine;

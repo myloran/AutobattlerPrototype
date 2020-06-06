@@ -16,7 +16,6 @@ namespace Controller {
         var to = tilePresenter.PositionAt(unit.Target.Unit.Movement.Coord);
         Debug.DrawLine(from, to, Color.red, 0);
       }
-
     }
 
     readonly Board board;

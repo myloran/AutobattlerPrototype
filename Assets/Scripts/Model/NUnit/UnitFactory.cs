@@ -8,7 +8,7 @@ namespace Model.NUnit {
       this.decisionFactory = decisionFactory;
     }
     
-    public Unit Create(string name, Coord coord, int playerId) {
+    public Unit Create(string name, Coord coord, EPlayer player) {
       var info = infos[name];
       var movement = new CMovement(coord, info.MoveSpeed);
       var attack = new CAttack(movement, info.Damage, info.AttackSpeed, info.AttackRange * info.AttackRange, info.AttackAnimationSpeed);
@@ -21,7 +21,7 @@ namespace Model.NUnit {
         Movement = movement,
         Target = new CTarget(movement),
         Ai = new CAi(),
-        Stats = new CStats(1, (EPlayer)playerId)
+        Stats = new CStats(1, player)
       };
 
       unit.Ai.Decision = decisionFactory.Create(unit);

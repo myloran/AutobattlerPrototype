@@ -10,6 +10,7 @@ using UnityEngine;
 using View;
 using View.UI;
 using FibonacciHeap;
+using Model;
 using Model.NBattleSimulation.Commands;
 using Okwy.Logging;
 using PlasticFloor.EventBus;
@@ -35,7 +36,11 @@ namespace Infrastructure {
       
       var eventBus = new EventBus();
       var unitFactory = new UnitFactory(units, new DecisionFactory(eventBus));
-      var players = new[] {new Player(unitFactory), new Player(unitFactory)};
+      
+      var players = new[] {
+        new Player(new UnitDict(unitFactory), new UnitDict(unitFactory)), 
+        new Player(new UnitDict(unitFactory), new UnitDict(unitFactory))
+      };
       
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
@@ -44,17 +49,13 @@ namespace Infrastructure {
       var unitViewFactory = new UnitViewFactory(units, UnitView, tilePresenter);
 
       var boardPresenter = new BoardPresenter(
-        new UnitViewDict(unitViewFactory),
-        new UnitViewDict(unitViewFactory),
-        new UnitViewDict(unitViewFactory),
-        tilePresenter);
+        new UnitViewDict(unitViewFactory), new UnitViewDict(unitViewFactory),
+        new UnitViewDict(unitViewFactory), tilePresenter);
       
       var playerPresenters = new[] {
-        new PlayerPresenter(
-          new UnitViewDict(unitViewFactory), 
+        new PlayerPresenter(new UnitViewDict(unitViewFactory), 
           new UnitViewDict(unitViewFactory), tilePresenter), 
-        new PlayerPresenter(
-          new UnitViewDict(unitViewFactory), 
+        new PlayerPresenter(new UnitViewDict(unitViewFactory), 
           new UnitViewDict(unitViewFactory), tilePresenter)
       };
                   

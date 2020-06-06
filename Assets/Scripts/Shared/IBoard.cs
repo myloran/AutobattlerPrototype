@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Shared;
 
-namespace View.Presenters {
+namespace Shared {
   public interface IBoard<TUnit, in TPlayer> 
       where TPlayer : IPlayer<TUnit> where TUnit : IUnit {
     bool ContainsUnitAt(Coord coord);

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Shared;
 
-namespace View.Presenters {
+namespace Shared {
   public abstract class BaseUnitDict<T> : IUnitDict<T> {
+    public Dictionary<Coord, T> Units { get; } = new Dictionary<Coord, T>(10);
+    
     public virtual T this[Coord coord] {
       get => Units[coord];
       set => Units[coord] = value;
@@ -61,7 +62,5 @@ namespace View.Presenters {
 
     protected abstract T Create(string name, Coord coord, EPlayer player);
     protected virtual void Remove(T unit) {}
-    
-    protected readonly Dictionary<Coord, T> Units = new Dictionary<Coord, T>(10);
   }
 }

@@ -19,15 +19,16 @@ namespace Controller {
     void AddUnit() {
       var playerId = ui.GetSelectedPlayerId;
       var name = ui.GetSelectedUnitName;
-      var (isAdded, coord) = presenters[playerId].BenchUnits
-        .InstantiateToStart(name, (EPlayer)playerId);
-      if (isAdded) players[playerId].AddBenchUnit(name, coord, playerId); 
+      var (isAdded, coord) = players[playerId].BenchUnits
+        .InstantiateToStart(name, (EPlayer)playerId); 
+      if (isAdded) presenters[playerId].BenchUnits
+        .Instantiate(name, coord, (EPlayer)playerId);
     }
     
     void RemoveUnit() {
       var id = ui.GetSelectedPlayerId;
-      var coord = presenters[id].BenchUnits.DestroyFromEnd((EPlayer)id);
-      players[id].RemoveBenchUnit(coord);
+      presenters[id].BenchUnits.DestroyFromEnd((EPlayer)id);
+      players[id].BenchUnits.DestroyFromEnd((EPlayer)id);
     }
 
     public void Dispose() {

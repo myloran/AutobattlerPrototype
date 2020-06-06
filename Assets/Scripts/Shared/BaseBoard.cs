@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Shared;
 
-namespace View.Presenters {
+namespace Shared {
   public abstract class BaseBoard<TUnit, TPlayer> : IBoard<TUnit, TPlayer> 
       where TPlayer : IPlayer<TUnit> where TUnit : IUnit {
     protected BaseBoard(IUnitDict<TUnit> units, IUnitDict<TUnit> player1Units, 

@@ -3,59 +3,21 @@ using Model.NUnit;
 using Shared;
 
 namespace Model.NBattleSimulation {
-  public class Player {
-    public readonly Dictionary<Coord, Unit> BoardUnits = new Dictionary<Coord, Unit>(10);
-    public readonly Dictionary<Coord, Unit> BenchUnits = new Dictionary<Coord, Unit>(10);
+  public class Player : BasePlayer<Unit> {
+    public Player(IUnitDict<Unit> boardUnitDict, IUnitDict<Unit> benchUnitDict) : 
+      base(boardUnitDict, benchUnitDict) { }
     
-    public Player(UnitFactory unitFactory) {
-      this.unitFactory = unitFactory;
-    }
-    
-    public void AddBenchUnit(string name, Coord coord, int playerId) => 
-      BenchUnits[coord] = unitFactory.Create(name, coord, playerId);
+    // public void AddBenchUnit(string name, Coord coord, int playerId) => 
+    //   BenchUnits[coord] = unitFactory.Create(name, coord, playerId);
+    //
+    // public void RemoveBenchUnit(Coord coord) => BenchUnits.Remove(coord);
+    //
+    // public void AddBoardUnit(string name, Coord coord, int playerId) => 
+    //   BoardUnits[coord] = unitFactory.Create(name, coord, playerId);
+    //
+    // public void RemoveBoardUnit(Coord coord) => BoardUnits.Remove(coord);
 
-    public void RemoveBenchUnit(Coord coord) => BenchUnits.Remove(coord);
-    
-    public void AddBoardUnit(string name, Coord coord, int playerId) => 
-      BoardUnits[coord] = unitFactory.Create(name, coord, playerId);
-
-    public void RemoveBoardUnit(Coord coord) => BoardUnits.Remove(coord);
-
-    public void MoveUnit(Coord from, Coord to) {
-      var fromDict = from.Y < 0 ? BenchUnits : BoardUnits;
-      var toDict = to.Y < 0 ? BenchUnits : BoardUnits;
-        
-      if (!fromDict.ContainsKey(from)) {
-        log.Error($"Dict does not have unit at coord: {from}");
-        return;
-      }
-      var unit = fromDict[from];
-      var hasUnitAtDestination = toDict.ContainsKey(to);
-      
-      if (hasUnitAtDestination) {
-        SwapUnits(@from, to, fromDict, toDict, unit);
-      }
-      else {
-        MoveUnit(@from, to, fromDict, toDict, unit);
-      }
-    }
-
-    void MoveUnit(Coord @from, Coord to, Dictionary<Coord, Unit> fromDict, 
-        Dictionary<Coord, Unit> toDict, Unit fromUnit) {
-      fromDict.Remove(@from);
-      toDict[to] = fromUnit;
-      toDict[to].Movement.StartingCoord = to;
-    }
-
-    void SwapUnits(Coord from, Coord to, Dictionary<Coord, Unit> fromDict, 
-        Dictionary<Coord, Unit> toDict, Unit fromUnit) {
-      fromDict[@from] = toDict[to];
-      fromDict[@from].Movement.StartingCoord = @from;
-      toDict[to] = fromUnit;
-      toDict[to].Movement.StartingCoord = to;
-    }
-
-    readonly UnitFactory unitFactory;
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(Player));
+    protected override void OnChangeCoord(Coord coord, Unit unit) => 
+      unit.Movement.StartingCoord = coord;
   }
 }
