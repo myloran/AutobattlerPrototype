@@ -1,5 +1,4 @@
 using System;
-using Model.NBattleSimulation;
 using Shared;
 
 namespace Model.NUnit {
@@ -30,5 +29,7 @@ namespace Model.NUnit {
 
     readonly CMovement movement;
     float lastAttackTime;
+
+    public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AnimationSpeed)}: {AnimationSpeed}, {nameof(AttackSpeed)}: {AttackSpeed}, {nameof(SqrRange)}: {SqrRange}, {nameof(movement)}: {movement}, {nameof(lastAttackTime)}: {lastAttackTime}";
   }
 }

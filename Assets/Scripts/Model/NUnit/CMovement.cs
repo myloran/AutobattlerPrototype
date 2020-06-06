@@ -22,5 +22,7 @@ namespace Model.NUnit {
       ? Diagonal * speed : Straight * speed;
 
     readonly float speed;
+
+    public override string ToString() => $"{nameof(StartingCoord)}: {StartingCoord}, {nameof(TakenCoord)}: {TakenCoord}, {nameof(Coord)}: {Coord}, {nameof(speed)}: {speed}";
   }
 }

@@ -8,5 +8,9 @@ namespace Model.NUnit {
     public TimePoint NextDecisionTime;
 
     public IDecisionTreeNode MakeDecision(AiContext context) => Decision.MakeDecision(context);
+
+    public override string ToString() {
+      return $"{nameof(Decision)}: {Decision}, {nameof(NextDecisionTime)}: {NextDecisionTime}";
+    }
   }
 }

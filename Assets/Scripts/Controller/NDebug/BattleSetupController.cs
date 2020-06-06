@@ -1,11 +1,10 @@
 using System;
 using Model.NBattleSimulation;
 using Shared;
-using View;
 using View.Presenters;
 using View.UI;
 
-namespace Controller {
+namespace Controller.NDebug {
   public class BattleSetupController : IDisposable {
     public BattleSetupController(Player[] players, PlayerPresenter[] presenters, 
         BattleSetupUI ui) {

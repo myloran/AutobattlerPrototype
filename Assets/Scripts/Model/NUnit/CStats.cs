@@ -9,5 +9,7 @@ namespace Model.NUnit {
       Level = level;
       Player = player;
     }
+
+    public override string ToString() => $"{nameof(Level)}: {Level}, {nameof(Player)}: {Player}";
   }
 }

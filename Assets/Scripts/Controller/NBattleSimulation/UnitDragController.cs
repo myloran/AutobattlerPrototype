@@ -1,3 +1,4 @@
+using Controller.NDebug;
 using Model.NBattleSimulation;
 using Shared;
 using UniRx;
@@ -11,7 +12,7 @@ namespace Controller.NBattleSimulation {
     public UnitDragController(TilePresenter tilePresenter, BattleSetupUI battleSetupUI,
         Player[] players, PlayerPresenter[] playerPresenters, 
         UnitTooltipController unitTooltipController, 
-        BattleStateController battleStateController, RaycastController raycastController) {
+        BattleStateController battleStateController, RaycastController raycastController, UnitModelDebugController unitModelDebugController) {
       this.tilePresenter = tilePresenter;
       this.battleSetupUI = battleSetupUI;
       this.players = players;
@@ -19,6 +20,7 @@ namespace Controller.NBattleSimulation {
       this.unitTooltipController = unitTooltipController;
       this.battleStateController = battleStateController;
       this.raycastController = raycastController;
+      this.unitModelDebugController = unitModelDebugController;
     }
     
     public void Init() {
@@ -36,19 +38,16 @@ namespace Controller.NBattleSimulation {
 
     void StartDrag(RaycastHit hit) {
       unit = hit.transform.GetComponent<UnitView>();
+      startCoord = tilePresenter.FindClosestCoord(unit.transform.position, unit.Player);
+      
       if (battleStateController.IsBattleStarted) {
-        // if (isDebug)
-        //   unitDebugController.Show();
-        // else
-        unitTooltipController.Show(unit.Info);
+          unitModelDebugController.SelectUnitModel(startCoord);
+          // unitTooltipController.Show(unit.Info);
         return;
       }
       if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;
       
       isDragging = true;
-            
-      if (lastCoord == Coord.Invalid) 
-        startCoord = tilePresenter.FindClosestCoord(unit.transform.position, unit.Player);
     }
     
     void EndDrag() {
@@ -101,6 +100,7 @@ namespace Controller.NBattleSimulation {
     readonly PlayerPresenter[] playerPresenters;
     readonly UnitTooltipController unitTooltipController;
     readonly BattleStateController battleStateController;
+    readonly UnitModelDebugController unitModelDebugController;
     bool isDragging;
     Coord startCoord;
     Coord lastCoord = Coord.Invalid;

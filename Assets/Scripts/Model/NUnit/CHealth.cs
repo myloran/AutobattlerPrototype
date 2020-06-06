@@ -20,5 +20,7 @@ namespace Model.NUnit {
       Health -= damageDealt;
       Health = MathExt.Clamp(Health, 0f, StartingHealth);
     }
+
+    public override string ToString() => $"{nameof(StartingHealth)}: {StartingHealth}, {nameof(Health)}: {Health}, {nameof(Armor)}: {Armor}";
   }
 }

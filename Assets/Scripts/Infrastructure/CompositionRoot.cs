@@ -2,6 +2,7 @@
 using System.Linq;
 using Controller;
 using Controller.NBattleSimulation;
+using Controller.NDebug;
 using Controller.Save;
 using Model.NBattleSimulation;
 using Model.NUnit;
@@ -24,6 +25,7 @@ namespace Infrastructure {
     public BattleSaveUI BattleSaveUI;
     public BattleSimulationUI BattleSimulationUI;
     public UnitTooltipUI UnitTooltipUI;
+    public ModelUI ModelUI;
     public TileStartPoints TileStartPoints;
     public UnitView UnitView;
     public TileView TileView;
@@ -69,14 +71,18 @@ namespace Infrastructure {
         LayerMask.GetMask("Unit"), 
         unitTooltipController);
       
+      var unitModelDebugController = new UnitModelDebugController(
+        new ModelContext(players), ModelUI);
+      
       var unitDragController2 = new UnitDragController(tilePresenter, BattleSetupUI,
         players, playerPresenters, unitTooltipController, 
-        new BattleStateController(BattleSimulationUI), raycastController);
+        new BattleStateController(BattleSimulationUI), raycastController,
+        unitModelDebugController);
       
       UpdateInput.Init(new UpdateController(
-        new TargetDebugController(board, tilePresenter), 
-        new DebugUIController(BattleSetupUI, BattleSaveUI, BattleSimulationUI), 
-        raycastController));
+        new TargetDebugController(board, tilePresenter), new UIDebugController(
+            BattleSetupUI, BattleSaveUI, BattleSimulationUI, 
+          unitModelDebugController), unitModelDebugController, raycastController));
       
       var movementController = new MovementController(boardPresenter, tilePresenter);
       var attackController = new AttackController(boardPresenter, UnitTooltipUI);

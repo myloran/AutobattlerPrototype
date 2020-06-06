@@ -1,3 +1,4 @@
+using System.Text;
 using Shared;
 
 namespace Model.NUnit {
@@ -14,5 +15,13 @@ namespace Model.NUnit {
       Health.Reset();
       Movement.Reset();
     }
+
+    public override string ToString() => new StringBuilder()
+      .Append(Health).Append("\n")
+      .Append(Attack).Append("\n")
+      .Append(Movement).Append("\n")
+      .Append(Ai).Append("\n")
+      .Append(Stats).Append("\n")
+      .ToString();
   }
 }

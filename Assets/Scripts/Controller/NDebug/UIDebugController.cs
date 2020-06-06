@@ -2,13 +2,14 @@ using UnityEngine;
 using View;
 using View.UI;
 
-namespace Controller {
-  public class DebugUIController : ITick {
-    public DebugUIController(BattleSetupUI battleSetupUI, BattleSaveUI battleSaveUI, 
-        BattleSimulationUI battleSimulationUI) {
+namespace Controller.NDebug {
+  public class UIDebugController : ITick {
+    public UIDebugController(BattleSetupUI battleSetupUI, BattleSaveUI battleSaveUI, 
+        BattleSimulationUI battleSimulationUI, UnitModelDebugController unitModelDebugController) {
       this.battleSetupUI = battleSetupUI;
       this.battleSaveUI = battleSaveUI;
       this.battleSimulationUI = battleSimulationUI;
+      this.unitModelDebugController = unitModelDebugController;
     }
 
     public void Tick() {
@@ -24,14 +25,20 @@ namespace Controller {
         isBattleSimulationUIOn = !isBattleSimulationUIOn;
         battleSimulationUI.gameObject.SetActive(isBattleSimulationUIOn);
       }
+      if (Input.GetKeyDown(KeyCode.F4)) {
+        isUnitModelDebugControllerOn = !isUnitModelDebugControllerOn;
+        unitModelDebugController.SetActive(isUnitModelDebugControllerOn);
+      }
     }
 
     readonly BattleSetupUI battleSetupUI;
     readonly BattleSaveUI battleSaveUI;
     readonly BattleSimulationUI battleSimulationUI;
+    readonly UnitModelDebugController unitModelDebugController;
     
     bool isBattleSetupUIOn,
       isBattleSaveUIOn,
-      isBattleSimulationUIOn;
+      isBattleSimulationUIOn,
+      isUnitModelDebugControllerOn;
   }
 }

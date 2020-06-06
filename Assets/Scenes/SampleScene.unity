@@ -2318,6 +2318,7 @@ MonoBehaviour:
   BattleSaveUI: {fileID: 560709430}
   BattleSimulationUI: {fileID: 1720349391}
   UnitTooltipUI: {fileID: 327723203}
+  ModelUI: {fileID: 1018507620}
   TileStartPoints: {fileID: 1262174396}
   UnitView: {fileID: 7106694951565096669, guid: 1ded2d7287f52e3428a3685857e8fff9,
     type: 3}
@@ -4654,13 +4655,14 @@ GameObject:
   - component: {fileID: 1018507618}
   - component: {fileID: 1018507617}
   - component: {fileID: 1018507616}
+  - component: {fileID: 1018507620}
   m_Layer: 5
   m_Name: ModelUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1018507616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4741,6 +4743,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1018507620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018507615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659b9670e55a44079e5a9c8db40c9e6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 2062987999}
 --- !u!1 &1042201895
 GameObject:
   m_ObjectHideFlags: 0
@@ -9424,8 +9439,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80, y: -15}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 205.61, y: -151.91}
+  m_SizeDelta: {x: 411.214, y: 303.81866}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2062987999
 MonoBehaviour:
@@ -9474,14 +9489,14 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 513
+  m_textAlignment: 257
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
