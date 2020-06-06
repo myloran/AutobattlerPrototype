@@ -21,7 +21,7 @@ namespace Controller {
       this.unit = unit;
       this.battleStateController = battleStateController;
       
-      startCoord = tilePresenter.FindClosestCoord(transform.position, unit.Player);
+      StartCoord = tilePresenter.FindClosestCoord(transform.position, unit.Player);
     }
 
     void Awake() { //TODO: remove
@@ -48,14 +48,19 @@ namespace Controller {
       
       isDragging = false;
       tilePresenter.TileAt(lastCoord).Unhighlight();
-        
+      
       var player = players[selectedPlayerId];
-      player.MoveUnit(startCoord, lastCoord);
+      player.MoveUnit(StartCoord, lastCoord);
       
       var playerPresenter = playerPresenters[selectedPlayerId];
-      playerPresenter.MoveUnit(startCoord, lastCoord);
+      playerPresenter.MoveUnit(StartCoord, lastCoord);
 
-      startCoord = lastCoord;
+      var dict = StartCoord.Y < 0 ? playerPresenter.BenchUnits : playerPresenter.BoardUnits;
+      if(dict.Contains(StartCoord)) {
+        dict[StartCoord].GetComponent<UnitDragController>().StartCoord = StartCoord;
+      }
+      
+      StartCoord = lastCoord;
     }
 
     void Update() {
@@ -90,7 +95,7 @@ namespace Controller {
     Camera cam;
     bool isDragging;
     UnitView unit;
-    Coord startCoord;
+    public Coord StartCoord;
     Coord lastCoord = Coord.Invalid;
     TilePresenter tilePresenter;
     BattleSetupUI battleSetupUI;
