@@ -1,47 +1,59 @@
-using Controller.NBattleSimulation;
 using Model.NBattleSimulation;
 using Shared;
+using UniRx;
 using UnityEngine;
 using View;
 using View.Presenters;
 using View.UI;
 
-namespace Controller {
-  //show tooltip, show unit model, dragging, player validation, move/swap unit,
-  //tile highlight, find tile
-  public class UnitDragController : MonoBehaviour {
-    public void Init(TilePresenter tilePresenter, BattleSetupUI battleSetupUI,
-        Player[] players, PlayerPresenter[] playerPresenters, UnitTooltipController unitTooltipController, UnitView unit,
-        BattleStateController battleStateController) {
+namespace Controller.NBattleSimulation {
+  public class UnitDragController {
+    public UnitDragController(TilePresenter tilePresenter, BattleSetupUI battleSetupUI,
+        Player[] players, PlayerPresenter[] playerPresenters, 
+        UnitTooltipController unitTooltipController, 
+        BattleStateController battleStateController, RaycastController raycastController, 
+        Camera cam) {
       this.tilePresenter = tilePresenter;
       this.battleSetupUI = battleSetupUI;
       this.players = players;
       this.playerPresenters = playerPresenters;
       this.unitTooltipController = unitTooltipController;
-      this.unit = unit;
       this.battleStateController = battleStateController;
+      this.raycastController = raycastController;
+      this.cam = cam;
+    }
+    
+    public void Init() {
+      raycastController.OnUnitHit.Subscribe(StartDrag);
+
+      Observable.EveryUpdate()
+        .Where(_ => Input.GetMouseButton(0)) 
+        .Subscribe(_ => Drag());
       
-      StartCoord = tilePresenter.FindClosestCoord(transform.position, unit.Player);
+      Observable.EveryUpdate()
+        .Where(_ => Input.GetMouseButtonUp(0))
+        .Where(_ => isDragging)
+        .Subscribe(_ => EndDrag());
     }
 
-    void Awake() { //TODO: remove
-      cam = Camera.main;
-    }
-
-    void OnMouseDown() {
+    void StartDrag(RaycastHit hit) {
+      unit = hit.transform.GetComponent<UnitView>();
       if (battleStateController.IsBattleStarted) {
         // if (isDebug)
         //   unitDebugController.Show();
         // else
-          unitTooltipController.Show(unit.Info);
+        unitTooltipController.Show(unit.Info);
         return;
       }
       if (unit.Player != (EPlayer)battleSetupUI.GetSelectedPlayerId) return;
       
       isDragging = true;
+            
+      if (lastCoord == Coord.Invalid) 
+        StartCoord = tilePresenter.FindClosestCoord(unit.transform.position, unit.Player);
     }
-
-    void OnMouseUp() {
+    
+    void EndDrag() {
       if (battleStateController.IsBattleStarted) return;
       var selectedPlayerId = battleSetupUI.GetSelectedPlayerId;
       if (unit.Player != (EPlayer)selectedPlayerId) return;
@@ -54,17 +66,11 @@ namespace Controller {
       
       var playerPresenter = playerPresenters[selectedPlayerId];
       playerPresenter.MoveUnit(StartCoord, lastCoord);
-
-      var dict = StartCoord.Y < 0 ? playerPresenter.BenchUnits : playerPresenter.BoardUnits;
-      if(dict.Contains(StartCoord)) {
-        dict[StartCoord].GetComponent<UnitDragController>().StartCoord = StartCoord;
-      }
       
-      StartCoord = lastCoord;
       lastCoord = Coord.Invalid;
     }
-
-    void Update() {
+    
+    public void Drag() {
       if (battleStateController.IsBattleStarted) return;
       if (!isDragging) return;
 
@@ -72,9 +78,9 @@ namespace Controller {
       var ray = cam.ScreenPointToRay(Input.mousePosition);
 
       if (!plane.Raycast(ray, out var enter)) return;
-      
+
       var mousePosition = ray.GetPoint(enter);
-      transform.position = mousePosition + new Vector3(0, 1, 0);
+      unit.transform.position = mousePosition + new Vector3(0, 1, 0);
 
       var coord = tilePresenter.FindClosestCoord(mousePosition, (EPlayer)battleSetupUI.GetSelectedPlayerId);
       
@@ -93,9 +99,9 @@ namespace Controller {
       lastCoord = coord;
     }
 
+    RaycastController raycastController;
     Camera cam;
     bool isDragging;
-    UnitView unit;
     public Coord StartCoord;
     Coord lastCoord = Coord.Invalid;
     TilePresenter tilePresenter;
@@ -104,5 +110,6 @@ namespace Controller {
     PlayerPresenter[] playerPresenters;
     UnitTooltipController unitTooltipController;
     BattleStateController battleStateController;
+    UnitView unit;
   }
 }

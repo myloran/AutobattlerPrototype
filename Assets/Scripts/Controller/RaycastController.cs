@@ -1,3 +1,5 @@
+using System;
+using UniRx;
 using UnityEngine;
 
 namespace Controller {
@@ -8,6 +10,21 @@ namespace Controller {
       this.globalLayer = globalLayer;
       this.unitLayer = unitLayer;
       this.controller = controller;
+    }
+
+    public IObservable<RaycastHit> OnUnitHit =>
+      Observable.EveryUpdate()
+        .Where(_ => Input.GetMouseButtonDown(0))
+        .Select(_ => FireRaycast())
+        .Select(CheckHitUnit)
+        .Where(_ => _.isHit)
+        .Select(_ => _.hit);
+
+    Ray FireRaycast() => camera.ScreenPointToRay(Input.mousePosition);
+
+    (bool isHit, RaycastHit hit) CheckHitUnit(Ray ray) {
+      var isHit = Physics.Raycast(ray, out var hit, 100, unitLayer);
+      return (isHit, hit);
     }
 
     public void Tick() {

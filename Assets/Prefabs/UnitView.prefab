@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2526077738319670125}
   - component: {fileID: 2526077738319670124}
   - component: {fileID: 7106694951565096669}
-  - component: {fileID: 8858225740447158605}
   m_Layer: 10
   m_Name: UnitView
   m_TagString: Untagged
@@ -107,7 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2938eef4c47488f99eccc804fbf4e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tile: {fileID: 0}
   Info:
     Name: 
     Health: 0
@@ -118,17 +116,4 @@ MonoBehaviour:
     MoveSpeed: 0
     AttackAnimationSpeed: 0
   Height: 0.25
-  Player: 0
   Level: 1
---- !u!114 &8858225740447158605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2526077738319670035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724224a0185746a99a68ed4a7f4b08dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

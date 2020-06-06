@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using Controller;
 using Controller.NBattleSimulation;
 using Controller.Save;
@@ -26,62 +27,57 @@ namespace Infrastructure {
     public UnitView UnitView;
     public TileView TileView;
 
-    void Start() {
+    IEnumerator Start() {
       MainLog.DefaultInit();
-      var unitDataLoader = new UnitInfoLoader();
-      var units = unitDataLoader.Load();
+      var units = new UnitInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
       
       var eventBus = new EventBus();
-      var decisionFactory = new DecisionFactory(eventBus);
-      var unitFactory = new UnitFactory(units, decisionFactory);
+      var unitFactory = new UnitFactory(units, new DecisionFactory(eventBus));
       var players = new[] {new Player(unitFactory), new Player(unitFactory)};
-      
-      var tileViewFactory = new TileViewFactory(TileView);
       
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
       
-      var tilePresenter = new TilePresenter(TileStartPoints, tileViewFactory);
-      var playerPresenter1 = new PlayerPresenter();
-      var playerPresenter2 = new PlayerPresenter();
-      var playerPresenters = new[] {playerPresenter1, playerPresenter2};
+      var tilePresenter = new TilePresenter(TileStartPoints, new TileViewFactory(TileView));
+      var unitViewFactory = new UnitViewFactory(units, UnitView, tilePresenter);
+
+      var boardPresenter = new BoardPresenter(
+        new UnitViewDict(unitViewFactory),
+        new UnitViewDict(unitViewFactory),
+        new UnitViewDict(unitViewFactory),
+        tilePresenter);
+      
+      var playerPresenters = new[] {
+        new PlayerPresenter(
+          new UnitViewDict(unitViewFactory), 
+          new UnitViewDict(unitViewFactory), tilePresenter), 
+        new PlayerPresenter(
+          new UnitViewDict(unitViewFactory), 
+          new UnitViewDict(unitViewFactory), tilePresenter)
+      };
                   
       var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
-      var battleStateController = new BattleStateController(BattleSimulationUI);
-      var unitViewFactory = new UnitViewFactory(units, UnitView, tilePresenter);
-      var unitViewFactoryDecorator = new UnitViewFactoryDecorator(tilePresenter, 
-        BattleSetupUI, players, playerPresenters, unitTooltipController, unitViewFactory, battleStateController);
-      
-      var board1UnitDict = new UnitViewDict(unitViewFactoryDecorator);
-      var bench1UnitDict = new UnitViewDict(unitViewFactoryDecorator);
-      var board2UnitDict = new UnitViewDict(unitViewFactoryDecorator);
-      var bench2UnitDict = new UnitViewDict(unitViewFactoryDecorator);
-      var player1Units = new UnitViewDict(unitViewFactoryDecorator);
-      var player2Units = new UnitViewDict(unitViewFactoryDecorator);
-      var allUnitsDict = new UnitViewDict(unitViewFactoryDecorator);
-      var boardPresenter = new BoardPresenter(allUnitsDict, player1Units, player2Units,
-          tilePresenter);
-      playerPresenter1.Init(tilePresenter, board1UnitDict, bench1UnitDict);
-      playerPresenter2.Init(tilePresenter, board2UnitDict, bench2UnitDict);
-
       var board = new Board();
-      var aiHeap = new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
-      var aiContext = new AiContext(board, aiHeap);
-      var battleSimulation = new BattleSimulation(aiContext);
+      var aiContext = new AiContext(board, 
+        new FibonacciHeap<ICommand, TimePoint>(float.MinValue));
 
       var mainCamera = Camera.main;
-      var globalLayer = LayerMask.GetMask("Terrain", "GlobalCollider");
-      var unitLayer = LayerMask.GetMask("Unit");
-      var raycastController = new RaycastController(mainCamera, globalLayer, unitLayer, 
+      
+      var raycastController = new RaycastController(mainCamera, 
+        LayerMask.GetMask("Terrain", "GlobalCollider"), 
+        LayerMask.GetMask("Unit"), 
         unitTooltipController);
-            
-      var debugUIController = new DebugUIController(BattleSetupUI, BattleSaveUI, BattleSimulationUI);
-      var unitDebugController = new TargetDebugController(board, tilePresenter);
-      var updateController = new UpdateController(unitDebugController, debugUIController, 
-        raycastController);
-      UpdateInput.Init(updateController);
+      
+      var unitDragController2 = new UnitDragController(tilePresenter, BattleSetupUI,
+        players, playerPresenters, unitTooltipController, 
+        new BattleStateController(BattleSimulationUI), raycastController, mainCamera);
+      
+      UpdateInput.Init(new UpdateController(
+        new TargetDebugController(board, tilePresenter), 
+        new DebugUIController(BattleSetupUI, BattleSaveUI, BattleSimulationUI), 
+        raycastController));
       
       var movementController = new MovementController(boardPresenter, tilePresenter);
       var attackController = new AttackController(boardPresenter, UnitTooltipUI);
@@ -90,14 +86,18 @@ namespace Infrastructure {
       eventBus.Register<ApplyDamageEvent>(attackController);
       eventBus.Register<DeathEvent>(attackController);
 
-      var battleSimulationController = new BattleSimulationController(battleSimulation,
-        BattleSimulationUI, movementController, aiContext, players, boardPresenter,
-        playerPresenters);
+      var battleSimulationController = new BattleSimulationController(
+        new BattleSimulation(aiContext), BattleSimulationUI, movementController, 
+        aiContext, players, boardPresenter, playerPresenters);
 
       var battleSetupController = new BattleSetupController(players, playerPresenters, 
         BattleSetupUI);
       var battleSaveController = new BattleSaveController(players, playerPresenters, 
         BattleSaveUI, saveDataLoader, saves);
+
+      yield return null;
+      
+      unitDragController2.Init();
     }
   }
 }
