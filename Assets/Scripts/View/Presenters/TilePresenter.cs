@@ -8,6 +8,7 @@ namespace View.Presenters {
     public TilePresenter(TileStartPoints startPoints, TileViewFactory tileFactory) {
       this.startPoints = startPoints;
       
+      //TODO: extract logic from constructor
       for (int x = 0; x < 8; x++) { //TODO: extract tile creation and tiles getter logic
         for (int y = 0; y < 6; y++) {
           var coord = new Coord(x, y);

@@ -61,6 +61,7 @@ namespace Controller {
       }
       
       StartCoord = lastCoord;
+      lastCoord = Coord.Invalid;
     }
 
     void Update() {
