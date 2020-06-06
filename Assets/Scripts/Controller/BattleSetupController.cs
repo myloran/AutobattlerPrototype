@@ -26,7 +26,7 @@ namespace Controller {
     
     void RemoveUnit() {
       var id = ui.GetSelectedPlayerId;
-      var coord = presenters[id].BenchUnits.DestroyFromEnd();
+      var coord = presenters[id].BenchUnits.DestroyFromEnd((EPlayer)id);
       players[id].RemoveBenchUnit(coord);
     }
 

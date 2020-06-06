@@ -28,19 +28,21 @@ namespace View.Presenters {
 
     public (bool, Coord) InstantiateToStart(string name, EPlayer player) {
       for (int x = 0; x < 10; x++) {
-        var coord = new Coord(x, -1);
+        var y = player.Y();
+        var coord = new Coord(x, y);
         if (Units.ContainsKey(coord)) continue;
 
         Units[coord] = Create(name, coord, player);
-        return (true, new Coord(x, -1));
+        return (true, new Coord(x, y));
       }
 
       return (false, default);
     }
     
-    public Coord DestroyFromEnd() {
+    public Coord DestroyFromEnd(EPlayer player) {
       for (int x = 9; x >= 0; x--) {
-        var coord = new Coord(x, -1);
+        var y = player.Y();
+        var coord = new Coord(x, y);
         if (!Units.ContainsKey(coord)) continue;
         
         Remove(Units[coord]);

@@ -12,7 +12,7 @@ namespace View.Presenters {
     void Instantiate(string name, Coord coord, EPlayer player);
     void Destroy(Coord coord);
     (bool, Coord) InstantiateToStart(string name, EPlayer player);
-    Coord DestroyFromEnd(); //TODO: change to void
+    Coord DestroyFromEnd(EPlayer player); //TODO: change to void
     void Clear();
   }
 }

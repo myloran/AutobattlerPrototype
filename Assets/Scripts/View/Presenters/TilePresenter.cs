@@ -29,24 +29,24 @@ namespace View.Presenters {
 
     public Coord FindClosestCoord(Vector3 position, EPlayer selectedPlayer) {
       if (position.z - 0.5f < startPoints.Bench1.position.z && selectedPlayer == EPlayer.First)
-        return FindCoord(position, startPoints.Bench1.position);
+        return FindCoordOnBench(position, startPoints.Bench1.position, selectedPlayer);
       
       if (position.z + 0.5f > startPoints.Bench2.position.z  && selectedPlayer == EPlayer.Second)
-        return FindCoord(position, startPoints.Bench2.position);
+        return FindCoordOnBench(position, startPoints.Bench2.position, selectedPlayer);
       
-      return FindCoord(position, selectedPlayer);
+      return FindCoordOnBoard(position, selectedPlayer);
     }
         
     public Vector3 PositionAt(Coord coord) {
       var startPoint = coord.Y == -1 ? startPoints.Bench1
         : coord.Y == -2 ? startPoints.Bench2
         : startPoints.Board;
-      return startPoint.position + new Vector3(coord.X, 0, coord.Y);
+      return startPoint.position + new Vector3(coord.X, 0, Max(coord.Y, 0));
     }
 
     public TileView TileAt(Coord coord) => tiles[coord];
         
-    Coord FindCoord(Vector3 position, EPlayer selectedPlayer) {
+    Coord FindCoordOnBoard(Vector3 position, EPlayer selectedPlayer) {
       var indexPosition = position - startPoints.Board.position;
       var indexX = RoundToInt(indexPosition.x);
       var indexY = RoundToInt(indexPosition.z);
@@ -58,12 +58,12 @@ namespace View.Presenters {
       return new Coord(x, y);
     }
 
-    Coord FindCoord(Vector3 position, Vector3 startPosition) {
+    Coord FindCoordOnBench(Vector3 position, Vector3 startPosition, EPlayer selectedPlayer) {
       var indexPosition = position - startPosition;
       var index = RoundToInt(indexPosition.x);
-      var indexClamped = Clamp(index, 0, 9);  
+      var indexClamped = Clamp(index, 0, 9); 
       
-      return new Coord(indexClamped, -1);
+      return new Coord(indexClamped, selectedPlayer.Y());
     }
 
     readonly Dictionary<Coord, TileView> tiles = new Dictionary<Coord, TileView>(8 * 6 + 10 * 2);
