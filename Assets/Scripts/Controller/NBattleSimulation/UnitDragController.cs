@@ -76,7 +76,8 @@ namespace Controller.NBattleSimulation {
       
       unit.transform.position = mousePosition + new Vector3(0, 1, 0);
 
-      var coord = tilePresenter.FindClosestCoord(mousePosition, (EPlayer)battleSetupUI.GetSelectedPlayerId);
+      var player = (EPlayer)battleSetupUI.GetSelectedPlayerId;
+      var coord = tilePresenter.FindClosestCoordLimitedByPlayerSide(mousePosition, player);
       
       if (coord != lastCoord) {
         if (lastCoord != Coord.Invalid)

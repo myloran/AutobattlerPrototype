@@ -27,17 +27,31 @@ namespace View.Presenters {
         tiles[coord] = tileFactory.Create(startPoints.Bench2.position + new Vector3(x, 0, 0));
       }
     }
-
+    
     public Coord FindClosestCoord(Vector3 position, EPlayer selectedPlayer) {
-      if (position.z - 0.5f < startPoints.Bench1.position.z && selectedPlayer == EPlayer.First)
-        return FindCoordOnBench(position, startPoints.Bench1.position, selectedPlayer);
-      
-      if (position.z + 0.5f > startPoints.Bench2.position.z  && selectedPlayer == EPlayer.Second)
-        return FindCoordOnBench(position, startPoints.Bench2.position, selectedPlayer);
-      
-      return FindCoordOnBoard(position, selectedPlayer);
+      var (didFind, coord) = SearchCoordAtBench(position, selectedPlayer);
+      return didFind ? coord : FindCoordOnBoard(position);
     }
-        
+
+    public Coord FindClosestCoordLimitedByPlayerSide(Vector3 position, EPlayer selectedPlayer) {
+      var (didFind, coord) = SearchCoordAtBench(position, selectedPlayer);
+      return didFind ? coord : FindCoordOnBoard(position).LimitByPlayerSide(selectedPlayer);
+    }
+
+    (bool, Coord) SearchCoordAtBench(Vector3 position, EPlayer selectedPlayer) {
+      if (position.z - 0.5f < startPoints.Bench1.position.z && selectedPlayer == EPlayer.First) {
+        var coord = FindCoordOnBench(position, startPoints.Bench1.position, selectedPlayer);
+        return (true, coord);
+      }
+
+      if (position.z + 0.5f > startPoints.Bench2.position.z && selectedPlayer == EPlayer.Second) {
+        var coord = FindCoordOnBench(position, startPoints.Bench2.position, selectedPlayer);
+        return (true, coord);
+      }
+
+      return (false, default);
+    }
+
     public Vector3 PositionAt(Coord coord) {
       var startPoint = coord.Y == -1 ? startPoints.Bench1
         : coord.Y == -2 ? startPoints.Bench2
@@ -47,18 +61,16 @@ namespace View.Presenters {
 
     public TileView TileAt(Coord coord) => tiles[coord];
         
-    Coord FindCoordOnBoard(Vector3 position, EPlayer selectedPlayer) {
+    Coord FindCoordOnBoard(Vector3 position) {
       var indexPosition = position - startPoints.Board.position;
       var indexX = RoundToInt(indexPosition.x);
       var indexY = RoundToInt(indexPosition.z);
       var x = Clamp(indexX, 0, 7);
-      var y = selectedPlayer == EPlayer.First
-        ? Clamp(indexY, 0, 2)
-        : Clamp(indexY, 3, 5);
+      var y = Clamp(indexY, 0, 5);
 
       return new Coord(x, y);
     }
-
+    
     Coord FindCoordOnBench(Vector3 position, Vector3 startPosition, EPlayer selectedPlayer) {
       var indexPosition = position - startPosition;
       var index = RoundToInt(indexPosition.x);
