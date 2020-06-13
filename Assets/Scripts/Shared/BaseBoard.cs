@@ -14,7 +14,7 @@ namespace Shared {
     public TUnit GetUnitAt(Coord coord) => units[coord];
     public IEnumerable<TUnit> Units => units.Values;
 
-    public void AddUnitAt(Coord coord, TUnit unit) {
+    public void AddUnit(Coord coord, TUnit unit) {
       units[coord] = unit;
 
       if (unit.Player == EPlayer.First)
@@ -23,7 +23,7 @@ namespace Shared {
         player2Units[coord] = unit;
     }
 
-    public void RemoveUnitAt(Coord coord) {
+    public void RemoveUnit(Coord coord) {
       units.Remove(coord);
       
       if (player1Units.Has(coord))
@@ -32,11 +32,11 @@ namespace Shared {
         player2Units.Remove(coord);
     }
 
-    public void MoveUnitOnBoard(Coord from, Coord to) {
+    public void MoveUnit(Coord from, Coord to) {
       var unit = GetUnitAt(from);
       OnChangeCoord(to, unit);
-      AddUnitAt(to, unit);
-      RemoveUnitAt(from);
+      AddUnit(to, unit);
+      RemoveUnit(from);
     }
     
     public void Reset(TPlayer player1, TPlayer player2) {

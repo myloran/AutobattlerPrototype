@@ -24,7 +24,7 @@ namespace Controller.NBattleSimulation {
 
     public void HandleEvent(EndMoveEvent e) {
       routines.Remove(e.From);
-      board.MoveUnitOnBoard(e.From, e.To);
+      board.MoveUnit(e.From, e.To);
     }
 
     public void SimulationTick(float time) {

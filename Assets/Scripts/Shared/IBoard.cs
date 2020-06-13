@@ -6,9 +6,9 @@ namespace Shared {
     bool ContainsUnitAt(Coord coord);
     TUnit GetUnitAt(Coord coord);
     IEnumerable<TUnit> Units { get; }
-    void AddUnitAt(Coord coord, TUnit unit);
-    void RemoveUnitAt(Coord coord);
-    void MoveUnitOnBoard(Coord from, Coord to);
+    void AddUnit(Coord coord, TUnit unit);
+    void RemoveUnit(Coord coord);
+    void MoveUnit(Coord from, Coord to);
     void Reset(TPlayer player1, TPlayer player2);
   }
 }

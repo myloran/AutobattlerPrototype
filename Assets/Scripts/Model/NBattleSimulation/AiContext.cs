@@ -70,7 +70,7 @@ namespace Model.NBattleSimulation {
       CurrentTime = 0;
       CheckBattleIsOver();
       
-      foreach (var unit in Board.GetUnits()) {
+      foreach (var unit in Board.Units) {
         unit.Reset();
         var decisionCommand = new MakeDecisionCommand(unit.Ai, this, 0);
         InsertCommand(decisionCommand);

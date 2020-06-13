@@ -21,7 +21,8 @@ namespace Model.NUnit {
         Movement = movement,
         Target = new CTarget(movement),
         Ai = new CAi(),
-        Stats = new CStats(1, player)
+        Stats = new CStats(1, player),
+        Player = player
       };
 
       unit.Ai.Decision = decisionFactory.Create(unit);

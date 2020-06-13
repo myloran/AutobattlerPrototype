@@ -2,7 +2,7 @@ using System.Text;
 using Shared;
 
 namespace Model.NUnit {
-  public class Unit {
+  public class Unit : IUnit {
     public UnitInfo Info;
     public CHealth Health;
     public CAttack Attack;
@@ -10,6 +10,8 @@ namespace Model.NUnit {
     public CTarget Target;
     public CAi Ai;
     public CStats Stats;
+    
+    public EPlayer Player { get; set; }
 
     public void Reset() {
       Health.Reset();
@@ -23,5 +25,6 @@ namespace Model.NUnit {
       .Append(Ai).Append("\n")
       .Append(Stats).Append("\n")
       .ToString();
+
   }
 }

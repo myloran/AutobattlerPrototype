@@ -14,7 +14,7 @@ namespace Model.NBattleSimulation.Commands {
 
     public override void Execute() {
       var fromCoord = movement.Coord;
-      board.RemoveUnitAt(movement.Coord);
+      board.RemoveUnit(movement.Coord);
       movement.Coord = newCoord;
       movement.TakenCoord = Coord.Invalid;
       bus.Raise(new EndMoveEvent(fromCoord, newCoord));

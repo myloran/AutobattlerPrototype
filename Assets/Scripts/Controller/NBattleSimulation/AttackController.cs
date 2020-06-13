@@ -26,7 +26,7 @@ namespace Controller.NBattleSimulation {
 
     public void HandleEvent(DeathEvent e) {
       Object.Destroy(board.GetUnitAt(e.Coord).gameObject); //TODO: hide instead of destroy
-      board.RemoveUnitAt(e.Coord);
+      board.RemoveUnit(e.Coord);
     }
 
     public void SimulationTick(float time) {

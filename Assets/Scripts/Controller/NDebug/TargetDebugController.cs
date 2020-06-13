@@ -10,11 +10,11 @@ namespace Controller.NDebug {
     }
     
     public void Tick() {
-      foreach (var unit in board.GetUnits()) {
+      foreach (var unit in board.Units) {
         if (!unit.Target.Exists) continue;
         var from = tilePresenter.PositionAt(unit.Movement.Coord);
         var to = tilePresenter.PositionAt(unit.Target.Unit.Movement.Coord);
-        UnityEngine.Debug.DrawLine(from, to, Color.red, 0);
+        Debug.DrawLine(from, to, Color.red, 0);
       }
     }
 

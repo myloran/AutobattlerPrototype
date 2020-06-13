@@ -62,7 +62,8 @@ namespace Infrastructure {
       };
                   
       var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
-      var board = new Board();
+      var board = new Board(new UnitDict(unitFactory), new UnitDict(unitFactory),
+        new UnitDict(unitFactory));
       var aiContext = new AiContext(board, 
         new FibonacciHeap<ICommand, TimePoint>(float.MinValue));
 

@@ -10,10 +10,10 @@ namespace Model.NBattleSimulation.Commands {
     
     public override void Execute() {
       var board = context.Board;
-      board.RemoveUnitAt(movement.Coord);
+      board.RemoveUnit(movement.Coord);
       
       if (movement.TakenCoord != Coord.Invalid)
-        board.RemoveUnitAt(movement.TakenCoord);
+        board.RemoveUnit(movement.TakenCoord);
       
       context.CheckBattleIsOver();
     }
