@@ -24,6 +24,7 @@ namespace Model.NUnit {
       .Append(Movement).Append("\n")
       .Append(Ai).Append("\n")
       .Append(Stats).Append("\n")
+      .Append(Target).Append("\n")
       .ToString();
 
   }

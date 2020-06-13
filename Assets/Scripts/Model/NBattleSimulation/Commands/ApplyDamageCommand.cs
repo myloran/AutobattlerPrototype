@@ -14,6 +14,8 @@ namespace Model.NBattleSimulation.Commands {
     }
 
     public override void Execute() {
+      if (!health.IsAlive) return;
+      
       health.TakeDamage(damage);
       
       if (!health.IsAlive) 

@@ -11,9 +11,8 @@ namespace Model.NAI.Actions {
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var target = Unit.Target;
-      var stats = Unit.Stats;
-      target.FindNearestTarget(context.EnemyUnits(stats.Player)); //TODO: if we dont find target, we should make another decision
-      
+      target.Unit = context.FindNearestTarget(Unit.Stats.Player, Unit.Movement.Coord); //TODO: if we dont find target, we should make another decision
+      target.Unit.Health.SubToDeath(Unit.Target);
       return decision.MakeDecision(context);
     }
 

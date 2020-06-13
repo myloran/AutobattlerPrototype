@@ -1,22 +1,22 @@
 using System.Collections.Generic;
+using System.Linq;
 using FibonacciHeap;
-using MinMaxHeap;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using Shared;
 
 namespace Model.NBattleSimulation {
+  //TODO: extract responsibility related to battle simulation
   public class AiContext {
     public bool IsPlayerDead { get; private set; }
     public float PlayerDeathTime { get; private set; }
     public TimePoint CurrentTime;
 
-    public Board Board;
-    public readonly FibonacciHeap<ICommand, TimePoint> AiHeap;
+    public readonly Board Board;
     
     public AiContext(Board board, FibonacciHeap<ICommand, TimePoint> aiHeap) {
       Board = board;
-      AiHeap = aiHeap;
+      this.aiHeap = aiHeap;
     }
 
     public void InsertCommand(ICommand command, float time = 0) {
@@ -30,12 +30,12 @@ namespace Model.NBattleSimulation {
       }
 
       var node = new FibonacciHeapNode<ICommand, TimePoint>(command, nextTime);
-      AiHeap.Insert(node);
+      aiHeap.Insert(node);
       nodes[nextTime] = node;
     }
 
     public (bool, ICommand) RemoveMin() {
-      var node = AiHeap.RemoveMin();
+      var node = aiHeap.RemoveMin();
       if (node == null) {
         log.Info("The battle is over");
         return (true, default);
@@ -51,17 +51,25 @@ namespace Model.NBattleSimulation {
       nodes.Remove(CurrentTime);
       return (false, command);
     }
+    
+    public Unit FindNearestTarget(EPlayer player, Coord coord) {
+      var units = EnemyUnits(player); //TODO: move to target component?
+      
+      return !units.Any() 
+        ? default 
+        : units.MinBy(u => CoordExt.SqrDistance(coord, u.Movement.Coord));
+    } 
 
-    public IEnumerable<Unit> EnemyUnits(EPlayer player) =>
+    IEnumerable<Unit> EnemyUnits(EPlayer player) => 
       Board.GetPlayerUnits(player.Opposite());
 
     public bool IsTileEmpty(Coord coord) => !Board.ContainsUnitAt(coord);
 
     public void CheckBattleIsOver() {
-      if (Board.HasUnits(EPlayer.First) || Board.HasUnits(EPlayer.Second)) {
-        IsPlayerDead = true;
-        PlayerDeathTime = CurrentTime;
-      }
+      if (!Board.HasUnits(EPlayer.First) && !Board.HasUnits(EPlayer.Second)) return;
+      
+      IsPlayerDead = true;
+      PlayerDeathTime = CurrentTime;
     }
     
     public void Reset(Player player1, Player player2) {
@@ -77,7 +85,9 @@ namespace Model.NBattleSimulation {
       }
     }
         
-    Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>> nodes = 
+    readonly FibonacciHeap<ICommand, TimePoint> aiHeap;
+
+    readonly Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>> nodes = 
       new Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>>();
 
     static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(AiContext));

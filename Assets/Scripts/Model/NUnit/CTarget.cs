@@ -11,12 +11,9 @@ namespace Model.NUnit {
     }
     
     public bool Exists => Unit != null;
-
-    public void FindNearestTarget(IEnumerable<Unit> units) {
-      if (!units.Any()) return;
-      
-      Unit = units.MinBy(u => CoordExt.SqrDistance(movement.Coord, u.Movement.Coord));
-    } 
+    public void OnDeath() => Unit = null;
+    
+    public override string ToString() => Exists ? $"Target coord: {Unit.Movement.Coord}" : "";
 
     readonly CMovement movement;
   }
