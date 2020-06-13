@@ -6,8 +6,6 @@ namespace Model.NBattleSimulation {
     public Board(IUnitDict<Unit> units, IUnitDict<Unit> player1Units, 
       IUnitDict<Unit> player2Units) : base(units, player1Units, player2Units) { }
 
-    protected override void OnChangeCoord(Coord coord, Unit unit) {
-      throw new System.NotImplementedException();
-    }
+    protected override void OnChangeCoord(Coord coord, Unit unit) { }
   }
 }

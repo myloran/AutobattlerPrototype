@@ -40,28 +40,15 @@ namespace Shared {
     }
     
     public void Reset(TPlayer player1, TPlayer player2) {
-      ClearUnits();
+      player1Units = player1.BoardUnits;
+      player2Units = player2.BoardUnits;
       
-      foreach (var (coord, unit) in player1.BoardUnits) {
-        units[coord] = unit;
-        player1Units[coord] = unit;
-      }
-      
-      foreach (var (coord, unit) in player2.BoardUnits) {
-        units[coord] = unit;
-        player2Units[coord] = unit;
-      }
-    }
-
-    void ClearUnits() {
       units.Clear();
-      player1Units.Clear();
-      player2Units.Clear();
+      foreach (var (coord, unit) in player1Units) units[coord] = unit;
+      foreach (var (coord, unit) in player2Units) units[coord] = unit;
     }
     
-    readonly IUnitDict<TUnit> units;
-    readonly IUnitDict<TUnit> player1Units;
-    readonly IUnitDict<TUnit> player2Units;
+    //TODO: ResetBack unit coord and coord in unit dict
 
     public IEnumerable<TUnit> GetPlayerUnits(EPlayer player) => 
       player == EPlayer.First ? player1Units.Values : player2Units.Values;
@@ -70,5 +57,10 @@ namespace Shared {
       player == EPlayer.First ? player1Units.Count == 0 : player2Units.Count == 0;
     
     protected abstract void OnChangeCoord(Coord coord, TUnit unit);
+
+    IUnitDict<TUnit> units;
+
+    IUnitDict<TUnit> player1Units,
+      player2Units;
   }
 }

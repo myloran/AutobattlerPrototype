@@ -38,12 +38,7 @@ namespace Infrastructure {
       
       var eventBus = new EventBus();
       var unitFactory = new UnitFactory(units, new DecisionFactory(eventBus));
-      
-      var players = new[] {
-        new Player(EPlayer.First, new UnitDict(unitFactory), new UnitDict(unitFactory)), 
-        new Player(EPlayer.Second, new UnitDict(unitFactory), new UnitDict(unitFactory))
-      };
-      
+
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
       
@@ -62,8 +57,16 @@ namespace Infrastructure {
       };
                   
       var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
-      var board = new Board(new UnitDict(unitFactory), new UnitDict(unitFactory),
-        new UnitDict(unitFactory));
+
+
+      var player1BoardUnits = new UnitDict(unitFactory);
+      var player2BoardUnits = new UnitDict(unitFactory);
+      var players = new[] {
+        new Player(EPlayer.First, player1BoardUnits, new UnitDict(unitFactory)), 
+        new Player(EPlayer.Second, player2BoardUnits, new UnitDict(unitFactory))
+      };
+      var board = new Board(new UnitDict(unitFactory), player1BoardUnits,
+        player2BoardUnits);
       var aiContext = new AiContext(board, 
         new FibonacciHeap<ICommand, TimePoint>(float.MinValue));
 

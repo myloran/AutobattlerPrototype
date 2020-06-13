@@ -11,10 +11,10 @@ namespace Model.NBattleSimulation {
 
     public (bool, Unit) GetUnit(Coord coord) {
       var dict = coord.BelongsToPlayer(Player) ? BenchUnits : BoardUnits;
-      if (dict.Has(coord)) return (true, dict[coord]);
       
-      log.Info($"Dict does not have coord: {coord}");
-      return (false, default);
+      return dict.Has(coord) 
+        ? (true, dict[coord]) 
+        : (false, default);
     }
 
     static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(Player));
