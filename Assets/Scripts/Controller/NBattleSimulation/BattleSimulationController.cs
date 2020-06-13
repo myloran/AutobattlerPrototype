@@ -20,26 +20,24 @@ namespace Controller.NBattleSimulation {
       this.playerPresenters = playerPresenters;
 
       ui.OStartBattle.onValueChanged.AsObservable().Where(b => b)
-        .Subscribe(StartBattle).AddTo(ui.OStartBattle);
+        .Subscribe(_ => StartBattle()).AddTo(ui.OStartBattle);
       ui.BExecuteNextDecision.Sub(ExecuteNextDecision);
       ui.BExecuteAllDecisions.Sub(ExecuteAllDecisions);
     }
-
-    void StartBattle(bool isOn) {
+    
+    void StartBattle() {
       simulation.PrepareBattle(players[0], players[1]);
       boardPresenter.Reset(playerPresenters[0], playerPresenters[1]);
-      ui.BExecuteNextDecision.interactable = !simulation.IsBattleOver;
-      ui.BExecuteAllDecisions.interactable = !simulation.IsBattleOver;
+      ui.SetEnabled(!simulation.IsBattleOver);
     }
 
     void ExecuteNextDecision() {
       simulation.ExecuteNextCommand();
       viewSimulation.SimulationTick(context.CurrentTime);
 
-      if (simulation.IsBattleOver) {
-        ui.BExecuteNextDecision.Disable();
-        ui.BExecuteAllDecisions.Disable();
-      } 
+      if (!simulation.IsBattleOver) return;
+      
+      ui.Disable();
     }
 
     void ExecuteAllDecisions() {
