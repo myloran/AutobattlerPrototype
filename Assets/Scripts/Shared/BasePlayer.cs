@@ -1,24 +1,26 @@
 namespace Shared {
   public abstract class BasePlayer<TUnit> : IPlayer<TUnit> {
+    public EPlayer Player { get; }
     public IUnitDict<TUnit> BoardUnits { get; private set; }
     public IUnitDict<TUnit> BenchUnits { get; private set; }
 
-    protected BasePlayer(IUnitDict<TUnit> boardUnitDict, IUnitDict<TUnit> benchUnitDict) {
+    protected BasePlayer(EPlayer player, IUnitDict<TUnit> boardUnitDict, IUnitDict<TUnit> benchUnitDict) {
       BoardUnits = boardUnitDict;
       BenchUnits = benchUnitDict;
+      Player = player;
     }
 
     public void MoveUnit(Coord from, Coord to) {
       var fromDict = from.Y < 0 ? BenchUnits : BoardUnits;
       var toDict = to.Y < 0 ? BenchUnits : BoardUnits;
 
-      if (!fromDict.ContainsKey(from)) {
+      if (!fromDict.Has(from)) {
         log.Error($"Dict does not have unit at coord: {from}");
         return;
       }
 
       var unit = fromDict[from];
-      var hasUnitAtDestination = toDict.ContainsKey(to);
+      var hasUnitAtDestination = toDict.Has(to);
 
       if (hasUnitAtDestination)
         SwapUnits(from, to, fromDict, toDict, unit);

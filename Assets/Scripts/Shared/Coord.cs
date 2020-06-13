@@ -41,6 +41,9 @@ namespace Shared {
   }
 
   public static class CoordExt {
+    public static bool BelongsToPlayer(this Coord self, EPlayer player) => 
+      self.Y == player.BenchId();
+
     public static Coord Diff(this Coord self, Coord to) {
       var minX = self.X > to.X ? self.X - to.X : to.X - self.X;
       var minY = self.Y > to.Y ? self.Y - to.Y : to.Y - self.Y;

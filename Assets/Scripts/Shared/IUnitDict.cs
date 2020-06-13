@@ -8,7 +8,7 @@ namespace Shared {
     int Count { get; }
     void Remove(Coord coord);
     
-    bool ContainsKey(Coord coord);
+    bool Has(Coord coord);
     void Instantiate(string name, Coord coord, EPlayer player);
     void Destroy(Coord coord);
     (bool, Coord) InstantiateToStart(string name, EPlayer player);

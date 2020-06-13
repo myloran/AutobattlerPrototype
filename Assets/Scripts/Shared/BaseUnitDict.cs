@@ -17,7 +17,7 @@ namespace Shared {
     IEnumerator<KeyValuePair<Coord, T>> IEnumerable<KeyValuePair<Coord, T>>.GetEnumerator() => Units.GetEnumerator();
 
     public IEnumerator GetEnumerator() => Units.GetEnumerator();
-    public bool ContainsKey(Coord coord) => Units.ContainsKey(coord);
+    public bool Has(Coord coord) => Units.ContainsKey(coord);
     public void Remove(Coord coord) => Units.Remove(coord);
 
     public void Instantiate(string name, Coord coord, EPlayer player) => 
@@ -30,7 +30,7 @@ namespace Shared {
 
     public (bool, Coord) InstantiateToStart(string name, EPlayer player) {
       for (int x = 0; x < 10; x++) {
-        var y = player.Y();
+        var y = player.BenchId();
         var coord = new Coord(x, y);
         if (Units.ContainsKey(coord)) {
           continue;
@@ -45,7 +45,7 @@ namespace Shared {
     
     public Coord DestroyFromEnd(EPlayer player) {
       for (int x = 9; x >= 0; x--) {
-        var y = player.Y();
+        var y = player.BenchId();
         var coord = new Coord(x, y);
         if (!Units.ContainsKey(coord)) continue;
         

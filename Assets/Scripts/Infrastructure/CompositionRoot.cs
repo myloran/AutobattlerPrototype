@@ -40,8 +40,8 @@ namespace Infrastructure {
       var unitFactory = new UnitFactory(units, new DecisionFactory(eventBus));
       
       var players = new[] {
-        new Player(new UnitDict(unitFactory), new UnitDict(unitFactory)), 
-        new Player(new UnitDict(unitFactory), new UnitDict(unitFactory))
+        new Player(EPlayer.First, new UnitDict(unitFactory), new UnitDict(unitFactory)), 
+        new Player(EPlayer.Second, new UnitDict(unitFactory), new UnitDict(unitFactory))
       };
       
       BattleSetupUI.Init(units.Keys.ToList());
@@ -55,9 +55,9 @@ namespace Infrastructure {
         new UnitViewDict(unitViewFactory), tilePresenter);
       
       var playerPresenters = new[] {
-        new PlayerPresenter(new UnitViewDict(unitViewFactory), 
+        new PlayerPresenter(EPlayer.First, new UnitViewDict(unitViewFactory), 
           new UnitViewDict(unitViewFactory), tilePresenter), 
-        new PlayerPresenter(new UnitViewDict(unitViewFactory), 
+        new PlayerPresenter(EPlayer.Second, new UnitViewDict(unitViewFactory), 
           new UnitViewDict(unitViewFactory), tilePresenter)
       };
                   

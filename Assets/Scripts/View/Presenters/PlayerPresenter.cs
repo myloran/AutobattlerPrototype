@@ -3,9 +3,9 @@ using View.Exts;
 
 namespace View.Presenters {
   public class PlayerPresenter : BasePlayer<UnitView> {
-    public PlayerPresenter(IUnitDict<UnitView> boardUnitDict, 
+    public PlayerPresenter(EPlayer player, IUnitDict<UnitView> boardUnitDict, 
         IUnitDict<UnitView> benchUnitDict, TilePresenter tilePresenter) 
-        : base(boardUnitDict, benchUnitDict) {
+        : base(player, boardUnitDict, benchUnitDict) {
       this.tilePresenter = tilePresenter;
     }
 

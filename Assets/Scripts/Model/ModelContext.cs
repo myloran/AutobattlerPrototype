@@ -1,3 +1,4 @@
+using System;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using Shared;
@@ -9,14 +10,15 @@ namespace Model {
     }
     
     public Unit GetUnit(Coord coord) {
-      if (coord.Y == -1) return players[0].BenchUnits[coord];
-      if (coord.Y == -2) return players[1].BenchUnits[coord];
-
-      return players[0].BoardUnits.ContainsKey(coord) 
-        ? players[0].BoardUnits[coord] 
-        : players[1].BoardUnits[coord];
+      foreach (var player in players) {
+        var (isExist, unit) = player.GetUnit(coord);
+        if (isExist) return unit;        
+      }
+      log.Error($"Dict does not have coord: {coord}");
+      throw new Exception();
     }
 
     readonly Player[] players;
+    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(ModelContext));
   }
 }

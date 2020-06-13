@@ -15,7 +15,7 @@ namespace Controller.NDebug {
       
       ui.UpdateText(unit.ToString());
     }
-    
+                                                       
     public void SelectUnitModel(Coord coord) => unit = context.GetUnit(coord);
 
     public void SetActive(bool isOn) {

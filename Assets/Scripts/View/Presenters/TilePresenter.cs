@@ -64,7 +64,7 @@ namespace View.Presenters {
       var index = RoundToInt(indexPosition.x);
       var indexClamped = Clamp(index, 0, 9); 
       
-      return new Coord(indexClamped, selectedPlayer.Y());
+      return new Coord(indexClamped, selectedPlayer.BenchId());
     }
 
     readonly Dictionary<Coord, TileView> tiles = new Dictionary<Coord, TileView>(8 * 6 + 10 * 2);
