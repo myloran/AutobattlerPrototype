@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Model.NUnit;
 using Shared;
+using static Shared.Const;
 
 namespace Model.NBattleSimulation {
   public class Board {
@@ -42,9 +43,9 @@ namespace Model.NBattleSimulation {
       }
     }
     
-    readonly Dictionary<Coord, Unit> units = new Dictionary<Coord, Unit>(20);
-    readonly Dictionary<Coord, Unit> player1Units = new Dictionary<Coord, Unit>(10);
-    readonly Dictionary<Coord, Unit> player2Units = new Dictionary<Coord, Unit>(10);
+    readonly Dictionary<Coord, Unit> units = new Dictionary<Coord, Unit>(MaxUnitsOnBoard);
+    readonly Dictionary<Coord, Unit> player1Units = new Dictionary<Coord, Unit>(MaxUnitsOnBench);
+    readonly Dictionary<Coord, Unit> player2Units = new Dictionary<Coord, Unit>(MaxUnitsOnBench);
 
     public IEnumerable<Unit> GetPlayerUnits(EPlayer player) => 
       player == EPlayer.First ? player1Units.Values : player2Units.Values;

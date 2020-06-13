@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using static Shared.Const;
 
 namespace Shared {
   public abstract class BaseUnitDict<T> : IUnitDict<T> {
-    public Dictionary<Coord, T> Units { get; } = new Dictionary<Coord, T>(10);
+    public Dictionary<Coord, T> Units { get; } = new Dictionary<Coord, T>(MaxUnitsOnBench);
     
     public virtual T this[Coord coord] {
       get => Units[coord];
@@ -16,7 +17,7 @@ namespace Shared {
     IEnumerator<KeyValuePair<Coord, T>> IEnumerable<KeyValuePair<Coord, T>>.GetEnumerator() => Units.GetEnumerator();
 
     public IEnumerator GetEnumerator() => Units.GetEnumerator();
-    public bool Contains(Coord coord) => Units.ContainsKey(coord);
+    public bool ContainsKey(Coord coord) => Units.ContainsKey(coord);
     public void Remove(Coord coord) => Units.Remove(coord);
 
     public void Instantiate(string name, Coord coord, EPlayer player) => 
@@ -31,7 +32,9 @@ namespace Shared {
       for (int x = 0; x < 10; x++) {
         var y = player.Y();
         var coord = new Coord(x, y);
-        if (Units.ContainsKey(coord)) continue;
+        if (Units.ContainsKey(coord)) {
+          continue;
+        }
 
         Units[coord] = Create(name, coord, player);
         return (true, new Coord(x, y));

@@ -12,13 +12,13 @@ namespace Shared {
       var fromDict = from.Y < 0 ? BenchUnits : BoardUnits;
       var toDict = to.Y < 0 ? BenchUnits : BoardUnits;
 
-      if (!fromDict.Contains(from)) {
+      if (!fromDict.ContainsKey(from)) {
         log.Error($"Dict does not have unit at coord: {from}");
         return;
       }
 
       var unit = fromDict[from];
-      var hasUnitAtDestination = toDict.Contains(to);
+      var hasUnitAtDestination = toDict.ContainsKey(to);
 
       if (hasUnitAtDestination)
         SwapUnits(from, to, fromDict, toDict, unit);
@@ -34,7 +34,7 @@ namespace Shared {
     }
 
     void SwapUnits(Coord from, Coord to, IUnitDict<TUnit> fromDict,
-      IUnitDict<TUnit> toDict, TUnit fromUnit) {
+        IUnitDict<TUnit> toDict, TUnit fromUnit) {
       OnChangeCoord(to, fromUnit);
       OnChangeCoord(from, toDict[to]);
       fromDict[from] = toDict[to];

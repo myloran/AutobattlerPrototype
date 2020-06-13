@@ -12,7 +12,7 @@ namespace Model {
       if (coord.Y == -1) return players[0].BenchUnits[coord];
       if (coord.Y == -2) return players[1].BenchUnits[coord];
 
-      return players[0].BoardUnits.Contains(coord) 
+      return players[0].BoardUnits.ContainsKey(coord) 
         ? players[0].BoardUnits[coord] 
         : players[1].BoardUnits[coord];
     }

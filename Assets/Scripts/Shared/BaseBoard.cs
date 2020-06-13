@@ -10,7 +10,7 @@ namespace Shared {
       this.player2Units = player2Units;
     }
     
-    public bool ContainsUnitAt(Coord coord) => units.Contains(coord); 
+    public bool ContainsUnitAt(Coord coord) => units.ContainsKey(coord); 
     public TUnit GetUnitAt(Coord coord) => units[coord];
     public IEnumerable<TUnit> Units => units.Values;
 
@@ -26,7 +26,7 @@ namespace Shared {
     public void RemoveUnitAt(Coord coord) {
       units.Remove(coord);
       
-      if (player1Units.Contains(coord))
+      if (player1Units.ContainsKey(coord))
         player1Units.Remove(coord);
       else 
         player2Units.Remove(coord);
