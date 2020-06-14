@@ -25,7 +25,7 @@ namespace Model.NUnit {
         Player = player
       };
 
-      unit.Ai.Decision = decisionFactory.Create(unit);
+      unit.Ai.SetDecisionTree(decisionFactory.Create(unit));
 
       return unit;
     }

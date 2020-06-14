@@ -26,6 +26,5 @@ namespace Model.NUnit {
       .Append(Stats).Append("\n")
       .Append(Target).Append("\n")
       .ToString();
-
   }
 }

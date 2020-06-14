@@ -6,7 +6,9 @@ namespace Model.NAI.NDecisionTree {
     public LoggingDecorator(IDecisionTreeNode decision) {
       this.decision = decision;
     }
-    
+
+    public EDecision Type { get; } = EDecision.LoggingDecorator;
+
     public IDecisionTreeNode MakeDecision(AiContext context) {
       message += decision.GetType().Name + "->";
       if (decision is FindNearestTargetAction) { } else

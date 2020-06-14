@@ -1,8 +1,10 @@
 using Model.NBattleSimulation;
 
 namespace Model.NAI.NDecisionTree {
-  public abstract class Decision : IDecisionTreeNode {
-    protected Decision(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode) {
+  public abstract class BaseDecision : IDecisionTreeNode {
+    public EDecision Type { get; } = EDecision.BaseDecision;
+    
+    protected BaseDecision(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode) {
       this.trueNode = trueNode;
       this.falseNode = falseNode;
     }

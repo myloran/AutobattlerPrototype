@@ -3,7 +3,7 @@ using Model.NBattleSimulation;
 using Model.NUnit;
 
 namespace Model.NAI.Decisions {
-  public class IsWithinAttackRange : Decision {
+  public class IsWithinAttackRange : BaseDecision {
     public IsWithinAttackRange(IDecisionTreeNode trueNode, 
       IDecisionTreeNode falseNode, CAttack attack, CTarget target) : base(trueNode, falseNode) {
       this.attack = attack;

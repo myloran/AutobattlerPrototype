@@ -5,7 +5,7 @@ namespace Shared {
       where TPlayer : IPlayer<TUnit> where TUnit : IUnit {
     TUnit this[Coord coord] { get; }
     bool ContainsUnitAt(Coord coord);
-    IEnumerable<TUnit> Units { get; }
+    IEnumerable<TUnit> Values { get; }
     void AddUnit(Coord coord, TUnit unit);
     void RemoveUnit(Coord coord);
     void MoveUnit(Coord from, Coord to);

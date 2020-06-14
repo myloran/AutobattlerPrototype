@@ -15,6 +15,7 @@ namespace Model.NUnit {
 
     public void Reset() => Health = StartingHealth;
     public void SubToDeath(CTarget target) => observers.Add(target);
+    public void UnsubFromDeath(CTarget target) => observers.Remove(target);
 
     public void TakeDamage(float damage) {
       var damageDealt = damage - damage * Armor / (Armor + 10);

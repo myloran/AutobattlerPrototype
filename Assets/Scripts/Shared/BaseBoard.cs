@@ -5,18 +5,18 @@ namespace Shared {
       where TPlayer : IPlayer<TUnit> where TUnit : IUnit {
     protected BaseBoard(IUnitDict<TUnit> units, IUnitDict<TUnit> player1Units, 
         IUnitDict<TUnit> player2Units) {
-      this.units = units;
+      this.Units = units;
       this.player1Units = player1Units;
       this.player2Units = player2Units;
     }
 
-    public TUnit this[Coord coord] => units[coord];
+    public TUnit this[Coord coord] => Units[coord];
 
-    public bool ContainsUnitAt(Coord coord) => units.Has(coord); 
-    public IEnumerable<TUnit> Units => units.Values;
+    public bool ContainsUnitAt(Coord coord) => Units.Has(coord); 
+    public IEnumerable<TUnit> Values => Units.Values;
 
     public void AddUnit(Coord coord, TUnit unit) {
-      units[coord] = unit;
+      Units[coord] = unit;
 
       if (unit.Player == EPlayer.First)
         player1Units[coord] = unit;
@@ -25,7 +25,7 @@ namespace Shared {
     }
 
     public void RemoveUnit(Coord coord) {
-      units.Remove(coord);
+      Units.Remove(coord);
       
       if (player1Units.Has(coord))
         player1Units.Remove(coord);
@@ -34,7 +34,7 @@ namespace Shared {
     }
 
     public void MoveUnit(Coord from, Coord to) {
-      var unit = units[from];
+      var unit = Units[from];
       OnChangeCoord(to, unit);
       AddUnit(to, unit);
       RemoveUnit(from);
@@ -44,9 +44,9 @@ namespace Shared {
       player1Units = player1.BoardUnits;
       player2Units = player2.BoardUnits;
       
-      units.Units.Clear();
-      foreach (var (coord, unit) in player1Units) units[coord] = unit;
-      foreach (var (coord, unit) in player2Units) units[coord] = unit;
+      Units.Units.Clear();
+      foreach (var (coord, unit) in player1Units) Units[coord] = unit;
+      foreach (var (coord, unit) in player2Units) Units[coord] = unit;
     }
     
     //TODO: ResetBack unit coord and coord in unit dict
@@ -59,7 +59,7 @@ namespace Shared {
     
     protected abstract void OnChangeCoord(Coord coord, TUnit unit);
 
-    IUnitDict<TUnit> units;
+    protected readonly IUnitDict<TUnit> Units;
 
     IUnitDict<TUnit> player1Units,
       player2Units;

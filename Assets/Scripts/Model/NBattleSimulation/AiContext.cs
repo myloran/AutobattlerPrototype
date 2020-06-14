@@ -63,8 +63,10 @@ namespace Model.NBattleSimulation {
 
     IEnumerable<Unit> EnemyUnits(EPlayer player) => 
       Board.GetPlayerUnits(player.Opposite());
-
-    public bool IsTileEmpty(Coord coord) => !Board.ContainsUnitAt(coord);
+    
+    public IEnumerable<Unit> GetSurroundUnits(Coord coord) => Board.GetSurroundUnits(coord);
+    public bool IsSurrounded(Coord coord) => Board.IsSurrounded(coord);
+    public bool IsTileEmpty(Coord coord) => !Board.ContainsUnitAt(coord) && coord.IsInsideBoard();
 
     public void CheckBattleIsOver() {
       if (!Board.HasUnits(EPlayer.First) && !Board.HasUnits(EPlayer.Second)) return;
@@ -79,7 +81,7 @@ namespace Model.NBattleSimulation {
       CurrentTime = 0;
       CheckBattleIsOver();
       
-      foreach (var unit in Board.Units) {
+      foreach (var unit in Board.Values) {
         unit.Reset();
         var decisionCommand = new MakeDecisionCommand(unit.Ai, this, 0);
         InsertCommand(decisionCommand);

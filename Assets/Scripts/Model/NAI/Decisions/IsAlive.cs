@@ -3,7 +3,7 @@ using Model.NBattleSimulation;
 using Model.NUnit;
 
 namespace Model.NAI.Decisions {
-  public class IsAlive : Decision {
+  public class IsAlive : BaseDecision {
     public IsAlive(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, CHealth health) : base(trueNode, falseNode) {
       this.health = health;
     }

@@ -47,12 +47,20 @@ namespace Shared {
   }
 
   public static class CoordExt {
-    public static (Coord, Coord) GetClosestCoordsToMove(this Coord direction) {
+    public static bool IsInsideBoard(this Coord coord) =>
+      coord.X >= 0 && coord.X <= 7 && coord.Y >= 0 && coord.Y <= 5;
+    
+    public static (Coord, Coord) GetClosestDirectionsToMove(this Coord direction) {
       if (direction.IsDiagonal) return ((direction.X, 0), (0, direction.Y));
 
       return direction.X == 0 
         ? ((1, direction.Y), (-1, direction.Y)) 
         : ((direction.X, 1), (direction.Y, -1));
+    }
+        
+    public static Coord GetClosestDirectionToMove(this Coord direction, Coord coord) {
+      var (coord1, coord2) = GetClosestDirectionsToMove(direction);
+      return coord1 == coord ? coord2 : coord1;
     }
     
     public static Coord LimitByPlayerSide(this Coord coord, EPlayer player) {

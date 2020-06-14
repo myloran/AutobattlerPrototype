@@ -10,7 +10,7 @@ namespace Controller.NDebug {
     }
     
     public void Tick() {
-      foreach (var unit in board.Units) {
+      foreach (var unit in board.Values) {
         if (!unit.Target.Exists) continue;
         var from = tilePresenter.PositionAt(unit.Movement.Coord);
         var to = tilePresenter.PositionAt(unit.Target.Unit.Movement.Coord);

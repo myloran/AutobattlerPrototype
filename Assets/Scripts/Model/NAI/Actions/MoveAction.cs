@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
@@ -8,69 +9,86 @@ using Shared;
 
 namespace Model.NAI.Actions {
   public class MoveAction : BaseAction {
+    public override EDecision Type { get; } = EDecision.MoveAction;
+    public IDecisionTreeNode FindNearestTarget;
+    
     public MoveAction(Unit unit, IEventBus bus) : base(unit, bus) { }
 
-    public IDecisionTreeNode FindNearestTarget;
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var movement = Unit.Movement;
       var target = Unit.Target;
       var ai = Unit.Ai;
       
-      var vector = target.Unit.Movement.Coord - movement.Coord;
-      var newCoord = movement.Coord + vector.Normalized;
-      
+      var direction = target.Unit.Movement.Coord - movement.Coord;
+      var newCoord = movement.Coord + direction.Normalized;
       if (context.IsTileEmpty(newCoord)) { //shortest path check
-        Move(context, movement, vector.IsDiagonal, newCoord, ai);
+        Move(context, movement, direction.IsDiagonal, newCoord, ai, target);
         return this;
       }
 
-      var needToWaitTarget = context.Board[newCoord] == Unit.Target.Unit && !vector.IsDiagonal;
+      var needToWaitTarget = context.Board[newCoord] == Unit.Target.Unit && !direction.IsDiagonal;
       if (needToWaitTarget) { //if target on the tile 
-        WaitForTargetToMove(context, ai);
+        InsertMakeDecision(context, ai, Unit.Target.Unit.Ai.NextDecisionTime);
         return this;
       }
       
-      var (vector1, vector2) = vector.GetClosestCoordsToMove();
-      var newCoord1 = movement.Coord + vector1.Normalized;
-      
+      var (direction1, direction2) = direction.GetClosestDirectionsToMove();
+      var newCoord1 = movement.Coord + direction1.Normalized;
       if (context.IsTileEmpty(newCoord1)) { //short path check
-        Move(context, movement, vector.IsDiagonal, newCoord1, ai);
+        Move(context, movement, direction1.IsDiagonal, newCoord1, ai, target);
         return this;
       }
       
-      var newCoord2 = movement.Coord + vector2.Normalized;
-      
+      var newCoord2 = movement.Coord + direction2.Normalized;
       if (context.IsTileEmpty(newCoord2)) { //short path check
-        Move(context, movement, vector.IsDiagonal, newCoord2, ai);
+        Move(context, movement, direction2.IsDiagonal, newCoord2, ai, target);
         return this;
       }
 
+      var direction3 = direction1.GetClosestDirectionToMove(newCoord1);
+      var newCoord3 = movement.Coord + direction3.Normalized;
+      if (context.IsTileEmpty(newCoord3)) { //short path check
+        Move(context, movement, direction3.IsDiagonal, newCoord3, ai, target);
+        return this;
+      }
+      
+      var direction4 = direction2.GetClosestDirectionToMove(newCoord2);
+      var newCoord4 = movement.Coord + direction4.Normalized;
+      if (context.IsTileEmpty(newCoord4)) { //short path check
+        Move(context, movement, newCoord4.IsDiagonal, newCoord4, ai, target);
+        return this;
+      }
+
+      if (context.IsSurrounded(movement.Coord) && !ai.IsWaiting) {
+        ai.IsWaiting = true;
+        var decisionCommand = new WaitForAlliesToMove(movement, ai, context);
+        context.InsertCommand(decisionCommand);
+        return this;
+      }
+                                      
       if (context.IsCyclicDecision) {
         log.Error($"Cyclic reference {nameof(MoveAction)}");
         return this;
       }
-      Unit.Target.Unit = null;
+      Unit.Target.Clear();
       context.IsCyclicDecision = true;
       return FindNearestTarget.MakeDecision(context);
       
       //select random side to walk along or issue normal pathfinder request
     }
 
-    void WaitForTargetToMove(AiContext context, CAi ai) {
-      var time = Unit.Target.Unit.Ai.NextDecisionTime;
+    void InsertMakeDecision(AiContext context, CAi ai, float time) {
       var decisionCommand = new MakeDecisionCommand(ai, context, time);
       context.InsertCommand(decisionCommand, time);
     }
 
-    void Move(AiContext context, CMovement movement, bool isDiagonalMove, Coord newCoord, CAi ai) {
+    void Move(AiContext context, CMovement movement, bool isDiagonalMove, Coord newCoord, 
+        CAi ai, CTarget target) {
       var time = movement.TimeToMove(isDiagonalMove);
-      new StartMoveCommand(context.Board, movement, newCoord, context.CurrentTime,
-        time, Bus
-      ).Execute();
-      var moveCommand = new EndMoveCommand(context.Board, movement, newCoord
-        , Bus
-      );
+      new StartMoveCommand(context.Board, movement, newCoord, context.CurrentTime,time, Bus)
+        .Execute();
+      var moveCommand = new EndMoveCommand(context.Board, movement, target, newCoord, Bus);
       context.InsertCommand(moveCommand, time);
       var decisionCommand = new MakeDecisionCommand(ai, context, time);
       context.InsertCommand(decisionCommand, time);

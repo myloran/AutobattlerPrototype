@@ -4,6 +4,7 @@ using PlasticFloor.EventBus;
 
 namespace Model.NAI.NDecisionTree {
   public abstract class BaseAction : IDecisionTreeNode {
+    public virtual EDecision Type { get; } = EDecision.BaseAction;
     public readonly Unit Unit;
     protected readonly IEventBus Bus;
     
@@ -11,7 +12,7 @@ namespace Model.NAI.NDecisionTree {
       this.Bus = bus;
       this.Unit = unit;
     }
-    
+
     public abstract IDecisionTreeNode MakeDecision(AiContext context);
   }
 }

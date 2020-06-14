@@ -3,7 +3,7 @@ using Model.NBattleSimulation;
 using Model.NUnit;
 
 namespace Model.NAI.Decisions {
-  public class HasTarget : Decision {
+  public class HasTarget : BaseDecision {
     public HasTarget(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, 
         CTarget target) : base(trueNode, falseNode) {
       this.target = target;

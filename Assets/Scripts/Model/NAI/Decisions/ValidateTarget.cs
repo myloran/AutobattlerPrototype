@@ -2,7 +2,7 @@ using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 
 namespace Model.NAI.Decisions {
-  public class ValidateTarget : Decision {
+  public class ValidateTarget : BaseDecision {
     public ValidateTarget(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode) : base(trueNode, falseNode) { }
     
     protected override bool GetBranch(AiContext context) {
