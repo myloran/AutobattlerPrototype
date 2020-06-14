@@ -11,6 +11,7 @@ namespace Model.NBattleSimulation {
     public bool IsPlayerDead { get; private set; }
     public float PlayerDeathTime { get; private set; }
     public TimePoint CurrentTime;
+    public bool IsCyclicDecision;
 
     public readonly Board Board;
     

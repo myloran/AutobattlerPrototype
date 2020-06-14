@@ -10,14 +10,14 @@ namespace Model.NUnit {
     public IDecisionTreeNode Create(Unit unit) {
       var startAttackAction = WithLogging(new StartAttackAction(unit, bus));
       var endAttackAction = WithLogging(new EndAttackAction(unit, bus));
-      var moveAction = WithLogging(new MoveAction(unit, bus));
+      var moveAction = new MoveAction(unit, bus);
       var nullAction = WithLogging(new NullAction(unit, bus));
       
       var isAttackAnimationPlayed = WithLogging(new IsAttackAnimationPlayed(
         endAttackAction, startAttackAction, unit.Attack));
       
       var isWithinAttackRangeDecision = WithLogging(new IsWithinAttackRange(
-        isAttackAnimationPlayed, moveAction, unit.Attack, unit.Target));
+        isAttackAnimationPlayed, WithLogging(moveAction), unit.Attack, unit.Target));
       
       var findNearestTargetAction = WithLogging(new FindNearestTargetAction(
         unit, bus, isWithinAttackRangeDecision));
@@ -27,6 +27,8 @@ namespace Model.NUnit {
 
       var isAlive = WithLogging(new IsAlive(
         hasTarget, nullAction, unit.Health));
+
+      moveAction.FindNearestTarget = findNearestTargetAction;
       
       return isAlive;
     }

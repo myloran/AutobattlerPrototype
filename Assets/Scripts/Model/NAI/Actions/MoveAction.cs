@@ -10,6 +10,8 @@ namespace Model.NAI.Actions {
   public class MoveAction : BaseAction {
     public MoveAction(Unit unit, IEventBus bus) : base(unit, bus) { }
 
+    public IDecisionTreeNode FindNearestTarget;
+
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var movement = Unit.Movement;
       var target = Unit.Target;
@@ -43,10 +45,16 @@ namespace Model.NAI.Actions {
         Move(context, movement, vector.IsDiagonal, newCoord2, ai);
         return this;
       }
+
+      if (context.IsCyclicDecision) {
+        log.Error($"Cyclic reference {nameof(MoveAction)}");
+        return this;
+      }
+      Unit.Target.Unit = null;
+      context.IsCyclicDecision = true;
+      return FindNearestTarget.MakeDecision(context);
+      
       //select random side to walk along or issue normal pathfinder request
-      //wait for target to come closer
-      WaitForTargetToMove(context, ai);
-      return this;
     }
 
     void WaitForTargetToMove(AiContext context, CAi ai) {
@@ -67,5 +75,7 @@ namespace Model.NAI.Actions {
       var decisionCommand = new MakeDecisionCommand(ai, context, time);
       context.InsertCommand(decisionCommand, time);
     }
+
+    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(MoveAction));
   }
 }
