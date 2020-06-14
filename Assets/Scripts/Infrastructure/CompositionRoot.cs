@@ -32,6 +32,7 @@ namespace Infrastructure {
 
     IEnumerator Start() {
       MainLog.DefaultInit();
+      log.Info("\n\nStart");
       var units = new UnitInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
@@ -108,5 +109,7 @@ namespace Infrastructure {
       
       unitDragController2.Init();
     }
+
+    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(CompositionRoot));
   }
 }
