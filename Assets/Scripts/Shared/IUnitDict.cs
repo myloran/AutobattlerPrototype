@@ -13,6 +13,6 @@ namespace Shared {
     void Destroy(Coord coord);
     (bool, Coord) InstantiateToStart(string name, EPlayer player);
     Coord DestroyFromEnd(EPlayer player); //TODO: change to void
-    void Clear();
+    void DestroyAll();
   }
 }

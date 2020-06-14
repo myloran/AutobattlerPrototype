@@ -44,7 +44,7 @@ namespace Shared {
       player1Units = player1.BoardUnits;
       player2Units = player2.BoardUnits;
       
-      units.Clear();
+      units.Units.Clear();
       foreach (var (coord, unit) in player1Units) units[coord] = unit;
       foreach (var (coord, unit) in player2Units) units[coord] = unit;
     }

@@ -39,12 +39,12 @@ namespace Controller.Save {
 
     void Load() {
       foreach (var player in players) {
-        player.BenchUnits.Clear();
-        player.BoardUnits.Clear();
+        player.BenchUnits.DestroyAll();
+        player.BoardUnits.DestroyAll();
       }
       foreach (var player in playerPresenters) {
-        player.BenchUnits.Clear();
-        player.BoardUnits.Clear();
+        player.BenchUnits.DestroyAll();
+        player.BoardUnits.DestroyAll();
       }
       
       var save = saves[ui.GetSelectedSaveName];

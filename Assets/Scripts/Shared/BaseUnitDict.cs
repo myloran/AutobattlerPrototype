@@ -56,7 +56,7 @@ namespace Shared {
       return Coord.Invalid;
     }
     
-    public void Clear() {
+    public void DestroyAll() {
       foreach (var unit in Units.Values) {
         Remove(unit);
       }
