@@ -58,9 +58,9 @@ namespace Shared {
         : ((direction.X, 1), (direction.Y, -1));
     }
         
-    public static Coord GetClosestDirectionToMove(this Coord direction, Coord coord) {
+    public static Coord GetClosestDirectionToMove(this Coord direction, Coord coordExcluded) {
       var (coord1, coord2) = GetClosestDirectionsToMove(direction);
-      return coord1 == coord ? coord2 : coord1;
+      return coord1 == coordExcluded ? coord2 : coord1;
     }
     
     public static Coord LimitByPlayerSide(this Coord coord, EPlayer player) {

@@ -46,14 +46,14 @@ namespace Model.NAI.Actions {
         return this;
       }
 
-      var direction3 = direction1.GetClosestDirectionToMove(newCoord1);
+      var direction3 = direction1.GetClosestDirectionToMove(direction);
       var newCoord3 = movement.Coord + direction3.Normalized;
       if (context.IsTileEmpty(newCoord3)) { //short path check
         Move(context, movement, direction3.IsDiagonal, newCoord3, ai, target);
         return this;
       }
       
-      var direction4 = direction2.GetClosestDirectionToMove(newCoord2);
+      var direction4 = direction2.GetClosestDirectionToMove(direction);
       var newCoord4 = movement.Coord + direction4.Normalized;
       if (context.IsTileEmpty(newCoord4)) { //short path check
         Move(context, movement, newCoord4.IsDiagonal, newCoord4, ai, target);
