@@ -9,9 +9,10 @@ namespace Shared {
       this.player1Units = player1Units;
       this.player2Units = player2Units;
     }
-    
+
+    public TUnit this[Coord coord] => units[coord];
+
     public bool ContainsUnitAt(Coord coord) => units.Has(coord); 
-    public TUnit GetUnitAt(Coord coord) => units[coord];
     public IEnumerable<TUnit> Units => units.Values;
 
     public void AddUnit(Coord coord, TUnit unit) {
@@ -33,7 +34,7 @@ namespace Shared {
     }
 
     public void MoveUnit(Coord from, Coord to) {
-      var unit = GetUnitAt(from);
+      var unit = units[from];
       OnChangeCoord(to, unit);
       AddUnit(to, unit);
       RemoveUnit(from);

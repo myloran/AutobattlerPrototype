@@ -29,18 +29,32 @@ namespace Shared {
       }
     }
 
+    [IgnoreMember] public bool IsDiagonal => X != 0 && Y != 0;
     [IgnoreMember] public float SqrMagnitude => X * X + Y * Y; 
     [IgnoreMember] public Coord Normalized => new Coord(Clamp(X, -1, 1), Clamp(Y, -1, 1));
+
+    public static implicit operator (int x, int y)(Coord coord) => (coord.X, coord.Y);
+    public static implicit operator Coord ((int x, int y) coord) => new Coord(coord.x, coord.y);
 
     public static Coord operator +(Coord a, Coord b) => new Coord(a.X + b.X, a.Y + b.Y);
     public static Coord operator -(Coord a, Coord b) => new Coord(a.X - b.X, a.Y - b.Y);
     public static bool operator ==(Coord a, Coord b) => a.X == b.X && a.Y == b.Y;
     public static bool operator !=(Coord a, Coord b) => a.X != b.X || a.Y != b.Y;
+    public static bool operator ==(Coord a, (int x, int y) b) => a.X == b.x && a.Y == b.y;
+    public static bool operator !=(Coord a, (int x, int y) b) => a.X != b.x || a.Y != b.y;
 
     public override string ToString() => $"{nameof(X)}:{X}, {nameof(Y)}:{Y}";
   }
 
   public static class CoordExt {
+    public static (Coord, Coord) GetClosestCoordsToMove(this Coord direction) {
+      if (direction.IsDiagonal) return ((direction.X, 0), (0, direction.Y));
+
+      return direction.X == 0 
+        ? ((1, direction.Y), (-1, direction.Y)) 
+        : ((direction.X, 1), (direction.Y, -1));
+    }
+    
     public static Coord LimitByPlayerSide(this Coord coord, EPlayer player) {
       coord.Y = player == EPlayer.First
         ? Clamp(coord.Y, 0, 2)

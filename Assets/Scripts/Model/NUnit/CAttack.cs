@@ -22,7 +22,7 @@ namespace Model.NUnit {
       ? new TimePoint(1 / AttackSpeed) : 999;
 
     public bool IsWithinAttackRange(CMovement target) => 
-      CoordExt.SqrDistance(movement.Coord, target.Coord) <= SqrRange;
+      CoordExt.SqrDistance(movement.Coord, target.Coord) <= SqrRange; //TODO: check if coord == coord.Normalized is more performant
 
     public void StartAttack(float startTime) => lastAttackTime = startTime;
     public void EndAttack() => lastAttackTime = 0;

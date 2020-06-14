@@ -14,7 +14,7 @@ namespace Controller.NDebug {
         if (!unit.Target.Exists) continue;
         var from = tilePresenter.PositionAt(unit.Movement.Coord);
         var to = tilePresenter.PositionAt(unit.Target.Unit.Movement.Coord);
-        Debug.DrawLine(from, to, Color.red, 0);
+        Debug.DrawLine(from, to, Color.red);
       }
     }
 

@@ -20,12 +20,12 @@ namespace Controller.NBattleSimulation {
         log.Error("No unit view at coord:");
         return;
       }
-      board.GetUnitAt(e.Coord).Info.Health = e.Health;
+      board[e.Coord].Info.Health = e.Health;
       // unitTooltipUI.SetHealth(e.Health);
     }
 
     public void HandleEvent(DeathEvent e) {
-      Object.Destroy(board.GetUnitAt(e.Coord).gameObject); //TODO: hide instead of destroy
+      Object.Destroy(board[e.Coord].gameObject); //TODO: hide instead of destroy
       board.RemoveUnit(e.Coord);
     }
 

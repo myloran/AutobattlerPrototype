@@ -3,8 +3,8 @@ using System.Collections.Generic;
 namespace Shared {
   public interface IBoard<TUnit, in TPlayer> 
       where TPlayer : IPlayer<TUnit> where TUnit : IUnit {
+    TUnit this[Coord coord] { get; }
     bool ContainsUnitAt(Coord coord);
-    TUnit GetUnitAt(Coord coord);
     IEnumerable<TUnit> Units { get; }
     void AddUnit(Coord coord, TUnit unit);
     void RemoveUnit(Coord coord);

@@ -16,7 +16,7 @@ namespace Model.NBattleSimulation.Commands {
     }
 
     public override void Execute() {
-      var unit = board.GetUnitAt(movement.Coord);
+      var unit = board[movement.Coord];
       board.AddUnit(newCoord, unit);
       movement.TakenCoord = newCoord;
 // #if Client

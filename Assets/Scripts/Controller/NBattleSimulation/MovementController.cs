@@ -16,7 +16,7 @@ namespace Controller.NBattleSimulation {
     }
     
     public void HandleEvent(StartMoveEvent e) {
-      var unit = board.GetUnitAt(e.From);
+      var unit = board[e.From];
       var from = tilePresenter.PositionAt(e.From).WithY(unit.Height);
       var to = tilePresenter.PositionAt(e.To).WithY(unit.Height);
       routines[e.From] = new MoveRoutine(unit.transform, from, to, e.StartingTime, e.Duration);
