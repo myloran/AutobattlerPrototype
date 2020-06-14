@@ -10,6 +10,8 @@ namespace Model.NUnit {
     public void OnDeath() => Unit = null;
     
     public void Clear() {
+      if (!Exists) return;
+      
       Unit.Health.UnsubFromDeath(this);
       Unit = null;
     }
