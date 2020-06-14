@@ -14,10 +14,9 @@ namespace View {
 
     public UnitView Create(string name, Coord coord, EPlayer player) {
       var position = tilePresenter.PositionAt(coord).WithY(unitPrefab.Height);
-      var unit = Object.Instantiate(unitPrefab, position, Quaternion.identity);
-      unit.Info = new UnitInfo(unitInfos[name]);
-      unit.Player = player;
-      return unit;
+      
+      return Object.Instantiate(unitPrefab, position, Quaternion.identity)
+        .Init(new UnitInfo(unitInfos[name]), player);
     }
 
     readonly TilePresenter tilePresenter;
