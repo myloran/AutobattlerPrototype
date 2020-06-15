@@ -14,7 +14,6 @@ namespace Model.NAI.Actions {
     
     public MoveAction(Unit unit, IEventBus bus) : base(unit, bus) { }
 
-
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var movement = Unit.Movement;
       var target = Unit.Target;
@@ -27,12 +26,6 @@ namespace Model.NAI.Actions {
         return this;
       }
 
-      var needToWaitTarget = context.Board[newCoord] == Unit.Target.Unit && !direction.IsDiagonal;
-      if (needToWaitTarget) { //if target on the tile 
-        InsertMakeDecision(context, ai, Unit.Target.Unit.Ai.DecisionTime);
-        return this;
-      }
-      
       var (direction1, direction2) = direction.GetClosestDirectionsToMove();
       var newCoord1 = movement.Coord + direction1.Normalized;
       if (context.IsTileEmpty(newCoord1)) {
@@ -74,8 +67,6 @@ namespace Model.NAI.Actions {
       Unit.Target.Clear();
       context.IsCyclicDecision = true;
       return FindNearestTarget.MakeDecision(context);
-      
-      //select random side to walk along or issue normal pathfinder request
     }
 
     void InsertMakeDecision(AiContext context, CAi ai, float time) {
