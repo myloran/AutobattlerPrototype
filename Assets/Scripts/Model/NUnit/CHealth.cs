@@ -26,8 +26,9 @@ namespace Model.NUnit {
     }
 
     void NotifyDied() {
-      observers.ForEach(o => o.OnDeath());
-      observers.Clear();
+      for (var i = observers.Count - 1; i >= 0; i--) {
+        observers[i].Clear();
+      }
     }
 
     public override string ToString() => $"{nameof(StartingHealth)}: {StartingHealth}, {nameof(Health)}: {Health}, {nameof(Armor)}: {Armor}";

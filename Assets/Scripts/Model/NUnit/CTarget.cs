@@ -7,7 +7,6 @@ namespace Model.NUnit {
     }
     
     public bool Exists => Unit != null;
-    public void OnDeath() => Unit = null;
     
     public void Clear() {
       if (!Exists) return;
@@ -19,6 +18,7 @@ namespace Model.NUnit {
     public void ChangeTo(Unit unit) {
       Clear();
       Unit = unit;
+      Unit.Health.SubToDeath(this);
     }
 
     public static implicit operator Unit(CTarget target) => target.Unit;
