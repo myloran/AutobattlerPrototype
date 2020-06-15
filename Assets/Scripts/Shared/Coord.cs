@@ -55,7 +55,7 @@ namespace Shared {
 
       return direction.X == 0 
         ? ((1, direction.Y), (-1, direction.Y)) 
-        : ((direction.X, 1), (direction.Y, -1));
+        : ((direction.X, 1), (direction.X, -1));
     }
         
     public static Coord GetClosestDirectionToMove(this Coord direction, Coord coordExcluded) {
