@@ -8,6 +8,7 @@ public class TileView : MonoBehaviour {
 
   public void Highlight() => material.color = Color.green;
   public void Unhighlight() => material.color = Color.white;
+  public void Debug(Color color) => material.color = color; 
   
   Material material;
 }

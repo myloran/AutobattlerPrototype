@@ -5,6 +5,8 @@ using static UnityEngine.Mathf;
 
 namespace View.Presenters {
   public class TilePresenter {
+    public IEnumerable<TileView> Values => tiles.Values; 
+    
     public TilePresenter(TileStartPoints startPoints, TileViewFactory tileFactory) {
       this.startPoints = startPoints;
       

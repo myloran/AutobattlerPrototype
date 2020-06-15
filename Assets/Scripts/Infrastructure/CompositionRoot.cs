@@ -84,7 +84,7 @@ namespace Infrastructure {
         new BattleStateController(BattleSimulationUI), raycastController,
         unitModelDebugController);
       
-      UpdateInput.Init(new UpdateController(
+      UpdateInput.Init(new UpdateController(new TakenCoordDebugController(tilePresenter, board),
         new TargetDebugController(board, tilePresenter), new UIDebugController(
             BattleSetupUI, BattleSaveUI, BattleSimulationUI, 
           unitModelDebugController), unitModelDebugController, raycastController));
