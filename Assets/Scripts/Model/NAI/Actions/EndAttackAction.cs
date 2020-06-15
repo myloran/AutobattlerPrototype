@@ -20,7 +20,7 @@ namespace Model.NAI.Actions {
         var deathCommand = new DeathCommand(targetMovement, context);
         var startMoveCommand = new ApplyDamageCommand(targetHealth, damage, targetMovement, 
           deathCommand, Bus);
-        context.InsertCommand(startMoveCommand);  
+        context.InsertCommand(startMoveCommand, 0);  
       }
       
       var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, attack.AttackSpeed);

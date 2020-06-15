@@ -4,25 +4,21 @@ using Shared;
 
 namespace Model.NUnit {
   public class CAi {
-    public IDecisionTreeNode DecisionTree,
-      CurrentDecision,
-      TemporalDecision;
-    public TimePoint NextDecisionTime;
+    public IDecisionTreeNode CurrentDecision;
+    public float DecisionTime;
+    public float TimeWhenDecisionWillBeExecuted;
     public bool IsWaiting;
 
     public void MakeDecision(AiContext context) {
       context.IsCyclicDecision = false;
-      CurrentDecision = DecisionTree.MakeDecision(context);
+      CurrentDecision = decisionTree.MakeDecision(context);
     }
 
-    public void MakeTemporalDecision(AiContext context) {
-      context.IsCyclicDecision = false;
-      CurrentDecision = TemporalDecision.MakeDecision(context);
-    }
-    
     public void SetDecisionTree(IDecisionTreeNode decisionTree) => 
-      DecisionTree = CurrentDecision = decisionTree;
+      this.decisionTree = CurrentDecision = decisionTree;
 
-    public override string ToString() => $"{nameof(DecisionTree)}: {DecisionTree}, {nameof(NextDecisionTime)}: {NextDecisionTime}";
+    public override string ToString() => $"{nameof(CurrentDecision)}: {CurrentDecision.GetType().Name}, {nameof(DecisionTime)}: {DecisionTime}, {nameof(TimeWhenDecisionWillBeExecuted)}: {TimeWhenDecisionWillBeExecuted}";
+    
+    IDecisionTreeNode decisionTree;
   }
 }

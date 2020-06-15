@@ -8,16 +8,22 @@ namespace Model.NUnit {
     public DecisionFactory(EventBus bus) => this.bus = bus;
 
     public IDecisionTreeNode Create(Unit unit) {
-      var startAttackAction = WithLogging(new StartAttackAction(unit, bus));
-      var endAttackAction = WithLogging(new EndAttackAction(unit, bus));
+      var startAttack = WithLogging(new StartAttackAction(unit, bus));
+      var endAttack = WithLogging(new EndAttackAction(unit, bus));
       var moveAction = new MoveAction(unit, bus);
+      var move = WithLogging(moveAction);
+      var waitMoveDiff = WithLogging(new WaitMoveDiff(unit, bus));
+      var waitFirstEnemyArriving = WithLogging(new WaitFirstEnemyArriving(unit, bus));
       var nullAction = WithLogging(new NullAction(unit, bus));
       
+      var isEnemyArrivingToAdjacentTile = new CheckEnemiesArrivingToAdjacentTile(
+        move, waitFirstEnemyArriving, waitMoveDiff, unit.Movement, unit.Stats, unit.Target);
+      
       var isAttackAnimationPlayed = WithLogging(new IsAttackAnimationPlayed(
-        endAttackAction, startAttackAction, unit.Attack));
+        endAttack, startAttack, unit.Attack));
       
       var isWithinAttackRangeDecision = WithLogging(new IsWithinAttackRange(
-        isAttackAnimationPlayed, WithLogging(moveAction), unit.Attack, unit.Target));
+        isAttackAnimationPlayed, isEnemyArrivingToAdjacentTile, unit.Attack, unit.Target));
       
       var findNearestTargetAction = WithLogging(new FindNearestTargetAction(
         unit, bus, isWithinAttackRangeDecision));

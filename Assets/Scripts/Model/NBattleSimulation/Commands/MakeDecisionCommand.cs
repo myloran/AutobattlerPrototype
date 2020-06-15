@@ -6,7 +6,8 @@ namespace Model.NBattleSimulation.Commands {
     public MakeDecisionCommand(CAi ai, AiContext context, float time) {
       this.ai = ai;
       this.context = context;
-      ai.NextDecisionTime = time;
+      ai.DecisionTime = time;
+      ai.TimeWhenDecisionWillBeExecuted = context.CurrentTime + time;
     }
 
     public override void Execute() => ai.MakeDecision(context);

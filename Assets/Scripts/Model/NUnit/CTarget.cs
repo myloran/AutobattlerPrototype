@@ -16,6 +16,13 @@ namespace Model.NUnit {
       Unit = null;
     }
 
+    public void ChangeTo(Unit unit) {
+      Clear();
+      Unit = unit;
+    }
+
+    public static implicit operator Unit(CTarget target) => target.Unit;
+
     public override string ToString() => Exists ? $"Target coord: {Unit.Movement.Coord}" : "";
 
     readonly CMovement movement;

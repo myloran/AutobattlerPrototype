@@ -29,41 +29,41 @@ namespace Model.NAI.Actions {
 
       var needToWaitTarget = context.Board[newCoord] == Unit.Target.Unit && !direction.IsDiagonal;
       if (needToWaitTarget) { //if target on the tile 
-        InsertMakeDecision(context, ai, Unit.Target.Unit.Ai.NextDecisionTime);
+        InsertMakeDecision(context, ai, Unit.Target.Unit.Ai.DecisionTime);
         return this;
       }
       
       var (direction1, direction2) = direction.GetClosestDirectionsToMove();
       var newCoord1 = movement.Coord + direction1.Normalized;
-      if (context.IsTileEmpty(newCoord1)) { //short path check
+      if (context.IsTileEmpty(newCoord1)) {
         Move(context, movement, direction1.IsDiagonal, newCoord1, ai, target);
         return this;
       }
       
       var newCoord2 = movement.Coord + direction2.Normalized;
-      if (context.IsTileEmpty(newCoord2)) { //short path check
+      if (context.IsTileEmpty(newCoord2)) {
         Move(context, movement, direction2.IsDiagonal, newCoord2, ai, target);
         return this;
       }
 
       var direction3 = direction1.GetClosestDirectionToMove(direction);
       var newCoord3 = movement.Coord + direction3.Normalized;
-      if (context.IsTileEmpty(newCoord3)) { //short path check
+      if (context.IsTileEmpty(newCoord3)) {
         Move(context, movement, direction3.IsDiagonal, newCoord3, ai, target);
         return this;
       }
       
       var direction4 = direction2.GetClosestDirectionToMove(direction);
       var newCoord4 = movement.Coord + direction4.Normalized;
-      if (context.IsTileEmpty(newCoord4)) { //short path check
+      if (context.IsTileEmpty(newCoord4)) {
         Move(context, movement, newCoord4.IsDiagonal, newCoord4, ai, target);
         return this;
       }
 
       if (context.IsSurrounded(movement.Coord) && !ai.IsWaiting) {
         ai.IsWaiting = true;
-        var decisionCommand = new WaitForAlliesToMove(movement, ai, context);
-        context.InsertCommand(decisionCommand);
+        var decisionCommand = new WaitForAlliesToMoveCommand(movement, ai, context);
+        context.InsertCommand(decisionCommand, 0);
         return this;
       }
                                       
@@ -90,8 +90,7 @@ namespace Model.NAI.Actions {
         .Execute();
       var moveCommand = new EndMoveCommand(context.Board, movement, target, newCoord, Bus);
       context.InsertCommand(moveCommand, time);
-      var decisionCommand = new MakeDecisionCommand(ai, context, time);
-      context.InsertCommand(decisionCommand, time);
+      InsertMakeDecision(context, ai, time);
     }
 
     static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(MoveAction));

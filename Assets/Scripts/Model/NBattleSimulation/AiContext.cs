@@ -20,7 +20,7 @@ namespace Model.NBattleSimulation {
       this.aiHeap = aiHeap;
     }
 
-    public void InsertCommand(ICommand command, float time = 0) {
+    public void InsertCommand(ICommand command, float time) {
       var nextTime = CurrentTime + time;
       
       if (nodes.ContainsKey(nextTime)) {
@@ -84,7 +84,7 @@ namespace Model.NBattleSimulation {
       foreach (var unit in Board.Values) {
         unit.Reset();
         var decisionCommand = new MakeDecisionCommand(unit.Ai, this, 0);
-        InsertCommand(decisionCommand);
+        InsertCommand(decisionCommand, 0);
       }
     }
         
@@ -94,5 +94,7 @@ namespace Model.NBattleSimulation {
       new Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>>();
 
     static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(AiContext));
+
+    public IEnumerable<Unit> GetAdjacentUnits(Coord coord) => Board.GetAdjacentUnits(coord);
   }
 }

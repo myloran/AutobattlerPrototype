@@ -12,6 +12,7 @@ namespace Model.NUnit {
     public CStats Stats;
     
     public EPlayer Player { get; set; }
+    public bool IsAllyWith(EPlayer player) => Player == player;
 
     public void Reset() {
       Health.Reset();
