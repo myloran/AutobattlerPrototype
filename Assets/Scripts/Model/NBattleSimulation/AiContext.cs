@@ -20,7 +20,7 @@ namespace Model.NBattleSimulation {
       this.aiHeap = aiHeap;
     }
 
-    public void InsertCommand(ICommand command, float time) {
+    public void InsertCommand(float time, ICommand command) {
       var nextTime = CurrentTime + time;
       
       if (nodes.ContainsKey(nextTime)) {
@@ -84,7 +84,7 @@ namespace Model.NBattleSimulation {
       foreach (var unit in Board.Values) {
         unit.Reset();
         var decisionCommand = new MakeDecisionCommand(unit.Ai, this, 0);
-        InsertCommand(decisionCommand, 0);
+        InsertCommand(0, decisionCommand);
       }
     }
         

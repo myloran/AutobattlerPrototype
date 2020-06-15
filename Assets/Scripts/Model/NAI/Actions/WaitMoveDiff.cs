@@ -11,7 +11,7 @@ namespace Model.NAI.Actions {
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, MoveDiffTime);
-      context.InsertCommand(decisionCommand, MoveDiffTime);
+      context.InsertCommand(MoveDiffTime, decisionCommand);
       return this;
     }
   }

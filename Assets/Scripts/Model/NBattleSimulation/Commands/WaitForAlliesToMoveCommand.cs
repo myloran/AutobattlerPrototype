@@ -21,7 +21,7 @@ namespace Model.NBattleSimulation.Commands {
       var time = units.Min(u => u.Ai.DecisionTime);
         
       var decisionCommand = new MakeDecisionCommand(ai, context, time); //TODO: replace with ai.MakeDecision?
-      context.InsertCommand(decisionCommand, time);
+      context.InsertCommand(time, decisionCommand);
     }
 
     readonly CMovement movement;

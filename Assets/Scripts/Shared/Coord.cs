@@ -50,7 +50,7 @@ namespace Shared {
     public static bool IsInsideBoard(this Coord coord) =>
       coord.X >= 0 && coord.X <= 7 && coord.Y >= 0 && coord.Y <= 5;
     
-    public static (Coord, Coord) GetClosestDirectionsToMove(this Coord direction) {
+    public static (Coord, Coord) GetClosestDirections(this Coord direction) {
       if (direction.IsDiagonal) return ((direction.X, 0), (0, direction.Y));
 
       return direction.X == 0 
@@ -58,9 +58,9 @@ namespace Shared {
         : ((direction.X, 1), (direction.X, -1));
     }
         
-    public static Coord GetClosestDirectionToMove(this Coord direction, Coord coordExcluded) {
-      var (coord1, coord2) = GetClosestDirectionsToMove(direction);
-      return coord1 == coordExcluded ? coord2 : coord1;
+    public static Coord GetClosestDirection(this Coord direction, Coord excludedDirection) {
+      var (direction1, direction2) = GetClosestDirections(direction);
+      return excludedDirection == direction1 ? direction2 : direction1;
     }
     
     public static Coord LimitByPlayerSide(this Coord coord, EPlayer player) {

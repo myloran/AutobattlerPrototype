@@ -16,47 +16,14 @@ namespace Model.NAI.Actions {
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var movement = Unit.Movement;
-      var target = Unit.Target;
       var ai = Unit.Ai;
-      
-      var direction = target.Unit.Movement.Coord - movement.Coord;
-      var newCoord = movement.Coord + direction.Normalized;
-      if (context.IsTileEmpty(newCoord)) { //shortest path check
-        Move(context, movement, direction.IsDiagonal, newCoord, ai, target);
-        return this;
-      }
 
-      var (direction1, direction2) = direction.GetClosestDirectionsToMove();
-      var newCoord1 = movement.Coord + direction1.Normalized;
-      if (context.IsTileEmpty(newCoord1)) {
-        Move(context, movement, direction1.IsDiagonal, newCoord1, ai, target);
-        return this;
-      }
-      
-      var newCoord2 = movement.Coord + direction2.Normalized;
-      if (context.IsTileEmpty(newCoord2)) {
-        Move(context, movement, direction2.IsDiagonal, newCoord2, ai, target);
-        return this;
-      }
-
-      var direction3 = direction1.GetClosestDirectionToMove(direction);
-      var newCoord3 = movement.Coord + direction3.Normalized;
-      if (context.IsTileEmpty(newCoord3)) {
-        Move(context, movement, direction3.IsDiagonal, newCoord3, ai, target);
-        return this;
-      }
-      
-      var direction4 = direction2.GetClosestDirectionToMove(direction);
-      var newCoord4 = movement.Coord + direction4.Normalized;
-      if (context.IsTileEmpty(newCoord4)) {
-        Move(context, movement, newCoord4.IsDiagonal, newCoord4, ai, target);
-        return this;
-      }
+      if (MoveOptimally(context)) return this;
 
       if (context.IsSurrounded(movement.Coord) && !ai.IsWaiting) {
         ai.IsWaiting = true;
         var decisionCommand = new WaitForAlliesToMoveCommand(movement, ai, context);
-        context.InsertCommand(decisionCommand, 0);
+        context.InsertCommand(0, decisionCommand);
         return this;
       }
                                       
@@ -69,19 +36,46 @@ namespace Model.NAI.Actions {
       return FindNearestTarget.MakeDecision(context);
     }
 
-    void InsertMakeDecision(AiContext context, CAi ai, float time) {
-      var decisionCommand = new MakeDecisionCommand(ai, context, time);
-      context.InsertCommand(decisionCommand, time);
+    bool MoveOptimally(AiContext context) {
+      var movement = Unit.Movement;
+      var target = Unit.Target;
+      var ai = Unit.Ai;
+      
+      var direction = (target.Unit.Movement.Coord - movement.Coord).Normalized;
+      if (Move(context, movement, direction, ai, target)) return true;
+
+      var (direction1, direction2) = direction.GetClosestDirections();
+      if (Move(context, movement, direction1, ai, target)) return true;
+      if (Move(context, movement, direction2, ai, target)) return true;
+
+      var direction3 = direction1.GetClosestDirection(direction);
+      if (Move(context, movement, direction3, ai, target)) return true;
+      
+      var direction4 = direction2.GetClosestDirection(direction);
+      if (Move(context, movement, direction4, ai, target)) return true;
+      
+      var direction5 = direction3.GetClosestDirection(direction1);
+      if (Move(context, movement, direction5, ai, target)) return true;
+      
+      var direction6 = direction4.GetClosestDirection(direction2);
+      if (Move(context, movement, direction6, ai, target)) return true;
+
+      return false;
     }
 
-    void Move(AiContext context, CMovement movement, bool isDiagonalMove, Coord newCoord, 
-        CAi ai, CTarget target) {
-      var time = movement.TimeToMove(isDiagonalMove);
-      new StartMoveCommand(context.Board, movement, newCoord, context.CurrentTime,time, Bus)
+    bool Move(AiContext context, CMovement movement, Coord direction, CAi ai, CTarget target) {
+      var newCoord = movement.Coord + direction;
+      if (!context.IsTileEmpty(newCoord)) return false;
+      
+      var time = movement.TimeToMove(direction.IsDiagonal);
+      new StartMoveCommand(context.Board, movement, newCoord, context.CurrentTime, time, Bus)
         .Execute();
-      var moveCommand = new EndMoveCommand(context.Board, movement, target, newCoord, Bus);
-      context.InsertCommand(moveCommand, time);
-      InsertMakeDecision(context, ai, time);
+      
+      context.InsertCommand(time, 
+        new EndMoveCommand(context.Board, movement, target, newCoord, Bus));
+      
+      context.InsertCommand(time, new MakeDecisionCommand(ai, context, time));
+      return true;
     }
 
     static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(MoveAction));

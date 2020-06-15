@@ -29,7 +29,7 @@ public class ShortestMoveAction : BaseAction {
 
     void InsertMakeDecision(AiContext context, CAi ai, float time) {
       var decisionCommand = new MakeDecisionCommand(ai, context, time);
-      context.InsertCommand(decisionCommand, time);
+      context.InsertCommand(time, decisionCommand);
     }
 
     void Move(AiContext context, CMovement movement, bool isDiagonalMove, Coord newCoord, 
@@ -38,9 +38,9 @@ public class ShortestMoveAction : BaseAction {
       new StartMoveCommand(context.Board, movement, newCoord, context.CurrentTime,time, Bus)
         .Execute();
       var moveCommand = new EndMoveCommand(context.Board, movement, target, newCoord, Bus);
-      context.InsertCommand(moveCommand, time);
+      context.InsertCommand(time, moveCommand);
       var decisionCommand = new MakeDecisionCommand(ai, context, time);
-      context.InsertCommand(decisionCommand, time);
+      context.InsertCommand(time, decisionCommand);
     }
 
     static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(MoveAction));

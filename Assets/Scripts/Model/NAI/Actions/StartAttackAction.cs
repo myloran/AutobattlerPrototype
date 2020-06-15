@@ -13,7 +13,7 @@ namespace Model.NAI.Actions {
       var ai = Unit.Ai;
       attack.StartAttack(context.CurrentTime);
       var decisionCommand = new MakeDecisionCommand(ai, context, attack.AnimationSpeed);
-      context.InsertCommand(decisionCommand, attack.AnimationSpeed);
+      context.InsertCommand(attack.AnimationSpeed, decisionCommand);
       //if health == 0 execute unit death command
       return this;
     }
