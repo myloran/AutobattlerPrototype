@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
-namespace Okwy.Logging.Formatters
+namespace Shared.OkwyLogging.Formatters
 {
 	public class ColorCodeFormatter : IFormatter
 	{

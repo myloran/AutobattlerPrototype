@@ -1,6 +1,7 @@
+using Controller.Update;
 using UnityEngine;
 using View;
-using View.UI;
+using View.UIs;
 
 namespace Controller.NDebug {
   public class UIDebugController : ITick {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Model.NUnit;
 using Shared;
+using Shared.Abstraction;
 
 namespace Model.NBattleSimulation {
   public class Board : BaseBoard<Unit, Player> {

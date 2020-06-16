@@ -2,7 +2,7 @@ using System;
 using Model.NBattleSimulation;
 using Shared;
 using View.Presenters;
-using View.UI;
+using View.UIs;
 
 namespace Controller.NDebug {
   public class BattleSetupController : IDisposable {

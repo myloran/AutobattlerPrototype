@@ -1,5 +1,6 @@
 using UniRx;
 using View;
+using View.UIs;
 
 namespace Controller.NBattleSimulation {
   public class BattleStateController {

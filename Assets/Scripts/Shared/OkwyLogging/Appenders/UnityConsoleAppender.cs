@@ -1,9 +1,7 @@
-﻿using Okwy.Logging.Formatters;
-using System;
-using System.Collections.Generic;
+﻿using Shared.OkwyLogging.Formatters;
 using UnityEngine;
 
-namespace Okwy.Logging.Appenders {
+namespace Shared.OkwyLogging.Appenders {
     public class UnityConsoleAppender {
         IFormatter formatter;
 

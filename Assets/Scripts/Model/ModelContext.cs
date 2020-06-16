@@ -2,6 +2,7 @@ using System;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using Shared;
+using Shared.OkwyLogging;
 
 namespace Model {
   public class ModelContext {
@@ -19,6 +20,6 @@ namespace Model {
     }
 
     readonly Player[] players;
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(ModelContext));
+    static readonly Logger log = MainLog.GetLogger(nameof(ModelContext));
   }
 }

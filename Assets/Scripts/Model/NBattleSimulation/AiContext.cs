@@ -4,6 +4,7 @@ using FibonacciHeap;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using Shared;
+using Shared.OkwyLogging;
 
 namespace Model.NBattleSimulation {
   //TODO: extract responsibility related to battle simulation
@@ -93,7 +94,7 @@ namespace Model.NBattleSimulation {
     readonly Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>> nodes = 
       new Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>>();
 
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(AiContext));
+    static readonly Logger log = MainLog.GetLogger(nameof(AiContext));
 
     public IEnumerable<Unit> GetAdjacentUnits(Coord coord) => Board.GetAdjacentUnits(coord);
   }

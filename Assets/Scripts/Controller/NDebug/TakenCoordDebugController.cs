@@ -1,3 +1,4 @@
+using Controller.Update;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using Shared;

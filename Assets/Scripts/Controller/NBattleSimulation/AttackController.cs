@@ -1,11 +1,15 @@
 using PlasticFloor.EventBus;
 using Shared;
+using Shared.Abstraction;
+using Shared.OkwyLogging;
 using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
 using UnityEngine;
 using View;
 using View.Presenters;
-using View.UI;
+using View.UIs;
+using View.Views;
+using Logger = Shared.OkwyLogging.Logger;
 
 namespace Controller.NBattleSimulation {
   public class AttackController : IEventHandler<ApplyDamageEvent>, IEventHandler<DeathEvent>,
@@ -35,6 +39,6 @@ namespace Controller.NBattleSimulation {
 
     readonly BaseBoard<UnitView, PlayerPresenter> board;
     readonly UnitTooltipUI unitTooltipUI;
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(AttackController));
+    static readonly Logger log = MainLog.GetLogger(nameof(AttackController));
   }
 }

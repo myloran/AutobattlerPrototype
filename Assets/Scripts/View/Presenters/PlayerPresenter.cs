@@ -1,5 +1,7 @@
 using Shared;
+using Shared.Abstraction;
 using View.Exts;
+using View.Views;
 
 namespace View.Presenters {
   public class PlayerPresenter : BasePlayer<UnitView> {

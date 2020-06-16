@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-using Okwy.Logging.Formatters;
+﻿using System.IO;
+using Shared.OkwyLogging.Formatters;
 
-namespace Okwy.Logging.Appenders {
+namespace Shared.OkwyLogging.Appenders {
     public class FileWriterAppender {
         public FileWriterAppender(string filePath) {
             _filePath = filePath;

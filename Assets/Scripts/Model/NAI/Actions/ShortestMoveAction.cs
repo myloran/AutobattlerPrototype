@@ -4,6 +4,7 @@ using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using PlasticFloor.EventBus;
 using Shared;
+using Shared.OkwyLogging;
 
 namespace Model.NAI.Actions {
 public class ShortestMoveAction : BaseAction {
@@ -43,6 +44,6 @@ public class ShortestMoveAction : BaseAction {
       context.InsertCommand(time, decisionCommand);
     }
 
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(MoveAction));
+    static readonly Logger log = MainLog.GetLogger(nameof(MoveAction));
   }
 }

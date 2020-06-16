@@ -1,7 +1,8 @@
+using Controller.Update;
 using Model;
 using Model.NUnit;
 using Shared;
-using View.UI;
+using View.UIs;
 
 namespace Controller.NDebug {
   public class UnitModelDebugController : ITick {

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
-namespace Okwy.Logging.Formatters {
+namespace Shared.OkwyLogging.Formatters {
     public class TimeFormatter : IFormatter {
         StringBuilder builder = new StringBuilder();
         readonly string timeFormat = "{0:mm:ss,fff}";

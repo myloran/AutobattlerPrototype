@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Okwy.Logging.Formatters {
+namespace Shared.OkwyLogging.Formatters {
     public class FullFormatter : IFormatter {
         static readonly int _maxLogLevelLength = GetLongestLogLevelWordLength() + 2;
         StringBuilder _stringBuilder = new StringBuilder();

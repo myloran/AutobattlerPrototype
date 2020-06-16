@@ -1,7 +1,6 @@
-﻿using System;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 
-namespace Okwy.Networking
+namespace Shared.OkwyLogging.Networking
 {
 	public class ReceiveVO
 	{

@@ -1,6 +1,6 @@
 using Shared;
 using View.Exts;
-using View.UI;
+using View.UIs;
 
 namespace Controller {
   public class UnitTooltipController {

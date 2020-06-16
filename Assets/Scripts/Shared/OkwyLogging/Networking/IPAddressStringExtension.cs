@@ -1,7 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 
-namespace DesperateDevs.Networking
+namespace Shared.OkwyLogging.Networking
 {
 	public static class IPAddressStringExtension
 	{

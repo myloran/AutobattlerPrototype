@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Okwy.Logging.Formatters
+namespace Shared.OkwyLogging.Formatters
 {
 	public class DefaultLogMessageFormatter : IFormatter
 	{

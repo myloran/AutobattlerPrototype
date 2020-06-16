@@ -6,7 +6,7 @@ using Model.NUnit;
 using Shared;
 using View;
 using View.Presenters;
-using View.UI;
+using View.UIs;
 
 namespace Controller.Save {
   public class BattleSaveController : IDisposable {

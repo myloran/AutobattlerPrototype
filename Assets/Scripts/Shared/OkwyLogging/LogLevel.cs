@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Okwy.Logging
+﻿namespace Shared.OkwyLogging
 {
 	public enum LogLevel
 	{

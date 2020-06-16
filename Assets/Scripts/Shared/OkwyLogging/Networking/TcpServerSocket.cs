@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Okwy.Networking
+namespace Shared.OkwyLogging.Networking
 {
 	public class TcpServerSocket : AbstractTcpSocket
 	{

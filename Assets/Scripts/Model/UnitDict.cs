@@ -1,5 +1,6 @@
 using Model.NUnit;
 using Shared;
+using Shared.Abstraction;
 
 namespace Model {
   public class UnitDict : BaseUnitDict<Unit> {

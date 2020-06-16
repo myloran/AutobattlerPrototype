@@ -1,6 +1,7 @@
 using System.Linq;
 using Model.NAI.NDecisionTree;
 using Model.NUnit;
+using Shared.OkwyLogging;
 
 namespace Model.NBattleSimulation.Commands {
   public class WaitForAlliesToMoveCommand : BaseCommand {
@@ -27,6 +28,6 @@ namespace Model.NBattleSimulation.Commands {
     readonly CMovement movement;
     readonly CAi ai;
     readonly AiContext context;
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(WaitForAlliesToMoveCommand));
+    static readonly Logger log = MainLog.GetLogger(nameof(WaitForAlliesToMoveCommand));
   }
 }

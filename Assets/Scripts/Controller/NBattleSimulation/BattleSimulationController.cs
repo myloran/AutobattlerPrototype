@@ -1,10 +1,14 @@
+using Controller.Exts;
 using Model.NBattleSimulation;
 using Shared;
+using Shared.Abstraction;
 using Shared.Shared.Client;
 using UniRx;
 using View;
 using View.Exts;
 using View.Presenters;
+using View.UIs;
+using View.Views;
 
 namespace Controller.NBattleSimulation {
   public class BattleSimulationController {

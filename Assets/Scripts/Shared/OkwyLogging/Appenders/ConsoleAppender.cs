@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Okwy.Logging.Appenders
+namespace Shared.OkwyLogging.Appenders
 {
 	public class ConsoleAppender
 	{

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Okwy.Logging.Formatters
+﻿namespace Shared.OkwyLogging.Formatters
 {
 	public interface IFormatter
 	{

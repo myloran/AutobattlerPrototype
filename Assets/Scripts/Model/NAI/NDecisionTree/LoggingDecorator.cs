@@ -1,5 +1,6 @@
 using Model.NAI.Actions;
 using Model.NBattleSimulation;
+using Shared.OkwyLogging;
 
 namespace Model.NAI.NDecisionTree {
   public class LoggingDecorator : IDecisionTreeNode {
@@ -22,6 +23,6 @@ namespace Model.NAI.NDecisionTree {
 
     static string message;
     readonly IDecisionTreeNode decision;
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(LoggingDecorator));
+    static readonly Logger log = MainLog.GetLogger(nameof(LoggingDecorator));
   }
 }

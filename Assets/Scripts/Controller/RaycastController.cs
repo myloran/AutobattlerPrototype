@@ -1,6 +1,10 @@
 using System;
+using Controller.Exts;
+using Controller.Update;
+using Shared.OkwyLogging;
 using UniRx;
 using UnityEngine;
+using Logger = Shared.OkwyLogging.Logger;
 
 namespace Controller {
   public class RaycastController : ITick {
@@ -12,17 +16,9 @@ namespace Controller {
       this.controller = controller;
     }
 
-    public IObservable<RaycastHit> OnUnitHit =>
-      Observable.EveryUpdate()
-        .Where(_ => Input.GetMouseButtonDown(0))
-        .Select(_ => FireRaycast())
-        .Select(CheckHitUnit)
-        .Where(_ => _.isHit)
-        .Select(_ => _.hit);
+    public Ray FireRaycast() => camera.ScreenPointToRay(Input.mousePosition);
 
-    Ray FireRaycast() => camera.ScreenPointToRay(Input.mousePosition);
-
-    (bool isHit, RaycastHit hit) CheckHitUnit(Ray ray) {
+    public (bool isHit, RaycastHit hit) RaycastHitsUnit(Ray ray) {
       var isHit = Physics.Raycast(ray, out var hit, 100, unitLayer);
       return (isHit, hit);
     }
@@ -53,6 +49,6 @@ namespace Controller {
     readonly Camera camera;
     readonly int globalLayer;
     readonly int unitLayer;
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(RaycastController));
+    static readonly Logger log = MainLog.GetLogger(nameof(RaycastController));
   }
 }

@@ -1,3 +1,5 @@
+using Shared.OkwyLogging;
+
 namespace Model.NBattleSimulation {
   public class BattleSimulation {
     public bool IsBattleOver { get; private set; }
@@ -21,6 +23,6 @@ namespace Model.NBattleSimulation {
     }
 
     readonly AiContext context;
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(BattleSimulation));
+    static readonly Logger log = MainLog.GetLogger(nameof(BattleSimulation));
   }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using Okwy.Logging;
 
-namespace Okwy.Networking {
+namespace Shared.OkwyLogging.Networking {
     public abstract class AbstractTcpSocket
 	{
 		public event TcpSocketReceive OnReceived;

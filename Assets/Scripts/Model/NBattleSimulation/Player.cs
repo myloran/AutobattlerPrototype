@@ -1,5 +1,7 @@
 using Model.NUnit;
 using Shared;
+using Shared.Abstraction;
+using Shared.OkwyLogging;
 
 namespace Model.NBattleSimulation {
   public class Player : BasePlayer<Unit> {
@@ -17,6 +19,6 @@ namespace Model.NBattleSimulation {
         : (false, default);
     }
 
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(Player));
+    static readonly Logger log = MainLog.GetLogger(nameof(Player));
   }
 }

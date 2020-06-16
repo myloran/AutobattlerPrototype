@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using Okwy.Networking;
+using Shared.OkwyLogging.Networking;
 
-namespace Okwy.Logging.Appenders {
+namespace Shared.OkwyLogging.Appenders {
     public abstract class AbstractTcpSocketAppender
 	{
 		public AbstractTcpSocket socket { get; set; }

@@ -1,11 +1,11 @@
-﻿using Okwy.Logging.Appenders;
-using Okwy.Logging.Formatters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Shared.OkwyLogging.Appenders;
+using Shared.OkwyLogging.Formatters;
 using UnityEngine;
 
-namespace Okwy.Logging {
+namespace Shared.OkwyLogging {
   public static class MainLog {
     static LogLevel _globalLogLevel;
     static LogDelegate _appenders;

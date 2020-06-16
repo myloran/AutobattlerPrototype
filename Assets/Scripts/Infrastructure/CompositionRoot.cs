@@ -3,24 +3,30 @@ using System.Linq;
 using Controller;
 using Controller.NBattleSimulation;
 using Controller.NDebug;
+using Controller.NTile;
 using Controller.Save;
+using Controller.UnitDrag;
+using Controller.Update;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using Shared;
 using UnityEngine;
 using View;
-using View.UI;
 using FibonacciHeap;
 using Model;
 using Model.NBattleSimulation.Commands;
-using Okwy.Logging;
 using PlasticFloor.EventBus;
+using Shared.OkwyLogging;
 using Shared.Shared.Client.Events;
+using View.Factories;
 using View.Presenters;
+using View.UIs;
+using View.Views;
+using Logger = Shared.OkwyLogging.Logger;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
-    public UpdateInput UpdateInput;
+    public TickInput tickInput;
     public BattleSetupUI BattleSetupUI;
     public BattleSaveUI BattleSaveUI;
     public BattleSimulationUI BattleSimulationUI;
@@ -37,6 +43,8 @@ namespace Infrastructure {
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
       
+      var tickController = new TickController();
+      var inputController = new InputController(tickController);
       var eventBus = new EventBus();
       var unitFactory = new UnitFactory(units, new DecisionFactory(eventBus));
 
@@ -70,7 +78,7 @@ namespace Infrastructure {
         player2BoardUnits);
       var aiContext = new AiContext(board, 
         new FibonacciHeap<ICommand, TimePoint>(float.MinValue));
-
+      
       var raycastController = new RaycastController(Camera.main, 
         LayerMask.GetMask("Terrain", "GlobalCollider"), 
         LayerMask.GetMask("Unit"), 
@@ -79,16 +87,24 @@ namespace Infrastructure {
       var unitModelDebugController = new UnitModelDebugController(
         new ModelContext(players), ModelUI);
       
-      var unitDragController2 = new UnitDragController(tilePresenter, BattleSetupUI,
-        players, playerPresenters, unitTooltipController, 
-        new BattleStateController(BattleSimulationUI), raycastController,
+      var takenCoordDebugController = new TakenCoordDebugController(tilePresenter, board);
+      var targetDebugController = new TargetDebugController(board, tilePresenter);
+      var uiDebugController = new UIDebugController(
+        BattleSetupUI, BattleSaveUI, BattleSimulationUI,
         unitModelDebugController);
       
-      UpdateInput.Init(new UpdateController(new TakenCoordDebugController(tilePresenter, board),
-        new TargetDebugController(board, tilePresenter), new UIDebugController(
-            BattleSetupUI, BattleSaveUI, BattleSimulationUI, 
-          unitModelDebugController), unitModelDebugController, raycastController));
+      var battleStateController = new BattleStateController(BattleSimulationUI);
+      var tileHighlighter = new TileHighlighter(tilePresenter);
+
+      var unitSelectionController = new UnitSelectionController(
+        battleStateController, unitModelDebugController, BattleSetupUI);
       
+      var unitDragController = new UnitDragController(raycastController, 
+        new CoordFinder(tilePresenter, BattleSetupUI), inputController, 
+        new CompositeHandler<EndDragEvent>(
+          new WorldContext(players, playerPresenters, BattleSetupUI), tileHighlighter), 
+        tileHighlighter, unitSelectionController);
+
       var movementController = new MovementController(boardPresenter, tilePresenter);
       var attackController = new AttackController(boardPresenter, UnitTooltipUI);
       eventBus.Register<StartMoveEvent>(movementController);
@@ -107,9 +123,14 @@ namespace Infrastructure {
 
       yield return null;
       
-      unitDragController2.Init();
+      tickController.Init(/*takenCoordDebugController,*/ targetDebugController, uiDebugController, 
+        unitModelDebugController, raycastController);
+      inputController.Init();
+      unitDragController.Init();
+      
+      tickInput.Init(tickController);
     }
 
-    static readonly Okwy.Logging.Logger log = Okwy.Logging.MainLog.GetLogger(nameof(CompositionRoot));
+    static readonly Logger log = MainLog.GetLogger(nameof(CompositionRoot));
   }
 }

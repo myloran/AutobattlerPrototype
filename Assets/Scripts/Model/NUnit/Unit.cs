@@ -1,5 +1,6 @@
 using System.Text;
 using Shared;
+using Shared.Abstraction;
 
 namespace Model.NUnit {
   public class Unit : IUnit {
