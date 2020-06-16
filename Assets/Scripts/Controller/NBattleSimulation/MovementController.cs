@@ -15,7 +15,7 @@ using View.Views;
 
 namespace Controller.NBattleSimulation {
   public class MovementController : IEventHandler<StartMoveEvent>, 
-      IEventHandler<EndMoveEvent>, ISimulationTick {
+      IEventHandler<EndMoveEvent>, IEventHandler<RotateEvent>, ISimulationTick {
     public MovementController(IBoard<UnitView, PlayerPresenter> board, TilePresenter tilePresenter) {
       this.board = board;
       this.tilePresenter = tilePresenter;
@@ -33,6 +33,11 @@ namespace Controller.NBattleSimulation {
     public void HandleEvent(EndMoveEvent e) {
       routines.Remove(e.From);
       board.MoveUnit(e.From, e.To);
+    }
+    
+    public void HandleEvent(RotateEvent e) {
+      var unit = board[e.From];
+      unit.transform.rotation = (e.To - e.From).ToQuaternion(); 
     }
 
     public void SimulationTick(float time) {
