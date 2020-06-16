@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using Shared;
 using UnityEngine;
 using View.Exts;
+using View.NUnit;
 using View.Presenters;
-using View.Views;
 
 namespace View.Factories {
   public class UnitViewFactory {
@@ -15,8 +15,12 @@ namespace View.Factories {
 
     public UnitView Create(string name, Coord coord, EPlayer player) {
       var position = tilePresenter.PositionAt(coord).WithY(unitPrefab.Height);
+
+      var rotation = player == EPlayer.First
+        ? Quaternion.identity
+        : Quaternion.Euler(new Vector3(0, 180, 0));
       
-      return Object.Instantiate(unitPrefab, position, Quaternion.identity)
+      return Object.Instantiate(unitPrefab, position, rotation)
         .Init(new UnitInfo(unitInfos[name]), player);
     }
 

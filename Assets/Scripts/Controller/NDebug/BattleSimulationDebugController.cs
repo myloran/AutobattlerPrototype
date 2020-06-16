@@ -3,6 +3,7 @@ using Model.NBattleSimulation;
 using Shared.Abstraction;
 using Shared.Shared.Client;
 using UniRx;
+using View.NUnit;
 using View.Presenters;
 using View.UIs;
 using View.Views;

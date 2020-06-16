@@ -20,6 +20,7 @@ using Shared.OkwyLogging;
 using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
 using View.Factories;
+using View.NUnit;
 using View.Presenters;
 using View.UIs;
 using View.Views;

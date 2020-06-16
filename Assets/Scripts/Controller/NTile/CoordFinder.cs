@@ -1,6 +1,7 @@
 using Controller.NBattleSimulation;
 using Shared;
 using UnityEngine;
+using View.NUnit;
 using View.Presenters;
 using View.UIs;
 using View.Views;

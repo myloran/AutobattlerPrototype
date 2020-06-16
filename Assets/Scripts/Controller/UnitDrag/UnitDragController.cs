@@ -3,6 +3,7 @@ using Controller.NTile;
 using Shared;
 using UniRx;
 using UnityEngine;
+using View.NUnit;
 using View.Views;
 
 namespace Controller.UnitDrag {

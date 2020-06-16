@@ -6,6 +6,7 @@ using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
 using UnityEngine;
 using View;
+using View.NUnit;
 using View.Presenters;
 using View.UIs;
 using View.Views;

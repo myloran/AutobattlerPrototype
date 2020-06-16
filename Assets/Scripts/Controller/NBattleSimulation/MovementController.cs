@@ -7,6 +7,8 @@ using Shared.Shared.Client.Events;
 using UnityEngine;
 using View;
 using View.Exts;
+using View.NUnit;
+using View.NUnit.States;
 using View.Presenters;
 using View.Views;
 
@@ -23,6 +25,8 @@ namespace Controller.NBattleSimulation {
       var from = tilePresenter.PositionAt(e.From).WithY(unit.Height);
       var to = tilePresenter.PositionAt(e.To).WithY(unit.Height);
       routines[e.From] = new MoveRoutine(unit.transform, from, to, e.StartingTime, e.Duration);
+      // unit.Orientation = 
+      unit.ChangeStateTo(EState.Walking);
     }
 
     public void HandleEvent(EndMoveEvent e) {
