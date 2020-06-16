@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PlasticFloor.EventBus;
 using Shared;
@@ -25,7 +26,7 @@ namespace Controller.NBattleSimulation {
       var from = tilePresenter.PositionAt(e.From).WithY(unit.Height);
       var to = tilePresenter.PositionAt(e.To).WithY(unit.Height);
       routines[e.From] = new MoveRoutine(unit.transform, from, to, e.StartingTime, e.Duration);
-      // unit.Orientation = 
+      unit.transform.rotation = (e.To - e.From).ToQuaternion(); 
       unit.ChangeStateTo(EState.Walking);
     }
 
