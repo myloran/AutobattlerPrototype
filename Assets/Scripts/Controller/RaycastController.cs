@@ -1,8 +1,6 @@
-using System;
 using Controller.Exts;
 using Controller.Update;
 using Shared.OkwyLogging;
-using UniRx;
 using UnityEngine;
 using Logger = Shared.OkwyLogging.Logger;
 

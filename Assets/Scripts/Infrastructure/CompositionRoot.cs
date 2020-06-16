@@ -17,6 +17,7 @@ using Model;
 using Model.NBattleSimulation.Commands;
 using PlasticFloor.EventBus;
 using Shared.OkwyLogging;
+using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
 using View.Factories;
 using View.Presenters;
@@ -37,7 +38,7 @@ namespace Infrastructure {
     public TileView TileView;
 
     IEnumerator Start() {
-      MainLog.DefaultInit();
+      // MainLog.DefaultInit();
       log.Info("\n\nStart");
       var units = new UnitInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
@@ -45,8 +46,9 @@ namespace Infrastructure {
       
       var tickController = new TickController();
       var inputController = new InputController(tickController);
-      var eventBus = new EventBus();
-      var unitFactory = new UnitFactory(units, new DecisionFactory(eventBus));
+      var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library
+      var eventHolder = new EventHolder(eventBus);
+      var unitFactory = new UnitFactory(units, new DecisionFactory(eventHolder));
 
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
@@ -67,7 +69,6 @@ namespace Infrastructure {
                   
       var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
 
-
       var player1BoardUnits = new UnitDict(unitFactory);
       var player2BoardUnits = new UnitDict(unitFactory);
       var players = new[] {
@@ -76,8 +77,7 @@ namespace Infrastructure {
       };
       var board = new Board(new UnitDict(unitFactory), player1BoardUnits,
         player2BoardUnits);
-      var aiContext = new AiContext(board, 
-        new FibonacciHeap<ICommand, TimePoint>(float.MinValue));
+      var aiContext = new AiContext(board);
       
       var raycastController = new RaycastController(Camera.main, 
         LayerMask.GetMask("Terrain", "GlobalCollider"), 
@@ -112,9 +112,12 @@ namespace Infrastructure {
       eventBus.Register<ApplyDamageEvent>(attackController);
       eventBus.Register<DeathEvent>(attackController);
 
-      var battleSimulationController = new BattleSimulationController(
-        new BattleSimulation(aiContext), BattleSimulationUI, movementController, 
-        aiContext, players, boardPresenter, playerPresenters);
+      var battleSimulation = new BattleSimulation(aiContext);
+      var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
+        movementController, battleSimulation, eventHolder);
+      var battleSimulationController = new BattleSimulationDebugController(
+        battleSimulation, BattleSimulationUI, movementController, 
+        aiContext, players, boardPresenter, playerPresenters, realtimeBattleSimulationController);
 
       var battleSetupController = new BattleSetupController(players, playerPresenters, 
         BattleSetupUI);
@@ -122,9 +125,10 @@ namespace Infrastructure {
         BattleSaveUI, saveDataLoader, saves);
 
       yield return null;
-      
-      tickController.Init(/*takenCoordDebugController,*/ targetDebugController, uiDebugController, 
-        unitModelDebugController, raycastController);
+
+      eventHolder.Init(aiContext);
+      tickController.Init(takenCoordDebugController, targetDebugController, uiDebugController, 
+        unitModelDebugController, raycastController, realtimeBattleSimulationController);
       inputController.Init();
       unitDragController.Init();
       

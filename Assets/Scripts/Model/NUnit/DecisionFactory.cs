@@ -5,7 +5,7 @@ using PlasticFloor.EventBus;
 
 namespace Model.NUnit {
   public class DecisionFactory {
-    public DecisionFactory(EventBus bus) => this.bus = bus;
+    public DecisionFactory(IEventBus bus) => this.bus = bus;
 
     public IDecisionTreeNode Create(Unit unit) {
       var startAttack = WithLogging(new StartAttackAction(unit, bus));
@@ -41,6 +41,6 @@ namespace Model.NUnit {
     
     IDecisionTreeNode WithLogging(IDecisionTreeNode decision) => new LoggingDecorator(decision);
     
-    readonly EventBus bus;
+    readonly IEventBus bus;
   }
 }

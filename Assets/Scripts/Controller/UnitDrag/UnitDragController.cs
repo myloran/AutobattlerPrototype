@@ -72,12 +72,12 @@ namespace Controller.UnitDrag {
       lastCoord = Coord.Invalid;
     }
 
-    readonly IPredicate<DragInfo> canStartDrag;
-    readonly IHandler<CoordChangedEvent> coordChangedHandler;
-    readonly IHandler<EndDragEvent> endDragHandler;
     readonly RaycastController raycastController;
     readonly CoordFinder coordFinder;
     readonly InputController inputController;
+    readonly IPredicate<DragInfo> canStartDrag;
+    readonly IHandler<CoordChangedEvent> coordChangedHandler;
+    readonly IHandler<EndDragEvent> endDragHandler;
     Coord startCoord;
     Coord lastCoord = Coord.Invalid;
     UnitView unit;

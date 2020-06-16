@@ -49,10 +49,11 @@ namespace PlasticFloor.EventBus {
     }
 
     void HandleWithRegisteredDelegates<TEvent>(TEvent @event, bool safe = false) where TEvent : IEvent {
-      if (_handlers.ContainsKey(typeof(TEvent)))
-        _handlers[typeof(TEvent)].ForEach(h => {
-          ExecuteHandler((EventHandlerDelegate<TEvent>) h, @event, safe);
-          // Debug.Log(typeof(TEvent).Name + " " + @event);
+      if (_handlers.ContainsKey(@event.GetType()))
+        _handlers[@event.GetType()].ForEach(h => {
+          h.DynamicInvoke(@event);
+          // ExecuteHandler((EventHandlerDelegate<TEvent>) h, @event, safe);
+          // Debug.Log(@event.GetType().Name + " " + @event);
         });
     }
 

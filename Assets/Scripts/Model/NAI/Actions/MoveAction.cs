@@ -71,7 +71,6 @@ namespace Model.NAI.Actions {
         var (hasPos1, pos1) = CalculateNextMovePosition(context, newCoord1);
         var (hasPos2, pos2) = CalculateNextMovePosition(context, newCoord2);
 
-        // if (hasPos1 && hasPos2) {
           var distance1 = CoordExt.SqrDistance(targetCoord, pos1);
           var distance2 = CoordExt.SqrDistance(targetCoord, pos2);
 
@@ -82,16 +81,13 @@ namespace Model.NAI.Actions {
             return PureMove(newCoord1, direction1);
           }
 
-          if (distance1 < distance2)
-            return PureMove(newCoord1, direction1);
-          else
-            return PureMove(newCoord2, direction2);
-        // }
-        // else if (hasPos1) return PureMove(newCoord1, direction1);
-        // else if (hasPos2) return PureMove(newCoord2, direction2);
+          return distance1 < distance2 
+            ? PureMove(newCoord1, direction1) 
+            : PureMove(newCoord2, direction2);
       }
-      else if (canMove1) return PureMove(newCoord1, direction1);
-      else if (canMove2) return PureMove(newCoord2, direction2);
+
+      if (canMove1) return PureMove(newCoord1, direction1);
+      if (canMove2) return PureMove(newCoord2, direction2);
 
       return false;
           
@@ -117,16 +113,6 @@ namespace Model.NAI.Actions {
       var (direction1, direction2) = direction.GetClosestDirections();
       if (TryMove(direction1, ref res)) return res;
       if (TryMove(direction2, ref res)) return res;
-
-      // var direction3 = direction1.GetClosestDirection(direction);
-      // var direction4 = direction2.GetClosestDirection(direction);
-      // if (TryMove(direction3, ref res)) return res;
-      // if (TryMove(direction4, ref res)) return res;
-      
-      // var direction5 = direction3.GetClosestDirection(direction1);
-      // var direction6 = direction4.GetClosestDirection(direction2);
-      // if (TryMove(direction5, ref res)) return res;
-      // if (TryMove(direction6, ref res)) return res;
 
       return res;
       

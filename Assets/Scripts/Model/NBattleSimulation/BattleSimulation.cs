@@ -1,8 +1,9 @@
 using Shared.OkwyLogging;
 
 namespace Model.NBattleSimulation {
-  public class BattleSimulation {
+  public class BattleSimulation { //TODO: Think if it's controller
     public bool IsBattleOver { get; private set; }
+    public float CurrentTime { get; private set; }
 
     public BattleSimulation(AiContext context) {
       this.context = context;
@@ -15,6 +16,7 @@ namespace Model.NBattleSimulation {
 
     public void ExecuteNextCommand() {
       var (isBattleOver, command) = context.RemoveMin();
+      CurrentTime = context.CurrentTime;
       IsBattleOver = isBattleOver;
       if (IsBattleOver) return;
       

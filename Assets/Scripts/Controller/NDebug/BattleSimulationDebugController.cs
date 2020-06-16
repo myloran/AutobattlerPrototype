@@ -1,20 +1,18 @@
 using Controller.Exts;
 using Model.NBattleSimulation;
-using Shared;
 using Shared.Abstraction;
 using Shared.Shared.Client;
 using UniRx;
-using View;
-using View.Exts;
 using View.Presenters;
 using View.UIs;
 using View.Views;
 
-namespace Controller.NBattleSimulation {
-  public class BattleSimulationController {
-    public BattleSimulationController(BattleSimulation simulation, BattleSimulationUI ui,
-      ISimulationTick viewSimulation, AiContext context, Player[] players,
-      BaseBoard<UnitView, PlayerPresenter> boardPresenter, PlayerPresenter[] playerPresenters) {
+namespace Controller.NDebug {
+  public class BattleSimulationDebugController {
+    public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui,
+        ISimulationTick viewSimulation, AiContext context, Player[] players,
+        BaseBoard<UnitView, PlayerPresenter> boardPresenter, PlayerPresenter[] playerPresenters,
+        RealtimeBattleSimulationController realtimeBattleSimulationController) {
       this.simulation = simulation;
       this.ui = ui;
       this.viewSimulation = viewSimulation;
@@ -22,11 +20,13 @@ namespace Controller.NBattleSimulation {
       this.players = players;
       this.boardPresenter = boardPresenter;
       this.playerPresenters = playerPresenters;
+      this.realtimeBattleSimulationController = realtimeBattleSimulationController;
 
       ui.OStartBattle.onValueChanged.AsObservable().Where(b => b)
         .Subscribe(_ => StartBattle()).AddTo(ui.OStartBattle);
       ui.BExecuteNextDecision.Sub(ExecuteNextDecision);
       ui.BExecuteAllDecisions.Sub(ExecuteAllDecisions);
+      ui.BExecuteInRealtime.Sub(PlayerBattleInRealtime);
     }
     
     void StartBattle() {
@@ -50,6 +50,8 @@ namespace Controller.NBattleSimulation {
       }
     }
     
+    void PlayerBattleInRealtime() => realtimeBattleSimulationController.StartBattle();
+
     readonly BattleSimulation simulation;
     readonly BattleSimulationUI ui;
     readonly ISimulationTick viewSimulation;
@@ -57,5 +59,6 @@ namespace Controller.NBattleSimulation {
     readonly Player[] players;
     readonly BaseBoard<UnitView, PlayerPresenter> boardPresenter;
     readonly PlayerPresenter[] playerPresenters;
+    readonly RealtimeBattleSimulationController realtimeBattleSimulationController;
   }
 }

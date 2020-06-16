@@ -3,23 +3,22 @@ using System.Linq;
 using FibonacciHeap;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
+using PlasticFloor.EventBus;
 using Shared;
 using Shared.OkwyLogging;
+using Shared.Shared.Client;
 
 namespace Model.NBattleSimulation {
   //TODO: extract responsibility related to battle simulation
-  public class AiContext {
+  public class AiContext : ITime {
     public bool IsPlayerDead { get; private set; }
     public float PlayerDeathTime { get; private set; }
-    public TimePoint CurrentTime;
+    public TimePoint CurrentTime { get; set; }
     public bool IsCyclicDecision;
 
     public readonly Board Board;
     
-    public AiContext(Board board, FibonacciHeap<ICommand, TimePoint> aiHeap) {
-      Board = board;
-      this.aiHeap = aiHeap;
-    }
+    public AiContext(Board board) => Board = board;
 
     public void InsertCommand(float time, ICommand command) {
       var nextTime = CurrentTime + time;
@@ -88,9 +87,10 @@ namespace Model.NBattleSimulation {
         InsertCommand(0, decisionCommand);
       }
     }
-        
-    readonly FibonacciHeap<ICommand, TimePoint> aiHeap;
 
+    readonly FibonacciHeap<ICommand, TimePoint> aiHeap = 
+      new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
+    
     readonly Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>> nodes = 
       new Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>>();
 
