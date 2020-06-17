@@ -1,26 +1,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using FibonacciHeap;
+using FixMath;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using PlasticFloor.EventBus;
 using Shared;
 using Shared.OkwyLogging;
 using Shared.Shared.Client;
+using static FixMath.F32;
 
 namespace Model.NBattleSimulation {
   //TODO: extract responsibility related to battle simulation
   public class AiContext : ITime {
     public bool IsPlayerDead { get; private set; }
-    public float PlayerDeathTime { get; private set; }
-    public TimePoint CurrentTime { get; set; }
+    public F32 PlayerDeathTime { get; private set; }
+    public F32 CurrentTime { get; set; }
     public bool IsCyclicDecision;
 
     public readonly Board Board;
     
     public AiContext(Board board) => Board = board;
 
-    public void InsertCommand(float time, ICommand command) {
+    public void InsertCommand(F32 time, ICommand command) {
       var nextTime = CurrentTime + time;
       
       if (nodes.ContainsKey(nextTime)) {
@@ -30,7 +32,7 @@ namespace Model.NBattleSimulation {
         return;
       }
 
-      var node = new FibonacciHeapNode<ICommand, TimePoint>(command, nextTime);
+      var node = new FibonacciHeapNode<ICommand, F32>(command, nextTime);
       aiHeap.Insert(node);
       nodes[nextTime] = node;
     }
@@ -78,21 +80,21 @@ namespace Model.NBattleSimulation {
     public void Reset(Player player1, Player player2) {
       Board.Reset(player1, player2);
       IsPlayerDead = false;
-      CurrentTime = 0;
+      CurrentTime = Zero;
       CheckBattleIsOver();
       
       foreach (var unit in Board.Values) {
         unit.Reset();
-        var decisionCommand = new MakeDecisionCommand(unit.Ai, this, 0);
-        InsertCommand(0, decisionCommand);
+        var decisionCommand = new MakeDecisionCommand(unit.Ai, this, Zero);
+        InsertCommand(Zero, decisionCommand);
       }
     }
 
-    readonly FibonacciHeap<ICommand, TimePoint> aiHeap = 
-      new FibonacciHeap<ICommand, TimePoint>(float.MinValue);
+    readonly FibonacciHeap<ICommand, F32> aiHeap = 
+      new FibonacciHeap<ICommand, F32>(MinValue);
     
-    readonly Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>> nodes = 
-      new Dictionary<TimePoint, FibonacciHeapNode<ICommand, TimePoint>>();
+    readonly Dictionary<F32, FibonacciHeapNode<ICommand, F32>> nodes = 
+      new Dictionary<F32, FibonacciHeapNode<ICommand, F32>>();
 
     static readonly Logger log = MainLog.GetLogger(nameof(AiContext));
 

@@ -1,15 +1,17 @@
 using System;
+using FixMath;
 using Shared;
+using static FixMath.F32;
 
 namespace Model.NUnit {
   public class CMovement {
-    public static float Straight => 1;
-    public static float Diagonal => (float)Math.Sqrt(2);
+    public static F32 Straight => One;
+    public static F32 Diagonal => Sqrt(Two);
     public Coord StartingCoord;
     public Coord TakenCoord = Coord.Invalid;
     public Coord Coord;
     
-    public CMovement(Coord coord, float speed) {
+    public CMovement(Coord coord, F32 speed) {
       StartingCoord = coord;
       this.speed = speed;
     }
@@ -18,10 +20,10 @@ namespace Model.NUnit {
       Coord = StartingCoord;
     }
     
-    public float TimeToMove(bool isDiagonal = true) => isDiagonal 
+    public F32 TimeToMove(bool isDiagonal = true) => isDiagonal 
       ? Diagonal * speed : Straight * speed;
 
-    readonly float speed;
+    readonly F32 speed;
 
     public override string ToString() => $"{nameof(StartingCoord)}: {StartingCoord}, {nameof(TakenCoord)}: {TakenCoord}, {nameof(Coord)}: {Coord}, {nameof(speed)}: {speed}";
   }

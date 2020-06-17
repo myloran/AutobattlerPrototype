@@ -1,10 +1,11 @@
+using FixMath;
 using Model.NUnit;
 using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class ApplyDamageCommand : BaseCommand {
-    public ApplyDamageCommand(CHealth health, float damage, CMovement movement, 
+    public ApplyDamageCommand(CHealth health, F32 damage, CMovement movement, 
         DeathCommand deathCommand, IEventBus bus) {
       this.health = health;
       this.damage = damage;
@@ -28,7 +29,7 @@ namespace Model.NBattleSimulation.Commands {
     }
 
     readonly CHealth health;
-    readonly float damage;
+    readonly F32 damage;
     readonly CMovement movement;
     readonly DeathCommand deathCommand;
     readonly IEventBus bus;

@@ -1,3 +1,4 @@
+using FixMath;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Shared;
@@ -5,8 +6,8 @@ using Shared;
 namespace Model.NUnit {
   public class CAi {
     public IDecisionTreeNode CurrentDecision;
-    public float DecisionTime;
-    public float TimeWhenDecisionWillBeExecuted;
+    public F32 DecisionTime;
+    public F32 TimeWhenDecisionWillBeExecuted;
     public bool IsWaiting;
 
     public void MakeDecision(AiContext context) {

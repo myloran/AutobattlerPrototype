@@ -27,7 +27,7 @@ namespace Controller.NBattleSimulation {
         return;
       }
 
-      board[e.Coord].Info.Health = e.Health;
+      board[e.Coord].Info.Health = e.Health.Float;
       
       // unitTooltipUI.SetHealth(e.Health);
     }

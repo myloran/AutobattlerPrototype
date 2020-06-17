@@ -4,7 +4,8 @@ using Model.NUnit;
 
 namespace Model.NAI.Decisions {
   public class IsAttackAnimationPlayed : BaseDecision {
-    public IsAttackAnimationPlayed(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, CAttack attack) : base(trueNode, falseNode) {
+    public IsAttackAnimationPlayed(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, 
+        CAttack attack) : base(trueNode, falseNode) {
       this.attack = attack;
     }
     

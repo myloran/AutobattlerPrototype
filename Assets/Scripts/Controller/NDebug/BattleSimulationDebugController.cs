@@ -38,7 +38,7 @@ namespace Controller.NDebug {
 
     void ExecuteNextDecision() {
       simulation.ExecuteNextCommand();
-      viewSimulation.SimulationTick(context.CurrentTime);
+      viewSimulation.SimulationTick(context.CurrentTime.Float);
 
       if (!simulation.IsBattleOver) return;
       

@@ -26,7 +26,7 @@ namespace Controller.NBattleSimulation {
       var unit = board[e.From];
       var from = tilePresenter.PositionAt(e.From).WithY(unit.Height);
       var to = tilePresenter.PositionAt(e.To).WithY(unit.Height);
-      routines[e.From] = new MoveRoutine(unit.transform, from, to, e.StartingTime, e.Duration);
+      routines[e.From] = new MoveRoutine(unit.transform, from, to, e.StartingTime.Float, e.Duration.Float);
       unit.transform.rotation = (e.To - e.From).ToQuaternion(); 
       unit.ChangeStateTo(EState.Walking);
     }

@@ -1,12 +1,14 @@
 using System.Collections.Generic;
+using FixMath;
+using static FixMath.F32;
 
 namespace Model.NUnit {
   public class CHealth  {
-    public float StartingHealth;
-    public float Health;
-    public float Armor;
+    public F32 StartingHealth;
+    public F32 Health;
+    public F32 Armor;
     
-    public CHealth(float startingHealth, float armor) {
+    public CHealth(F32 startingHealth, F32 armor) {
       StartingHealth = startingHealth;
       Armor = armor;
     }
@@ -17,10 +19,10 @@ namespace Model.NUnit {
     public void SubToDeath(CTarget target) => observers.Add(target);
     public void UnsubFromDeath(CTarget target) => observers.Remove(target);
 
-    public void TakeDamage(float damage) {
+    public void TakeDamage(F32 damage) {
       var damageDealt = damage - damage * Armor / (Armor + 10);
       Health -= damageDealt;
-      Health = MathExt.Clamp(Health, 0f, StartingHealth);
+      Health = Clamp(Health, Zero, StartingHealth);
       
       if (!IsAlive) NotifyDied();
     }

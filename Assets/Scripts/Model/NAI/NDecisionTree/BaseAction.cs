@@ -9,8 +9,8 @@ namespace Model.NAI.NDecisionTree {
     protected readonly IEventBus Bus;
     
     protected BaseAction(Unit unit, IEventBus bus) {
-      this.Bus = bus;
-      this.Unit = unit;
+      Bus = bus;
+      Unit = unit;
     }
 
     public abstract IDecisionTreeNode MakeDecision(AiContext context);

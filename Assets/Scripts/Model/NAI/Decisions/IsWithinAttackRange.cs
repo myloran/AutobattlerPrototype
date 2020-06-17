@@ -10,7 +10,8 @@ namespace Model.NAI.Decisions {
       this.target = target;
     }
     
-    protected override bool GetBranch(AiContext context) => attack.IsWithinAttackRange(target.Unit.Movement);
+    protected override bool GetBranch(AiContext context) => 
+      attack.IsWithinAttackRange(target.Unit.Movement);
 
     readonly CTarget target;
     readonly CAttack attack;

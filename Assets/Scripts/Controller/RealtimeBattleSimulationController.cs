@@ -1,7 +1,9 @@
 using Controller.Update;
+using FixMath;
 using Model.NBattleSimulation;
 using Shared.Shared.Client;
 using UnityEngine;
+using static FixMath.F32;
 
 namespace Controller {
   public class RealtimeBattleSimulationController : ITick {
@@ -14,18 +16,18 @@ namespace Controller {
     
     public void StartBattle() {
       ExecuteAllDecisions();
-      startTime = Time.realtimeSinceStartup;
+      startTime = ToF32(Time.realtimeSinceStartup);
       isBattleStarted = true;
     }
 
     public void Tick() {
-      var currentTime = Time.realtimeSinceStartup - startTime;
+      var currentTime = ToF32(Time.realtimeSinceStartup) - startTime;
 
       while (eventHolder.HasEventInHeap && eventHolder.NextEventTime < currentTime) {
         eventHolder.RaiseFromHeap();
       }
       
-      viewSimulation.SimulationTick(currentTime);
+      viewSimulation.SimulationTick(currentTime.Float);
     }
     
     void ExecuteAllDecisions() {
@@ -41,7 +43,7 @@ namespace Controller {
     readonly ISimulationTick viewSimulation;
     readonly BattleSimulation simulation;
     readonly EventHolder eventHolder;
-    float startTime;
+    F32 startTime;
     bool isBattleStarted;
   }
 }

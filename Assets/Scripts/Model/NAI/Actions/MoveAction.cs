@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
@@ -7,6 +5,7 @@ using Model.NUnit;
 using PlasticFloor.EventBus;
 using Shared;
 using Shared.OkwyLogging;
+using static FixMath.F32;
 
 namespace Model.NAI.Actions {
   public class MoveAction : BaseAction {
@@ -24,7 +23,7 @@ namespace Model.NAI.Actions {
       if (context.IsSurrounded(movement.Coord) && !ai.IsWaiting) {
         ai.IsWaiting = true;
         var decisionCommand = new WaitForAlliesToMoveCommand(movement, ai, context);
-        context.InsertCommand(0, decisionCommand);
+        context.InsertCommand(Zero, decisionCommand);
         return this;
       }
                                       

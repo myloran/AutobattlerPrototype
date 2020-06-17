@@ -32,7 +32,7 @@ namespace Model.NAI.NDecisionTree {
       }
     }
 
-    IDecisionTreeNode firstNode, 
+    readonly IDecisionTreeNode firstNode, 
       secondNode, 
       thirdNode;
   }

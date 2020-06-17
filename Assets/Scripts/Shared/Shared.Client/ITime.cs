@@ -1,5 +1,7 @@
+using FixMath;
+
 namespace Shared.Shared.Client {
   public interface ITime {
-    TimePoint CurrentTime { get; set; }
+    F32 CurrentTime { get; set; }
   }
 }

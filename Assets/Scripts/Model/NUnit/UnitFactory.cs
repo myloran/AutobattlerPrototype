@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Shared;
+using static FixMath.F32;
 
 namespace Model.NUnit {
   public class UnitFactory {
@@ -10,9 +11,10 @@ namespace Model.NUnit {
     
     public Unit Create(string name, Coord coord, EPlayer player) {
       var info = infos[name];
-      var movement = new CMovement(coord, info.MoveSpeed);
-      var attack = new CAttack(movement, info.Damage, info.AttackSpeed, info.AttackRange * info.AttackRange, info.AttackAnimationSpeed);
-      var health = new CHealth(info.Health, info.Armor);
+      var movement = new CMovement(coord, ToF32(info.MoveSpeed));
+      var attack = new CAttack(movement, ToF32(info.Damage), ToF32(info.AttackSpeed), 
+        ToF32(info.AttackRange * info.AttackRange), ToF32(info.AttackAnimationSpeed));
+      var health = new CHealth(ToF32(info.Health), ToF32(info.Armor));
       
       var unit = new Unit {
         Info = info,

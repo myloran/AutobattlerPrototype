@@ -1,11 +1,12 @@
+using FixMath;
 using PlasticFloor.EventBus;
 
 namespace Shared.Shared.Client.Events {
   public class ApplyDamageEvent : IEvent {
-    public float Health { get; }
+    public F32 Health { get; }
     public Coord Coord { get; }
 
-    public ApplyDamageEvent(float health, Coord coord) {
+    public ApplyDamageEvent(F32 health, Coord coord) {
       Health = health;
       Coord = coord;
     }

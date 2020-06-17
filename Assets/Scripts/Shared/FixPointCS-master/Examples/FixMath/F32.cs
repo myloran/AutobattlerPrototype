@@ -197,6 +197,10 @@ namespace FixMath
             return r;
         }
 
+        public static F32 ToF32(int v) { return new F32(v); }
+        public static F32 ToF32(float v) { return new F32(v); }
+        public static F32 ToF32(double v) { return new F32(v); }
+        public static F32 ToF32(F64 v) { return new F32(v); }
         public static F32 FromInt(int v) { return new F32(v); }
         public static F32 FromFloat(float v) { return new F32(v); }
         public static F32 FromDouble(double v) { return new F32(v); }

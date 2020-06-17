@@ -1,3 +1,4 @@
+using FixMath;
 using Model.NUnit;
 using PlasticFloor.EventBus;
 using Shared;
@@ -6,7 +7,7 @@ using Shared.Shared.Client.Events;
 namespace Model.NBattleSimulation.Commands {
   public class StartMoveCommand : BaseCommand {
     public StartMoveCommand(Board board, CMovement movement, Coord newCoord,
-        TimePoint startingTime, float duration, IEventBus bus) {
+      F32 startingTime, F32 duration, IEventBus bus) {
       this.board = board;
       this.movement = movement;
       this.newCoord = newCoord;
@@ -27,8 +28,8 @@ namespace Model.NBattleSimulation.Commands {
     readonly Board board;
     readonly CMovement movement;
     readonly Coord newCoord;
-    readonly TimePoint startingTime;
-    readonly float duration;
+    readonly F32 startingTime;
+    readonly F32 duration;
     readonly IEventBus bus;
   }
 }

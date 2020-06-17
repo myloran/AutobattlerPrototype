@@ -39,7 +39,7 @@ namespace Infrastructure {
     public TileView TileView;
 
     IEnumerator Start() {
-      MainLog.DefaultInit();
+      // MainLog.DefaultInit();
       log.Info("\n\nStart");
       var units = new UnitInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
