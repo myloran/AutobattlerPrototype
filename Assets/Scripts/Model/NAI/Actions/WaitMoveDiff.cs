@@ -3,6 +3,7 @@ using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using PlasticFloor.EventBus;
+using Shared.Shared.Client.Events;
 using static Shared.Const;
 
 namespace Model.NAI.Actions {
@@ -12,6 +13,7 @@ namespace Model.NAI.Actions {
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, MoveDiffTime);
       context.InsertCommand(MoveDiffTime, decisionCommand);
+      Bus.Raise(new IdleEvent(Unit.Movement.Coord));
       return this;
     }
   }

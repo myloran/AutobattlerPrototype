@@ -53,9 +53,11 @@ namespace PlasticFloor.EventBus {
         _handlers[@event.GetType()].ForEach(h => {
           h.DynamicInvoke(@event);
           // ExecuteHandler((EventHandlerDelegate<TEvent>) h, @event, safe);
-          // Debug.Log(@event.GetType().Name + " " + @event);
+          Log(@event.GetType().Name + " " + @event);
         });
     }
+
+    public static Action<string> Log = _ => {};
 
     void HandleWithHandlerProviders<TEvent>(TEvent e, bool safe = false) where TEvent : IEvent {
       _handlerProviders.ForEach(handlerProvider => {

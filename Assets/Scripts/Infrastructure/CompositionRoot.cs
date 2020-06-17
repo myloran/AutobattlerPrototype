@@ -39,7 +39,7 @@ namespace Infrastructure {
     public TileView TileView;
 
     IEnumerator Start() {
-      // MainLog.DefaultInit();
+      MainLog.DefaultInit();
       log.Info("\n\nStart");
       var units = new UnitInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
@@ -48,6 +48,7 @@ namespace Infrastructure {
       var tickController = new TickController();
       var inputController = new InputController(tickController);
       var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library
+      EventBus.Log = m => log.Info($"{m}");
       var eventHolder = new EventHolder(eventBus);
       var unitFactory = new UnitFactory(units, new DecisionFactory(eventHolder));
 
@@ -113,6 +114,8 @@ namespace Infrastructure {
       eventBus.Register<RotateEvent>(movementController);
       eventBus.Register<ApplyDamageEvent>(attackController);
       eventBus.Register<DeathEvent>(attackController);
+      eventBus.Register<IdleEvent>(movementController);
+      eventBus.Register<StartAttackEvent>(attackController);
 
       var battleSimulation = new BattleSimulation(aiContext);
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(

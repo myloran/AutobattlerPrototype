@@ -6,11 +6,10 @@ using View.NUnit.States;
 namespace View.NUnit {
   public class UnitView : MonoBehaviour, IUnit {
     public UnitInfo Info;
+    public Animator Animator;
     public float Height = 0.25f; //TODO: remove when replaced with pivot point
     public EPlayer Player { get; set; }
-
     public int Level = 1; //TODO: remove  
-    public Animator Animator;
     
     public UnitView Init(UnitInfo unitInfo, EPlayer player) {
       Info = unitInfo;

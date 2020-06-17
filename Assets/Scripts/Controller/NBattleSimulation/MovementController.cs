@@ -15,7 +15,8 @@ using View.Views;
 
 namespace Controller.NBattleSimulation {
   public class MovementController : IEventHandler<StartMoveEvent>, 
-      IEventHandler<EndMoveEvent>, IEventHandler<RotateEvent>, ISimulationTick {
+      IEventHandler<EndMoveEvent>, IEventHandler<RotateEvent>, 
+      IEventHandler<IdleEvent>, ISimulationTick {
     public MovementController(IBoard<UnitView, PlayerPresenter> board, TilePresenter tilePresenter) {
       this.board = board;
       this.tilePresenter = tilePresenter;
@@ -35,16 +36,16 @@ namespace Controller.NBattleSimulation {
       board.MoveUnit(e.From, e.To);
     }
     
-    public void HandleEvent(RotateEvent e) {
-      var unit = board[e.From];
-      unit.transform.rotation = (e.To - e.From).ToQuaternion(); 
-    }
+    public void HandleEvent(RotateEvent e) => 
+      board[e.From].transform.rotation = (e.To - e.From).ToQuaternion();
 
     public void SimulationTick(float time) {
       foreach (var routine in routines.Values) {
         routine.SimulationTick(time);
       }
     }
+    
+    public void HandleEvent(IdleEvent e) => board[e.Coord].ChangeStateTo(EState.Idle);
 
     readonly TilePresenter tilePresenter;
     readonly Dictionary<Coord, MoveRoutine> routines = new Dictionary<Coord, MoveRoutine>();

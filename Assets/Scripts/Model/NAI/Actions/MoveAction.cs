@@ -74,7 +74,7 @@ namespace Model.NAI.Actions {
           var distance1 = CoordExt.SqrDistance(targetCoord, pos1);
           var distance2 = CoordExt.SqrDistance(targetCoord, pos2);
 
-          if (distance1.IsEqualTo(distance2)) {
+          if (distance1 == distance2) {
             if (hasPos1) return PureMove(newCoord2, direction2);
             if (hasPos2) return PureMove(newCoord1, direction1);
             

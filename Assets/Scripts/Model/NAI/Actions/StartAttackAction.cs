@@ -17,6 +17,7 @@ namespace Model.NAI.Actions {
       var decisionCommand = new MakeDecisionCommand(ai, context, attack.AnimationSpeed);
       context.InsertCommand(attack.AnimationSpeed, decisionCommand);
       Bus.Raise(new RotateEvent(Unit.Movement.Coord, targetMovement.Coord));
+      Bus.Raise(new StartAttackEvent(Unit.Movement.Coord));
       // var startMoveCommand = new ApplyDamageCommand(Unit.Movement, targetMovement, Bus);
       //if health == 0 execute unit death command
       return this;

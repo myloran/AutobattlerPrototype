@@ -3,6 +3,7 @@ using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using PlasticFloor.EventBus;
+using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Actions {
   public class EndAttackAction : BaseAction {
@@ -18,9 +19,10 @@ namespace Model.NAI.Actions {
         var targetMovement = target.Unit.Movement;
         var damage = Unit.Attack.Damage;
         var deathCommand = new DeathCommand(targetMovement, context);
-        var startMoveCommand = new ApplyDamageCommand(targetHealth, damage, targetMovement, 
-          deathCommand, Bus);
-        context.InsertCommand(0, startMoveCommand);  
+        var applyDamageCommand = new ApplyDamageCommand(targetHealth, damage, 
+          targetMovement, deathCommand, Bus);
+        Bus.Raise(new IdleEvent(Unit.Movement.Coord));
+        context.InsertCommand(0, applyDamageCommand);  
       }
       
       var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, attack.AttackSpeed);

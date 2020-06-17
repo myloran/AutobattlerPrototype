@@ -7,15 +7,16 @@ using Shared.Shared.Client.Events;
 using UnityEngine;
 using View;
 using View.NUnit;
+using View.NUnit.States;
 using View.Presenters;
 using View.UIs;
-using View.Views;
 using Logger = Shared.OkwyLogging.Logger;
 
 namespace Controller.NBattleSimulation {
-  public class AttackController : IEventHandler<ApplyDamageEvent>, IEventHandler<DeathEvent>,
-      ISimulationTick {
-    public AttackController(BaseBoard<UnitView, PlayerPresenter> board, UnitTooltipUI unitTooltipUI) {
+  public class AttackController : IEventHandler<ApplyDamageEvent>, 
+      IEventHandler<DeathEvent>, IEventHandler<StartAttackEvent>, ISimulationTick {
+    public AttackController(BaseBoard<UnitView, PlayerPresenter> board, 
+        UnitTooltipUI unitTooltipUI) {
       this.board = board;
       this.unitTooltipUI = unitTooltipUI;
     }
@@ -25,6 +26,7 @@ namespace Controller.NBattleSimulation {
         log.Error("No unit view at coord:");
         return;
       }
+
       board[e.Coord].Info.Health = e.Health;
       
       // unitTooltipUI.SetHealth(e.Health);
@@ -34,10 +36,11 @@ namespace Controller.NBattleSimulation {
       Object.Destroy(board[e.Coord].gameObject); //TODO: hide instead of destroy
       board.RemoveUnit(e.Coord);
     }
+    
+    public void HandleEvent(StartAttackEvent e) => 
+      board[e.Coord].ChangeStateTo(EState.Attacking);
 
-    public void SimulationTick(float time) {
-      
-    }
+    public void SimulationTick(float time) { }
 
     readonly BaseBoard<UnitView, PlayerPresenter> board;
     readonly UnitTooltipUI unitTooltipUI;

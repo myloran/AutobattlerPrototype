@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Shared.OkwyLogging.Formatters {
     public class TimeFormatter : IFormatter {
@@ -9,10 +10,10 @@ namespace Shared.OkwyLogging.Formatters {
             builder.Length = 0;
 
             return builder
-                // .Append("[")
-                // .AppendFormat(timeFormat, DateTime.Now)
-                // .Append("] <").
-                .Append("<")
+                .Append("[")
+                .AppendFormat(timeFormat, DateTime.Now)
+                .Append("] <")
+                // .Append("<")
                 .Append(logger.name)
                 .Append("> ")
                 .Append(message)

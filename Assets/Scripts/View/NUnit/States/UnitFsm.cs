@@ -5,6 +5,7 @@ namespace View.NUnit.States {
     public UnitFsm(UnitView unit) {
       idle = new IdleState(unit);
       move = new MoveState(unit);
+      attack = new AttackState(unit);
       current = idle;
     }
     
@@ -15,6 +16,9 @@ namespace View.NUnit.States {
           break;
         case EState.Walking:
           ChangeStateTo(move);
+          break;
+        case EState.Attacking:
+          ChangeStateTo(attack);
           break;
         default:
           throw new ArgumentOutOfRangeException(nameof(state), state, null);
@@ -27,7 +31,9 @@ namespace View.NUnit.States {
       current.OnEnter();
     }
 
-    readonly IState idle,move;
+    readonly IState idle, 
+      move, 
+      attack;
     IState current;
   }
 }

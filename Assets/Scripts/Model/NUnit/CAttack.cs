@@ -8,7 +8,8 @@ namespace Model.NUnit {
     public float AttackSpeed;
     public float SqrRange;
     
-    public CAttack(CMovement movement, float damage, float speed, float sqrRange, float animationSpeed) {
+    public CAttack(CMovement movement, float damage, float speed, float sqrRange, 
+        float animationSpeed) {
       this.movement = movement;
       Damage = damage;
       AttackSpeed = speed;
@@ -16,8 +17,10 @@ namespace Model.NUnit {
       AnimationSpeed = animationSpeed;
     }
 
-    public bool IsAnimationPlayed(float currentTime) => lastAttackTime + AnimationSpeed >= currentTime;
-    
+    public bool IsAnimationPlayed(float currentTime) {
+      return lastAttackTime + AnimationSpeed >= currentTime;
+    }
+
     public TimePoint AttackTime => Math.Abs(AttackSpeed) > float.Epsilon 
       ? new TimePoint(1 / AttackSpeed) : 999;
 

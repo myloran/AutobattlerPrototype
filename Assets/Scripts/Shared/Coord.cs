@@ -30,7 +30,7 @@ namespace Shared {
     }
 
     [IgnoreMember] public bool IsDiagonal => X != 0 && Y != 0;
-    [IgnoreMember] public float SqrMagnitude => X * X + Y * Y; 
+    [IgnoreMember] public int SqrMagnitude => X * X + Y * Y; 
     [IgnoreMember] public Coord Normalized => new Coord(Clamp(X, -1, 1), Clamp(Y, -1, 1));
 
     public static implicit operator (int x, int y)(Coord coord) => (coord.X, coord.Y);
@@ -80,6 +80,6 @@ namespace Shared {
       return new Coord(minX, minY);
     }
     
-    public static float SqrDistance(this Coord self, Coord to) => Diff(self, to).SqrMagnitude;
+    public static int SqrDistance(this Coord self, Coord to) => Diff(self, to).SqrMagnitude;
   }
 }
