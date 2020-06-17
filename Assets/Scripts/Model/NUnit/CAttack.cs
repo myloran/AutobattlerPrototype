@@ -7,14 +7,13 @@ namespace Model.NUnit {
   public class CAttack {
     public F32 Damage;
     public F32 AnimationSpeed;
-    public F32 AttackSpeed;
     public F32 SqrRange;
     
     public CAttack(CMovement movement, F32 damage, F32 speed, F32 sqrRange, 
         F32 animationSpeed) {
       this.movement = movement;
       Damage = damage;
-      AttackSpeed = speed;
+      attackSpeed = speed;
       SqrRange = sqrRange;
       AnimationSpeed = animationSpeed;
     }
@@ -23,8 +22,8 @@ namespace Model.NUnit {
       return lastAttackTime + AnimationSpeed >= currentTime;
     }
 
-    public TimePoint AttackTime => AttackSpeed > 0 
-      ? new TimePoint((1 / AttackSpeed).Float) 
+    public F32 AttackTime => attackSpeed > 0 
+      ? (1 / attackSpeed) 
       : throw new Exception();
 
     public bool IsWithinAttackRange(CMovement target) => 
@@ -34,8 +33,9 @@ namespace Model.NUnit {
     public void EndAttack() => lastAttackTime = ToF32(0);
 
     readonly CMovement movement;
+    F32 attackSpeed;
     F32 lastAttackTime;
 
-    public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AnimationSpeed)}: {AnimationSpeed}, {nameof(AttackSpeed)}: {AttackSpeed}, {nameof(SqrRange)}: {SqrRange}, {nameof(lastAttackTime)}: {lastAttackTime}";
+    public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AnimationSpeed)}: {AnimationSpeed}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(SqrRange)}: {SqrRange}, {nameof(lastAttackTime)}: {lastAttackTime}";
   }
 }

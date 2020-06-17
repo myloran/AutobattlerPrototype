@@ -22,12 +22,12 @@ namespace Model.NAI.Actions {
         var deathCommand = new DeathCommand(targetMovement, context);
         var applyDamageCommand = new ApplyDamageCommand(targetHealth, damage, 
           targetMovement, deathCommand, Bus);
-        Bus.Raise(new IdleEvent(Unit.Movement.Coord));
+        Bus.Raise(new IdleEvent(Unit.Movement.Coord)); //go to idle after finishing attack animation
         context.InsertCommand(Zero, applyDamageCommand);  
       }
       
-      var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, attack.AttackSpeed);
-      context.InsertCommand(attack.AttackSpeed, decisionCommand);
+      var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, attack.AttackTime);
+      context.InsertCommand(attack.AttackTime, decisionCommand);
       return this;
     }
   }
