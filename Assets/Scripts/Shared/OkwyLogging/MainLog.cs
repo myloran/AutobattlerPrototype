@@ -57,6 +57,7 @@ namespace Shared.OkwyLogging {
       foreach (Logger logger in _loggers.Values) {
         logger.OnLog += appender;
       }
+      appenders.Add(appender);
     }
 
     public static void RemoveAppender(LogDelegate appender) {
@@ -64,6 +65,7 @@ namespace Shared.OkwyLogging {
       foreach (Logger logger in _loggers.Values) {
         logger.OnLog -= appender;
       }
+      appenders.Remove(appender);
     }
 
     public static Logger GetLogger(string name) {
@@ -82,22 +84,22 @@ namespace Shared.OkwyLogging {
     }
 
     public static void ResetAppenders() {
+      for (var i = appenders.Count - 1; i >= 0; i--) {
+        var appender = appenders[i];
+        RemoveAppender(appender);
+      }
       _appenders = null;
     }
 
     public static void DefaultInit() {
       globalLogLevel = LogLevel.Info;
       ResetAppenders();
-
       AddAppender(new FileWriterAppender(
-        Path.Combine(
-          Application.persistentDataPath,
-          "Application.log"),
+        Path.Combine(Application.persistentDataPath, "Application.log"),
         new FullFormatter()).WriteLine);
-
-      AddAppender(
-        new UnityConsoleAppender(
-          new TimeFormatter()).WriteLine);
+      AddAppender(new UnityConsoleAppender(new TimeFormatter()).WriteLine);
     }
+
+    static readonly List<LogDelegate> appenders = new List<LogDelegate>();
   }
 }
