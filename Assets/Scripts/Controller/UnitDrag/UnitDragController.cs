@@ -20,18 +20,13 @@ namespace Controller.UnitDrag {
     }
     
     public void Init() {
-      inputController.OnMouseDown
-        .Select(raycastController.FireRaycast)
-        .SelectWhere(raycastController.RaycastHitsUnit)
-        .Select(PrepareDragInfo)
-        .Where(canStartDrag.Check)
-        .Subscribe(StartDrag);
+      AddMouseDownListener();
 
       inputController.OnMouseHeld
         .Where(IsDragging)
         .SelectWhere(raycastController.RaycastPlane)
         .Select(MoveUnit)
-        .SelectWhere(IsCoordChanged)
+        .SelectWhere(CoordChanged)
         .Do(coordChangedHandler.Handle)
         .Subscribe(UpdateLastCoord);
       
@@ -40,6 +35,15 @@ namespace Controller.UnitDrag {
         .Select(GetCoords)
         .Do(endDragHandler.Handle)
         .Subscribe(StopDrag);
+    }
+
+    void AddMouseDownListener() {
+      inputController.OnMouseDown
+        .Select(raycastController.FireRaycast)
+        .SelectWhere(raycastController.RaycastHitsUnit)
+        .Select(PrepareDragInfo)
+        .Where(canStartDrag.Check)
+        .Subscribe(StartDrag);
     }
 
     EndDragEvent GetCoords() => new EndDragEvent(startCoord, lastCoord);
@@ -60,7 +64,7 @@ namespace Controller.UnitDrag {
     Vector3 MoveUnit(Vector3 mousePosition) => 
       unit.transform.position = mousePosition + new Vector3(0, 1, 0);
 
-    (bool, CoordChangedEvent) IsCoordChanged(Vector3 mousePosition) {
+    (bool, CoordChangedEvent) CoordChanged(Vector3 mousePosition) {
       var coord = coordFinder.Find(mousePosition);
       
       return coord == lastCoord 

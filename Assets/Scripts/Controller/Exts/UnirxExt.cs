@@ -8,10 +8,10 @@ namespace Controller.Exts {
       button.onClick.AsObservable().Subscribe(_ => action()).AddTo(button);
     
     public static IObservable<R> SelectWhere<T, R>(this IObservable<T> self, 
-      Func<T, (bool, R)> toTuple) =>
+      Func<T, (bool isOk, R r)> toTuple) =>
       self.Select(toTuple)
-        .Where(tuple => tuple.Item1)
-        .Select(t => t.Item2);
+        .Where(tuple => tuple.isOk)
+        .Select(t => t.r);
     
     public static IObservable<R> SelectWhere<T, R>(this IObservable<T> self, 
       Func<(bool, R)> toTuple) =>
