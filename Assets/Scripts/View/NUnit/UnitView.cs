@@ -15,6 +15,7 @@ namespace View.NUnit {
     public int Level = 1; //TODO: remove  
     
     public UnitView Init(UnitInfo info, EPlayer player) {
+      this.info = new UnitInfo(info);
       Info = info;
       Player = player;
       Animator = GetComponentInChildren<Animator>();
@@ -28,6 +29,8 @@ namespace View.NUnit {
 
       return this;
     }
+
+    public void Reset() => SetHealth(info.Health);
 
     public void SetHealth(float health) {
       Info.Health = health;
@@ -44,5 +47,6 @@ namespace View.NUnit {
 
     UnitFsm fsm;
     Material material;
+    UnitInfo info;
   }
 }

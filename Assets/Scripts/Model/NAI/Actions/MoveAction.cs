@@ -26,6 +26,7 @@ namespace Model.NAI.Actions {
         context.InsertCommand(Zero, decisionCommand);
         return this;
       }
+      ai.IsWaiting = false;
                                       
       if (context.IsCyclicDecision) {
         log.Error($"Cyclic reference {nameof(MoveAction)}");

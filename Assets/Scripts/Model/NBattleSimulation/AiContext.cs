@@ -61,16 +61,16 @@ namespace Model.NBattleSimulation {
       return (false, command);
     }
     
-    public Unit FindNearestTarget(EPlayer player, Coord coord) {
+    public (bool, Unit) FindNearestTarget(EPlayer player, Coord coord) {
       var units = EnemyUnits(player); //TODO: move to target component?
       
       return !units.Any() 
-        ? default 
-        : units.MinBy(u => CoordExt.SqrDistance(coord, u.Movement.Coord));
+        ? (false, default) 
+        : (true, units.MinBy(u => CoordExt.SqrDistance(coord, u.Movement.Coord)));
     } 
 
     IEnumerable<Unit> EnemyUnits(EPlayer player) => 
-      Board.GetPlayerUnits(player.Opposite());
+      Board.GetPlayerUnits(player.Opposite()).Where(u => u.Health.IsAlive);
     
     public IEnumerable<Unit> GetSurroundUnits(Coord coord) => Board.GetSurroundUnits(coord);
     public bool IsSurrounded(Coord coord) => Board.IsSurrounded(coord);
@@ -88,11 +88,11 @@ namespace Model.NBattleSimulation {
       IsPlayerDead = false;
       CurrentTime = Zero;
       CheckBattleIsOver();
+      aiHeap.Clear();
       
       foreach (var unit in Board.Values) {
         unit.Reset();
-        var decisionCommand = new MakeDecisionCommand(unit.Ai, this, Zero);
-        InsertCommand(Zero, decisionCommand);
+        InsertCommand(Zero, new MakeDecisionCommand(unit.Ai, this, Zero));
       }
     }
 

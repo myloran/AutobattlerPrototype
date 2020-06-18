@@ -122,7 +122,8 @@ namespace Infrastructure {
         movementController, battleSimulation, eventHolder);
       var battleSimulationController = new BattleSimulationDebugController(
         battleSimulation, BattleSimulationUI, movementController, 
-        aiContext, players, boardPresenter, playerPresenters, realtimeBattleSimulationController);
+        aiContext, players, boardPresenter, playerPresenters, realtimeBattleSimulationController,
+        tilePresenter);
 
       var battleSetupController = new BattleSetupController(players, playerPresenters, 
         BattleSetupUI);

@@ -6,6 +6,7 @@ using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
 using UnityEngine;
 using View;
+using View.Exts;
 using View.NUnit;
 using View.NUnit.States;
 using View.Presenters;
@@ -32,7 +33,7 @@ namespace Controller.NBattleSimulation {
     }
 
     public void HandleEvent(DeathEvent e) {
-      Object.Destroy(board[e.Coord].gameObject); //TODO: hide instead of destroy
+      board[e.Coord].gameObject.Hide();
       board.RemoveUnit(e.Coord);
     }
     

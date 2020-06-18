@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using Controller.Exts;
 using Model.NBattleSimulation;
+using Shared;
 using Shared.Abstraction;
 using Shared.Shared.Client;
 using UniRx;
+using View.Exts;
 using View.NUnit;
 using View.Presenters;
 using View.UIs;
@@ -13,7 +16,7 @@ namespace Controller.NDebug {
     public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui,
         ISimulationTick viewSimulation, AiContext context, Player[] players,
         BaseBoard<UnitView, PlayerPresenter> boardPresenter, PlayerPresenter[] playerPresenters,
-        RealtimeBattleSimulationController realtimeBattleSimulationController) {
+        RealtimeBattleSimulationController realtimeBattleSimulationController, TilePresenter tilePresenter) {
       this.simulation = simulation;
       this.ui = ui;
       this.viewSimulation = viewSimulation;
@@ -22,6 +25,7 @@ namespace Controller.NDebug {
       this.boardPresenter = boardPresenter;
       this.playerPresenters = playerPresenters;
       this.realtimeBattleSimulationController = realtimeBattleSimulationController;
+      this.tilePresenter = tilePresenter;
 
       ui.OStart.OnValueChangedAsObservable().Where(b => b)
         .Subscribe(StartBattle).AddTo(ui.OStart);
@@ -36,9 +40,18 @@ namespace Controller.NDebug {
     
     void StartBattle() {
       simulation.PrepareBattle(players[0], players[1]);
+      foreach (var (coord, unit) in units) {
+        unit.transform.position = tilePresenter.PositionAt(coord).WithY(unit.Height);
+        unit.Reset();
+        unit.Show();
+      }
       boardPresenter.Reset(playerPresenters[0], playerPresenters[1]);
+      foreach (var (coord, unit) in playerPresenters[0].BoardUnits) units[coord] = unit;
+      foreach (var (coord, unit) in playerPresenters[1].BoardUnits) units[coord] = unit;
       ui.SetEnabled(!simulation.IsBattleOver);
     }
+
+    readonly Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>();  
 
     void ExecuteNextDecision() {
       simulation.ExecuteNextCommand();
@@ -67,5 +80,6 @@ namespace Controller.NDebug {
     readonly BaseBoard<UnitView, PlayerPresenter> boardPresenter;
     readonly PlayerPresenter[] playerPresenters;
     readonly RealtimeBattleSimulationController realtimeBattleSimulationController;
+    readonly TilePresenter tilePresenter;
   }
 }

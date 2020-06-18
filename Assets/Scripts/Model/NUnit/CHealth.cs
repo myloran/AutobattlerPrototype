@@ -15,7 +15,11 @@ namespace Model.NUnit {
 
     public bool IsAlive => Health > 0;
 
-    public void Reset() => Health = StartingHealth;
+    public void Reset() {
+      Health = StartingHealth;
+      observers.Clear();
+    }
+
     public void SubToDeath(CTarget target) => observers.Add(target);
     public void UnsubFromDeath(CTarget target) => observers.Remove(target);
 

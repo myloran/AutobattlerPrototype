@@ -17,7 +17,11 @@ namespace Model.NUnit {
 
     public void Reset() {
       Health.Reset();
+      Attack.Reset();
       Movement.Reset();
+      Target.Reset();
+      Ai.Reset();
+      Stats.Reset();
     }
 
     public override string ToString() => new StringBuilder()

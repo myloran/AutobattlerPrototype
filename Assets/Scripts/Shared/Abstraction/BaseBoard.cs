@@ -15,23 +15,8 @@ namespace Shared.Abstraction {
     public bool ContainsUnitAt(Coord coord) => Units.Has(coord); 
     public IEnumerable<TUnit> Values => Units.Values;
 
-    public void AddUnit(Coord coord, TUnit unit) {
-      Units[coord] = unit;
-
-      if (unit.Player == EPlayer.First)
-        player1Units[coord] = unit;
-      else
-        player2Units[coord] = unit;
-    }
-
-    public void RemoveUnit(Coord coord) {
-      Units.Remove(coord);
-      
-      if (player1Units.Has(coord))
-        player1Units.Remove(coord);
-      else 
-        player2Units.Remove(coord);
-    }
+    public void AddUnit(Coord coord, TUnit unit) => Units[coord] = unit;
+    public void RemoveUnit(Coord coord) => Units.Remove(coord);
 
     public void MoveUnit(Coord from, Coord to) {
       var unit = Units[from];
@@ -47,8 +32,8 @@ namespace Shared.Abstraction {
       Units.Units.Clear();
       foreach (var (coord, unit) in player1Units) Units[coord] = unit;
       foreach (var (coord, unit) in player2Units) Units[coord] = unit;
+      // foreach (var unit in Units.Values) OnReset(unit);
     }
-    
     //TODO: ResetBack unit coord and coord in unit dict
 
     public IEnumerable<TUnit> GetPlayerUnits(EPlayer player) => 

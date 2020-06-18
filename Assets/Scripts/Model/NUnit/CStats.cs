@@ -10,6 +10,8 @@ namespace Model.NUnit {
       Player = player;
     }
 
+    public void Reset() => Level = 1;
+
     public override string ToString() => $"{nameof(Level)}: {Level}, {nameof(Player)}: {Player}";
   }
 }

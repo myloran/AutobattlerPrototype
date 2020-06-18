@@ -16,6 +16,7 @@ namespace Controller {
     
     public void StartBattle() {
       ExecuteAllDecisions();
+      currentTime = Zero;
       isStarted = true;
     }
 

@@ -2,11 +2,10 @@ namespace Model.NUnit {
   public class CTarget {
     public Unit Unit;
 
-    public CTarget(CMovement movement) {
-      this.movement = movement;
-    }
-    
+    public CTarget(CMovement movement) => this.movement = movement;
+
     public bool Exists => Unit != null;
+    public void Reset() => Unit = null;
     
     public void Clear() {
       if (!Exists) return;

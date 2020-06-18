@@ -2,6 +2,7 @@ using FixMath;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Shared;
+using static FixMath.F32;
 
 namespace Model.NUnit {
   public class CAi {
@@ -9,6 +10,12 @@ namespace Model.NUnit {
     public F32 DecisionTime;
     public F32 TimeWhenDecisionWillBeExecuted;
     public bool IsWaiting;
+
+    public void Reset() {
+      DecisionTime = Zero;
+      TimeWhenDecisionWillBeExecuted = Zero;
+      IsWaiting = false;
+    }
 
     public void MakeDecision(AiContext context) {
       context.IsCyclicDecision = false;
