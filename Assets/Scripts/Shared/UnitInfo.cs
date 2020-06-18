@@ -12,7 +12,8 @@ namespace Shared {
     [Key(4)] public float AttackSpeed;
     [Key(5)] public float AttackRange;
     [Key(6)] public float MoveSpeed;
-    [Key(7)] public float AttackAnimationSpeed;
+    [Key(7)] public float AttackAnimationHitTime;
+    [Key(8)] public float AttackAnimationTotalTime;
 
     public UnitInfo() { }
 
@@ -24,7 +25,8 @@ namespace Shared {
       AttackSpeed = info.AttackSpeed;
       AttackRange = info.AttackRange;
       MoveSpeed = info.MoveSpeed;
-      AttackAnimationSpeed = info.AttackAnimationSpeed;
+      AttackAnimationHitTime = info.AttackAnimationHitTime;
+      AttackAnimationTotalTime = info.AttackAnimationTotalTime;
     }
   }
 }

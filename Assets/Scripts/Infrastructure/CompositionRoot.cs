@@ -110,7 +110,7 @@ namespace Infrastructure {
       var movementController = new MovementController(boardPresenter, tilePresenter);
       var attackController = new AttackController(boardPresenter, UnitTooltipUI);
       eventBus.Register<StartMoveEvent>(movementController);
-      eventBus.Register<EndMoveEvent>(movementController);
+      eventBus.Register<FinishMoveEvent>(movementController);
       eventBus.Register<RotateEvent>(movementController);
       eventBus.Register<ApplyDamageEvent>(attackController);
       eventBus.Register<DeathEvent>(attackController);

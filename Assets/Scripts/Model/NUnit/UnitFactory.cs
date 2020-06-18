@@ -13,7 +13,8 @@ namespace Model.NUnit {
       var info = infos[name];
       var movement = new CMovement(coord, ToF32(info.MoveSpeed));
       var attack = new CAttack(movement, ToF32(info.Damage), ToF32(info.AttackSpeed), 
-        ToF32(info.AttackRange * info.AttackRange), ToF32(info.AttackAnimationSpeed));
+        ToF32(info.AttackRange * info.AttackRange), ToF32(info.AttackAnimationHitTime),
+        ToF32(info.AttackAnimationTotalTime));
       var health = new CHealth(ToF32(info.Health), ToF32(info.Armor));
       
       var unit = new Unit {

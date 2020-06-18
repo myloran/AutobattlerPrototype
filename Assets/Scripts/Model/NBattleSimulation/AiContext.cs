@@ -22,19 +22,25 @@ namespace Model.NBattleSimulation {
     
     public AiContext(Board board) => Board = board;
 
-    public void InsertCommand(F32 time, ICommand command) {
+    public void InsertCommand(F32 time, params ICommand[] commands) {
       var nextTime = CurrentTime + time;
-      
-      if (nodes.ContainsKey(nextTime)) {
-        var existingNode = nodes[nextTime];
-        var existingCommand = existingNode.Data;
-        existingNode.Data = new CompositeCommand(existingCommand, command);
-        return;
+
+      foreach (var command in commands) {
+        InsertCommand(command);
       }
 
-      var node = new FibonacciHeapNode<ICommand, F32>(command, nextTime);
-      aiHeap.Insert(node);
-      nodes[nextTime] = node;
+      void InsertCommand(ICommand command) {
+        if (nodes.ContainsKey(nextTime)) {
+          var existingNode = nodes[nextTime];
+          var existingCommand = existingNode.Data;
+          existingNode.Data = new CompositeCommand(existingCommand, command);
+          return;
+        }
+
+        var node = new FibonacciHeapNode<ICommand, F32>(command, nextTime);
+        aiHeap.Insert(node);
+        nodes[nextTime] = node;
+      }
     }
 
     public (bool, ICommand) RemoveMin() {

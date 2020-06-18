@@ -14,8 +14,8 @@ namespace Model.NAI.Actions {
       var ai = Unit.Ai;
       var targetMovement = Unit.Target.Unit.Movement;
       attack.StartAttack(context.CurrentTime);
-      var decisionCommand = new MakeDecisionCommand(ai, context, attack.AnimationSpeed);
-      context.InsertCommand(attack.AnimationSpeed, decisionCommand);
+      var decisionCommand = new MakeDecisionCommand(ai, context, attack.AttackAnimationHitTime);
+      context.InsertCommand(attack.AttackAnimationHitTime, decisionCommand);
       Bus.Raise(new RotateEvent(Unit.Movement.Coord, targetMovement.Coord));
       Bus.Raise(new StartAttackEvent(Unit.Movement.Coord));
       // var startMoveCommand = new ApplyDamageCommand(Unit.Movement, targetMovement, Bus);

@@ -1,3 +1,5 @@
+using System;
+using FixMath;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
@@ -7,12 +9,11 @@ using Shared.Shared.Client.Events;
 using static FixMath.F32;
 
 namespace Model.NAI.Actions {
-  public class EndAttackAction : BaseAction {
-    public EndAttackAction(Unit unit, IEventBus bus) : base(unit, bus) { }
+  public class AttackAction : BaseAction {
+    public AttackAction(Unit unit, IEventBus bus) : base(unit, bus) { }
                     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var attack = Unit.Attack;
-      attack.EndAttack();
       
       var target = Unit.Target;
       if (target.Exists) {
@@ -22,12 +23,15 @@ namespace Model.NAI.Actions {
         var deathCommand = new DeathCommand(targetMovement, context);
         var applyDamageCommand = new ApplyDamageCommand(targetHealth, damage, 
           targetMovement, deathCommand, Bus);
-        Bus.Raise(new IdleEvent(Unit.Movement.Coord)); //go to idle after finishing attack animation
-        context.InsertCommand(Zero, applyDamageCommand);  
+        context.InsertCommand(Zero, applyDamageCommand); //inserting to heap because units can attack at the same time
       }
+
+      context.InsertCommand(attack.TimeToFinishAttackAnimation, 
+        new FinishAttackCommand(Unit.Health, Unit.Movement, Unit.Attack, Bus));
       
-      var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, attack.AttackTime);
-      context.InsertCommand(attack.AttackTime, decisionCommand);
+      var time = Max(attack.AttackSpeedTime, attack.TimeToFinishAttackAnimation);
+      context.InsertCommand(time, new MakeDecisionCommand(Unit.Ai, context, time));
+
       return this;
     }
   }

@@ -9,7 +9,7 @@ namespace Model.NUnit {
 
     public IDecisionTreeNode Create(Unit unit) {
       var startAttack = WithLogging(new StartAttackAction(unit, bus));
-      var endAttack = WithLogging(new EndAttackAction(unit, bus));
+      var attack = WithLogging(new AttackAction(unit, bus));
       var moveAction = new MoveAction(unit, bus);
       var move = WithLogging(moveAction);
       var waitMoveDiff = WithLogging(new WaitMoveDiff(unit, bus));
@@ -18,12 +18,12 @@ namespace Model.NUnit {
       
       var isEnemyArrivingToAdjacentTile = new CheckEnemiesArrivingToAdjacentTile(
         move, waitFirstEnemyArriving, waitMoveDiff, unit.Movement, unit.Stats, unit.Target);
-      
-      var isAttackAnimationPlayed = WithLogging(new IsAttackAnimationPlayed(
-        endAttack, startAttack, unit.Attack));
+
+      var canStartAttack = WithLogging(new CanStartAttack(
+        startAttack, attack, unit.Attack));
       
       var isWithinAttackRangeDecision = WithLogging(new IsWithinAttackRange(
-        isAttackAnimationPlayed, isEnemyArrivingToAdjacentTile, unit.Attack, unit.Target));
+        canStartAttack, isEnemyArrivingToAdjacentTile, unit.Attack, unit.Target));
       
       var findNearestTargetAction = WithLogging(new FindNearestTargetAction(
         unit, bus, isWithinAttackRangeDecision));

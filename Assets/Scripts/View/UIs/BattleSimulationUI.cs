@@ -5,7 +5,9 @@ namespace View.UIs {
     public Button BExecuteNextDecision,
       BExecuteAllDecisions,
       BExecuteInRealtime;
-    public Toggle OStartBattle;
+    public Toggle OStart,
+      OPause;
+    public Slider SSpeed;
 
     public void Disable() => SetEnabled(false);
 

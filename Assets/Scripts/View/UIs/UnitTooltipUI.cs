@@ -17,7 +17,7 @@ namespace View.UIs {
       TArmor.text = "Armor: " + unit.Armor;
       TDamage.text = "Damage: " + unit.Damage;
       TAttackSpeed.text = "AttackSpeed: " + unit.AttackSpeed;
-      TAttackRange.text = "AttackAnimationSpeed: " + unit.AttackAnimationSpeed;
+      TAttackRange.text = "AttackAnimationSpeed: " + unit.AttackAnimationHitTime;
       TMoveSpeed.text = "MoveSpeed: " + unit.MoveSpeed;
     }
   }

@@ -4,8 +4,8 @@ using Shared;
 using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
-  public class EndMoveCommand : BaseCommand {
-    public EndMoveCommand(Board board, CMovement movement, CTarget target, Coord newCoord, IEventBus bus) {
+  public class FinishMoveCommand : BaseCommand {
+    public FinishMoveCommand(Board board, CMovement movement, CTarget target, Coord newCoord, IEventBus bus) {
       this.board = board;
       this.movement = movement;
       this.target = target;
@@ -19,7 +19,7 @@ namespace Model.NBattleSimulation.Commands {
       movement.Coord = newCoord;
       movement.TakenCoord = Coord.Invalid;
       target.Clear();
-      bus.Raise(new EndMoveEvent(fromCoord, newCoord));
+      bus.Raise(new FinishMoveEvent(fromCoord, newCoord));
     }
 
     readonly Board board;

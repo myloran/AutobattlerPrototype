@@ -96,7 +96,7 @@ namespace Model.NAI.Actions {
           .Execute();
       
         context.InsertCommand(time, 
-          new EndMoveCommand(context.Board, movement, target, newCoord, Bus));
+          new FinishMoveCommand(context.Board, movement, target, newCoord, Bus));
       
         context.InsertCommand(time, new MakeDecisionCommand(ai, context, time));
         return true;
@@ -133,7 +133,7 @@ namespace Model.NAI.Actions {
         .Execute();
       
       context.InsertCommand(time, 
-        new EndMoveCommand(context.Board, movement, target, newCoord, Bus));
+        new FinishMoveCommand(context.Board, movement, target, newCoord, Bus));
       
       context.InsertCommand(time, new MakeDecisionCommand(ai, context, time));
       return true;
