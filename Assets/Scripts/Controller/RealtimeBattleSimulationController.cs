@@ -16,13 +16,14 @@ namespace Controller {
     
     public void StartBattle() {
       ExecuteAllDecisions();
-      startTime = ToF32(Time.realtimeSinceStartup);
-      isBattleStarted = true;
+      isStarted = true;
     }
 
     public void Tick() {
-      var currentTime = ToF32(Time.realtimeSinceStartup) - startTime;
+      if (!isStarted || isPaused) return;
 
+      currentTime += ToF32(Time.deltaTime/* * speed*/);
+      
       while (eventHolder.HasEventInHeap && eventHolder.NextEventTime < currentTime) {
         eventHolder.RaiseFromHeap();
       }
@@ -40,10 +41,21 @@ namespace Controller {
       eventHolder.NeedExecuteImmediately = true;
     }
 
+    public void SetPaused(bool isPaused) {
+      this.isPaused = isPaused;
+      Time.timeScale = isPaused ? 0 : speed;
+    }
+
+    public void SetSpeed(float speed) {
+      this.speed = speed;
+      Time.timeScale = speed;
+    }
+
     readonly ISimulationTick viewSimulation;
     readonly BattleSimulation simulation;
     readonly EventHolder eventHolder;
-    F32 startTime;
-    bool isBattleStarted;
+    F32 currentTime;
+    bool isPaused, isStarted;
+    float speed;
   }
 }

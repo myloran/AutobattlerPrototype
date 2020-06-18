@@ -23,8 +23,12 @@ namespace Controller.NDebug {
       this.playerPresenters = playerPresenters;
       this.realtimeBattleSimulationController = realtimeBattleSimulationController;
 
-      ui.OStartBattle.onValueChanged.AsObservable().Where(b => b)
-        .Subscribe(_ => StartBattle()).AddTo(ui.OStartBattle);
+      ui.OStart.OnValueChangedAsObservable().Where(b => b)
+        .Subscribe(StartBattle).AddTo(ui.OStart);
+      ui.OPause.OnValueChangedAsObservable()
+        .Subscribe(SetPaused).AddTo(ui.OStart);
+      ui.SSpeed.OnValueChangedAsObservable()
+        .Subscribe(SetSpeed).AddTo(ui.SSpeed);
       ui.BExecuteNextDecision.Sub(ExecuteNextDecision);
       ui.BExecuteAllDecisions.Sub(ExecuteAllDecisions);
       ui.BExecuteInRealtime.Sub(PlayerBattleInRealtime);
@@ -51,6 +55,8 @@ namespace Controller.NDebug {
       }
     }
     
+    void SetPaused(bool isPaused) => realtimeBattleSimulationController.SetPaused(isPaused);
+    void SetSpeed(float speed) => realtimeBattleSimulationController.SetSpeed(speed);
     void PlayerBattleInRealtime() => realtimeBattleSimulationController.StartBattle();
 
     readonly BattleSimulation simulation;

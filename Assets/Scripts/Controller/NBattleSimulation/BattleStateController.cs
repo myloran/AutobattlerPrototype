@@ -7,8 +7,8 @@ namespace Controller.NBattleSimulation {
     public bool IsBattleStarted { get; private set; }
 
     public BattleStateController(BattleSimulationUI ui) {
-      ui.OStartBattle.onValueChanged.AsObservable()
-        .Subscribe(SetBattleStarted).AddTo(ui.OStartBattle);
+      ui.OStart.onValueChanged.AsObservable()
+        .Subscribe(SetBattleStarted).AddTo(ui.OStart);
     }
 
     void SetBattleStarted(bool isOn) => IsBattleStarted = isOn;
