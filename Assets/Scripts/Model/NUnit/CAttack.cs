@@ -30,7 +30,7 @@ namespace Model.NUnit {
       ? (1 / attackSpeed) 
       : throw new Exception();
 
-    public bool IsWithinAttackRange(CMovement target) => 
+    public bool IsWithinAttackRange(IMovement target) => 
       CoordExt.SqrDistance(movement.Coord, target.Coord) <= sqrRange; //TODO: check if coord == coord.Normalized is more performant
 
     public void StartAttack(F32 currentTime) => lastStartAttackTime = currentTime;

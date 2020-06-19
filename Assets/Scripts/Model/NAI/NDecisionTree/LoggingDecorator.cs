@@ -14,7 +14,7 @@ namespace Model.NAI.NDecisionTree {
       message += decision.GetType().Name + "->";
       if (decision is FindNearestTargetAction) { } else
       if (decision is BaseAction ba) {
-        log.Info($"[{context.CurrentTime}] {ba.Unit.Movement.Coord} {message}");
+        log.Info($"[{context.CurrentTime}] {ba.Unit.Coord} {message}");
         message = "";
       }
 

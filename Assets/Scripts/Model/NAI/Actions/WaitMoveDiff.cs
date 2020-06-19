@@ -13,7 +13,7 @@ namespace Model.NAI.Actions {
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, MoveDiffTime);
       context.InsertCommand(MoveDiffTime, decisionCommand);
-      Bus.Raise(new IdleEvent(Unit.Movement.Coord));
+      Bus.Raise(new IdleEvent(Unit.Coord));
       return this;
     }
   }

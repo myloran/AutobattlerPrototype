@@ -6,10 +6,10 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class StartMoveCommand : BaseCommand {
-    public StartMoveCommand(Board board, CMovement movement, Coord newCoord,
+    public StartMoveCommand(Board board, Unit unit, Coord newCoord,
       F32 startingTime, F32 duration, IEventBus bus) {
       this.board = board;
-      this.movement = movement;
+      this.unit = unit;
       this.newCoord = newCoord;
       this.startingTime = startingTime;
       this.duration = duration;
@@ -17,16 +17,16 @@ namespace Model.NBattleSimulation.Commands {
     }
 
     public override void Execute() {
-      var unit = board[movement.Coord];
+      var unit = board[this.unit.Coord];
       board.AddUnit(newCoord, unit);
-      movement.TakenCoord = newCoord;
+      this.unit.TakenCoord = newCoord;
 // #if Client
-      bus.Raise(new StartMoveEvent(movement.Coord, newCoord, startingTime, duration));
+      bus.Raise(new StartMoveEvent(this.unit.Coord, newCoord, startingTime, duration));
 // #endif
     }
 
     readonly Board board;
-    readonly CMovement movement;
+    readonly Unit unit;
     readonly Coord newCoord;
     readonly F32 startingTime;
     readonly F32 duration;

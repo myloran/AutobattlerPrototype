@@ -66,7 +66,7 @@ namespace Model.NBattleSimulation {
       
       return !units.Any() 
         ? (false, default) 
-        : (true, units.MinBy(u => CoordExt.SqrDistance(coord, u.Movement.Coord)));
+        : (true, units.MinBy(u => CoordExt.SqrDistance(coord, u.Coord)));
     } 
 
     IEnumerable<Unit> EnemyUnits(EPlayer player) => 

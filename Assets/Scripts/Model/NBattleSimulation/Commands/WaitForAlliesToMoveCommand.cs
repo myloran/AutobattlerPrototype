@@ -5,14 +5,14 @@ using Shared.OkwyLogging;
 
 namespace Model.NBattleSimulation.Commands {
   public class WaitForAlliesToMoveCommand : BaseCommand {
-    public WaitForAlliesToMoveCommand(CMovement movement, CAi ai, AiContext context) {
-      this.movement = movement;
+    public WaitForAlliesToMoveCommand(Unit unit, CAi ai, AiContext context) {
+      this.unit = unit;
       this.ai = ai;
       this.context = context;
     }
 
     public override void Execute() { //TODO; wait MoveDiffTime instead of putting decision into queue end 
-      var units = context.GetSurroundUnits(movement.Coord)
+      var units = context.GetSurroundUnits(unit.Coord)
         .Where(u => u.Ai.CurrentDecision.Type == EDecision.MoveAction);
 
       if (!units.Any()) {
@@ -25,7 +25,7 @@ namespace Model.NBattleSimulation.Commands {
       context.InsertCommand(time, decisionCommand);
     }
 
-    readonly CMovement movement;
+    readonly Unit unit;
     readonly CAi ai;
     readonly AiContext context;
     static readonly Logger log = MainLog.GetLogger(nameof(WaitForAlliesToMoveCommand));

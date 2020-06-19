@@ -24,7 +24,7 @@ namespace Model.NUnit {
 
     public static implicit operator Unit(CTarget target) => target.Target;
 
-    public override string ToString() => TargetExists ? $"Target coord: {Target.Movement.Coord}" : "";
+    public override string ToString() => TargetExists ? $"Target coord: {Target.Coord}" : "";
 
     readonly CMovement movement;
   }

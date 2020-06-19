@@ -3,8 +3,8 @@ using Shared;
 
 namespace Model.NBattleSimulation.Commands {
   public class DeathCommand : BaseCommand {
-    public DeathCommand(CMovement movement, AiContext context) {
-      this.movement = movement;
+    public DeathCommand(Unit target, AiContext context) {
+      this.target = target;
       this.context = context;
     }
     
@@ -18,15 +18,15 @@ namespace Model.NBattleSimulation.Commands {
       //so that they don't wait for target to end move
       //so that they don't wait to attack target
       var board = context.Board;
-      board.RemoveUnit(movement.Coord);
+      board.RemoveUnit(target.Coord);
       
-      if (movement.TakenCoord != Coord.Invalid)
-        board.RemoveUnit(movement.TakenCoord);
+      if (target.TakenCoord != Coord.Invalid)
+        board.RemoveUnit(target.TakenCoord);
       
       context.CheckBattleIsOver();
     }
 
-    readonly CMovement movement;
+    readonly Unit target;
     readonly AiContext context;
   }
 }

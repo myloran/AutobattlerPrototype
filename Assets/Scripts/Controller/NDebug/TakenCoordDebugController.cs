@@ -23,9 +23,9 @@ namespace Controller.NDebug {
       ClearHighlight();
       
       foreach (var unit in board.Values) {
-        var tile = tilePresenter.TileAt(unit.Movement.Coord);
-        if (unit.Movement.TakenCoord != Coord.Invalid) {
-          var anotherTile = tilePresenter.TileAt(unit.Movement.TakenCoord);
+        var tile = tilePresenter.TileAt(unit.Coord);
+        if (unit.TakenCoord != Coord.Invalid) {
+          var anotherTile = tilePresenter.TileAt(unit.TakenCoord);
           anotherTile.Debug(TakenCoordColor(unit));
         }
           

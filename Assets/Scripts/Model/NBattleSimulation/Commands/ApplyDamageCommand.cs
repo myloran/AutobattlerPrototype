@@ -6,32 +6,28 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class ApplyDamageCommand : BaseCommand {
-    public ApplyDamageCommand(IHealth health, F32 damage, CMovement movement, 
-        DeathCommand deathCommand, IEventBus bus) {
-      this.health = health;
-      this.damage = damage;
-      this.movement = movement;
+    public ApplyDamageCommand(Unit unit, DeathCommand deathCommand, IEventBus bus) {
+      this.unit = unit;
       this.deathCommand = deathCommand;
       this.bus = bus;
     }
 
     public override void Execute() {
-      if (!health.IsAlive) return;
+      var target = unit.Target;
+      if (!target.IsAlive) return;
       
-      health.TakeDamage(damage);
+      target.TakeDamage(unit.Damage);
       
-      if (!health.IsAlive) 
+      if (!target.IsAlive) 
         deathCommand.Execute();
       
-      bus.Raise(new ApplyDamageEvent(health.Health, movement.Coord));
+      bus.Raise(new ApplyDamageEvent(target.Health, target.Coord));
       
-      if (!health.IsAlive) 
-        bus.Raise(new DeathEvent(movement.Coord));
+      if (!target.IsAlive) 
+        bus.Raise(new DeathEvent(target.Coord));
     }
 
-    readonly IHealth health;
-    readonly F32 damage;
-    readonly CMovement movement;
+    readonly Unit unit;
     readonly DeathCommand deathCommand;
     readonly IEventBus bus;
   }

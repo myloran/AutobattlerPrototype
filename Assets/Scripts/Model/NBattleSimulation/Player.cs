@@ -8,7 +8,7 @@ namespace Model.NBattleSimulation {
       : base(player, boardUnitDict, benchUnitDict) { }
 
     protected override void OnChangeCoord(Coord coord, Unit unit) => 
-      unit.Movement.StartingCoord = coord;
+      unit.StartingCoord = coord;
 
     public (bool, Unit) GetUnit(Coord coord) {
       var dict = coord.BelongsToPlayer(Player) ? BenchUnits : BoardUnits;

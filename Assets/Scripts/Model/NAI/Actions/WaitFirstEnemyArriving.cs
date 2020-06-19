@@ -13,7 +13,7 @@ namespace Model.NAI.Actions {
       var time = Unit.Target.Ai.TimeWhenDecisionWillBeExecuted - context.CurrentTime;
       var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, time);
       context.InsertCommand(time, decisionCommand);
-      Bus.Raise(new IdleEvent(Unit.Movement.Coord));
+      Bus.Raise(new IdleEvent(Unit.Coord));
       return this;
     }
   }

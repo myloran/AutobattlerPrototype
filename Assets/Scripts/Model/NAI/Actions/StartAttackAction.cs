@@ -10,14 +10,11 @@ namespace Model.NAI.Actions {
     public StartAttackAction(Unit unit, IEventBus bus) : base(unit, bus) { }
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      var attack = Unit;
-      var ai = Unit.Ai;
-      var targetMovement = Unit.Target.Movement;
-      attack.StartAttack(context.CurrentTime);
-      var decisionCommand = new MakeDecisionCommand(ai, context, attack.AttackAnimationHitTime);
-      context.InsertCommand(attack.AttackAnimationHitTime, decisionCommand);
-      Bus.Raise(new RotateEvent(Unit.Movement.Coord, targetMovement.Coord));
-      Bus.Raise(new StartAttackEvent(Unit.Movement.Coord));
+      Unit.StartAttack(context.CurrentTime);
+      var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, Unit.AttackAnimationHitTime);
+      context.InsertCommand(Unit.AttackAnimationHitTime, decisionCommand);
+      Bus.Raise(new RotateEvent(Unit.Coord, Unit.Target.Coord));
+      Bus.Raise(new StartAttackEvent(Unit.Coord));
       // var startMoveCommand = new ApplyDamageCommand(Unit.Movement, targetMovement, Bus);
       //if health == 0 execute unit death command
       return this;

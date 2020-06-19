@@ -8,6 +8,6 @@ namespace Model.NAI.Decisions {
       IDecisionTreeNode falseNode, Unit unit) : base(trueNode, falseNode, unit) { }
     
     protected override bool GetBranch(AiContext context) => 
-      Unit.IsWithinAttackRange(Unit.Target.Movement);
+      Unit.IsWithinAttackRange(Unit.Target);
   }
 }

@@ -7,15 +7,14 @@ using static Shared.Const;
 namespace Model.NAI.Decisions {
   public class CheckEnemiesArrivingToAdjacentTile : BaseDecision3 {
     public CheckEnemiesArrivingToAdjacentTile(IDecisionTreeNode firstNode, 
-        IDecisionTreeNode secondNode, IDecisionTreeNode thirdNode, CMovement movement, 
+        IDecisionTreeNode secondNode, IDecisionTreeNode thirdNode, 
         CStats stats, Unit unit) : base(firstNode, secondNode, thirdNode) {
-      this.movement = movement;
       this.stats = stats;
       this.unit = unit;
     }
     
     protected override Options3 GetBranch(AiContext context) {
-      var units = context.GetAdjacentUnits(movement.Coord)
+      var units = context.GetAdjacentUnits(this.unit.Coord)
         .Where(u => !u.IsAllyWith(stats.Player));
       if (!units.Any()) return Options3.First;
 
@@ -26,7 +25,6 @@ namespace Model.NAI.Decisions {
       return timeToArrive < StraightMoveTime ? Options3.Second : Options3.Third;
     }
 
-    readonly CMovement movement;
     readonly CStats stats;
     readonly Unit unit;
   }
