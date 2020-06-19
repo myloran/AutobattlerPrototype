@@ -12,11 +12,13 @@ namespace Controller.UnitDrag {
     public IObservable<DragEndedEvent> DragEnded;
     
     public UnitDragController(RaycastController raycastController, CoordFinder coordFinder,
-        InputController inputController, IPredicate<DragInfo> canStartDrag) {
+        InputController inputController, UnitSelectionController unitSelectionController,
+        IPredicate<UnitSelectedEvent> canStartDrag) {
       this.raycastController = raycastController;
       this.canStartDrag = canStartDrag;
       this.coordFinder = coordFinder;
       this.inputController = inputController;
+      this.unitSelectionController = unitSelectionController;
     }
     
     public void Init() {
@@ -25,14 +27,12 @@ namespace Controller.UnitDrag {
       HandleStopDrag();
     }
     
-    void HandleStartDrag() =>
-      inputController.OnMouseDown
-        .Select(raycastController.FireRaycast)
-        .SelectWhere(raycastController.RaycastHitsUnit)
-        .Select(DragInfo)
+    void HandleStartDrag() {
+      unitSelectionController.UnitSelected
         .Where(canStartDrag.Check)
         .Subscribe(StartDrag)
         .AddTo(disposable);
+    }
 
     void HandleDrag() {
       CoordChanged = inputController.OnMouseHeld
@@ -40,7 +40,6 @@ namespace Controller.UnitDrag {
         .SelectWhere(raycastController.RaycastPlane)
         .Select(MoveUnit)
         .SelectWhere(CoordIsChanged)
-        .Publish()
         .Connect(disposable);
       
       CoordChanged.Subscribe(UpdateLastCoord).AddTo(disposable);
@@ -50,7 +49,6 @@ namespace Controller.UnitDrag {
       DragEnded = inputController.OnMouseUp
         .Where(IsDragging)
         .Select(Coords)
-        .Publish()
         .Connect(disposable);
       
       DragEnded.Subscribe(StopDrag).AddTo(disposable);
@@ -60,17 +58,11 @@ namespace Controller.UnitDrag {
     void UpdateLastCoord(CoordChangedEvent e) => lastCoord = e.To;
     bool IsDragging() => unit != null;
     
-    void StartDrag(DragInfo info) {
+    void StartDrag(UnitSelectedEvent info) {
       unit = info.Unit;
       startCoord = info.StartCoord;
     }
 
-    DragInfo DragInfo(RaycastHit hit) {
-      var u = hit.transform.GetComponent<UnitView>();
-      var c = coordFinder.FindClosest(u);
-      return new DragInfo(u, c);
-    }
-    
     Vector3 MoveUnit(Vector3 mousePosition) => 
       unit.transform.position = mousePosition + new Vector3(0, 1, 0);
 
@@ -92,7 +84,8 @@ namespace Controller.UnitDrag {
     readonly RaycastController raycastController;
     readonly CoordFinder coordFinder;
     readonly InputController inputController;
-    readonly IPredicate<DragInfo> canStartDrag;
+    readonly UnitSelectionController unitSelectionController;
+    readonly IPredicate<UnitSelectedEvent> canStartDrag;
     readonly CompositeDisposable disposable = new CompositeDisposable();
     Coord startCoord;
     Coord lastCoord = Coord.Invalid;

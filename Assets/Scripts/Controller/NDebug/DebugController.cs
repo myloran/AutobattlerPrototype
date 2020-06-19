@@ -1,25 +1,39 @@
+using Controller.Update;
 using Shared.OkwyLogging;
 using UnityEngine;
+using View.UIs;
 
 namespace Controller.NDebug {
-  public class DebugController : MonoBehaviour {
+  public class DebugController : MonoBehaviour, ITick {
     public DebugInfo Info;
+    public bool WasLogEnabled { get; private set; }
+    public bool WasDebugOn { get; private set; }
 
-    void Awake() {
-      wasLogEnabled = Info.IsLogEnabled;
+    public void Init(UnitTooltipUI unitTooltipUI) {
+      unitTooltipUICanvas = unitTooltipUI.GetComponent<Canvas>();
+      WasLogEnabled = Info.IsLogEnabled;
       CheckLog();
     }
 
-    void Update() {
-      if (Info.IsLogEnabled != wasLogEnabled) {
-        wasLogEnabled = Info.IsLogEnabled;
+    public void Tick() {
+      if (Info.IsLogEnabled != WasLogEnabled) {
+        WasLogEnabled = Info.IsLogEnabled;
         CheckLog();
       }
       
-      // if (Info.IsDebugOn != wasDebugOn) {
-      //   wasDebugOn = Info.IsDebugOn;
-      //   CheckLog();
-      // }
+      if (Info.IsDebugOn != WasDebugOn) {
+        WasDebugOn = Info.IsDebugOn;
+        CheckDebug();
+      }
+    }
+
+    void CheckDebug() {
+      if (Info.IsDebugOn) {
+        unitTooltipUICanvas.enabled = false;
+      }
+      else {
+        unitTooltipUICanvas.enabled = true;
+      }
     }
 
     void CheckLog() {
@@ -29,7 +43,6 @@ namespace Controller.NDebug {
         MainLog.ResetAppenders();
     }
 
-    bool wasLogEnabled,
-      wasDebugOn;
+    Canvas unitTooltipUICanvas;
   }
 }

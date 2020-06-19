@@ -1,30 +1,41 @@
-using Shared;
+using System;
+using Controller.UnitDrag;
 using View.Exts;
 using View.NUnit;
 using View.UIs;
+using UniRx;
+using Controller.Exts;
 
 namespace Controller {
-  public class UnitTooltipController {
+  public class UnitTooltipController : IDisposable {
     readonly UnitTooltipUI ui;
+    readonly UnitSelectionController unitSelectionController;
 
-    public UnitTooltipController(UnitTooltipUI ui) {
+    public UnitTooltipController(UnitTooltipUI ui, 
+        UnitSelectionController unitSelectionController) {
       this.ui = ui;
+      this.unitSelectionController = unitSelectionController;
     }
 
-    public void Show(UnitView unit) {
-      this.unit = unit;
-      ui.SetUnitData(unit.Info);
+    public void Init() {
+      unitSelectionController.UnitSelected.Subscribe(UpdateTooltip).AddTo(disposable);
+      unitSelectionController.UnitDeselected.Subscribe(ui.Hide).AddTo(disposable);
+    }  
+
+    void UpdateTooltip(UnitSelectedEvent e) {
+      unit = e.Unit;
+      ui.SetUnitData(e.Unit.Info);
       ui.Show();
     }
-
-    public void Hide() => ui.Hide();
-    
 
     public void UpdateHealth(UnitView unit, float health) {
       if (unit == this.unit) 
         ui.SetHealth(health);
     }
     
+    public void Dispose() => disposable.Dispose();
+    
     UnitView unit;
+    readonly CompositeDisposable disposable = new CompositeDisposable();
   }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using Controller;
 using Controller.NBattleSimulation;
@@ -12,10 +11,7 @@ using Model.NBattleSimulation;
 using Model.NUnit;
 using Shared;
 using UnityEngine;
-using View;
-using FibonacciHeap;
 using Model;
-using Model.NBattleSimulation.Commands;
 using PlasticFloor.EventBus;
 using Shared.OkwyLogging;
 using Shared.Shared.Client;
@@ -30,7 +26,7 @@ using Logger = Shared.OkwyLogging.Logger;
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
     public DebugController DebugController;
-    public TickInput tickInput;
+    public MonoBehaviourCallBackController MonoBehaviourCallBackController;
     public BattleSetupUI BattleSetupUI;
     public BattleSaveUI BattleSaveUI;
     public BattleSimulationUI BattleSimulationUI;
@@ -97,31 +93,18 @@ namespace Infrastructure {
       var worldContext = new WorldContext(players, playerPresenters, BattleSetupUI);
 
       #endregion
-
-      var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
-
-      #region Debug
-
-      var unitModelDebugController = new UnitModelDebugController(
-        new ModelContext(players), ModelUI, DebugController.Info);
       
-      var takenCoordDebugController = new TakenCoordDebugController(
-        tilePresenter, board, DebugController.Info);
+      var coordFinder = new CoordFinder(tilePresenter, BattleSetupUI);
+      var unitSelectionController = new UnitSelectionController(
+        inputController, raycastController, coordFinder);
+      var unitTooltipController = new UnitTooltipController(
+        UnitTooltipUI, unitSelectionController);
       
-      var targetDebugController = new TargetDebugController(
-        board, tilePresenter, DebugController.Info);
-      
-      var uiDebugController = new UIDebugController(
-        BattleSetupUI, BattleSaveUI, BattleSimulationUI,
-        unitModelDebugController);
-
-      #endregion
       #region Unit drag
-
+      
       var unitDragController = new UnitDragController(raycastController, 
-        new CoordFinder(tilePresenter, BattleSetupUI), inputController, 
-        new CanStartDrag(new BattleStateController(BattleSimulationUI), 
-          unitModelDebugController, BattleSetupUI, unitTooltipController));
+        coordFinder, inputController, unitSelectionController, 
+        new CanStartDrag(new BattleStateController(BattleSimulationUI), BattleSetupUI));
       
       var tileHighlightController = new TileHighlighterController(tilePresenter, 
         unitDragController);
@@ -146,16 +129,33 @@ namespace Infrastructure {
         movementController, battleSimulation, eventHolder);
 
       #endregion
+      #region Debug
+      
+      var battleSetupController = new BattleSetupController(players, playerPresenters, 
+        BattleSetupUI);
+      
+      var battleSaveController = new BattleSaveController(players, playerPresenters, 
+        BattleSaveUI, saveDataLoader, saves);
       
       var battleSimulationController = new BattleSimulationDebugController(
         battleSimulation, BattleSimulationUI, movementController, 
         aiContext, players, boardPresenter, playerPresenters, realtimeBattleSimulationController,
         tilePresenter);
 
-      var battleSetupController = new BattleSetupController(players, playerPresenters, 
-        BattleSetupUI);
-      var battleSaveController = new BattleSaveController(players, playerPresenters, 
-        BattleSaveUI, saveDataLoader, saves);
+      var unitModelDebugController = new UnitModelDebugController(
+        new ModelContext(players), ModelUI, DebugController.Info, unitSelectionController);
+      
+      var takenCoordDebugController = new TakenCoordDebugController(
+        tilePresenter, board, DebugController);
+      
+      var targetDebugController = new TargetDebugController(
+        board, tilePresenter, DebugController.Info);
+      
+      var uiDebugController = new UIDebugController(
+        BattleSetupUI, BattleSaveUI, BattleSimulationUI,
+        unitModelDebugController);
+
+      #endregion
 
       yield return null;
       
@@ -164,15 +164,19 @@ namespace Infrastructure {
 
       eventHolder.Init(aiContext); //TODO: move parameters to constructor
       tickController.Init(takenCoordDebugController, targetDebugController, uiDebugController, 
-        unitModelDebugController, realtimeBattleSimulationController);
+        unitModelDebugController, realtimeBattleSimulationController, DebugController);
       inputController.Init();
+      unitSelectionController.Init();
       unitDragController.Init();
       
       tileHighlightController.Init();
       unitMoveController.Init();
+      unitTooltipController.Init();
       
-      
-      tickInput.Init(tickController);
+      unitModelDebugController.Init();
+      DebugController.Init(UnitTooltipUI);
+
+      MonoBehaviourCallBackController.Init(tickController);
     }
 
     static readonly Logger log = MainLog.GetLogger(nameof(CompositionRoot));

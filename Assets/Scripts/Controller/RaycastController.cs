@@ -18,17 +18,10 @@ namespace Controller {
       var isHit = Physics.Raycast(ray, out var hit, 100, unitLayer);
       return (isHit, hit);
     }
-
-    public void Tick() {
-      if (!Input.GetMouseButtonDown(0)) return;
-      
-      var ray = camera.ScreenPointToRay(Input.mousePosition);
-      if (Physics.Raycast(ray, out _, 100, unitLayer)) return;
-      if (UIExt.IsPointerOverUIElement()) return;
-        
-      if (Physics.Raycast(ray, out _, 100, globalLayer)) {
-        // controller.Hide();
-      }
+    
+    public (bool isHit, RaycastHit hit) RaycastHitsGlobalCollider(Ray ray) {
+      var isHit = Physics.Raycast(ray, out var hit, 100, globalLayer);
+      return (isHit, hit);
     }
 
     public (bool isHit, Vector3 position) RaycastPlane() {
@@ -44,6 +37,5 @@ namespace Controller {
     readonly Camera camera;
     readonly int globalLayer;
     readonly int unitLayer;
-    static readonly Logger log = MainLog.GetLogger(nameof(RaycastController));
   }
 }

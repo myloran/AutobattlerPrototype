@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 7963581}
   - component: {fileID: 7963580}
   m_Layer: 0
-  m_Name: TickInput
+  m_Name: MonoBehaviourCallBackController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2477,7 +2477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DebugController: {fileID: 1453660818}
-  tickInput: {fileID: 7963580}
+  MonoBehaviourCallBackController: {fileID: 7963580}
   BattleSetupUI: {fileID: 1496048890}
   BattleSaveUI: {fileID: 560709430}
   BattleSimulationUI: {fileID: 1720349391}

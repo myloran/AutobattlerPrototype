@@ -1,13 +1,12 @@
 using Shared;
 using View.NUnit;
-using View.Views;
 
 namespace Controller.UnitDrag {
-  public struct DragInfo {
+  public struct UnitSelectedEvent {
     public UnitView Unit;
     public Coord StartCoord;
     
-    public DragInfo(UnitView unit, Coord startCoord) {
+    public UnitSelectedEvent(UnitView unit, Coord startCoord) {
       Unit = unit;
       StartCoord = startCoord;
     }

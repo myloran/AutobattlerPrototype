@@ -16,7 +16,8 @@ namespace Controller.NDebug {
     public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui,
         ISimulationTick viewSimulation, AiContext context, Player[] players,
         BaseBoard<UnitView, PlayerPresenter> boardPresenter, PlayerPresenter[] playerPresenters,
-        RealtimeBattleSimulationController realtimeBattleSimulationController, TilePresenter tilePresenter) {
+        RealtimeBattleSimulationController realtimeBattleSimulationController, 
+        TilePresenter tilePresenter) {
       this.simulation = simulation;
       this.ui = ui;
       this.viewSimulation = viewSimulation;

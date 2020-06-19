@@ -7,18 +7,19 @@ using View.Presenters;
 
 namespace Controller.NDebug {
   public class TakenCoordDebugController : ITick {
-    public TakenCoordDebugController(TilePresenter tilePresenter, Board board, DebugInfo debugInfo) {
+    public TakenCoordDebugController(TilePresenter tilePresenter, Board board, DebugController debugController) {
       this.tilePresenter = tilePresenter;
       this.board = board;
-      this.debugInfo = debugInfo;
+      this.debugController = debugController;
     }
     
     public void Tick() {
-      if (!debugInfo.IsDebugOn) {
-        ClearHighlight();
+      if (!debugController.Info.IsDebugOn) {
+        if (debugController.Info.IsDebugOn != debugController.WasDebugOn) 
+          ClearHighlight();
         return;
       }
-      
+
       ClearHighlight();
       
       foreach (var unit in board.Values) {
@@ -41,9 +42,8 @@ namespace Controller.NDebug {
       }
     }
 
-
     readonly TilePresenter tilePresenter;
     readonly Board board;
-    readonly DebugInfo debugInfo;
+    readonly DebugController debugController;
   }
 }

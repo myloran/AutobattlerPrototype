@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Controller.Update {
-  public class TickInput : MonoBehaviour {
+  public class MonoBehaviourCallBackController : MonoBehaviour {
     void Update() {
       if (isInit)
         tick.Tick();
