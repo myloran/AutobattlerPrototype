@@ -15,6 +15,7 @@ namespace Shared.Shared.Client {
     public bool HasEventInHeap => events.Min() != null;
     public F32 NextEventTime => events.Min().Key;
     public void RaiseFromHeap() => Raise(events.RemoveMin().Data);
+    public void ClearHeap() => events.Clear();
 
     public void Raise<TEvent>(TEvent @event) where TEvent : IEvent {
       if (NeedExecuteImmediately)

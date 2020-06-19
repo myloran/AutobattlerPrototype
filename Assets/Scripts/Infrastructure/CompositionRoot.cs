@@ -28,6 +28,7 @@ using Logger = Shared.OkwyLogging.Logger;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
+    public DebugController DebugController;
     public TickInput tickInput;
     public BattleSetupUI BattleSetupUI;
     public BattleSaveUI BattleSaveUI;
@@ -87,10 +88,14 @@ namespace Infrastructure {
         unitTooltipController);
       
       var unitModelDebugController = new UnitModelDebugController(
-        new ModelContext(players), ModelUI);
+        new ModelContext(players), ModelUI, DebugController.Info);
       
-      var takenCoordDebugController = new TakenCoordDebugController(tilePresenter, board);
-      var targetDebugController = new TargetDebugController(board, tilePresenter);
+      var takenCoordDebugController = new TakenCoordDebugController(
+        tilePresenter, board, DebugController.Info);
+      
+      var targetDebugController = new TargetDebugController(
+        board, tilePresenter, DebugController.Info);
+      
       var uiDebugController = new UIDebugController(
         BattleSetupUI, BattleSaveUI, BattleSimulationUI,
         unitModelDebugController);
@@ -99,7 +104,7 @@ namespace Infrastructure {
       var tileHighlighter = new TileHighlighter(tilePresenter);
 
       var unitSelectionController = new UnitSelectionController(
-        battleStateController, unitModelDebugController, BattleSetupUI);
+        battleStateController, unitModelDebugController, BattleSetupUI, unitTooltipController);
       
       var unitDragController = new UnitDragController(raycastController, 
         new CoordFinder(tilePresenter, BattleSetupUI), inputController, 
@@ -108,7 +113,7 @@ namespace Infrastructure {
         tileHighlighter, unitSelectionController);
 
       var movementController = new MovementController(boardPresenter, tilePresenter);
-      var attackController = new AttackController(boardPresenter, UnitTooltipUI);
+      var attackController = new AttackController(boardPresenter, unitTooltipController);
       eventBus.Register<StartMoveEvent>(movementController);
       eventBus.Register<FinishMoveEvent>(movementController);
       eventBus.Register<RotateEvent>(movementController);

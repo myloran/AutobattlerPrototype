@@ -20,5 +20,7 @@ namespace View.UIs {
       TAttackRange.text = "AttackAnimationSpeed: " + unit.AttackAnimationHitTime;
       TMoveSpeed.text = "MoveSpeed: " + unit.MoveSpeed;
     }
+
+    public void SetHealth(float health) => THealth.text = "Health: " + health;
   }
 }

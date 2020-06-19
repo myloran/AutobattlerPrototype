@@ -5,12 +5,15 @@ using View.Presenters;
 
 namespace Controller.NDebug {
   public class TargetDebugController : ITick {
-    public TargetDebugController(Board board, TilePresenter tilePresenter) {
+    public TargetDebugController(Board board, TilePresenter tilePresenter, DebugInfo debugInfo) {
       this.board = board;
       this.tilePresenter = tilePresenter;
+      this.debugInfo = debugInfo;
     }
     
     public void Tick() {
+      if (!debugInfo.IsDebugOn) return;
+      
       foreach (var unit in board.Values) {
         if (!unit.Target.Exists) continue;
         var from = tilePresenter.PositionAt(unit.Movement.Coord);
@@ -21,5 +24,6 @@ namespace Controller.NDebug {
 
     readonly Board board;
     readonly TilePresenter tilePresenter;
+    readonly DebugInfo debugInfo;
   }
 }

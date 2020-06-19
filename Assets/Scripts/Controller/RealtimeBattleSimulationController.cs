@@ -20,6 +20,11 @@ namespace Controller {
       isStarted = true;
     }
 
+    public void StopBattle() {
+      isStarted = false;
+      eventHolder.ClearHeap();
+    }
+
     public void Tick() {
       if (!isStarted || isPaused) return;
 

@@ -39,6 +39,7 @@ namespace Controller.NDebug {
     }
     
     void StartBattle() {
+      realtimeBattleSimulationController.StopBattle();
       simulation.PrepareBattle(players[0], players[1]);
       foreach (var (coord, unit) in units) {
         unit.transform.position = tilePresenter.PositionAt(coord).WithY(unit.Height);
@@ -66,11 +67,16 @@ namespace Controller.NDebug {
       while (!simulation.IsBattleOver) {
         ExecuteNextDecision();
       }
+      ui.Disable();
     }
     
     void SetPaused(bool isPaused) => realtimeBattleSimulationController.SetPaused(isPaused);
     void SetSpeed(float speed) => realtimeBattleSimulationController.SetSpeed(speed);
-    void PlayerBattleInRealtime() => realtimeBattleSimulationController.StartBattle();
+    
+    void PlayerBattleInRealtime() {
+      realtimeBattleSimulationController.StartBattle();
+      ui.Disable();
+    }
 
     readonly BattleSimulation simulation;
     readonly BattleSimulationUI ui;

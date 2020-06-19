@@ -6,16 +6,19 @@ using View.UIs;
 
 namespace Controller {
   public class UnitSelectionController : IPredicate<DragInfo> {
-    public UnitSelectionController(BattleStateController battleStateController, UnitModelDebugController unitModelDebugController, BattleSetupUI battleSetupUI) {
+    public UnitSelectionController(BattleStateController battleStateController, 
+        UnitModelDebugController unitModelDebugController, BattleSetupUI battleSetupUI, 
+        UnitTooltipController unitTooltipController) {
       this.battleStateController = battleStateController;
       this.unitModelDebugController = unitModelDebugController;
       this.battleSetupUI = battleSetupUI;
+      this.unitTooltipController = unitTooltipController;
     }
     
     public bool Check(DragInfo e) {
       if (battleStateController.IsBattleStarted) {
         unitModelDebugController.SelectUnitModel(e.StartCoord);
-        // unitTooltipController.Show(unit.Info);
+        unitTooltipController.Show(e.Unit);
         return false;
       }
 

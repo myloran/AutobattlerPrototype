@@ -89,6 +89,7 @@ namespace Model.NBattleSimulation {
       CurrentTime = Zero;
       CheckBattleIsOver();
       aiHeap.Clear();
+      nodes.Clear();
       
       foreach (var unit in Board.Values) {
         unit.Reset();

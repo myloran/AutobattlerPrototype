@@ -32,9 +32,7 @@ namespace Shared.Abstraction {
       Units.Units.Clear();
       foreach (var (coord, unit) in player1Units) Units[coord] = unit;
       foreach (var (coord, unit) in player2Units) Units[coord] = unit;
-      // foreach (var unit in Units.Values) OnReset(unit);
     }
-    //TODO: ResetBack unit coord and coord in unit dict
 
     public IEnumerable<TUnit> GetPlayerUnits(EPlayer player) => 
       player == EPlayer.First ? player1Units.Values : player2Units.Values;

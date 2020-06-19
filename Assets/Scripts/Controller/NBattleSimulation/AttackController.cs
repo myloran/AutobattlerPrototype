@@ -17,9 +17,9 @@ namespace Controller.NBattleSimulation {
   public class AttackController : IEventHandler<ApplyDamageEvent>, 
       IEventHandler<DeathEvent>, IEventHandler<StartAttackEvent>, ISimulationTick {
     public AttackController(BaseBoard<UnitView, PlayerPresenter> board, 
-        UnitTooltipUI unitTooltipUI) {
+        UnitTooltipController unitTooltipController) {
       this.board = board;
-      this.unitTooltipUI = unitTooltipUI;
+      this.unitTooltipController = unitTooltipController;
     }
 
     public void HandleEvent(ApplyDamageEvent e) {
@@ -29,7 +29,7 @@ namespace Controller.NBattleSimulation {
       }
 
       board[e.Coord].SetHealth(e.Health.Float);
-      // unitTooltipUI.SetHealth(e.Health);
+      unitTooltipController.UpdateHealth(board[e.Coord], e.Health.Float);
     }
 
     public void HandleEvent(DeathEvent e) {
@@ -43,7 +43,7 @@ namespace Controller.NBattleSimulation {
     public void SimulationTick(float time) { }
 
     readonly BaseBoard<UnitView, PlayerPresenter> board;
-    readonly UnitTooltipUI unitTooltipUI;
+    readonly UnitTooltipController unitTooltipController;
     static readonly Logger log = MainLog.GetLogger(nameof(AttackController));
   }
 }

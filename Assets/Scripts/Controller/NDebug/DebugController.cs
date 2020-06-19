@@ -11,10 +11,15 @@ namespace Controller.NDebug {
     }
 
     void Update() {
-      if (Info.IsLogEnabled == wasLogEnabled) return;
+      if (Info.IsLogEnabled != wasLogEnabled) {
+        wasLogEnabled = Info.IsLogEnabled;
+        CheckLog();
+      }
       
-      wasLogEnabled = Info.IsLogEnabled;
-      CheckLog();
+      // if (Info.IsDebugOn != wasDebugOn) {
+      //   wasDebugOn = Info.IsDebugOn;
+      //   CheckLog();
+      // }
     }
 
     void CheckLog() {
@@ -24,6 +29,7 @@ namespace Controller.NDebug {
         MainLog.ResetAppenders();
     }
 
-    bool wasLogEnabled;
+    bool wasLogEnabled,
+      wasDebugOn;
   }
 }

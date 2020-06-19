@@ -14,6 +14,7 @@ namespace View.UIs {
     public void SetEnabled(bool isOn) {
       BExecuteNextDecision.interactable = isOn;
       BExecuteAllDecisions.interactable = isOn;
+      BExecuteInRealtime.interactable = isOn;
     }
   }
 }
