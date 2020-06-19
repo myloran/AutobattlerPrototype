@@ -83,8 +83,8 @@ namespace Infrastructure {
         new Player(EPlayer.First, player1BoardUnits, new UnitDict(unitFactory)), 
         new Player(EPlayer.Second, player2BoardUnits, new UnitDict(unitFactory))
       };
-      var board = new Board(new UnitDict(unitFactory), player1BoardUnits,
-        player2BoardUnits);
+      var playerContext = new PlayerContext(players);
+      var board = new Board();
       var aiContext = new AiContext(board);
 
       #endregion
@@ -124,7 +124,7 @@ namespace Infrastructure {
       eventBus.Register<IdleEvent>(movementController);
       eventBus.Register<StartAttackEvent>(attackController);
 
-      var battleSimulation = new BattleSimulation(aiContext);
+      var battleSimulation = new BattleSimulation(aiContext, board);
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
         movementController, battleSimulation, eventHolder);
 
@@ -139,7 +139,7 @@ namespace Infrastructure {
       
       var battleSimulationController = new BattleSimulationDebugController(
         battleSimulation, BattleSimulationUI, movementController, 
-        aiContext, players, boardPresenter, playerPresenters, realtimeBattleSimulationController,
+        aiContext, playerContext, boardPresenter, playerPresenters, realtimeBattleSimulationController,
         tilePresenter);
 
       var unitModelDebugController = new UnitModelDebugController(

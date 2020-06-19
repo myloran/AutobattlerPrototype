@@ -17,11 +17,10 @@ namespace Model.NBattleSimulation.Commands {
       //so that they can remove it and start looking for a new target
       //so that they don't wait for target to end move
       //so that they don't wait to attack target
-      var board = context.Board;
-      board.RemoveUnit(target.Coord);
+      context.RemoveUnit(target.Coord);
       
       if (target.TakenCoord != Coord.Invalid)
-        board.RemoveUnit(target.TakenCoord);
+        context.RemoveUnit(target.TakenCoord);
       
       context.CheckBattleIsOver();
     }

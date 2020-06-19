@@ -10,7 +10,7 @@ namespace Model.NBattleSimulation.Commands {
       this.context = context;
     }
 
-    public override void Execute() { //TODO; wait MoveDiffTime instead of putting decision into queue end 
+    public override void Execute() {
       var units = context.GetSurroundUnits(unit.Coord)
         .Where(u => u.CurrentDecision.Type == EDecision.MoveAction);
 

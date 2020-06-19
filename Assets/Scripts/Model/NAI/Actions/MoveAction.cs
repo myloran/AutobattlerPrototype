@@ -87,11 +87,11 @@ namespace Model.NAI.Actions {
           
       bool PureMove(Coord newCoord, Coord direction) {
         var time = unit.TimeToMove(direction.IsDiagonal);
-        new StartMoveCommand(context.Board, unit, newCoord, context.CurrentTime, time, Bus)
+        new StartMoveCommand(context, unit, newCoord, time, Bus)
           .Execute();
       
         context.InsertCommand(time, 
-          new FinishMoveCommand(context.Board, unit, newCoord, Bus));
+          new FinishMoveCommand(context, unit, newCoord, Bus));
       
         context.InsertCommand(time, new MakeDecisionCommand(unit, context, time));
         return true;
@@ -124,11 +124,11 @@ namespace Model.NAI.Actions {
       if (!context.IsTileEmpty(newCoord)) return false;
       
       var time = unit.TimeToMove(direction.IsDiagonal);
-      new StartMoveCommand(context.Board, unit, newCoord, context.CurrentTime, time, Bus)
+      new StartMoveCommand(context, unit, newCoord, time, Bus)
         .Execute();
       
       context.InsertCommand(time, 
-        new FinishMoveCommand(context.Board, unit, newCoord, Bus));
+        new FinishMoveCommand(context, unit, newCoord, Bus));
       
       context.InsertCommand(time, new MakeDecisionCommand(unit, context, time));
       return true;
