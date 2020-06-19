@@ -5,8 +5,8 @@ using Shared;
 using View.UIs;
 
 namespace Controller {
-  public class UnitSelectionController : IPredicate<DragInfo> {
-    public UnitSelectionController(BattleStateController battleStateController, 
+  public class CanStartDrag : IPredicate<DragInfo> {
+    public CanStartDrag(BattleStateController battleStateController, 
         UnitModelDebugController unitModelDebugController, BattleSetupUI battleSetupUI, 
         UnitTooltipController unitTooltipController) {
       this.battleStateController = battleStateController;

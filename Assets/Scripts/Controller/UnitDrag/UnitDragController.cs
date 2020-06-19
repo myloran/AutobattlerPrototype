@@ -1,52 +1,62 @@
+using System;
 using Controller.Exts;
 using Controller.NTile;
 using Shared;
 using UniRx;
 using UnityEngine;
 using View.NUnit;
-using View.Views;
 
 namespace Controller.UnitDrag {
-  public class UnitDragController {
+  public class UnitDragController : IDisposable {
+    public IObservable<CoordChangedEvent> CoordChanged;
+    public IObservable<DragEndedEvent> DragEnded;
+    
     public UnitDragController(RaycastController raycastController, CoordFinder coordFinder,
-        InputController inputController, IHandler<EndDragEvent> endDragHandler,
-        IHandler<CoordChangedEvent> coordChangedHandler, IPredicate<DragInfo> canStartDrag) {
+        InputController inputController, IPredicate<DragInfo> canStartDrag) {
       this.raycastController = raycastController;
-      this.endDragHandler = endDragHandler;
-      this.coordChangedHandler = coordChangedHandler;
       this.canStartDrag = canStartDrag;
       this.coordFinder = coordFinder;
       this.inputController = inputController;
     }
     
     public void Init() {
-      AddMouseDownListener();
-
-      inputController.OnMouseHeld
-        .Where(IsDragging)
-        .SelectWhere(raycastController.RaycastPlane)
-        .Select(MoveUnit)
-        .SelectWhere(CoordChanged)
-        .Do(coordChangedHandler.Handle)
-        .Subscribe(UpdateLastCoord);
-      
-      inputController.OnMouseUp
-        .Where(IsDragging)
-        .Select(GetCoords)
-        .Do(endDragHandler.Handle)
-        .Subscribe(StopDrag);
+      HandleStartDrag();
+      HandleDrag();
+      HandleStopDrag();
     }
-
-    void AddMouseDownListener() {
+    
+    void HandleStartDrag() =>
       inputController.OnMouseDown
         .Select(raycastController.FireRaycast)
         .SelectWhere(raycastController.RaycastHitsUnit)
-        .Select(PrepareDragInfo)
+        .Select(DragInfo)
         .Where(canStartDrag.Check)
-        .Subscribe(StartDrag);
+        .Subscribe(StartDrag)
+        .AddTo(disposable);
+
+    void HandleDrag() {
+      CoordChanged = inputController.OnMouseHeld
+        .Where(IsDragging)
+        .SelectWhere(raycastController.RaycastPlane)
+        .Select(MoveUnit)
+        .SelectWhere(CoordIsChanged)
+        .Publish()
+        .Connect(disposable);
+      
+      CoordChanged.Subscribe(UpdateLastCoord).AddTo(disposable);
     }
 
-    EndDragEvent GetCoords() => new EndDragEvent(startCoord, lastCoord);
+    void HandleStopDrag() {
+      DragEnded = inputController.OnMouseUp
+        .Where(IsDragging)
+        .Select(Coords)
+        .Publish()
+        .Connect(disposable);
+      
+      DragEnded.Subscribe(StopDrag).AddTo(disposable);
+    }
+
+    DragEndedEvent Coords() => new DragEndedEvent(startCoord, lastCoord);
     void UpdateLastCoord(CoordChangedEvent e) => lastCoord = e.To;
     bool IsDragging() => unit != null;
     
@@ -55,7 +65,7 @@ namespace Controller.UnitDrag {
       startCoord = info.StartCoord;
     }
 
-    DragInfo PrepareDragInfo(RaycastHit hit) {
+    DragInfo DragInfo(RaycastHit hit) {
       var u = hit.transform.GetComponent<UnitView>();
       var c = coordFinder.FindClosest(u);
       return new DragInfo(u, c);
@@ -64,7 +74,7 @@ namespace Controller.UnitDrag {
     Vector3 MoveUnit(Vector3 mousePosition) => 
       unit.transform.position = mousePosition + new Vector3(0, 1, 0);
 
-    (bool, CoordChangedEvent) CoordChanged(Vector3 mousePosition) {
+    (bool, CoordChangedEvent) CoordIsChanged(Vector3 mousePosition) {
       var coord = coordFinder.Find(mousePosition);
       
       return coord == lastCoord 
@@ -77,12 +87,13 @@ namespace Controller.UnitDrag {
       lastCoord = Coord.Invalid;
     }
 
+    public void Dispose() => disposable.Clear();
+
     readonly RaycastController raycastController;
     readonly CoordFinder coordFinder;
     readonly InputController inputController;
     readonly IPredicate<DragInfo> canStartDrag;
-    readonly IHandler<CoordChangedEvent> coordChangedHandler;
-    readonly IHandler<EndDragEvent> endDragHandler;
+    readonly CompositeDisposable disposable = new CompositeDisposable();
     Coord startCoord;
     Coord lastCoord = Coord.Invalid;
     UnitView unit;

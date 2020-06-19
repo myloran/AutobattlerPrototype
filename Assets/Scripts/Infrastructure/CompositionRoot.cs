@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using Controller;
 using Controller.NBattleSimulation;
@@ -40,21 +41,27 @@ namespace Infrastructure {
     public TileView TileView;
 
     IEnumerator Start() {
-      // MainLog.DefaultInit();
+      #region Config
+      
       log.Info("\n\nStart");
       var units = new UnitInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
+      
+      #endregion
+      #region Infrastructure
       
       var tickController = new TickController();
       var inputController = new InputController(tickController);
       var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library
       EventBus.Log = m => log.Info($"{m}");
       var eventHolder = new EventHolder(eventBus);
-      var unitFactory = new UnitFactory(units, new DecisionFactory(eventHolder));
-
-      BattleSetupUI.Init(units.Keys.ToList());
-      BattleSaveUI.Init(saves.Keys.ToList());
+      
+      var raycastController = new RaycastController(Camera.main, 
+        LayerMask.GetMask("Terrain", "GlobalCollider"), LayerMask.GetMask("Unit"));
+      
+      #endregion
+      #region View
       
       var tilePresenter = new TilePresenter(TileStartPoints, new TileViewFactory(TileView));
       var unitViewFactory = new UnitViewFactory(units, UnitView, tilePresenter);
@@ -69,9 +76,11 @@ namespace Infrastructure {
         new PlayerPresenter(EPlayer.Second, new UnitViewDict(unitViewFactory), 
           new UnitViewDict(unitViewFactory), tilePresenter)
       };
-                  
-      var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
+      
+      #endregion
+      #region Model
 
+      var unitFactory = new UnitFactory(units, new DecisionFactory(eventHolder));
       var player1BoardUnits = new UnitDict(unitFactory);
       var player2BoardUnits = new UnitDict(unitFactory);
       var players = new[] {
@@ -81,12 +90,18 @@ namespace Infrastructure {
       var board = new Board(new UnitDict(unitFactory), player1BoardUnits,
         player2BoardUnits);
       var aiContext = new AiContext(board);
-      
-      var raycastController = new RaycastController(Camera.main, 
-        LayerMask.GetMask("Terrain", "GlobalCollider"), 
-        LayerMask.GetMask("Unit"), 
-        unitTooltipController);
-      
+
+      #endregion
+      #region Context
+
+      var worldContext = new WorldContext(players, playerPresenters, BattleSetupUI);
+
+      #endregion
+
+      var unitTooltipController = new UnitTooltipController(UnitTooltipUI);
+
+      #region Debug
+
       var unitModelDebugController = new UnitModelDebugController(
         new ModelContext(players), ModelUI, DebugController.Info);
       
@@ -99,18 +114,22 @@ namespace Infrastructure {
       var uiDebugController = new UIDebugController(
         BattleSetupUI, BattleSaveUI, BattleSimulationUI,
         unitModelDebugController);
-      
-      var battleStateController = new BattleStateController(BattleSimulationUI);
-      var tileHighlighter = new TileHighlighter(tilePresenter);
 
-      var unitSelectionController = new UnitSelectionController(
-        battleStateController, unitModelDebugController, BattleSetupUI, unitTooltipController);
-      
+      #endregion
+      #region Unit drag
+
       var unitDragController = new UnitDragController(raycastController, 
         new CoordFinder(tilePresenter, BattleSetupUI), inputController, 
-        new CompositeHandler<EndDragEvent>(
-          new WorldContext(players, playerPresenters, BattleSetupUI), tileHighlighter), 
-        tileHighlighter, unitSelectionController);
+        new CanStartDrag(new BattleStateController(BattleSimulationUI), 
+          unitModelDebugController, BattleSetupUI, unitTooltipController));
+      
+      var tileHighlightController = new TileHighlighterController(tilePresenter, 
+        unitDragController);
+
+      var unitMoveController = new UnitMoveController(worldContext, unitDragController);
+
+      #endregion
+      #region Battle simulation
 
       var movementController = new MovementController(boardPresenter, tilePresenter);
       var attackController = new AttackController(boardPresenter, unitTooltipController);
@@ -125,6 +144,9 @@ namespace Infrastructure {
       var battleSimulation = new BattleSimulation(aiContext);
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
         movementController, battleSimulation, eventHolder);
+
+      #endregion
+      
       var battleSimulationController = new BattleSimulationDebugController(
         battleSimulation, BattleSimulationUI, movementController, 
         aiContext, players, boardPresenter, playerPresenters, realtimeBattleSimulationController,
@@ -136,12 +158,19 @@ namespace Infrastructure {
         BattleSaveUI, saveDataLoader, saves);
 
       yield return null;
+      
+      BattleSetupUI.Init(units.Keys.ToList());
+      BattleSaveUI.Init(saves.Keys.ToList());
 
-      eventHolder.Init(aiContext);
+      eventHolder.Init(aiContext); //TODO: move parameters to constructor
       tickController.Init(takenCoordDebugController, targetDebugController, uiDebugController, 
-        unitModelDebugController, raycastController, realtimeBattleSimulationController);
+        unitModelDebugController, realtimeBattleSimulationController);
       inputController.Init();
       unitDragController.Init();
+      
+      tileHighlightController.Init();
+      unitMoveController.Init();
+      
       
       tickInput.Init(tickController);
     }

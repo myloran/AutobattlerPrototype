@@ -11,7 +11,7 @@ namespace Controller {
 
     public InputController(TickController tickController) => this.tickController = tickController;
 
-    public void Init() {
+    public void Init() {  
       OnMouseDown = tickController.OnUpdate.Where(IsMouseDown);
       OnMouseHeld = tickController.OnUpdate.Where(IsMouseHeld);
       OnMouseUp = tickController.OnUpdate.Where(IsMouseUp);

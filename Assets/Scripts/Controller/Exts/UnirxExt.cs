@@ -33,5 +33,11 @@ namespace Controller.Exts {
     
     public static IDisposable Subscribe<T>(this IObservable<T> self, Action action) => 
       self.Subscribe(_ => action());
+
+    public static IObservable<T> Connect<T>(this IConnectableObservable<T> self,
+        CompositeDisposable disposable) {
+      self.Connect().AddTo(disposable);
+      return self;
+    } 
   }
 }

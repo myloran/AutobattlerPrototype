@@ -5,15 +5,13 @@ using UnityEngine;
 using Logger = Shared.OkwyLogging.Logger;
 
 namespace Controller {
-  public class RaycastController : ITick {
-    public RaycastController(Camera camera, int globalLayer, int unitLayer, 
-        UnitTooltipController controller) {
+  public class RaycastController {
+    public RaycastController(Camera camera, int globalLayer, int unitLayer) {
       this.camera = camera;
       this.globalLayer = globalLayer;
       this.unitLayer = unitLayer;
-      this.controller = controller;
     }
-
+    
     public Ray FireRaycast() => camera.ScreenPointToRay(Input.mousePosition);
 
     public (bool isHit, RaycastHit hit) RaycastHitsUnit(Ray ray) {
@@ -29,7 +27,7 @@ namespace Controller {
       if (UIExt.IsPointerOverUIElement()) return;
         
       if (Physics.Raycast(ray, out _, 100, globalLayer)) {
-        controller.Hide();
+        // controller.Hide();
       }
     }
 
@@ -43,7 +41,6 @@ namespace Controller {
       return (isHit, position);
     }
 
-    readonly UnitTooltipController controller;
     readonly Camera camera;
     readonly int globalLayer;
     readonly int unitLayer;

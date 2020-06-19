@@ -1,11 +1,11 @@
 using Shared;
 
 namespace Controller.UnitDrag {
-  public struct EndDragEvent {
+  public struct DragEndedEvent {
     public Coord Start;
     public Coord Last;
 
-    public EndDragEvent(Coord start, Coord last) {
+    public DragEndedEvent(Coord start, Coord last) {
       Start = start;
       Last = last;
     }
