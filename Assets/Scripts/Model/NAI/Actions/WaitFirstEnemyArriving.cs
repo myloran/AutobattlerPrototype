@@ -10,8 +10,8 @@ namespace Model.NAI.Actions {
     public WaitFirstEnemyArriving(Unit unit, IEventBus bus) : base(unit, bus) { }
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      var time = Unit.Target.Ai.TimeWhenDecisionWillBeExecuted - context.CurrentTime;
-      var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, time);
+      var time = Unit.Target.TimeWhenDecisionWillBeExecuted - context.CurrentTime;
+      var decisionCommand = new MakeDecisionCommand(Unit, context, time);
       context.InsertCommand(time, decisionCommand);
       Bus.Raise(new IdleEvent(Unit.Coord));
       return this;

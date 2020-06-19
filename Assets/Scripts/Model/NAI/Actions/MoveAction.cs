@@ -15,16 +15,15 @@ namespace Model.NAI.Actions {
     public MoveAction(Unit unit, IEventBus bus) : base(unit, bus) { }
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      var ai = Unit.Ai;
       if (MoveOptimally(context)) return this;
 
-      if (context.IsSurrounded(Unit.Coord) && !ai.IsWaiting) {
-        ai.IsWaiting = true;
-        var decisionCommand = new WaitForAlliesToMoveCommand(Unit, ai, context);
+      if (context.IsSurrounded(Unit.Coord) && !Unit.IsWaiting) {
+        Unit.IsWaiting = true;
+        var decisionCommand = new WaitForAlliesToMoveCommand(Unit, context);
         context.InsertCommand(Zero, decisionCommand);
         return this;
       }
-      ai.IsWaiting = false;
+      Unit.IsWaiting = false;
                                       
       if (context.IsCyclicDecision) {
         log.Error($"Cyclic reference {nameof(MoveAction)}");
@@ -36,28 +35,27 @@ namespace Model.NAI.Actions {
     }
 
     bool MoveOptimally(AiContext context) {
-      var ai = Unit.Ai;
       var targetCoord = Unit.Target.Coord;
 
       var direction = (targetCoord - Unit.Coord).Normalized;
-      if (Move(context, Unit, direction, ai)) return true;
+      if (Move(context, Unit, direction)) return true;
 
       var (direction1, direction2) = direction.GetClosestDirections();
-      if (SmartMove(context, Unit, direction1, direction2, targetCoord, ai)) return true;
+      if (SmartMove(context, Unit, direction1, direction2, targetCoord)) return true;
 
       var direction3 = direction1.GetClosestDirection(direction);
       var direction4 = direction2.GetClosestDirection(direction);
-      if (SmartMove(context, Unit, direction3, direction4, targetCoord, ai)) return true;
+      if (SmartMove(context, Unit, direction3, direction4, targetCoord)) return true;
       
       var direction5 = direction3.GetClosestDirection(direction1);
       var direction6 = direction4.GetClosestDirection(direction2);
-      if (SmartMove(context, Unit, direction5, direction6, targetCoord, ai)) return true;
+      if (SmartMove(context, Unit, direction5, direction6, targetCoord)) return true;
 
       return false;
     }
 
     bool SmartMove(AiContext context, Unit unit, Coord direction1, Coord direction2, 
-        Coord targetCoord, CAi ai) {
+        Coord targetCoord) {
       var newCoord1 = unit.Coord + direction1;
       var newCoord2 = unit.Coord + direction2;
       var canMove1 = context.IsTileEmpty(newCoord1);
@@ -95,7 +93,7 @@ namespace Model.NAI.Actions {
         context.InsertCommand(time, 
           new FinishMoveCommand(context.Board, unit, newCoord, Bus));
       
-        context.InsertCommand(time, new MakeDecisionCommand(ai, context, time));
+        context.InsertCommand(time, new MakeDecisionCommand(unit, context, time));
         return true;
       }
     }
@@ -121,7 +119,7 @@ namespace Model.NAI.Actions {
       }
     }
 
-    bool Move(AiContext context, Unit unit, Coord direction, CAi ai) {
+    bool Move(AiContext context, Unit unit, Coord direction) {
       var newCoord = unit.Coord + direction;
       if (!context.IsTileEmpty(newCoord)) return false;
       
@@ -132,7 +130,7 @@ namespace Model.NAI.Actions {
       context.InsertCommand(time, 
         new FinishMoveCommand(context.Board, unit, newCoord, Bus));
       
-      context.InsertCommand(time, new MakeDecisionCommand(ai, context, time));
+      context.InsertCommand(time, new MakeDecisionCommand(unit, context, time));
       return true;
     }
 

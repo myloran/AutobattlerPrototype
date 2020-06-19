@@ -11,7 +11,7 @@ namespace Model.NAI.Actions {
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       Unit.StartAttack(context.CurrentTime);
-      var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, Unit.AttackAnimationHitTime);
+      var decisionCommand = new MakeDecisionCommand(Unit, context, Unit.AttackAnimationHitTime);
       context.InsertCommand(Unit.AttackAnimationHitTime, decisionCommand);
       Bus.Raise(new RotateEvent(Unit.Coord, Unit.Target.Coord));
       Bus.Raise(new StartAttackEvent(Unit.Coord));

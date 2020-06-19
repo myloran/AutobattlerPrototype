@@ -1,19 +1,22 @@
+using Model.NUnit.Abstraction;
 using Shared;
 
 namespace Model.NUnit {
-  public class CStats {
-    public string Name;
-    public int Level;
-    public EPlayer Player;
+  public class CStats : IStats {
+    public string Name { get; }
+    public EPlayer Player { get; }
     
     public CStats(string name, int level, EPlayer player) {
-      Level = level;
+      this.level = level;
       Player = player;
       Name = name;
     }
+    
+    public bool IsAllyWith(EPlayer player) => Player == player;
+    public void Reset() => level = 1;
 
-    public void Reset() => Level = 1;
-
-    public override string ToString() => $"{nameof(Name)}: {Name}, {nameof(Level)}: {Level}, {nameof(Player)}: {Player}";
+    public override string ToString() => $"{nameof(Name)}: {Name}, {nameof(level)}: {level}, {nameof(Player)}: {Player}";
+    
+    int level;
   }
 }

@@ -8,24 +8,18 @@ namespace Model.NAI.Decisions {
   public class CheckEnemiesArrivingToAdjacentTile : BaseDecision3 {
     public CheckEnemiesArrivingToAdjacentTile(IDecisionTreeNode firstNode, 
         IDecisionTreeNode secondNode, IDecisionTreeNode thirdNode, 
-        CStats stats, Unit unit) : base(firstNode, secondNode, thirdNode) {
-      this.stats = stats;
-      this.unit = unit;
-    }
+        Unit unit) : base(firstNode, secondNode, thirdNode, unit) { }
     
     protected override Options3 GetBranch(AiContext context) {
-      var units = context.GetAdjacentUnits(this.unit.Coord)
-        .Where(u => !u.IsAllyWith(stats.Player));
-      if (!units.Any()) return Options3.First;
+      var targets = context.GetAdjacentUnits(Unit.Coord)
+        .Where(u => !u.IsAllyWith(Unit.Player));
+      if (!targets.Any()) return Options3.First;
 
-      var unit = units.MinBy(u => u.Ai.TimeWhenDecisionWillBeExecuted);
-      var timeToArrive = unit.Ai.TimeWhenDecisionWillBeExecuted - context.CurrentTime;
-      this.unit.ChangeTargetTo(unit);
+      var target = targets.MinBy(u => u.TimeWhenDecisionWillBeExecuted);
+      var timeToArrive = target.TimeWhenDecisionWillBeExecuted - context.CurrentTime;
+      Unit.ChangeTargetTo(target);
 
       return timeToArrive < StraightMoveTime ? Options3.Second : Options3.Third;
     }
-
-    readonly CStats stats;
-    readonly Unit unit;
   }
 }

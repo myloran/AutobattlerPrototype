@@ -11,7 +11,7 @@ namespace Model.NAI.Actions {
     public WaitMoveDiff(Unit unit, IEventBus bus) : base(unit, bus) { }
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      var decisionCommand = new MakeDecisionCommand(Unit.Ai, context, MoveDiffTime);
+      var decisionCommand = new MakeDecisionCommand(Unit, context, MoveDiffTime);
       context.InsertCommand(MoveDiffTime, decisionCommand);
       Bus.Raise(new IdleEvent(Unit.Coord));
       return this;

@@ -18,9 +18,9 @@ namespace Model.NUnit {
       var health = new CHealth(ToF32(info.Health), ToF32(info.Armor));
 
       var unit = new Unit(health, attack, movement, new CTarget(movement), new CAi(),
-        new CStats(name, 1, player), player);
+        new CStats(name, 1, player));
 
-      unit.Ai.SetDecisionTree(decisionFactory.Create(unit));
+      unit.SetDecisionTree(decisionFactory.Create(unit));
 
       return unit;
     }

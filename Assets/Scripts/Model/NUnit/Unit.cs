@@ -1,46 +1,38 @@
 using System.Text;
 using FixMath;
+using Model.NAI.NDecisionTree;
+using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Abstraction;
 
 namespace Model.NUnit {
-  public class Unit : IUnit, IHealth, IAttack, IMovement, ITarget {
-    readonly CHealth health;
-    readonly CAttack attack;
-    readonly CTarget target;
-    readonly CMovement movement;
-    public CAi Ai;
-    public CStats Stats;
-
-    public Unit(CHealth health, CAttack attack, CMovement movement, CTarget target, CAi ai, CStats stats, EPlayer player) {
+  public class Unit : IUnit, IHealth, IAttack, IMovement, ITarget, IAi, IStats {
+    public Unit(CHealth health, CAttack attack, CMovement movement, CTarget target, CAi ai, 
+        CStats stats) {
       this.health = health;
       this.attack = attack;
       this.movement = movement;
       this.target = target;
-      Ai = ai;
-      Stats = stats;
-      Player = player;
+      this.ai = ai;
+      this.stats = stats;
     }
-
-    public EPlayer Player { get; set; }
-    public bool IsAllyWith(EPlayer player) => Player == player;
-
+    
     public void Reset() {
       health.Reset();
       attack.Reset();
       movement.Reset();
       target.Reset();
-      Ai.Reset();
-      Stats.Reset();
+      ai.Reset();
+      stats.Reset();
     }
 
     public override string ToString() => new StringBuilder()
       .Append(health).Append("\n")
       .Append(attack).Append("\n")
       .Append(movement).Append("\n")
-      .Append(Ai).Append("\n")
-      .Append(Stats).Append("\n")
+      .Append(ai).Append("\n")
+      .Append(stats).Append("\n")
       .Append(target).Append("\n")
       .ToString();
 
@@ -68,17 +60,41 @@ namespace Model.NUnit {
       get => movement.StartingCoord;
       set => movement.StartingCoord = value;
     }
-
     public Coord TakenCoord {
       get => movement.TakenCoord;
       set => movement.TakenCoord = value;
     }
-
     public Coord Coord {
       get => movement.Coord;
       set => movement.Coord = value;
     }
-
     public F32 TimeToMove(bool isDiagonal = true) => movement.TimeToMove(isDiagonal);
+
+    public IDecisionTreeNode CurrentDecision => ai.CurrentDecision;
+    public F32 DecisionTime {
+      get => ai.DecisionTime;
+      set => ai.DecisionTime = value;
+    }
+    public F32 TimeWhenDecisionWillBeExecuted {
+      get => ai.TimeWhenDecisionWillBeExecuted;
+      set => ai.TimeWhenDecisionWillBeExecuted = value;
+    }
+    public bool IsWaiting {
+      get => ai.IsWaiting;
+      set => ai.IsWaiting = value;
+    }
+    public void MakeDecision(AiContext context) => ai.MakeDecision(context);
+    public void SetDecisionTree(IDecisionTreeNode decisionTree) => ai.SetDecisionTree(decisionTree);
+    
+    public string Name => stats.Name;
+    public EPlayer Player => stats.Player;
+    public bool IsAllyWith(EPlayer player) => stats.IsAllyWith(player);
+    
+    readonly CHealth health;
+    readonly CAttack attack;
+    readonly CTarget target;
+    readonly CMovement movement;
+    readonly CAi ai;
+    readonly CStats stats;
   }
 }

@@ -17,7 +17,7 @@ namespace Model.NUnit {
       var nullAction = WithLogging(new NullAction(unit, bus));
       
       var isEnemyArrivingToAdjacentTile = new CheckEnemiesArrivingToAdjacentTile(
-        move, waitFirstEnemyArriving, waitMoveDiff, unit.Stats, unit);
+        move, waitFirstEnemyArriving, waitMoveDiff, unit);
 
       var canStartAttack = WithLogging(new CanStartAttack(
         startAttack, attack, unit));

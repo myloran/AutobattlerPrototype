@@ -1,15 +1,15 @@
 using FixMath;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
-using Shared;
+using Model.NUnit.Abstraction;
 using static FixMath.F32;
 
 namespace Model.NUnit {
-  public class CAi {
-    public IDecisionTreeNode CurrentDecision;
-    public F32 DecisionTime;
-    public F32 TimeWhenDecisionWillBeExecuted;
-    public bool IsWaiting;
+  public class CAi : IAi {
+    public IDecisionTreeNode CurrentDecision { get; private set; }
+    public F32 DecisionTime { get; set; }
+    public F32 TimeWhenDecisionWillBeExecuted { get; set; }
+    public bool IsWaiting { get; set; }
 
     public void Reset() {
       DecisionTime = Zero;

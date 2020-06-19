@@ -93,7 +93,7 @@ namespace Model.NBattleSimulation {
       
       foreach (var unit in Board.Values) {
         unit.Reset();
-        InsertCommand(Zero, new MakeDecisionCommand(unit.Ai, this, Zero));
+        InsertCommand(Zero, new MakeDecisionCommand(unit, this, Zero));
       }
     }
 

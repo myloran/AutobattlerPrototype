@@ -1,11 +1,8 @@
-using System;
-using FixMath;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using PlasticFloor.EventBus;
-using Shared.Shared.Client.Events;
 using static FixMath.F32;
 
 namespace Model.NAI.Actions {
@@ -23,7 +20,7 @@ namespace Model.NAI.Actions {
         new FinishAttackCommand(Unit, Bus));
       
       var time = Max(Unit.AttackSpeedTime, Unit.TimeToFinishAttackAnimation);
-      context.InsertCommand(time, new MakeDecisionCommand(Unit.Ai, context, time));
+      context.InsertCommand(time, new MakeDecisionCommand(Unit, context, time));
 
       return this;
     }
