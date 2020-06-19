@@ -6,7 +6,6 @@ using static FixMath.F32;
 namespace Model.NBattleSimulation {
   public class BattleSimulation { //TODO: Think if it's controller
     public bool IsBattleOver { get; private set; }
-    public F32 CurrentTime { get; private set; }
 
     public BattleSimulation(AiContext context, Board board) {
       this.context = context;
@@ -15,20 +14,22 @@ namespace Model.NBattleSimulation {
 
     public void PrepareBattle(PlayerContext playerContext) {
       board.Reset(playerContext);
+      foreach (var unit in board.Values) {
+        unit.Reset();
+      }
+      
       context.Reset();
-      IsBattleOver = context.IsPlayerDead;
+      IsBattleOver = context.IsBattleOver;
       if (IsBattleOver) return;
             
       foreach (var unit in board.Values) {
-        unit.Reset();
         context.InsertCommand(Zero, new MakeDecisionCommand(unit, context, Zero));
       }
     }
 
     public void ExecuteNextCommand() {
-      var (isBattleOver, command) = context.RemoveMin();
-      CurrentTime = context.CurrentTime;
-      IsBattleOver = isBattleOver;
+      var (isEmpty, command) = context.RemoveMin();
+      IsBattleOver = isEmpty || context.IsBattleOver;
       if (IsBattleOver) return;
       
       log.Info($"{context.CurrentTime}: {command}");

@@ -1,0 +1,52 @@
+using System.Collections.Generic;
+using FibonacciHeap;
+using FixMath;
+using Model.NBattleSimulation.Commands;
+using Shared.OkwyLogging;
+using static FixMath.F32;
+
+namespace Model.NBattleSimulation {
+  public class AiHeap {
+    public F32 CurrentTime { get; set; }
+    
+    public void InsertCommand(F32 time, ICommand command) {
+      var nextTime = CurrentTime + time;
+
+      if (nodes.ContainsKey(nextTime)) {
+        var existingNode = nodes[nextTime];
+        var existingCommand = existingNode.Data;
+        existingNode.Data = new CompositeCommand(existingCommand, command);
+        return;
+      }
+
+      var node = new FibonacciHeapNode<ICommand, F32>(command, nextTime);
+      aiHeap.Insert(node);
+      nodes[nextTime] = node;
+    }
+
+    public (bool, ICommand) RemoveMin() {
+      var node = aiHeap.RemoveMin();
+      if (node == null) {
+        log.Info("The battle is over");
+        return (true, default);
+      }
+      var time = node.Key;
+      var command = node.Data;
+      CurrentTime = time;
+      nodes.Remove(CurrentTime);
+      return (false, command);
+    }
+    
+    public void Reset() {
+      aiHeap.Clear();
+      nodes.Clear();
+    }
+    
+    readonly FibonacciHeap<ICommand, F32> aiHeap = 
+      new FibonacciHeap<ICommand, F32>(MinValue);
+    
+    readonly Dictionary<F32, FibonacciHeapNode<ICommand, F32>> nodes = 
+      new Dictionary<F32, FibonacciHeapNode<ICommand, F32>>();
+    static readonly Logger log = MainLog.GetLogger(nameof(AiContext));
+  }
+}

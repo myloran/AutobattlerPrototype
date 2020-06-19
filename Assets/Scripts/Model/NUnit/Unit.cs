@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using FixMath;
 using Model.NAI.NDecisionTree;
@@ -55,6 +56,7 @@ namespace Model.NUnit {
     public bool TargetExists => target.TargetExists;
     public void ClearTarget() => target.ClearTarget();
     public void ChangeTargetTo(Unit unit) => target.ChangeTargetTo(unit);
+    public (bool, Unit) FindNearestTarget(IEnumerable<Unit> units) => target.FindNearestTarget(units);
 
     public Coord StartingCoord {
       get => movement.StartingCoord;

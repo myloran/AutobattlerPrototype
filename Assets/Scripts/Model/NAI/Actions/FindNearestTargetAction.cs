@@ -1,3 +1,4 @@
+using System.Linq;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NUnit;
@@ -10,9 +11,11 @@ namespace Model.NAI.Actions {
     }
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      var (didFind, unit) = context.FindNearestTarget(Unit.Player, Unit.Coord); //TODO: if we dont find target, we should make another decision
-      if (!didFind) return this;
-      Unit.ChangeTargetTo(unit);
+      var units = context.EnemyUnits(Unit.Player);
+      var (hasTarget, target) = Unit.FindNearestTarget(units); //TODO: if we dont find target, we should make another decision
+      if (!hasTarget) return this;
+      
+      Unit.ChangeTargetTo(target);
       return decision.MakeDecision(context);
     }
 

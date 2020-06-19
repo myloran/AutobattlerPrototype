@@ -85,7 +85,8 @@ namespace Infrastructure {
       };
       var playerContext = new PlayerContext(players);
       var board = new Board();
-      var aiContext = new AiContext(board);
+      var aiHeap = new AiHeap();
+      var aiContext = new AiContext(board, aiHeap);
 
       #endregion
       #region Context
