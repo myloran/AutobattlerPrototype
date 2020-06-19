@@ -16,17 +16,9 @@ namespace Model.NUnit {
         ToF32(info.AttackRange * info.AttackRange), ToF32(info.AttackAnimationHitTime),
         ToF32(info.AttackAnimationTotalTime));
       var health = new CHealth(ToF32(info.Health), ToF32(info.Armor));
-      
-      var unit = new Unit {
-        Info = info,
-        Health = health,
-        Attack = attack,
-        Movement = movement,
-        Target = new CTarget(movement),
-        Ai = new CAi(),
-        Stats = new CStats(1, player),
-        Player = player
-      };
+
+      var unit = new Unit(health, attack, movement, new CTarget(movement), new CAi(),
+        new CStats(name, 1, player), player);
 
       unit.Ai.SetDecisionTree(decisionFactory.Create(unit));
 

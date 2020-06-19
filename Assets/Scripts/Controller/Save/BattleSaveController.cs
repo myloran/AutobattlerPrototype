@@ -35,7 +35,7 @@ namespace Controller.Save {
     }
 
     Dictionary<Coord, string> GetUnits(Dictionary<Coord, Unit> dict) => dict
-      .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Info.Name);
+      .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Stats.Name);
 
     void Load() {
       foreach (var player in players) {

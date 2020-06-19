@@ -5,7 +5,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class FinishMoveCommand : BaseCommand {
-    public FinishMoveCommand(Board board, CMovement movement, CTarget target, Coord newCoord, IEventBus bus) {
+    public FinishMoveCommand(Board board, CMovement movement, Unit target, Coord newCoord, IEventBus bus) {
       this.board = board;
       this.movement = movement;
       this.target = target;
@@ -18,13 +18,13 @@ namespace Model.NBattleSimulation.Commands {
       board.RemoveUnit(movement.Coord);
       movement.Coord = newCoord;
       movement.TakenCoord = Coord.Invalid;
-      target.Clear();
+      target.ClearTarget();
       bus.Raise(new FinishMoveEvent(fromCoord, newCoord));
     }
 
     readonly Board board;
     readonly CMovement movement;
-    readonly CTarget target;
+    readonly Unit target;
     readonly CHealth health;
     readonly Coord newCoord;
     readonly IEventBus bus;

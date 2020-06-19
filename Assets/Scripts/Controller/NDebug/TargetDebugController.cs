@@ -15,9 +15,9 @@ namespace Controller.NDebug {
       if (!debugInfo.IsDebugOn) return;
       
       foreach (var unit in board.Values) {
-        if (!unit.Target.Exists) continue;
+        if (!unit.TargetExists) continue;
         var from = tilePresenter.PositionAt(unit.Movement.Coord);
-        var to = tilePresenter.PositionAt(unit.Target.Unit.Movement.Coord);
+        var to = tilePresenter.PositionAt(unit.Target.Target.Movement.Coord);
         Debug.DrawLine(from, to, Color.red);
       }
     }

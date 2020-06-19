@@ -12,7 +12,7 @@ namespace Model.NAI.Actions {
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var (didFind, unit) = context.FindNearestTarget(Unit.Stats.Player, Unit.Movement.Coord); //TODO: if we dont find target, we should make another decision
       if (!didFind) return this;
-      Unit.Target.ChangeTo(unit);
+      Unit.ChangeTargetTo(unit);
       return decision.MakeDecision(context);
     }
 

@@ -4,23 +4,21 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class FinishAttackCommand : BaseCommand {
-    public FinishAttackCommand(CHealth health, CMovement movement, CAttack attack, IEventBus bus) {
-      this.health = health;
+    public FinishAttackCommand(Unit unit, CMovement movement, IEventBus bus) {
+      this.unit = unit;
       this.movement = movement;
-      this.attack = attack;
       this.bus = bus;
     }
     
     public override void Execute() {
-      if (!health.IsAlive) return;
+      if (!unit.IsAlive) return;
       
-      attack.EndAttack();
+      unit.EndAttack();
       bus.Raise(new IdleEvent(movement.Coord));
     }
 
-    readonly CHealth health;
+    readonly Unit unit;
     readonly CMovement movement;
-    readonly CAttack attack;
     readonly IEventBus bus;
   }
 }

@@ -32,36 +32,35 @@ namespace Model.NAI.Actions {
         log.Error($"Cyclic reference {nameof(MoveAction)}");
         return this;
       }
-      Unit.Target.Clear();
+      Unit.ClearTarget();
       context.IsCyclicDecision = true;
       return FindNearestTarget.MakeDecision(context);
     }
 
     bool MoveOptimally(AiContext context) {
       var movement = Unit.Movement;
-      var target = Unit.Target;
       var ai = Unit.Ai;
-      var targetCoord = target.Unit.Movement.Coord;
+      var targetCoord = Unit.Target.Movement.Coord;
 
       var direction = (targetCoord - movement.Coord).Normalized;
-      if (Move(context, movement, direction, ai, target)) return true;
+      if (Move(context, movement, direction, ai, Unit)) return true;
 
       var (direction1, direction2) = direction.GetClosestDirections();
-      if (SmartMove(context, movement, direction1, direction2, targetCoord, ai, target)) return true;
+      if (SmartMove(context, movement, direction1, direction2, targetCoord, ai, Unit)) return true;
 
       var direction3 = direction1.GetClosestDirection(direction);
       var direction4 = direction2.GetClosestDirection(direction);
-      if (SmartMove(context, movement, direction3, direction4, targetCoord, ai, target)) return true;
+      if (SmartMove(context, movement, direction3, direction4, targetCoord, ai, Unit)) return true;
       
       var direction5 = direction3.GetClosestDirection(direction1);
       var direction6 = direction4.GetClosestDirection(direction2);
-      if (SmartMove(context, movement, direction5, direction6, targetCoord, ai, target)) return true;
+      if (SmartMove(context, movement, direction5, direction6, targetCoord, ai, Unit)) return true;
 
       return false;
     }
 
-    bool SmartMove(AiContext context, CMovement movement, Coord direction1, Coord direction2, Coord targetCoord, CAi ai,
-      CTarget target) {
+    bool SmartMove(AiContext context, CMovement movement, Coord direction1, Coord direction2, 
+        Coord targetCoord, CAi ai, Unit target) {
       var newCoord1 = movement.Coord + direction1;
       var newCoord2 = movement.Coord + direction2;
       var canMove1 = context.IsTileEmpty(newCoord1);
@@ -107,7 +106,7 @@ namespace Model.NAI.Actions {
     (bool, Coord) CalculateNextMovePosition(AiContext context, Coord coord) {
       (bool, Coord) res = (false, coord);
       
-      var direction = (Unit.Target.Unit.Movement.Coord - coord).Normalized;
+      var direction = (Unit.Target.Movement.Coord - coord).Normalized;
       if (TryMove(direction, ref res)) return res;
 
       var (direction1, direction2) = direction.GetClosestDirections();
@@ -125,7 +124,7 @@ namespace Model.NAI.Actions {
       }
     }
 
-    bool Move(AiContext context, CMovement movement, Coord direction, CAi ai, CTarget target) {
+    bool Move(AiContext context, CMovement movement, Coord direction, CAi ai, Unit target) {
       var newCoord = movement.Coord + direction;
       if (!context.IsTileEmpty(newCoord)) return false;
       

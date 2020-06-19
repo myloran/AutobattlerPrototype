@@ -1,28 +1,30 @@
+using Model.NUnit.Abstraction;
+
 namespace Model.NUnit {
-  public class CTarget {
-    public Unit Unit;
+  public class CTarget : ITarget {
+    public Unit Target { get; private set; }
 
     public CTarget(CMovement movement) => this.movement = movement;
 
-    public bool Exists => Unit != null;
-    public void Reset() => Unit = null;
+    public bool TargetExists => Target != null;
+    public void Reset() => Target = null;
     
-    public void Clear() {
-      if (!Exists) return;
+    public void ClearTarget() {
+      if (!TargetExists) return;
       
-      Unit.Health.UnsubFromDeath(this);
-      Unit = null;
+      Target.UnsubFromDeath(this);
+      Target = null;
     }
 
-    public void ChangeTo(Unit unit) {
-      Clear();
-      Unit = unit;
-      Unit.Health.SubToDeath(this);
+    public void ChangeTargetTo(Unit unit) {
+      ClearTarget();
+      Target = unit;
+      Target.SubToDeath(this);
     }
 
-    public static implicit operator Unit(CTarget target) => target.Unit;
+    public static implicit operator Unit(CTarget target) => target.Target;
 
-    public override string ToString() => Exists ? $"Target coord: {Unit.Movement.Coord}" : "";
+    public override string ToString() => TargetExists ? $"Target coord: {Target.Movement.Coord}" : "";
 
     readonly CMovement movement;
   }

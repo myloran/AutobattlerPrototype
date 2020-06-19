@@ -70,7 +70,7 @@ namespace Model.NBattleSimulation {
     } 
 
     IEnumerable<Unit> EnemyUnits(EPlayer player) => 
-      Board.GetPlayerUnits(player.Opposite()).Where(u => u.Health.IsAlive);
+      Board.GetPlayerUnits(player.Opposite()).Where(u => u.IsAlive);
     
     public IEnumerable<Unit> GetSurroundUnits(Coord coord) => Board.GetSurroundUnits(coord);
     public bool IsSurrounded(Coord coord) => Board.IsSurrounded(coord);

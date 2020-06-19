@@ -5,12 +5,8 @@ using Model.NUnit;
 namespace Model.NAI.Decisions {
   public class HasTarget : BaseDecision {
     public HasTarget(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, 
-        CTarget target) : base(trueNode, falseNode) {
-      this.target = target;
-    }
+        Unit unit) : base(trueNode, falseNode, unit) { }
     
-    protected override bool GetBranch(AiContext context) => target.Exists;
-
-    readonly CTarget target;
+    protected override bool GetBranch(AiContext context) => Unit.TargetExists;
   }
 }

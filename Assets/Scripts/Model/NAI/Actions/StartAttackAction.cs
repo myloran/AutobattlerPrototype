@@ -10,9 +10,9 @@ namespace Model.NAI.Actions {
     public StartAttackAction(Unit unit, IEventBus bus) : base(unit, bus) { }
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      var attack = Unit.Attack;
+      var attack = Unit;
       var ai = Unit.Ai;
-      var targetMovement = Unit.Target.Unit.Movement;
+      var targetMovement = Unit.Target.Movement;
       attack.StartAttack(context.CurrentTime);
       var decisionCommand = new MakeDecisionCommand(ai, context, attack.AttackAnimationHitTime);
       context.InsertCommand(attack.AttackAnimationHitTime, decisionCommand);

@@ -1,22 +1,22 @@
 using System;
 using FixMath;
+using Model.NUnit.Abstraction;
 using Shared;
 using static FixMath.F32;
 
 namespace Model.NUnit {
-  public class CAttack {
-    public F32 Damage;
-    public F32 AttackAnimationHitTime;
-    F32 sqrRange;
+  public class CAttack : IAttack {
+    public F32 Damage { get; }
+    public F32 AttackAnimationHitTime { get; }
     
     public CAttack(CMovement movement, F32 damage, F32 speed, F32 sqrRange, 
         F32 attackAnimationHitTime, F32 attackAnimationTotalTime) {
       this.movement = movement;
+      this.sqrRange = sqrRange;
+      this.attackAnimationTotalTime = attackAnimationTotalTime;
       Damage = damage;
       attackSpeed = speed;
-      this.sqrRange = sqrRange;
       AttackAnimationHitTime = attackAnimationHitTime;
-      this.attackAnimationTotalTime = attackAnimationTotalTime;
     }
 
     public void Reset() => lastStartAttackTime = Zero;
@@ -40,6 +40,7 @@ namespace Model.NUnit {
     readonly F32 attackAnimationTotalTime;
     F32 attackSpeed;
     F32 lastStartAttackTime;
+    F32 sqrRange;
 
     public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
   }

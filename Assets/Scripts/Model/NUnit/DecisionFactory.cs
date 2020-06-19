@@ -17,22 +17,22 @@ namespace Model.NUnit {
       var nullAction = WithLogging(new NullAction(unit, bus));
       
       var isEnemyArrivingToAdjacentTile = new CheckEnemiesArrivingToAdjacentTile(
-        move, waitFirstEnemyArriving, waitMoveDiff, unit.Movement, unit.Stats, unit.Target);
+        move, waitFirstEnemyArriving, waitMoveDiff, unit.Movement, unit.Stats, unit);
 
       var canStartAttack = WithLogging(new CanStartAttack(
-        startAttack, attack, unit.Attack));
+        startAttack, attack, unit));
       
       var isWithinAttackRangeDecision = WithLogging(new IsWithinAttackRange(
-        canStartAttack, isEnemyArrivingToAdjacentTile, unit.Attack, unit.Target));
+        canStartAttack, isEnemyArrivingToAdjacentTile, unit));
       
       var findNearestTargetAction = WithLogging(new FindNearestTargetAction(
         unit, bus, isWithinAttackRangeDecision));
       
       var hasTarget = WithLogging(new HasTarget(
-        isWithinAttackRangeDecision, findNearestTargetAction, unit.Target));
+        isWithinAttackRangeDecision, findNearestTargetAction, unit));
 
       var isAlive = WithLogging(new IsAlive(
-        hasTarget, nullAction, unit.Health));
+        hasTarget, nullAction, unit));
 
       moveAction.FindNearestTarget = findNearestTargetAction;
       
