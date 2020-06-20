@@ -10,7 +10,7 @@ namespace Model.NBattleSimulation {
     public bool ContainsUnitAt(Coord coord) => units.ContainsKey(coord); 
     public void AddUnit(Coord coord, Unit unit) => units[coord] = unit;
     
-    public void Reset(PlayerContext context) {
+    public void SetContext(BoardContext context) {
       this.context = context;
       units = context.Units();
     }
@@ -61,6 +61,6 @@ namespace Model.NBattleSimulation {
     }
     
     Dictionary<Coord, Unit> units = new Dictionary<Coord, Unit>(MaxUnitsOnBoard);
-    PlayerContext context;
+    BoardContext context;
   }
 }

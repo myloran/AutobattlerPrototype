@@ -25,6 +25,7 @@ using Logger = Shared.OkwyLogging.Logger;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
+    #region Monobehaviours
     #region Controller
 
     public DebugController DebugController;
@@ -46,7 +47,8 @@ namespace Infrastructure {
     public UnitView UnitView;
     public TileView TileView;
 
-      #endregion
+    #endregion
+    #endregion
 
     IEnumerator Start() {
       #region Config
@@ -95,7 +97,7 @@ namespace Infrastructure {
         new Player(EPlayer.First, player1BoardUnits, new UnitDict(unitFactory)), 
         new Player(EPlayer.Second, player2BoardUnits, new UnitDict(unitFactory))
       };
-      var playerContext = new PlayerContext(players);
+      var playerContext = new BoardContext(players);
       var board = new Board();
       var aiHeap = new AiHeap();
       var aiContext = new AiContext(board, aiHeap);
@@ -140,6 +142,9 @@ namespace Infrastructure {
       var battleSimulation = new BattleSimulation(aiContext, board);
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
         movementController, battleSimulation, eventHolder);
+      
+      var battleSimulationPresenter = new BattleSimulationPresenter(tilePresenter, 
+        boardPresenter);
 
       #endregion
       #region Debug
@@ -152,8 +157,8 @@ namespace Infrastructure {
       
       var battleSimulationController = new BattleSimulationDebugController(
         battleSimulation, BattleSimulationUI, movementController, 
-        aiContext, playerContext, boardPresenter, playerPresenters, realtimeBattleSimulationController,
-        tilePresenter);
+        aiContext, playerContext, playerPresenters, realtimeBattleSimulationController,
+        battleSimulationPresenter);
 
       var unitModelDebugController = new UnitModelDebugController(
         new ModelContext(players), ModelUI, DebugController.Info, unitSelectionController);

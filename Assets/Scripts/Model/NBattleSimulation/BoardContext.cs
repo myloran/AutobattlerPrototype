@@ -4,8 +4,8 @@ using Model.NUnit;
 using Shared;
 
 namespace Model.NBattleSimulation {
-  public class PlayerContext {
-    public PlayerContext(Player[] players) {
+  public class BoardContext {
+    public BoardContext(Player[] players) {
       player1Units = players[0].BoardUnits.Units;
       player2Units = players[1].BoardUnits.Units;
     }

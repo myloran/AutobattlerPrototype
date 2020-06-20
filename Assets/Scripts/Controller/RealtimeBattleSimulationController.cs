@@ -30,6 +30,7 @@ namespace Controller {
 
       currentTime += ToF32(Time.deltaTime/* * speed*/);
       
+      //TODO: Execute decision instead of events
       while (eventHolder.HasEventInHeap && eventHolder.NextEventTime < currentTime) {
         eventHolder.RaiseFromHeap();
       }

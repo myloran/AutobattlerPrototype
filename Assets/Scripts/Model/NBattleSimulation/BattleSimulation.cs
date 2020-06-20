@@ -1,4 +1,3 @@
-using FixMath;
 using Model.NBattleSimulation.Commands;
 using Shared.OkwyLogging;
 using static FixMath.F32;
@@ -12,8 +11,9 @@ namespace Model.NBattleSimulation {
       this.board = board;
     }
 
-    public void PrepareBattle(PlayerContext playerContext) {
-      board.Reset(playerContext);
+    public void PrepareBattle(BoardContext boardContext) {
+      board.SetContext(boardContext);
+      
       foreach (var unit in board.Values) {
         unit.Reset();
       }
@@ -34,6 +34,12 @@ namespace Model.NBattleSimulation {
       
       log.Info($"{context.CurrentTime}: {command}");
       command.Execute();
+    }
+
+    public void ExecuteAllCommands() {
+      while (!IsBattleOver) {
+        ExecuteNextCommand();
+      }
     }
 
     readonly AiContext context;

@@ -1,32 +1,23 @@
-using System.Collections.Generic;
 using Controller.Exts;
 using Model.NBattleSimulation;
-using Shared;
-using Shared.Abstraction;
 using Shared.Shared.Client;
 using UniRx;
-using View.Exts;
-using View.NUnit;
 using View.Presenters;
 using View.UIs;
-using View.Views;
 
 namespace Controller.NDebug {
   public class BattleSimulationDebugController {
     public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui,
-        ISimulationTick viewSimulation, AiContext context, PlayerContext playerContext,
-        BaseBoard<UnitView, PlayerPresenter> boardPresenter, PlayerPresenter[] playerPresenters,
-        RealtimeBattleSimulationController realtimeBattleSimulationController, 
-        TilePresenter tilePresenter) {
+        ISimulationTick viewSimulation, AiContext context, BoardContext boardContext, PlayerPresenter[] playerPresenters,
+        RealtimeBattleSimulationController realtimeBattleSimulationController, BattleSimulationPresenter simulationPresenter) {
       this.simulation = simulation;
       this.ui = ui;
       this.viewSimulation = viewSimulation;
       this.context = context;
-      this.playerContext = playerContext;
-      this.boardPresenter = boardPresenter;
+      this.boardContext = boardContext;
       this.playerPresenters = playerPresenters;
       this.realtimeBattleSimulationController = realtimeBattleSimulationController;
-      this.tilePresenter = tilePresenter;
+      this.simulationPresenter = simulationPresenter;
 
       ui.OStart.OnValueChangedAsObservable().Where(b => b)
         .Subscribe(StartBattle).AddTo(ui.OStart);
@@ -34,28 +25,19 @@ namespace Controller.NDebug {
         .Subscribe(SetPaused).AddTo(ui.OStart);
       ui.SSpeed.OnValueChangedAsObservable()
         .Subscribe(SetSpeed).AddTo(ui.SSpeed);
-      ui.BExecuteNextDecision.Sub(ExecuteNextDecision);
-      ui.BExecuteAllDecisions.Sub(ExecuteAllDecisions);
-      ui.BExecuteInRealtime.Sub(PlayerBattleInRealtime);
+      ui.BExecuteNextDecision.Sub(ExecuteNextCommand);
+      ui.BExecuteAllDecisions.Sub(ExecuteAllCommands);
+      ui.BExecuteInRealtime.Sub(PlayBattleInRealtime);
     }
     
     void StartBattle() {
       realtimeBattleSimulationController.StopBattle();
-      simulation.PrepareBattle(playerContext);
-      foreach (var (coord, unit) in units) {
-        unit.transform.position = tilePresenter.PositionAt(coord).WithY(unit.Height);
-        unit.Reset();
-        unit.Show();
-      }
-      boardPresenter.Reset(playerPresenters[0], playerPresenters[1]);
-      foreach (var (coord, unit) in playerPresenters[0].BoardUnits) units[coord] = unit;
-      foreach (var (coord, unit) in playerPresenters[1].BoardUnits) units[coord] = unit;
+      simulation.PrepareBattle(boardContext);
+      simulationPresenter.Reset(playerPresenters);
       ui.SetEnabled(!simulation.IsBattleOver);
     }
 
-    readonly Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>();  
-
-    void ExecuteNextDecision() {
+    void ExecuteNextCommand() {
       simulation.ExecuteNextCommand();
       viewSimulation.SimulationTick(context.CurrentTime.Float);
 
@@ -64,29 +46,26 @@ namespace Controller.NDebug {
       ui.Disable();
     }
 
-    void ExecuteAllDecisions() {
-      while (!simulation.IsBattleOver) {
-        ExecuteNextDecision();
-      }
+    void ExecuteAllCommands() {
+      simulation.ExecuteAllCommands();
       ui.Disable();
     }
     
     void SetPaused(bool isPaused) => realtimeBattleSimulationController.SetPaused(isPaused);
     void SetSpeed(float speed) => realtimeBattleSimulationController.SetSpeed(speed);
     
-    void PlayerBattleInRealtime() {
+    void PlayBattleInRealtime() {
       realtimeBattleSimulationController.StartBattle();
       ui.Disable();
     }
 
     readonly BattleSimulation simulation;
+    readonly BattleSimulationPresenter simulationPresenter;
     readonly BattleSimulationUI ui;
     readonly ISimulationTick viewSimulation;
     readonly AiContext context;
-    readonly PlayerContext playerContext;
-    readonly BaseBoard<UnitView, PlayerPresenter> boardPresenter;
+    readonly BoardContext boardContext;
     readonly PlayerPresenter[] playerPresenters;
     readonly RealtimeBattleSimulationController realtimeBattleSimulationController;
-    readonly TilePresenter tilePresenter;
   }
 }
