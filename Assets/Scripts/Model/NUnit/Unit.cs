@@ -37,6 +37,8 @@ namespace Model.NUnit {
       .Append(target).Append("\n")
       .ToString();
 
+    #region Components
+
     public F32 Health => health.Health;
     public bool IsAlive => health.IsAlive;
     public void TakeDamage(F32 damage) => health.TakeDamage(damage);
@@ -91,6 +93,8 @@ namespace Model.NUnit {
     public string Name => stats.Name;
     public EPlayer Player => stats.Player;
     public bool IsAllyWith(EPlayer player) => stats.IsAllyWith(player);
+
+    #endregion
     
     readonly CHealth health;
     readonly CAttack attack;

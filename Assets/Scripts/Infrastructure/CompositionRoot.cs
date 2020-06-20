@@ -25,16 +25,28 @@ using Logger = Shared.OkwyLogging.Logger;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {
+    #region Controller
+
     public DebugController DebugController;
     public MonoBehaviourCallBackController MonoBehaviourCallBackController;
+
+    #endregion
+    #region UI
+
     public BattleSetupUI BattleSetupUI;
     public BattleSaveUI BattleSaveUI;
     public BattleSimulationUI BattleSimulationUI;
     public UnitTooltipUI UnitTooltipUI;
     public ModelUI ModelUI;
+
+    #endregion
+    #region View
+
     public TileStartPoints TileStartPoints;
     public UnitView UnitView;
     public TileView TileView;
+
+      #endregion
 
     IEnumerator Start() {
       #region Config
@@ -75,7 +87,7 @@ namespace Infrastructure {
       
       #endregion
       #region Model
-
+                      
       var unitFactory = new UnitFactory(units, new DecisionFactory(eventHolder));
       var player1BoardUnits = new UnitDict(unitFactory);
       var player2BoardUnits = new UnitDict(unitFactory);
@@ -159,23 +171,36 @@ namespace Infrastructure {
       #endregion
 
       yield return null;
-      
+
+      #region UI
+
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
+
+      #endregion
+      #region Infrastructure
 
       eventHolder.Init(aiContext); //TODO: move parameters to constructor
       tickController.Init(takenCoordDebugController, targetDebugController, uiDebugController, 
         unitModelDebugController, realtimeBattleSimulationController, DebugController);
       inputController.Init();
+
+      #endregion
+      #region Controller
+
       unitSelectionController.Init();
       unitDragController.Init();
-      
       tileHighlightController.Init();
       unitMoveController.Init();
       unitTooltipController.Init();
-      
+
+      #endregion
+      #region Debug
+
       unitModelDebugController.Init();
       DebugController.Init(UnitTooltipUI);
+
+      #endregion
 
       MonoBehaviourCallBackController.Init(tickController);
     }
