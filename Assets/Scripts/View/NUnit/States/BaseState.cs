@@ -1,6 +1,6 @@
 namespace View.NUnit.States {
   public abstract class BaseState : IState {
-    protected UnitView Unit;
+    protected readonly UnitView Unit;
 
     protected BaseState(UnitView unit) => Unit = unit;
     

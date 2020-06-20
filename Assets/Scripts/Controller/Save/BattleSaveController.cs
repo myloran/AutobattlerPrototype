@@ -9,10 +9,10 @@ using View.UIs;
 
 namespace Controller.Save {
   public class BattleSaveController : IDisposable {
-    public BattleSaveController(PlayerContext playerContext, PlayerPresenter[] playerPresenters,
+    public BattleSaveController(PlayerContext playerContext, PlayerPresenterContext playerPresenterContext,
       BattleSaveUI ui, SaveInfoLoader saveInfoLoader, Dictionary<string, SaveInfo> saves) {
       this.playerContext = playerContext;
-      this.playerPresenters = playerPresenters;
+      this.playerPresenterContext = playerPresenterContext;
       this.ui = ui;
       this.saveInfoLoader = saveInfoLoader;
       this.saves = saves;
@@ -38,25 +38,25 @@ namespace Controller.Save {
 
     void Load() {
       playerContext.DestroyAll();
-      foreach (var playerPresenter in playerPresenters) playerPresenter.DestroyAll();
+      playerPresenterContext.DestroyAll();
 
       var save = saves[ui.GetSelectedSaveName];
       
       foreach (var (coord, name) in save.Player1BenchUnits) {
         playerContext.InstantiateToBench(name, coord, EPlayer.First);
-        playerPresenters[0].InstantiateToBench(name, coord, EPlayer.First);
+        playerPresenterContext.InstantiateToBench(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BenchUnits) {
         playerContext.InstantiateToBench(name, coord, EPlayer.Second);
-        playerPresenters[1].InstantiateToBench(name, coord, EPlayer.Second);
+        playerPresenterContext.InstantiateToBench(name, coord, EPlayer.Second);
       }
       foreach (var (coord, name) in save.Player1BoardUnits) {
         playerContext.InstantiateToBoard(name, coord, EPlayer.First);
-        playerPresenters[0].InstantiateToBoard(name, coord, EPlayer.First);
+        playerPresenterContext.InstantiateToBoard(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BoardUnits) {
         playerContext.InstantiateToBoard(name, coord, EPlayer.Second);
-        playerPresenters[1].InstantiateToBoard(name, coord, EPlayer.Second);
+        playerPresenterContext.InstantiateToBoard(name, coord, EPlayer.Second);
       }
     }
     
@@ -72,6 +72,6 @@ namespace Controller.Save {
     readonly SaveInfoLoader saveInfoLoader;
     readonly Dictionary<string, SaveInfo> saves;
     readonly PlayerContext playerContext;
-    readonly PlayerPresenter[] playerPresenters;
+    readonly PlayerPresenterContext playerPresenterContext;
   }
 }

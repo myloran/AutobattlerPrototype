@@ -5,6 +5,9 @@ using Shared;
 
 namespace Model.NBattleSimulation {
   public class PlayerContext {
+    public Dictionary<Coord, Unit> GetBoardUnitDict(EPlayer player) => Get(player).BoardUnits;
+    public Dictionary<Coord, Unit> GetBenchUnitDict(EPlayer player) => Get(player).BenchUnits;
+    
     public PlayerContext(Player player1, Player player2) {
       this.player1 = player1;
       this.player2 = player2;
@@ -48,9 +51,6 @@ namespace Model.NBattleSimulation {
       
       return units;
     }
-
-    public Dictionary<Coord, Unit> GetBoardUnitDict(EPlayer player) => Get(player).BoardUnits;
-    public Dictionary<Coord, Unit> GetBenchUnitDict(EPlayer player) => Get(player).BenchUnits;
 
     Player Get(EPlayer player) => player == EPlayer.First ? player1 : player2;
     

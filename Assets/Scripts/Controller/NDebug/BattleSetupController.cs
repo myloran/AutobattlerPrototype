@@ -6,10 +6,10 @@ using View.UIs;
 
 namespace Controller.NDebug {
   public class BattleSetupController : IDisposable {
-    public BattleSetupController(PlayerContext playerContext, PlayerPresenter[] presenters, 
+    public BattleSetupController(PlayerContext playerContext, PlayerPresenterContext playerPresenterContext, 
         BattleSetupUI ui) {
       this.playerContext = playerContext;
-      this.presenters = presenters;
+      this.playerPresenterContext = playerPresenterContext;
       this.ui = ui;
       ui.BAdd.onClick.AddListener(AddUnit);
       ui.BRemove.onClick.AddListener(RemoveUnit);
@@ -19,13 +19,13 @@ namespace Controller.NDebug {
       var playerId = ui.GetSelectedPlayerId;
       var name = ui.GetSelectedUnitName;
       var (isInstantiated, coord) = playerContext.InstantiateToBenchStart(name, (EPlayer)playerId); 
-      if (isInstantiated) presenters[playerId].InstantiateToBench(name, coord, (EPlayer)playerId);
+      if (isInstantiated) playerPresenterContext.InstantiateToBench(name, coord, (EPlayer)playerId);
     }
     
     void RemoveUnit() {
-      var id = ui.GetSelectedPlayerId;
-      var (isDestroyed, coord) = playerContext.DestroyFromBenchEnd((EPlayer)id);
-      if (isDestroyed) presenters[id].DestroyOnBench(coord);
+      var id = (EPlayer)ui.GetSelectedPlayerId;
+      var (isDestroyed, coord) = playerContext.DestroyFromBenchEnd(id);
+      if (isDestroyed) playerPresenterContext.DestroyFromBench(id, coord);
     }
 
     public void Dispose() {
@@ -34,7 +34,7 @@ namespace Controller.NDebug {
     }
 
     readonly BattleSetupUI ui;
-    readonly PlayerPresenter[] presenters;
+    readonly PlayerPresenterContext playerPresenterContext;
     readonly PlayerContext playerContext;
   }
 }

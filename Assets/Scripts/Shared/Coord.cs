@@ -1,5 +1,6 @@
 using System;
 using MessagePack;
+using static Shared.Const;
 using static UnityEngine.Mathf;
 
 namespace Shared {
@@ -69,6 +70,9 @@ namespace Shared {
         : Clamp(coord.Y, 3, 5);
       return coord;
     }
+
+    public static bool IsPlayer1Bench(this Coord coord) => coord.Y == Player1BenchId;
+    public static bool IsPlayer2Bench(this Coord coord) => coord.Y == Player2BenchId;
     
     public static bool BelongsToPlayer(this Coord coord, EPlayer player) => 
       coord.Y == player.BenchId();

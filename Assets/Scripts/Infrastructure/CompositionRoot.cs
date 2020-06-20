@@ -47,8 +47,8 @@ namespace Infrastructure {
     #region View
 
     public TileStartPoints TileStartPoints;
-    public UnitView UnitView;
-    public TileView TileView;
+    public UnitView UnitViewPrefab;
+    public TileView TileViewPrefab;
 
     #endregion
     #endregion
@@ -69,21 +69,22 @@ namespace Infrastructure {
       var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library
       EventBus.Log = m => log.Info($"{m}");
       var eventHolder = new EventHolder(eventBus);
-      
-      var raycastController = new RaycastController(Camera.main, 
+
+      var mainCamera = Camera.main;
+      var raycastController = new RaycastController(mainCamera, 
         LayerMask.GetMask("Terrain", "GlobalCollider"), LayerMask.GetMask("Unit"));
       
       #endregion
       #region View
       
-      var tilePresenter = new TilePresenter(TileStartPoints, new TileViewFactory(TileView));
-      var unitViewFactory = new UnitViewFactory(units, UnitView, tilePresenter);
+      var tileSpawner = new TileSpawner(TileStartPoints, new TileViewFactory(TileViewPrefab));
+      var tilePresenter = new TilePresenter(TileStartPoints);
+      var unitViewFactory = new UnitViewFactory(units, UnitViewPrefab, tilePresenter, mainCamera);
       var boardPresenter = new BoardPresenter(tilePresenter);
       
-      var playerPresenters = new[] {
+      var playerPresenterContext = new PlayerPresenterContext(
         new PlayerPresenter(tilePresenter, unitViewFactory), 
-        new PlayerPresenter(tilePresenter, unitViewFactory)
-      };
+        new PlayerPresenter(tilePresenter, unitViewFactory));
       
       #endregion
       #region Model
@@ -97,7 +98,7 @@ namespace Infrastructure {
       #endregion
       #region Context
 
-      var worldContext = new WorldContext(playerContext, playerPresenters, BattleSetupUI);
+      var worldContext = new WorldContext(playerContext, playerPresenterContext, BattleSetupUI);
 
       #endregion
       
@@ -113,7 +114,7 @@ namespace Infrastructure {
         coordFinder, inputController, unitSelectionController, 
         new CanStartDrag(new BattleStateController(BattleSimulationUI), BattleSetupUI));
       
-      var tileHighlightController = new TileHighlighterController(tilePresenter, 
+      var tileHighlightController = new TileHighlighterController(tileSpawner, 
         unitDragController);
 
       var unitMoveController = new UnitMoveController(worldContext, unitDragController);
@@ -141,22 +142,22 @@ namespace Infrastructure {
       #endregion
       #region Debug
       
-      var battleSetupController = new BattleSetupController(playerContext, playerPresenters, 
-        BattleSetupUI);
+      var battleSetupController = new BattleSetupController(playerContext, 
+        playerPresenterContext, BattleSetupUI);
       
-      var battleSaveController = new BattleSaveController(playerContext, playerPresenters, 
-        BattleSaveUI, saveDataLoader, saves);
+      var battleSaveController = new BattleSaveController(playerContext, 
+        playerPresenterContext, BattleSaveUI, saveDataLoader, saves);
       
       var battleSimulationController = new BattleSimulationDebugController(
         battleSimulation, BattleSimulationUI, 
-        aiContext, playerContext, playerPresenters, realtimeBattleSimulationController,
+        aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController,
         battleSimulationPresenter);
 
       var unitModelDebugController = new UnitModelDebugController(
         board, ModelUI, DebugController.Info, unitSelectionController);
       
-      var takenCoordDebugController = new TakenCoordDebugController(
-        tilePresenter, board, DebugController);
+      var takenCoordDebugController = new TakenCoordDebugController(board, DebugController,
+        tileSpawner);
       
       var targetDebugController = new TargetDebugController(
         board, tilePresenter, DebugController.Info);
@@ -169,10 +170,11 @@ namespace Infrastructure {
 
       yield return null;
 
-      #region UI
+      #region View
 
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
+      tileSpawner.Init();
 
       #endregion
       #region Infrastructure

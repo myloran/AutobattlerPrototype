@@ -6,9 +6,9 @@ using UniRx;
 
 namespace Controller.NTile {
   public class TileHighlighterController : IDisposable {
-    public TileHighlighterController(TilePresenter tilePresenter, 
+    public TileHighlighterController(TileSpawner tileSpawner, 
         UnitDragController untDragController) {
-      this.tilePresenter = tilePresenter;
+      this.tileSpawner = tileSpawner;
       this.untDragController = untDragController;
     }
 
@@ -17,13 +17,13 @@ namespace Controller.NTile {
       untDragController.DragEnded.Subscribe(Unhighlight).AddTo(disposable);
     }
 
-    void Unhighlight(DragEndedEvent e) => tilePresenter.TileAt(e.Last).Unhighlight();
+    void Unhighlight(DragEndedEvent e) => tileSpawner.TileAt(e.Last).Unhighlight();
 
     void ChangeHighlight(CoordChangedEvent e) {
       if (e.From != Coord.Invalid)
-        tilePresenter.TileAt(e.From).Unhighlight();
+        tileSpawner.TileAt(e.From).Unhighlight();
         
-      tilePresenter.TileAt(e.To).Highlight();
+      tileSpawner.TileAt(e.To).Highlight();
       
       //   //if swap previous, cancel it
       //   if (tile.Unit != null) {
@@ -34,7 +34,7 @@ namespace Controller.NTile {
     
     public void Dispose() => disposable.Clear();
 
-    readonly TilePresenter tilePresenter;
+    readonly TileSpawner tileSpawner;
     readonly UnitDragController untDragController;
     readonly IObservable<CoordChangedEvent> coordChanged;
     readonly IObservable<DragEndedEvent> dragEnded;

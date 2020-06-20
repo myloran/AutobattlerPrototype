@@ -8,7 +8,8 @@ public class HealthBar : MonoBehaviour {
 
   public void SetCurrentHealth(float currentHealth) => this.currentHealth = currentHealth;
 
-  public HealthBar Init(Color color, float maxHealth) {
+  public HealthBar Init(Color color, float maxHealth, Camera mainCamera) {
+    this.mainCamera = mainCamera;
     healthBar = transform.Find("Health").GetComponent<Image>();
     dropEffect = transform.Find("DropEffect").GetComponent<Image>();
     healthBar.color = color;
@@ -22,6 +23,14 @@ public class HealthBar : MonoBehaviour {
     healthBar.fillAmount = healthPercentage;
 
     HandleDropEffect(healthPercentage);
+    UpdateRotation();
+  }
+
+  void UpdateRotation() {
+    var position = transform.position;
+    var targetPosition = mainCamera.transform.position; 
+    var target = new Vector3(position.x, targetPosition.y, targetPosition.z);
+    transform.LookAt(target);
   }
 
   void HandleDropEffect(float healthPercentage) {
@@ -34,6 +43,7 @@ public class HealthBar : MonoBehaviour {
     }
   }
 
+  Camera mainCamera;
   Image healthBar;
   Image dropEffect;
   float maxHealth;

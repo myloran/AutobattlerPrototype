@@ -2484,9 +2484,9 @@ MonoBehaviour:
   UnitTooltipUI: {fileID: 327723203}
   ModelUI: {fileID: 1018507620}
   TileStartPoints: {fileID: 1262174396}
-  UnitView: {fileID: 7106694951565096669, guid: 1ded2d7287f52e3428a3685857e8fff9,
+  UnitViewPrefab: {fileID: 7106694951565096669, guid: 1ded2d7287f52e3428a3685857e8fff9,
     type: 3}
-  TileView: {fileID: 2122847529300981312, guid: de74b9670e1fd3b42a1c8d17c1d897f5,
+  TileViewPrefab: {fileID: 2122847529300981312, guid: de74b9670e1fd3b42a1c8d17c1d897f5,
     type: 3}
 --- !u!4 &381386578
 Transform:

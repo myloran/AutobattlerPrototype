@@ -5,7 +5,7 @@ using View.NUnit;
 
 namespace View.Presenters {
   public class BoardPresenter {
-    public BoardPresenter(TilePresenter tilePresenter) => this.tilePresenter = tilePresenter;
+    public BoardPresenter(TilePresenter tilePresenter) => tile = tilePresenter;
 
     #region Dict
 
@@ -24,21 +24,14 @@ namespace View.Presenters {
       RemoveUnit(from);
     }
     
-    public Dictionary<Coord, UnitView> Reset(PlayerPresenter player1, PlayerPresenter player2) {
-      units.Clear();
-      
-      foreach (var (coord, unit) in player1.BoardUnits) units[coord] = unit;
-      foreach (var (coord, unit) in player2.BoardUnits) units[coord] = unit;
-      
-      return units;
-    }
-    
+    public void Reset(Dictionary<Coord, UnitView> units) => this.units = units;
+
     void OnChangeCoord(Coord coord, UnitView unit) {
-      var toPosition = tilePresenter.PositionAt(coord).WithY(unit.Height);
+      var toPosition = tile.PositionAt(coord).WithY(unit.Height);
       unit.transform.position = toPosition;
     }
 
-    readonly TilePresenter tilePresenter;
-    readonly Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>();
+    readonly TilePresenter tile;
+    Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>();
   }
 }

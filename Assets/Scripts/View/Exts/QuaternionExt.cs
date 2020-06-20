@@ -22,5 +22,10 @@ namespace View.Exts {
       if (direction == (-1, 1)) return Quaternion.Euler(0, 315, 0);
       return Quaternion.identity;
     }
+
+    public static Quaternion ToQuaternion(this EPlayer player) =>
+      player == EPlayer.First
+        ? Quaternion.identity
+        : Quaternion.Euler(new Vector3(0, 180, 0));
   }
 }
