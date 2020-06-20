@@ -39,28 +39,25 @@ namespace Controller.Save {
 
     void Load() {
       foreach (var player in players) player.DestroyAll();
-      foreach (var player in playerPresenters) {
-        player.BenchUnits.DestroyAll();
-        player.BoardUnits.DestroyAll();
-      }
-      
+      foreach (var playerPresenter in playerPresenters) playerPresenter.DestroyAll();
+
       var save = saves[ui.GetSelectedSaveName];
       
       foreach (var (coord, name) in save.Player1BenchUnits) {
         players[0].InstantiateToBench(name, coord, EPlayer.First);
-        playerPresenters[0].BenchUnits.Instantiate(name, coord, EPlayer.First);
+        playerPresenters[0].InstantiateToBench(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BenchUnits) {
         players[1].InstantiateToBench(name, coord, EPlayer.Second);
-        playerPresenters[1].BenchUnits.Instantiate(name, coord, EPlayer.Second);
+        playerPresenters[1].InstantiateToBench(name, coord, EPlayer.Second);
       }
       foreach (var (coord, name) in save.Player1BoardUnits) {
         players[0].InstantiateToBoard(name, coord, EPlayer.First);
-        playerPresenters[0].BoardUnits.Instantiate(name, coord, EPlayer.First);
+        playerPresenters[0].InstantiateToBoard(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BoardUnits) {
         players[1].InstantiateToBoard(name, coord, EPlayer.Second);
-        playerPresenters[1].BoardUnits.Instantiate(name, coord, EPlayer.Second);
+        playerPresenters[1].InstantiateToBoard(name, coord, EPlayer.Second);
       }
     }
     

@@ -30,7 +30,7 @@ namespace View.NUnit {
       return this;
     }
 
-    public void Reset() => SetHealth(info.Health);
+    public void ResetHealth() => SetHealth(info.Health);
 
     public void SetHealth(float health) {
       Info.Health = health;

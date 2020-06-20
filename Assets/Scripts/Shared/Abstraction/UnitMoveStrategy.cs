@@ -2,7 +2,8 @@ using System.Collections.Generic;
 
 namespace Shared.Abstraction {
   public class UnitMoveStrategy<T> {
-    public UnitMoveStrategy(Dictionary<Coord, T> benchUnits, Dictionary<Coord, T> boardUnits, IHandler<UnitCoordChanged<T>> unitCoordChangedHandler) {
+    public UnitMoveStrategy(Dictionary<Coord, T> benchUnits, Dictionary<Coord, T> boardUnits, 
+        IHandler<UnitCoordChanged<T>> unitCoordChangedHandler) {
       this.benchUnits = benchUnits;
       this.boardUnits = boardUnits;
       this.unitCoordChangedHandler = unitCoordChangedHandler;

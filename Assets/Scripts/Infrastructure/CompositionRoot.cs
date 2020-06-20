@@ -18,12 +18,12 @@ using Shared.Abstraction;
 using Shared.OkwyLogging;
 using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
+using View;
 using View.Factories;
 using View.NUnit;
 using View.Presenters;
 using View.UIs;
 using View.Views;
-using static Shared.EPlayer;
 using Logger = Shared.OkwyLogging.Logger;
 
 namespace Infrastructure {
@@ -78,16 +78,11 @@ namespace Infrastructure {
       
       var tilePresenter = new TilePresenter(TileStartPoints, new TileViewFactory(TileView));
       var unitViewFactory = new UnitViewFactory(units, UnitView, tilePresenter);
-
-      var boardPresenter = new BoardPresenter(
-        new UnitViewDict(unitViewFactory), new UnitViewDict(unitViewFactory),
-        new UnitViewDict(unitViewFactory), tilePresenter);
+      var boardPresenter = new BoardPresenter(tilePresenter);
       
       var playerPresenters = new[] {
-        new PlayerPresenter(First, new UnitViewDict(unitViewFactory), 
-          new UnitViewDict(unitViewFactory), tilePresenter), 
-        new PlayerPresenter(Second, new UnitViewDict(unitViewFactory), 
-          new UnitViewDict(unitViewFactory), tilePresenter)
+        new PlayerPresenter(tilePresenter, unitViewFactory), 
+        new PlayerPresenter(tilePresenter, unitViewFactory)
       };
       
       #endregion
@@ -101,8 +96,8 @@ namespace Infrastructure {
       var unitMoveStrategy = new UnitMoveStrategy<Unit>(player1BoardUnits, player1BenchUnits,
         new UnitCoordChangedHandler());
       var players = new[] {
-        new Player(First, player1BoardUnits, player1BenchUnits, unitMoveStrategy, unitFactory), 
-        new Player(Second, player2BoardUnits, player2BenchUnits, unitMoveStrategy, unitFactory)
+        new Player(player1BoardUnits, player1BenchUnits, unitMoveStrategy, unitFactory), 
+        new Player(player2BoardUnits, player2BenchUnits, unitMoveStrategy, unitFactory)
       };
       var boardContext = new BoardContext(player1BoardUnits, player2BoardUnits);
       var board = new Board();

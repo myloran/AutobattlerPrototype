@@ -1,22 +1,39 @@
+using System.Collections.Generic;
 using Shared;
 using Shared.Abstraction;
-using View.Exts;
+using UnityEngine;
+using View.Factories;
 using View.NUnit;
-using View.Views;
 
 namespace View.Presenters {
-  public class PlayerPresenter : BasePlayer<UnitView> {
-    public PlayerPresenter(EPlayer player, IUnitDict<UnitView> boardUnitDict, 
-        IUnitDict<UnitView> benchUnitDict, TilePresenter tilePresenter) 
-        : base(player, boardUnitDict, benchUnitDict) {
-      this.tilePresenter = tilePresenter;
+  public class PlayerPresenter {
+    public PlayerPresenter(TilePresenter tilePresenter, UnitViewFactory factory) {
+      this.factory = factory;
+      unitMoveStrategy = new UnitMoveStrategy<UnitView>(BoardUnits, benchUnits,
+        new UnitViewCoordChangedHandler(tilePresenter));
+    }
+    
+    public void InstantiateToBench(string name, Coord coord, EPlayer player) => 
+      benchUnits[coord] = factory.Create(name, coord, player);
+
+    public void DestroyOnBench(Coord coord) {
+      Object.Destroy(benchUnits[coord].gameObject);
+      benchUnits.Remove(coord);
+    } 
+    
+    public void InstantiateToBoard(string name, Coord coord, EPlayer player) => 
+      BoardUnits[coord] = factory.Create(name, coord, player);
+    
+    public void MoveUnit(Coord from, Coord to) => unitMoveStrategy.MoveUnit(from, to);
+    
+    public void DestroyAll() {
+      benchUnits.Clear();
+      BoardUnits.Clear();
     }
 
-    protected override void OnChangeCoord(Coord coord, UnitView unit) {
-      var toPosition = tilePresenter.PositionAt(coord).WithY(unit.Height);
-      unit.transform.position = toPosition;
-    }
-
-    readonly TilePresenter tilePresenter;
+    readonly UnitViewFactory factory;
+    readonly UnitMoveStrategy<UnitView> unitMoveStrategy;
+    readonly Dictionary<Coord, UnitView> benchUnits = new Dictionary<Coord, UnitView>();
+    public readonly Dictionary<Coord, UnitView> BoardUnits = new Dictionary<Coord, UnitView>();
   }
 }

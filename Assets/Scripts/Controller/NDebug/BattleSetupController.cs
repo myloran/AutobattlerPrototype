@@ -18,15 +18,14 @@ namespace Controller.NDebug {
     void AddUnit() {
       var playerId = ui.GetSelectedPlayerId;
       var name = ui.GetSelectedUnitName;
-      var (isAdded, coord) = players[playerId].InstantiateToBenchStart(name, (EPlayer)playerId); 
-      if (isAdded) presenters[playerId].BenchUnits
-        .Instantiate(name, coord, (EPlayer)playerId);
+      var (isInstantiated, coord) = players[playerId].InstantiateToBenchStart(name, (EPlayer)playerId); 
+      if (isInstantiated) presenters[playerId].InstantiateToBench(name, coord, (EPlayer)playerId);
     }
     
     void RemoveUnit() {
       var id = ui.GetSelectedPlayerId;
-      presenters[id].BenchUnits.DestroyFromEnd((EPlayer)id);
-      players[id].DestroyFromBenchEnd((EPlayer)id);
+      var (isDestroyed, coord) = players[id].DestroyFromBenchEnd((EPlayer)id);
+      if (isDestroyed) presenters[id].DestroyOnBench(coord);
     }
 
     public void Dispose() {

@@ -6,7 +6,8 @@ using View.NUnit;
 
 namespace View.Presenters {
   public class BattleSimulationPresenter {
-    public BattleSimulationPresenter(TilePresenter tilePresenter, BoardPresenter boardPresenter, ISimulationTick viewSimulation) {
+    public BattleSimulationPresenter(TilePresenter tilePresenter, BoardPresenter boardPresenter, 
+        ISimulationTick viewSimulation) {
       this.tilePresenter = tilePresenter;
       this.boardPresenter = boardPresenter;
       this.viewSimulation = viewSimulation;
@@ -15,7 +16,7 @@ namespace View.Presenters {
     public void Reset(PlayerPresenter[] playerPresenters) {
       foreach (var (coord, unit) in units) {
         unit.transform.position = tilePresenter.PositionAt(coord).WithY(unit.Height);
-        unit.Reset();
+        unit.ResetHealth();
         unit.Show();
       }
       boardPresenter.Reset(playerPresenters[0], playerPresenters[1]);
