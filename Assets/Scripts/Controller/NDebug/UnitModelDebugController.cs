@@ -5,13 +5,14 @@ using Model;
 using View.UIs;
 using UniRx;
 using Controller.Exts;
+using Model.NBattleSimulation;
 using Unit = Model.NUnit.Unit;
 
 namespace Controller.NDebug {
   public class UnitModelDebugController : ITick, IDisposable {
-    public UnitModelDebugController(ModelContext context, ModelUI ui, DebugInfo debugInfo,
+    public UnitModelDebugController(Board board, ModelUI ui, DebugInfo debugInfo,
       UnitSelectionController unitSelectionController) {
-      this.context = context;
+      this.board = board;
       this.ui = ui;
       this.debugInfo = debugInfo;
       this.unitSelectionController = unitSelectionController;
@@ -40,10 +41,10 @@ namespace Controller.NDebug {
     void SelectUnitModel(UnitSelectedEvent e) {
       if (!debugInfo.IsDebugOn) return;
       
-      unit = context.GetUnit(e.StartCoord);
+      unit = board.GetUnit(e.StartCoord);
     }
 
-    readonly ModelContext context;
+    readonly Board board;
     readonly ModelUI ui;
     readonly DebugInfo debugInfo;
     readonly UnitSelectionController unitSelectionController;

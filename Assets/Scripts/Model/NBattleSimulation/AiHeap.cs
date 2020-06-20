@@ -37,6 +37,9 @@ namespace Model.NBattleSimulation {
       return (false, command);
     }
     
+    public bool HasEventInHeap => aiHeap.Min() != null;
+    public F32 NextEventTime => aiHeap.Min().Key;
+    
     public void Reset() {
       aiHeap.Clear();
       nodes.Clear();

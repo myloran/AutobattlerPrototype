@@ -5,9 +5,10 @@ using Shared;
 
 namespace Model.NBattleSimulation {
   public class BoardContext {
-    public BoardContext(Player[] players) {
-      player1Units = players[0].BoardUnits.Units;
-      player2Units = players[1].BoardUnits.Units;
+    public BoardContext(Dictionary<Coord, Unit> player1BoardUnits, 
+        Dictionary<Coord, Unit> player2BoardUnits) {
+      player1Units = player1BoardUnits;
+      player2Units = player2BoardUnits;
     }
 
     public Dictionary<Coord, Unit> Units() {

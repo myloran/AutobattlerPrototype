@@ -5,11 +5,10 @@ using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Shared;
-using Shared.Abstraction;
 
 namespace Model.NUnit {
   //TODO: Use IUnit interface instead of Unit
-  public class Unit : IUnit, IHealth, IAttack, IMovement, ITarget, IAi, IStats {
+  public class Unit : IHealth, IAttack, IMovement, ITarget, IAi, IStats {
     public Unit(CHealth health, CAttack attack, CMovement movement, CTarget target, CAi ai, 
         CStats stats) {
       this.health = health;

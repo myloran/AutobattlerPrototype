@@ -1,3 +1,5 @@
+using Shared.Abstraction;
+
 namespace Controller.UnitDrag {
   public class CompositeHandler<T> : IHandler<T> {
     public CompositeHandler(params IHandler<T>[] handlers) {

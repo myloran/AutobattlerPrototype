@@ -1,18 +1,17 @@
 using Controller.Exts;
 using Model.NBattleSimulation;
-using Shared.Shared.Client;
 using UniRx;
 using View.Presenters;
 using View.UIs;
 
 namespace Controller.NDebug {
   public class BattleSimulationDebugController {
-    public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui,
-        ISimulationTick viewSimulation, AiContext context, BoardContext boardContext, PlayerPresenter[] playerPresenters,
-        RealtimeBattleSimulationController realtimeBattleSimulationController, BattleSimulationPresenter simulationPresenter) {
+    public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui, 
+        AiContext context, BoardContext boardContext, PlayerPresenter[] playerPresenters,
+        RealtimeBattleSimulationController realtimeBattleSimulationController, 
+        BattleSimulationPresenter simulationPresenter) {
       this.simulation = simulation;
       this.ui = ui;
-      this.viewSimulation = viewSimulation;
       this.context = context;
       this.boardContext = boardContext;
       this.playerPresenters = playerPresenters;
@@ -39,7 +38,7 @@ namespace Controller.NDebug {
 
     void ExecuteNextCommand() {
       simulation.ExecuteNextCommand();
-      viewSimulation.SimulationTick(context.CurrentTime.Float);
+      simulationPresenter.SimulationTick(context.CurrentTime.Float);
 
       if (!simulation.IsBattleOver) return;
       
@@ -62,7 +61,6 @@ namespace Controller.NDebug {
     readonly BattleSimulation simulation;
     readonly BattleSimulationPresenter simulationPresenter;
     readonly BattleSimulationUI ui;
-    readonly ISimulationTick viewSimulation;
     readonly AiContext context;
     readonly BoardContext boardContext;
     readonly PlayerPresenter[] playerPresenters;

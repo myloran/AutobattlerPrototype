@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Controller;
 using Controller.NBattleSimulation;
@@ -13,6 +14,7 @@ using Shared;
 using UnityEngine;
 using Model;
 using PlasticFloor.EventBus;
+using Shared.Abstraction;
 using Shared.OkwyLogging;
 using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
@@ -21,6 +23,7 @@ using View.NUnit;
 using View.Presenters;
 using View.UIs;
 using View.Views;
+using static Shared.EPlayer;
 using Logger = Shared.OkwyLogging.Logger;
 
 namespace Infrastructure {
@@ -81,9 +84,9 @@ namespace Infrastructure {
         new UnitViewDict(unitViewFactory), tilePresenter);
       
       var playerPresenters = new[] {
-        new PlayerPresenter(EPlayer.First, new UnitViewDict(unitViewFactory), 
+        new PlayerPresenter(First, new UnitViewDict(unitViewFactory), 
           new UnitViewDict(unitViewFactory), tilePresenter), 
-        new PlayerPresenter(EPlayer.Second, new UnitViewDict(unitViewFactory), 
+        new PlayerPresenter(Second, new UnitViewDict(unitViewFactory), 
           new UnitViewDict(unitViewFactory), tilePresenter)
       };
       
@@ -91,13 +94,17 @@ namespace Infrastructure {
       #region Model
                       
       var unitFactory = new UnitFactory(units, new DecisionFactory(eventHolder));
-      var player1BoardUnits = new UnitDict(unitFactory);
-      var player2BoardUnits = new UnitDict(unitFactory);
+      var player1BoardUnits = new Dictionary<Coord, Unit>();
+      var player1BenchUnits = new Dictionary<Coord, Unit>();
+      var player2BoardUnits = new Dictionary<Coord, Unit>();
+      var player2BenchUnits = new Dictionary<Coord, Unit>();
+      var unitMoveStrategy = new UnitMoveStrategy<Unit>(player1BoardUnits, player1BenchUnits,
+        new UnitCoordChangedHandler());
       var players = new[] {
-        new Player(EPlayer.First, player1BoardUnits, new UnitDict(unitFactory)), 
-        new Player(EPlayer.Second, player2BoardUnits, new UnitDict(unitFactory))
+        new Player(First, player1BoardUnits, player1BenchUnits, unitMoveStrategy, unitFactory), 
+        new Player(Second, player2BoardUnits, player2BenchUnits, unitMoveStrategy, unitFactory)
       };
-      var playerContext = new BoardContext(players);
+      var boardContext = new BoardContext(player1BoardUnits, player2BoardUnits);
       var board = new Board();
       var aiHeap = new AiHeap();
       var aiContext = new AiContext(board, aiHeap);
@@ -139,12 +146,12 @@ namespace Infrastructure {
       eventBus.Register<IdleEvent>(movementController);
       eventBus.Register<StartAttackEvent>(attackController);
 
-      var battleSimulation = new BattleSimulation(aiContext, board);
+      var battleSimulationPresenter = new BattleSimulationPresenter(tilePresenter, 
+        boardPresenter, movementController);
+      
+      var battleSimulation = new BattleSimulation(aiContext, board, aiHeap);
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
         movementController, battleSimulation, eventHolder);
-      
-      var battleSimulationPresenter = new BattleSimulationPresenter(tilePresenter, 
-        boardPresenter);
 
       #endregion
       #region Debug
@@ -156,12 +163,12 @@ namespace Infrastructure {
         BattleSaveUI, saveDataLoader, saves);
       
       var battleSimulationController = new BattleSimulationDebugController(
-        battleSimulation, BattleSimulationUI, movementController, 
-        aiContext, playerContext, playerPresenters, realtimeBattleSimulationController,
+        battleSimulation, BattleSimulationUI, 
+        aiContext, boardContext, playerPresenters, realtimeBattleSimulationController,
         battleSimulationPresenter);
 
       var unitModelDebugController = new UnitModelDebugController(
-        new ModelContext(players), ModelUI, DebugController.Info, unitSelectionController);
+        board, ModelUI, DebugController.Info, unitSelectionController);
       
       var takenCoordDebugController = new TakenCoordDebugController(
         tilePresenter, board, DebugController);

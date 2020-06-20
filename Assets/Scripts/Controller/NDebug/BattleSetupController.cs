@@ -18,8 +18,7 @@ namespace Controller.NDebug {
     void AddUnit() {
       var playerId = ui.GetSelectedPlayerId;
       var name = ui.GetSelectedUnitName;
-      var (isAdded, coord) = players[playerId].BenchUnits
-        .InstantiateToStart(name, (EPlayer)playerId); 
+      var (isAdded, coord) = players[playerId].InstantiateToBenchStart(name, (EPlayer)playerId); 
       if (isAdded) presenters[playerId].BenchUnits
         .Instantiate(name, coord, (EPlayer)playerId);
     }
@@ -27,7 +26,7 @@ namespace Controller.NDebug {
     void RemoveUnit() {
       var id = ui.GetSelectedPlayerId;
       presenters[id].BenchUnits.DestroyFromEnd((EPlayer)id);
-      players[id].BenchUnits.DestroyFromEnd((EPlayer)id);
+      players[id].DestroyFromBenchEnd((EPlayer)id);
     }
 
     public void Dispose() {

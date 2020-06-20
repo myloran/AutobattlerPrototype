@@ -25,10 +25,10 @@ namespace Controller.Save {
     void Save() {
       var save = new SaveInfo {
         Name = ui.SaveName,
-        Player1BenchUnits = GetUnits(players[0].BenchUnits.Units),
-        Player1BoardUnits = GetUnits(players[0].BoardUnits.Units),
-        Player2BenchUnits = GetUnits(players[1].BenchUnits.Units),
-        Player2BoardUnits = GetUnits(players[1].BoardUnits.Units),
+        Player1BenchUnits = GetUnits(players[0].BenchUnits),
+        Player1BoardUnits = GetUnits(players[0].BoardUnits),
+        Player2BenchUnits = GetUnits(players[1].BenchUnits),
+        Player2BoardUnits = GetUnits(players[1].BoardUnits),
       };
       
       saveInfoLoader.Save(save);
@@ -38,10 +38,7 @@ namespace Controller.Save {
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name);
 
     void Load() {
-      foreach (var player in players) {
-        player.BenchUnits.DestroyAll();
-        player.BoardUnits.DestroyAll();
-      }
+      foreach (var player in players) player.DestroyAll();
       foreach (var player in playerPresenters) {
         player.BenchUnits.DestroyAll();
         player.BoardUnits.DestroyAll();
@@ -50,19 +47,19 @@ namespace Controller.Save {
       var save = saves[ui.GetSelectedSaveName];
       
       foreach (var (coord, name) in save.Player1BenchUnits) {
-        players[0].BenchUnits.Instantiate(name, coord, EPlayer.First);
+        players[0].InstantiateToBench(name, coord, EPlayer.First);
         playerPresenters[0].BenchUnits.Instantiate(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BenchUnits) {
-        players[1].BenchUnits.Instantiate(name, coord, EPlayer.Second);
+        players[1].InstantiateToBench(name, coord, EPlayer.Second);
         playerPresenters[1].BenchUnits.Instantiate(name, coord, EPlayer.Second);
       }
       foreach (var (coord, name) in save.Player1BoardUnits) {
-        players[0].BoardUnits.Instantiate(name, coord, EPlayer.First);
+        players[0].InstantiateToBoard(name, coord, EPlayer.First);
         playerPresenters[0].BoardUnits.Instantiate(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BoardUnits) {
-        players[1].BoardUnits.Instantiate(name, coord, EPlayer.Second);
+        players[1].InstantiateToBoard(name, coord, EPlayer.Second);
         playerPresenters[1].BoardUnits.Instantiate(name, coord, EPlayer.Second);
       }
     }

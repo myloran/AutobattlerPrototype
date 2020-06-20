@@ -5,10 +5,15 @@ using static Shared.Const;
 
 namespace Model.NBattleSimulation {
   public class Board {
+    #region Dict
+
     public IEnumerable<Unit> Values => units.Values;
-    public void RemoveUnit(Coord coord) => units.Remove(coord);
-    public bool ContainsUnitAt(Coord coord) => units.ContainsKey(coord); 
     public void AddUnit(Coord coord, Unit unit) => units[coord] = unit;
+    public void RemoveUnit(Coord coord) => units.Remove(coord);
+    public bool ContainsUnit(Coord coord) => units.ContainsKey(coord);
+    public Unit GetUnit(Coord coord) => units[coord];
+
+    #endregion
     
     public void SetContext(BoardContext context) {
       this.context = context;

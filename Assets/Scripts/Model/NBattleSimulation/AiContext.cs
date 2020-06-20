@@ -37,7 +37,7 @@ namespace Model.NBattleSimulation {
     public IEnumerable<Unit> GetSurroundUnits(Coord coord) => board.GetSurroundUnits(coord);
     public IEnumerable<Unit> GetAdjacentUnits(Coord coord) => board.GetAdjacentUnits(coord);
     public bool IsSurrounded(Coord coord) => board.IsSurrounded(coord);
-    public bool IsTileEmpty(Coord coord) => !board.ContainsUnitAt(coord) && coord.IsInsideBoard();
+    public bool IsTileEmpty(Coord coord) => !board.ContainsUnit(coord) && coord.IsInsideBoard();
     public void AddUnit(Coord coord, Unit unit) => board.AddUnit(coord, unit);
     public void RemoveUnit(Coord coord) => board.RemoveUnit(coord);
 
@@ -55,7 +55,6 @@ namespace Model.NBattleSimulation {
       CurrentTime = Zero;
       playerDeathTime = MaxValue;
       CheckBattleIsOver();
-      heap.Reset();
     }
     
     readonly Board board;

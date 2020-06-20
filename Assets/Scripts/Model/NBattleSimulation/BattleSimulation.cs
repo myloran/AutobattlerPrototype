@@ -1,3 +1,4 @@
+using FixMath;
 using Model.NBattleSimulation.Commands;
 using Shared.OkwyLogging;
 using static FixMath.F32;
@@ -6,9 +7,10 @@ namespace Model.NBattleSimulation {
   public class BattleSimulation { //TODO: Think if it's controller
     public bool IsBattleOver { get; private set; }
 
-    public BattleSimulation(AiContext context, Board board) {
+    public BattleSimulation(AiContext context, Board board, AiHeap heap) {
       this.context = context;
       this.board = board;
+      this.heap = heap;
     }
 
     public void PrepareBattle(BoardContext boardContext) {
@@ -18,7 +20,9 @@ namespace Model.NBattleSimulation {
         unit.Reset();
       }
       
+      heap.Reset();
       context.Reset();
+      
       IsBattleOver = context.IsBattleOver;
       if (IsBattleOver) return;
             
@@ -42,7 +46,14 @@ namespace Model.NBattleSimulation {
       }
     }
 
+    public void ExecuteCommandsTill(F32 time) {
+      while (!IsBattleOver && heap.NextEventTime < time) {
+        ExecuteNextCommand();
+      }
+    }
+
     readonly AiContext context;
+    readonly AiHeap heap;
     readonly Board board;
     static readonly Logger log = MainLog.GetLogger(nameof(BattleSimulation));
   }
