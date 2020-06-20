@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Model.NBattleSimulation;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using Shared;
 using View.Presenters;
 using View.UIs;
@@ -33,7 +34,7 @@ namespace Controller.Save {
       saveInfoLoader.Save(save);
     }
 
-    Dictionary<Coord, string> GetUnits(Dictionary<Coord, Unit> dict) => dict
+    Dictionary<Coord, string> GetUnits(Dictionary<Coord, IUnit> dict) => dict
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name);
 
     void Load() {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Abstraction;
                                           
@@ -7,7 +8,7 @@ namespace Model.NBattleSimulation {
   public class Player {
     public Player(UnitFactory unitFactory) {
       this.unitFactory = unitFactory;
-      unitMoveStrategy = new UnitMoveStrategy<Unit>(
+      unitMoveStrategy = new UnitMoveStrategy<IUnit>(
         BenchUnits, BoardUnits, new UnitCoordChangedHandler());
     }
     
@@ -50,9 +51,9 @@ namespace Model.NBattleSimulation {
       BoardUnits.Clear();
     }
 
-    readonly UnitMoveStrategy<Unit> unitMoveStrategy;
+    readonly UnitMoveStrategy<IUnit> unitMoveStrategy;
     readonly UnitFactory unitFactory;
-    public readonly Dictionary<Coord, Unit> BoardUnits = new Dictionary<Coord, Unit>();
-    public readonly Dictionary<Coord, Unit> BenchUnits = new Dictionary<Coord, Unit>();
+    public readonly Dictionary<Coord, IUnit> BoardUnits = new Dictionary<Coord, IUnit>();
+    public readonly Dictionary<Coord, IUnit> BenchUnits = new Dictionary<Coord, IUnit>();
   }
 }

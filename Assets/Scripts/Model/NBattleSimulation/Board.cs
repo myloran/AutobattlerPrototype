@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using Shared;
 using static Shared.Const;
 
@@ -7,11 +8,11 @@ namespace Model.NBattleSimulation {
   public class Board {
     #region Dict
 
-    public IEnumerable<Unit> Values => units.Values;
-    public void AddUnit(Coord coord, Unit unit) => units[coord] = unit;
+    public IEnumerable<IUnit> Values => units.Values;
+    public void AddUnit(Coord coord, IUnit unit) => units[coord] = unit;
     public void RemoveUnit(Coord coord) => units.Remove(coord);
     public bool ContainsUnit(Coord coord) => units.ContainsKey(coord);
-    public Unit GetUnit(Coord coord) => units[coord];
+    public IUnit GetUnit(Coord coord) => units[coord];
 
     #endregion
     
@@ -20,7 +21,7 @@ namespace Model.NBattleSimulation {
       units = context.BoardUnits();
     }
 
-    public IEnumerable<Unit> GetPlayerUnits(EPlayer player) => context.GetBoardUnits(player);
+    public IEnumerable<IUnit> GetPlayerUnits(EPlayer player) => context.GetBoardUnits(player);
     public bool HasUnits(EPlayer player) => context.HasUnits(player);
 
     public bool IsSurrounded(Coord coord) {
@@ -34,8 +35,8 @@ namespace Model.NBattleSimulation {
       return true;
     }
 
-    public IEnumerable<Unit> GetSurroundUnits(Coord coord) {
-      var result = new List<Unit>();
+    public IEnumerable<IUnit> GetSurroundUnits(Coord coord) {
+      var result = new List<IUnit>();
       
       for (int x = -1; x < 2; x++) {
         for (int y = -1; y < 2; y++) {
@@ -51,8 +52,8 @@ namespace Model.NBattleSimulation {
       return result;
     }
 
-    public IEnumerable<Unit> GetAdjacentUnits(Coord coord) {
-      var result = new List<Unit>();
+    public IEnumerable<IUnit> GetAdjacentUnits(Coord coord) {
+      var result = new List<IUnit>();
       AddUnit((0, 1));
       AddUnit((0, -1));
       AddUnit((1, 0));
@@ -65,7 +66,7 @@ namespace Model.NBattleSimulation {
         }
     }
     
-    Dictionary<Coord, Unit> units = new Dictionary<Coord, Unit>(MaxUnitsOnBoard);
+    Dictionary<Coord, IUnit> units = new Dictionary<Coord, IUnit>(MaxUnitsOnBoard);
     PlayerContext context;
   }
 }

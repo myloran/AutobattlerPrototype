@@ -6,7 +6,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class ApplyDamageCommand : BaseCommand {
-    public ApplyDamageCommand(Unit unit, DeathCommand deathCommand, IEventBus bus) {
+    public ApplyDamageCommand(IUnit unit, DeathCommand deathCommand, IEventBus bus) {
       this.unit = unit;
       this.deathCommand = deathCommand;
       this.bus = bus;
@@ -27,7 +27,7 @@ namespace Model.NBattleSimulation.Commands {
         bus.Raise(new DeathEvent(target.Coord));
     }
 
-    readonly Unit unit;
+    readonly IUnit unit;
     readonly DeathCommand deathCommand;
     readonly IEventBus bus;
   }

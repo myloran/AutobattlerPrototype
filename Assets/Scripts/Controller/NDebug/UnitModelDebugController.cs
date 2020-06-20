@@ -6,6 +6,7 @@ using View.UIs;
 using UniRx;
 using Controller.Exts;
 using Model.NBattleSimulation;
+using Model.NUnit.Abstraction;
 using Unit = Model.NUnit.Unit;
 
 namespace Controller.NDebug {
@@ -49,7 +50,7 @@ namespace Controller.NDebug {
     readonly DebugInfo debugInfo;
     readonly UnitSelectionController unitSelectionController;
     readonly CompositeDisposable disposable =new CompositeDisposable();
-    Unit unit;
+    IUnit unit;
     bool isOn;
   }
 }

@@ -2,13 +2,14 @@ using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
 using static Shared.Const;
 
 namespace Model.NAI.Actions {
   public class WaitMoveDiff : BaseAction {
-    public WaitMoveDiff(Unit unit, IEventBus bus) : base(unit, bus) { }
+    public WaitMoveDiff(IUnit unit, IEventBus bus) : base(unit, bus) { }
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var decisionCommand = new MakeDecisionCommand(Unit, context, MoveDiffTime);

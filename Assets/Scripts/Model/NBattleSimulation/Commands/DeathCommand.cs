@@ -1,9 +1,9 @@
-using Model.NUnit;
+using Model.NUnit.Abstraction;
 using Shared;
 
 namespace Model.NBattleSimulation.Commands {
   public class DeathCommand : BaseCommand {
-    public DeathCommand(Unit target, AiContext context) {
+    public DeathCommand(IUnit target, AiContext context) {
       this.target = target;
       this.context = context;
     }
@@ -25,7 +25,7 @@ namespace Model.NBattleSimulation.Commands {
       context.CheckBattleIsOver();
     }
 
-    readonly Unit target;
+    readonly IUnit target;
     readonly AiContext context;
   }
 }

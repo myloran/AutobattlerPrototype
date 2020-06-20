@@ -1,12 +1,13 @@
 using FixMath;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared;
 using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class StartMoveCommand : BaseCommand {
-    public StartMoveCommand(AiContext context, Unit unit, Coord newCoord,
+    public StartMoveCommand(AiContext context, IUnit unit, Coord newCoord,
         F32 duration, IEventBus bus) {
       this.context = context;
       startingTime = context.CurrentTime;
@@ -23,7 +24,7 @@ namespace Model.NBattleSimulation.Commands {
     }
 
     readonly AiContext context;
-    readonly Unit unit;
+    readonly IUnit unit;
     readonly Coord newCoord;
     readonly F32 duration;
     readonly F32 startingTime;

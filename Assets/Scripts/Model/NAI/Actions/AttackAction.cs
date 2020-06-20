@@ -2,12 +2,13 @@ using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using static FixMath.F32;
 
 namespace Model.NAI.Actions {
   public class AttackAction : BaseAction {
-    public AttackAction(Unit unit, IEventBus bus) : base(unit, bus) { }
+    public AttackAction(IUnit unit, IEventBus bus) : base(unit, bus) { }
                     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       if (Unit.TargetExists) {

@@ -1,6 +1,7 @@
 using System;
 using Model.NBattleSimulation;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 
 namespace Model.NAI.NDecisionTree {
   public abstract class BaseDecision3 : IDecisionTreeNode {
@@ -10,10 +11,10 @@ namespace Model.NAI.NDecisionTree {
       Third
     } 
     public EDecision Type { get; } = EDecision.BaseDecision;
-    protected Unit Unit;
+    protected readonly IUnit Unit;
     
     protected BaseDecision3(IDecisionTreeNode firstNode, IDecisionTreeNode secondNode,
-        IDecisionTreeNode thirdNode, Unit unit) {
+        IDecisionTreeNode thirdNode, IUnit unit) {
       this.firstNode = firstNode;
       this.secondNode = secondNode;
       this.thirdNode = thirdNode;

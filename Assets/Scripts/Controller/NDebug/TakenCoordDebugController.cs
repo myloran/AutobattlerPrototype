@@ -1,6 +1,7 @@
 using Controller.Update;
 using Model.NBattleSimulation;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using Shared;
 using UnityEngine;
 using View.Presenters;
@@ -32,8 +33,8 @@ namespace Controller.NDebug {
         tile.Debug(CoordColor(unit));
       }
       
-      Color CoordColor(Unit unit) => unit.Player == EPlayer.First ? Color.blue : Color.red;
-      Color TakenCoordColor(Unit unit) => unit.Player == EPlayer.First ? Color.cyan : Color.magenta;
+      Color CoordColor(IUnit unit) => unit.Player == EPlayer.First ? Color.blue : Color.red;
+      Color TakenCoordColor(IUnit unit) => unit.Player == EPlayer.First ? Color.cyan : Color.magenta;
     }
 
     void ClearHighlight() {

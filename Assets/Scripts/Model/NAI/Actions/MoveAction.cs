@@ -2,6 +2,7 @@ using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared;
 using Shared.OkwyLogging;
@@ -12,7 +13,7 @@ namespace Model.NAI.Actions {
     public override EDecision Type { get; } = EDecision.MoveAction;
     public IDecisionTreeNode FindNearestTarget;
     
-    public MoveAction(Unit unit, IEventBus bus) : base(unit, bus) { }
+    public MoveAction(IUnit unit, IEventBus bus) : base(unit, bus) { }
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       if (MoveOptimally(context)) return this;
@@ -54,7 +55,7 @@ namespace Model.NAI.Actions {
       return false;
     }
 
-    bool SmartMove(AiContext context, Unit unit, Coord direction1, Coord direction2, 
+    bool SmartMove(AiContext context, IUnit unit, Coord direction1, Coord direction2, 
         Coord targetCoord) {
       var newCoord1 = unit.Coord + direction1;
       var newCoord2 = unit.Coord + direction2;
@@ -119,7 +120,7 @@ namespace Model.NAI.Actions {
       }
     }
 
-    bool Move(AiContext context, Unit unit, Coord direction) {
+    bool Move(AiContext context, IUnit unit, Coord direction) {
       var newCoord = unit.Coord + direction;
       if (!context.IsTileEmpty(newCoord)) return false;
       

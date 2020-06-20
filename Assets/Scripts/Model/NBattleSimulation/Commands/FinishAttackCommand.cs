@@ -1,10 +1,11 @@
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class FinishAttackCommand : BaseCommand {
-    public FinishAttackCommand(Unit unit, IEventBus bus) {
+    public FinishAttackCommand(IUnit unit, IEventBus bus) {
       this.unit = unit;
       this.bus = bus;
     }
@@ -16,7 +17,7 @@ namespace Model.NBattleSimulation.Commands {
       bus.Raise(new IdleEvent(unit.Coord));
     }
 
-    readonly Unit unit;
+    readonly IUnit unit;
     readonly IEventBus bus;
   }
 }

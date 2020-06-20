@@ -36,12 +36,12 @@ namespace Model.NUnit {
     public void StartAttack(F32 currentTime) => lastStartAttackTime = currentTime;
     public void EndAttack() => lastStartAttackTime = ToF32(0);
 
-    readonly CMovement movement;
+    public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
+    
+    readonly IMovement movement;
     readonly F32 attackAnimationTotalTime;
     F32 attackSpeed;
     F32 lastStartAttackTime;
     F32 sqrRange;
-
-    public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
   }
 }

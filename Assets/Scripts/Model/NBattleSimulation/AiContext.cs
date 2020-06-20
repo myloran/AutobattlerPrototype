@@ -3,6 +3,7 @@ using System.Linq;
 using FixMath;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Shared.Client;
 using static FixMath.F32;
@@ -31,14 +32,14 @@ namespace Model.NBattleSimulation {
     #endregion
     #region Board
 
-    public IEnumerable<Unit> EnemyUnits(EPlayer player) => 
+    public IEnumerable<IUnit> EnemyUnits(EPlayer player) => 
       board.GetPlayerUnits(player.Opposite()).Where(u => u.IsAlive);
     
-    public IEnumerable<Unit> GetSurroundUnits(Coord coord) => board.GetSurroundUnits(coord);
-    public IEnumerable<Unit> GetAdjacentUnits(Coord coord) => board.GetAdjacentUnits(coord);
+    public IEnumerable<IUnit> GetSurroundUnits(Coord coord) => board.GetSurroundUnits(coord);
+    public IEnumerable<IUnit> GetAdjacentUnits(Coord coord) => board.GetAdjacentUnits(coord);
     public bool IsSurrounded(Coord coord) => board.IsSurrounded(coord);
     public bool IsTileEmpty(Coord coord) => !board.ContainsUnit(coord) && coord.IsInsideBoard();
-    public void AddUnit(Coord coord, Unit unit) => board.AddUnit(coord, unit);
+    public void AddUnit(Coord coord, IUnit unit) => board.AddUnit(coord, unit);
     public void RemoveUnit(Coord coord) => board.RemoveUnit(coord);
 
     #endregion

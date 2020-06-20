@@ -19,8 +19,8 @@ namespace Model.NUnit {
       observers.Clear();
     }
 
-    public void SubToDeath(CTarget target) => observers.Add(target);
-    public void UnsubFromDeath(CTarget target) => observers.Remove(target);
+    public void SubToDeath(ITarget target) => observers.Add(target);
+    public void UnsubFromDeath(ITarget target) => observers.Remove(target);
 
     public void TakeDamage(F32 damage) {
       var damageDealt = damage - damage * armor / (armor + 10);
@@ -38,7 +38,7 @@ namespace Model.NUnit {
 
     public override string ToString() => $"{nameof(startingHealth)}: {startingHealth}, {nameof(Health)}: {Health}, {nameof(armor)}: {armor}";
 
-    readonly List<CTarget> observers = new List<CTarget>();
+    readonly List<ITarget> observers = new List<ITarget>();
     F32 startingHealth;
     F32 armor;
   }

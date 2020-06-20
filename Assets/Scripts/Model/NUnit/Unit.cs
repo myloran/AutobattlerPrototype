@@ -8,7 +8,7 @@ using Shared;
 
 namespace Model.NUnit {
   //TODO: Use IUnit interface instead of Unit
-  public class Unit : IHealth, IAttack, IMovement, ITarget, IAi, IStats {
+  public class Unit : IUnit {
     public Unit(CHealth health, CAttack attack, CMovement movement, CTarget target, CAi ai, 
         CStats stats) {
       this.health = health;
@@ -42,8 +42,8 @@ namespace Model.NUnit {
     public F32 Health => health.Health;
     public bool IsAlive => health.IsAlive;
     public void TakeDamage(F32 damage) => health.TakeDamage(damage);
-    public void SubToDeath(CTarget target) => health.SubToDeath(target);
-    public void UnsubFromDeath(CTarget target) => health.UnsubFromDeath(target);
+    public void SubToDeath(ITarget target) => health.SubToDeath(target);
+    public void UnsubFromDeath(ITarget target) => health.UnsubFromDeath(target);
     
     public F32 Damage => attack.Damage;
     public F32 AttackAnimationHitTime => attack.AttackAnimationHitTime;
@@ -54,11 +54,11 @@ namespace Model.NUnit {
     public void StartAttack(F32 currentTime) => attack.StartAttack(currentTime);
     public void EndAttack() => attack.EndAttack();
     
-    public Unit Target => target.Target;
+    public IUnit Target => target.Target;
     public bool TargetExists => target.TargetExists;
     public void ClearTarget() => target.ClearTarget();
-    public void ChangeTargetTo(Unit unit) => target.ChangeTargetTo(unit);
-    public (bool, Unit) FindNearestTarget(IEnumerable<Unit> units) => target.FindNearestTarget(units);
+    public void ChangeTargetTo(IUnit unit) => target.ChangeTargetTo(unit);
+    public (bool, IUnit) FindNearestTarget(IEnumerable<IUnit> units) => target.FindNearestTarget(units);
 
     public Coord StartingCoord {
       get => movement.StartingCoord;

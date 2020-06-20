@@ -3,7 +3,7 @@ using View.NUnit;
 
 namespace Controller.UnitDrag {
   public struct UnitSelectedEvent {
-    public UnitView Unit;
+    public readonly UnitView Unit;
     public Coord StartCoord;
     
     public UnitSelectedEvent(UnitView unit, Coord startCoord) {

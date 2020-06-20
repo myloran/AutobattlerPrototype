@@ -2,11 +2,12 @@ using System.Linq;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 
 namespace Model.NAI.Actions {
   public class FindNearestTargetAction : BaseAction {
-    public FindNearestTargetAction(Unit unit, IEventBus bus, IDecisionTreeNode decision) : base(unit, bus) {
+    public FindNearestTargetAction(IUnit unit, IEventBus bus, IDecisionTreeNode decision) : base(unit, bus) {
       this.decision = decision;
     }
 

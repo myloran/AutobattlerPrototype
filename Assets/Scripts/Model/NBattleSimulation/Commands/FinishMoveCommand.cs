@@ -1,11 +1,12 @@
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared;
 using Shared.Shared.Client.Events;
 
 namespace Model.NBattleSimulation.Commands {
   public class FinishMoveCommand : BaseCommand {
-    public FinishMoveCommand(AiContext context, Unit unit, Coord newCoord, IEventBus bus) {
+    public FinishMoveCommand(AiContext context, IUnit unit, Coord newCoord, IEventBus bus) {
       this.context = context;
       this.unit = unit;
       this.newCoord = newCoord;
@@ -22,8 +23,7 @@ namespace Model.NBattleSimulation.Commands {
     }
 
     readonly AiContext context;
-    readonly Unit unit;
-    readonly CHealth health;
+    readonly IUnit unit;
     readonly Coord newCoord;
     readonly IEventBus bus;
   }

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using Shared;
 
 namespace Model.NBattleSimulation {
   public class PlayerContext {
-    public Dictionary<Coord, Unit> GetBoardUnitDict(EPlayer player) => Get(player).BoardUnits;
-    public Dictionary<Coord, Unit> GetBenchUnitDict(EPlayer player) => Get(player).BenchUnits;
+    public Dictionary<Coord, IUnit> GetBoardUnitDict(EPlayer player) => Get(player).BoardUnits;
+    public Dictionary<Coord, IUnit> GetBenchUnitDict(EPlayer player) => Get(player).BenchUnits;
     
     public PlayerContext(Player player1, Player player2) {
       this.player1 = player1;
@@ -15,7 +16,7 @@ namespace Model.NBattleSimulation {
     
     #region Player
 
-    public IEnumerable<Unit> GetBoardUnits(EPlayer player) => 
+    public IEnumerable<IUnit> GetBoardUnits(EPlayer player) => 
       Get(player).BoardUnits.Values;
 
     public bool HasUnits(EPlayer player) =>
@@ -43,8 +44,8 @@ namespace Model.NBattleSimulation {
 
     #endregion
 
-    public Dictionary<Coord, Unit> BoardUnits() {
-      var units = new Dictionary<Coord, Unit>();
+    public Dictionary<Coord, IUnit> BoardUnits() {
+      var units = new Dictionary<Coord, IUnit>();
       
       foreach (var (coord, unit) in player1.BoardUnits) units[coord] = unit;
       foreach (var (coord, unit) in player2.BoardUnits) units[coord] = unit;

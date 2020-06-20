@@ -2,12 +2,13 @@ using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NBattleSimulation.Commands;
 using Model.NUnit;
+using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Actions {
   public class WaitFirstEnemyArriving : BaseAction {
-    public WaitFirstEnemyArriving(Unit unit, IEventBus bus) : base(unit, bus) { }
+    public WaitFirstEnemyArriving(IUnit unit, IEventBus bus) : base(unit, bus) { }
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var time = Unit.Target.TimeWhenDecisionWillBeExecuted - context.CurrentTime;
