@@ -1,8 +1,10 @@
 using System;
 using Controller.UnitDrag;
 using Shared;
+using Shared.Poco;
 using View.Presenters;
 using UniRx;
+using View.NTile;
 
 namespace Controller.NTile {
   public class TileHighlighterController : IDisposable {

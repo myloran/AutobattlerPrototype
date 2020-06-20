@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Text;
-using FixMath;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
+using Model.NUnit.Components;
 using Shared;
+using Shared.Addons.Examples.FixMath;
+using Shared.Poco;
 
 namespace Model.NUnit {
   //TODO: Use IUnit interface instead of Unit

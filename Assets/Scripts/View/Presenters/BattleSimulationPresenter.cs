@@ -1,6 +1,9 @@
 using Shared;
+using Shared.Exts;
 using Shared.Shared.Client;
+using Shared.Shared.Client.Abstraction;
 using View.Exts;
+using View.NTile;
 
 namespace View.Presenters {
   public class BattleSimulationPresenter {

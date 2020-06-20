@@ -1,6 +1,6 @@
-using FixMath;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
+using Shared.Addons.Examples.FixMath;
 
 namespace Model.NUnit.Abstraction {
   public interface IAi {

@@ -1,6 +1,7 @@
-using FixMath;
 using PlasticFloor.EventBus;
-using static FixMath.F32;
+using Shared.Addons.Examples.FixMath;
+using Shared.Shared.Client.Abstraction;
+using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Shared.Shared.Client {
   public class EventHolder : IEventBus {

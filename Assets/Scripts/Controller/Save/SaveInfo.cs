@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using MessagePack;
 using Shared;
+using Shared.Poco;
 
 namespace Controller.Save {
   [MessagePackObject]

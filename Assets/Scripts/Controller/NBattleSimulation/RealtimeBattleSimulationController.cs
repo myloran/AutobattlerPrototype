@@ -1,11 +1,12 @@
 using Controller.Update;
-using FixMath;
 using Model.NBattleSimulation;
+using Shared.Addons.Examples.FixMath;
 using Shared.Shared.Client;
+using Shared.Shared.Client.Abstraction;
 using UnityEngine;
-using static FixMath.F32;
+using static Shared.Addons.Examples.FixMath.F32;
 
-namespace Controller {
+namespace Controller.NBattleSimulation {
   public class RealtimeBattleSimulationController : ITick {
     public RealtimeBattleSimulationController(ISimulationTick viewSimulation, 
         BattleSimulation simulation, EventHolder eventHolder) {

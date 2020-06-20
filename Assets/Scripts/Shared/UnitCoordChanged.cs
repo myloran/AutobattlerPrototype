@@ -1,6 +1,8 @@
+using Shared.Poco;
+
 namespace Shared {
   public struct UnitCoordChanged<T> {
-    public T Unit;
+    public readonly T Unit;
     public Coord To;
 
     public UnitCoordChanged(T unit, Coord to) {

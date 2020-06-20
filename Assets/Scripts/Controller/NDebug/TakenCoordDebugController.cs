@@ -3,7 +3,9 @@ using Model.NBattleSimulation;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
+using Shared.Poco;
 using UnityEngine;
+using View.NTile;
 using View.Presenters;
 
 namespace Controller.NDebug {

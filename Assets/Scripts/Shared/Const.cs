@@ -1,5 +1,5 @@
-using FixMath;
-using static FixMath.F32;
+using Shared.Addons.Examples.FixMath;
+using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Shared {
   public static class Const {

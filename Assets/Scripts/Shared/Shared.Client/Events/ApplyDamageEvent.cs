@@ -1,5 +1,6 @@
-using FixMath;
 using PlasticFloor.EventBus;
+using Shared.Addons.Examples.FixMath;
+using Shared.Poco;
 
 namespace Shared.Shared.Client.Events {
   public class ApplyDamageEvent : IEvent {

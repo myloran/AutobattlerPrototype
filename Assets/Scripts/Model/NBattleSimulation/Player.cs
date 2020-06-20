@@ -3,7 +3,8 @@ using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Abstraction;
-                                          
+using Shared.Poco;
+
 namespace Model.NBattleSimulation {
   public class Player {
     public Player(UnitFactory unitFactory) {

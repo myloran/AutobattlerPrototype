@@ -5,6 +5,7 @@ using Controller;
 using Controller.NBattleSimulation;
 using Controller.NDebug;
 using Controller.NTile;
+using Controller.NUnit;
 using Controller.Save;
 using Controller.UnitDrag;
 using Controller.Update;
@@ -15,16 +16,16 @@ using UnityEngine;
 using Model;
 using PlasticFloor.EventBus;
 using Shared.Abstraction;
-using Shared.OkwyLogging;
+using Shared.Addons.OkwyLogging;
 using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
 using View;
-using View.Factories;
+using View.NTile;
 using View.NUnit;
 using View.Presenters;
 using View.UIs;
 using View.Views;
-using Logger = Shared.OkwyLogging.Logger;
+using Logger = Shared.Addons.OkwyLogging.Logger;
 
 namespace Infrastructure {
   public class CompositionRoot : MonoBehaviour {

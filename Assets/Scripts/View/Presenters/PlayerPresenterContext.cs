@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Shared;
+using Shared.Exts;
+using Shared.Poco;
 using View.NUnit;
 
 namespace View.Presenters {

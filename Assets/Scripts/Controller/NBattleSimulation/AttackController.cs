@@ -1,13 +1,15 @@
+using Controller.NUnit;
 using PlasticFloor.EventBus;
 using Shared.Abstraction;
-using Shared.OkwyLogging;
+using Shared.Addons.OkwyLogging;
 using Shared.Shared.Client;
+using Shared.Shared.Client.Abstraction;
 using Shared.Shared.Client.Events;
 using View.Exts;
 using View.NUnit;
 using View.NUnit.States;
 using View.Presenters;
-using Logger = Shared.OkwyLogging.Logger;
+using Logger = Shared.Addons.OkwyLogging.Logger;
 
 namespace Controller.NBattleSimulation {
   public class AttackController : IEventHandler<ApplyDamageEvent>, 

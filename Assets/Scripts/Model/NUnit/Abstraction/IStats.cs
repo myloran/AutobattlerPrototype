@@ -1,4 +1,5 @@
 using Shared;
+using Shared.Poco;
 
 namespace Model.NUnit.Abstraction {
   public interface IStats {

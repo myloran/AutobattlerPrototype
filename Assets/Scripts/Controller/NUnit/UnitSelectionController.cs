@@ -1,12 +1,12 @@
 using System;
 using Controller.Exts;
 using Controller.NTile;
-using Controller.UnitDrag;
+using Controller.Update;
+using UniRx;
 using UnityEngine;
 using View.NUnit;
-using UniRx;
 
-namespace Controller {
+namespace Controller.NUnit {
   public class UnitSelectionController : IDisposable {
     public IObservable<UnitSelectedEvent> UnitSelected;
     public IObservable<Unit> UnitDeselected;

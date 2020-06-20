@@ -1,4 +1,5 @@
 using Controller.Exts;
+using Controller.NBattleSimulation;
 using Model.NBattleSimulation;
 using UniRx;
 using View.Presenters;

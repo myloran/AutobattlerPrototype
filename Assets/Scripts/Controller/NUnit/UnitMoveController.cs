@@ -2,7 +2,7 @@ using System;
 using Controller.UnitDrag;
 using UniRx;
 
-namespace Controller {
+namespace Controller.NUnit {
   public class UnitMoveController : IDisposable {
     public UnitMoveController(WorldContext context, UnitDragController unitDragController) {
       this.context = context;

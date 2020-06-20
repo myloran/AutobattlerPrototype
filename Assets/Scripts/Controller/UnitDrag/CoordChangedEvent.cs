@@ -1,4 +1,7 @@
-namespace Shared {
+using Shared;
+using Shared.Poco;
+
+namespace Controller.UnitDrag {
   public struct CoordChangedEvent {
     public Coord From;
     public Coord To;

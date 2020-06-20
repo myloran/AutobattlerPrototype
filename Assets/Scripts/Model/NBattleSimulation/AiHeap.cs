@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using FibonacciHeap;
-using FixMath;
-using Model.NBattleSimulation.Commands;
-using Shared.OkwyLogging;
-using static FixMath.F32;
+using Model.NAI.Commands;
+using Shared.Addons.Examples.FixMath;
+using Shared.Addons.OkwyLogging;
+using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
   public class AiHeap {

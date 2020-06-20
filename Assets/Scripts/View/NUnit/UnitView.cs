@@ -1,4 +1,5 @@
 using Shared;
+using Shared.Poco;
 using UnityEngine;
 using View.Exts;
 using View.NUnit.States;

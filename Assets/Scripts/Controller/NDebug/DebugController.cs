@@ -1,5 +1,5 @@
 using Controller.Update;
-using Shared.OkwyLogging;
+using Shared.Addons.OkwyLogging;
 using UnityEngine;
 using View.UIs;
 

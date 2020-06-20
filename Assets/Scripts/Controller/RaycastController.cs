@@ -1,8 +1,7 @@
 using Controller.Exts;
 using Controller.Update;
-using Shared.OkwyLogging;
 using UnityEngine;
-using Logger = Shared.OkwyLogging.Logger;
+using Logger = Shared.Addons.OkwyLogging.Logger;
 
 namespace Controller {
   public class RaycastController {

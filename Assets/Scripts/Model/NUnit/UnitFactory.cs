@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using Model.NUnit.Abstraction;
+using Model.NUnit.Components;
 using Shared;
-using static FixMath.F32;
+using Shared.Poco;
+using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NUnit {
   public class UnitFactory {
@@ -9,7 +12,7 @@ namespace Model.NUnit {
       this.decisionFactory = decisionFactory;
     }
     
-    public Unit Create(string name, Coord coord, EPlayer player) {
+    public IUnit Create(string name, Coord coord, EPlayer player) {
       var info = infos[name];
       var movement = new CMovement(coord, ToF32(info.MoveSpeed));
       var attack = new CAttack(movement, ToF32(info.Damage), ToF32(info.AttackSpeed), 

@@ -3,6 +3,7 @@ using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
+using Shared.Exts;
 using static Shared.Const;
 
 namespace Model.NAI.Decisions {

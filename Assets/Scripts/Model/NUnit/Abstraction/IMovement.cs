@@ -1,5 +1,6 @@
-using FixMath;
 using Shared;
+using Shared.Addons.Examples.FixMath;
+using Shared.Poco;
 
 namespace Model.NUnit.Abstraction {
   public interface IMovement {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
+using Shared.Poco;
 using static Shared.Const;
 
 namespace Model.NBattleSimulation {

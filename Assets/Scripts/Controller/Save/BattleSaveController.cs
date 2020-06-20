@@ -5,6 +5,8 @@ using Model.NBattleSimulation;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
+using Shared.Exts;
+using Shared.Poco;
 using View.Presenters;
 using View.UIs;
 

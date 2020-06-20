@@ -5,6 +5,7 @@ using Model;
 using View.UIs;
 using UniRx;
 using Controller.Exts;
+using Controller.NUnit;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Unit = Model.NUnit.Unit;

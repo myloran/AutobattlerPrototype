@@ -1,10 +1,9 @@
 using System;
 using Controller.Exts;
-using Controller.Update;
 using UniRx;
 using UnityEngine;
 
-namespace Controller {
+namespace Controller.Update {
   public class InputController : IDisposable {
     public IObservable<long> OnMouseDown,
       OnMouseHeld,

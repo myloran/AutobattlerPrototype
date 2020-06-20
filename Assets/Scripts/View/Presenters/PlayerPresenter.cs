@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Shared;
 using Shared.Abstraction;
+using Shared.Poco;
 using UnityEngine;
-using View.Factories;
+using View.NTile;
 using View.NUnit;
 
 namespace View.Presenters {

@@ -1,13 +1,14 @@
 using Model.NAI.Actions;
 using Model.NAI.Decisions;
 using Model.NAI.NDecisionTree;
+using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 
 namespace Model.NUnit {
   public class DecisionFactory {
     public DecisionFactory(IEventBus bus) => this.bus = bus;
 
-    public IDecisionTreeNode Create(Unit unit) {
+    public IDecisionTreeNode Create(IUnit unit) {
       var startAttack = WithLogging(new StartAttackAction(unit, bus));
       var attack = WithLogging(new AttackAction(unit, bus));
       var moveAction = new MoveAction(unit, bus);

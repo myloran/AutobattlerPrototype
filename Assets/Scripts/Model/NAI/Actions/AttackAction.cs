@@ -1,10 +1,10 @@
+using Model.NAI.Commands;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
-using Model.NBattleSimulation.Commands;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
-using static FixMath.F32;
+using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAI.Actions {
   public class AttackAction : BaseAction {

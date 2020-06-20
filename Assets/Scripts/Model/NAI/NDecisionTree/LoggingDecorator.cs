@@ -1,6 +1,6 @@
 using Model.NAI.Actions;
 using Model.NBattleSimulation;
-using Shared.OkwyLogging;
+using Shared.Addons.OkwyLogging;
 
 namespace Model.NAI.NDecisionTree {
   public class LoggingDecorator : IDecisionTreeNode {

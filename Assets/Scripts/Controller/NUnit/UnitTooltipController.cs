@@ -1,12 +1,11 @@
 using System;
-using Controller.UnitDrag;
+using Controller.Exts;
+using UniRx;
 using View.Exts;
 using View.NUnit;
 using View.UIs;
-using UniRx;
-using Controller.Exts;
 
-namespace Controller {
+namespace Controller.NUnit {
   public class UnitTooltipController : IDisposable {
     readonly UnitTooltipUI ui;
     readonly UnitSelectionController unitSelectionController;

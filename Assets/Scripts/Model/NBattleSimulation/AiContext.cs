@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using FixMath;
-using Model.NBattleSimulation.Commands;
+using Model.NAI.Commands;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
+using Shared.Addons.Examples.FixMath;
+using Shared.Poco;
 using Shared.Shared.Client;
-using static FixMath.F32;
+using Shared.Shared.Client.Abstraction;
+using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
   public class AiContext : ITime {

@@ -1,4 +1,5 @@
 using PlasticFloor.EventBus;
+using Shared.Poco;
 
 namespace Shared.Shared.Client.Events {
   public class IdleEvent : IEvent {
