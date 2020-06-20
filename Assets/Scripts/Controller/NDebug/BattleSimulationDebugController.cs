@@ -7,13 +7,13 @@ using View.UIs;
 namespace Controller.NDebug {
   public class BattleSimulationDebugController {
     public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui, 
-        AiContext context, BoardContext boardContext, PlayerPresenter[] playerPresenters,
+        AiContext context, PlayerContext playerContext, PlayerPresenter[] playerPresenters,
         RealtimeBattleSimulationController realtimeBattleSimulationController, 
         BattleSimulationPresenter simulationPresenter) {
       this.simulation = simulation;
       this.ui = ui;
       this.context = context;
-      this.boardContext = boardContext;
+      this.playerContext = playerContext;
       this.playerPresenters = playerPresenters;
       this.realtimeBattleSimulationController = realtimeBattleSimulationController;
       this.simulationPresenter = simulationPresenter;
@@ -31,7 +31,7 @@ namespace Controller.NDebug {
     
     void StartBattle() {
       realtimeBattleSimulationController.StopBattle();
-      simulation.PrepareBattle(boardContext);
+      simulation.PrepareBattle(playerContext);
       simulationPresenter.Reset(playerPresenters);
       ui.SetEnabled(!simulation.IsBattleOver);
     }
@@ -62,7 +62,7 @@ namespace Controller.NDebug {
     readonly BattleSimulationPresenter simulationPresenter;
     readonly BattleSimulationUI ui;
     readonly AiContext context;
-    readonly BoardContext boardContext;
+    readonly PlayerContext playerContext;
     readonly PlayerPresenter[] playerPresenters;
     readonly RealtimeBattleSimulationController realtimeBattleSimulationController;
   }

@@ -13,8 +13,8 @@ namespace Model.NBattleSimulation {
       this.heap = heap;
     }
 
-    public void PrepareBattle(BoardContext boardContext) {
-      board.SetContext(boardContext);
+    public void PrepareBattle(PlayerContext playerContext) {
+      board.SetContext(playerContext);
       
       foreach (var unit in board.Values) {
         unit.Reset();

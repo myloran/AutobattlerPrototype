@@ -89,17 +89,7 @@ namespace Infrastructure {
       #region Model
                       
       var unitFactory = new UnitFactory(units, new DecisionFactory(eventHolder));
-      var player1BoardUnits = new Dictionary<Coord, Unit>();
-      var player1BenchUnits = new Dictionary<Coord, Unit>();
-      var player2BoardUnits = new Dictionary<Coord, Unit>();
-      var player2BenchUnits = new Dictionary<Coord, Unit>();
-      var unitMoveStrategy = new UnitMoveStrategy<Unit>(player1BoardUnits, player1BenchUnits,
-        new UnitCoordChangedHandler());
-      var players = new[] {
-        new Player(player1BoardUnits, player1BenchUnits, unitMoveStrategy, unitFactory), 
-        new Player(player2BoardUnits, player2BenchUnits, unitMoveStrategy, unitFactory)
-      };
-      var boardContext = new BoardContext(player1BoardUnits, player2BoardUnits);
+      var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));
       var board = new Board();
       var aiHeap = new AiHeap();
       var aiContext = new AiContext(board, aiHeap);
@@ -107,7 +97,7 @@ namespace Infrastructure {
       #endregion
       #region Context
 
-      var worldContext = new WorldContext(players, playerPresenters, BattleSetupUI);
+      var worldContext = new WorldContext(playerContext, playerPresenters, BattleSetupUI);
 
       #endregion
       
@@ -151,15 +141,15 @@ namespace Infrastructure {
       #endregion
       #region Debug
       
-      var battleSetupController = new BattleSetupController(players, playerPresenters, 
+      var battleSetupController = new BattleSetupController(playerContext, playerPresenters, 
         BattleSetupUI);
       
-      var battleSaveController = new BattleSaveController(players, playerPresenters, 
+      var battleSaveController = new BattleSaveController(playerContext, playerPresenters, 
         BattleSaveUI, saveDataLoader, saves);
       
       var battleSimulationController = new BattleSimulationDebugController(
         battleSimulation, BattleSimulationUI, 
-        aiContext, boardContext, playerPresenters, realtimeBattleSimulationController,
+        aiContext, playerContext, playerPresenters, realtimeBattleSimulationController,
         battleSimulationPresenter);
 
       var unitModelDebugController = new UnitModelDebugController(

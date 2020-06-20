@@ -15,12 +15,12 @@ namespace Model.NBattleSimulation {
 
     #endregion
     
-    public void SetContext(BoardContext context) {
+    public void SetContext(PlayerContext context) {
       this.context = context;
-      units = context.Units();
+      units = context.BoardUnits();
     }
 
-    public IEnumerable<Unit> GetPlayerUnits(EPlayer player) => context.GetPlayerUnits(player);
+    public IEnumerable<Unit> GetPlayerUnits(EPlayer player) => context.GetBoardUnits(player);
     public bool HasUnits(EPlayer player) => context.HasUnits(player);
 
     public bool IsSurrounded(Coord coord) {
@@ -66,6 +66,6 @@ namespace Model.NBattleSimulation {
     }
     
     Dictionary<Coord, Unit> units = new Dictionary<Coord, Unit>(MaxUnitsOnBoard);
-    BoardContext context;
+    PlayerContext context;
   }
 }

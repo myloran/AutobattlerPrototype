@@ -5,15 +5,14 @@ using Shared.Abstraction;
                                           
 namespace Model.NBattleSimulation {
   public class Player {
-    public Player(Dictionary<Coord, Unit> boardUnits, 
-        Dictionary<Coord, Unit> benchUnits, UnitMoveStrategy<Unit> unitMoveStrategy,
-        UnitFactory unitFactory) {
-      this.unitMoveStrategy = unitMoveStrategy;
+    public Player(UnitFactory unitFactory) {
       this.unitFactory = unitFactory;
-      this.BoardUnits = boardUnits;
-      this.BenchUnits = benchUnits;
+      unitMoveStrategy = new UnitMoveStrategy<Unit>(
+        BenchUnits, BoardUnits, new UnitCoordChangedHandler());
     }
     
+    public void MoveUnit(Coord from, Coord to) => unitMoveStrategy.MoveUnit(from, to);
+
     public void InstantiateToBench(string name, Coord coord, EPlayer player) => 
       BenchUnits[coord] = unitFactory.Create(name, coord, player);
 
@@ -51,11 +50,9 @@ namespace Model.NBattleSimulation {
       BoardUnits.Clear();
     }
 
-    public void MoveUnit(Coord from, Coord to) => unitMoveStrategy.MoveUnit(from, to);
-
     readonly UnitMoveStrategy<Unit> unitMoveStrategy;
     readonly UnitFactory unitFactory;
-    public readonly Dictionary<Coord, Unit> BoardUnits;
-    public readonly Dictionary<Coord, Unit> BenchUnits;
+    public readonly Dictionary<Coord, Unit> BoardUnits = new Dictionary<Coord, Unit>();
+    public readonly Dictionary<Coord, Unit> BenchUnits = new Dictionary<Coord, Unit>();
   }
 }

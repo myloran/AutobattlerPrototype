@@ -4,15 +4,14 @@ using System.Linq;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using Shared;
-using View;
 using View.Presenters;
 using View.UIs;
 
 namespace Controller.Save {
   public class BattleSaveController : IDisposable {
-    public BattleSaveController(Player[] players, PlayerPresenter[] playerPresenters,
+    public BattleSaveController(PlayerContext playerContext, PlayerPresenter[] playerPresenters,
       BattleSaveUI ui, SaveInfoLoader saveInfoLoader, Dictionary<string, SaveInfo> saves) {
-      this.players = players;
+      this.playerContext = playerContext;
       this.playerPresenters = playerPresenters;
       this.ui = ui;
       this.saveInfoLoader = saveInfoLoader;
@@ -25,10 +24,10 @@ namespace Controller.Save {
     void Save() {
       var save = new SaveInfo {
         Name = ui.SaveName,
-        Player1BenchUnits = GetUnits(players[0].BenchUnits),
-        Player1BoardUnits = GetUnits(players[0].BoardUnits),
-        Player2BenchUnits = GetUnits(players[1].BenchUnits),
-        Player2BoardUnits = GetUnits(players[1].BoardUnits),
+        Player1BenchUnits = GetUnits(playerContext.GetBenchUnitDict(EPlayer.First)),
+        Player1BoardUnits = GetUnits(playerContext.GetBoardUnitDict(EPlayer.First)),
+        Player2BenchUnits = GetUnits(playerContext.GetBenchUnitDict(EPlayer.Second)),
+        Player2BoardUnits = GetUnits(playerContext.GetBoardUnitDict(EPlayer.Second)),
       };
       
       saveInfoLoader.Save(save);
@@ -38,25 +37,25 @@ namespace Controller.Save {
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name);
 
     void Load() {
-      foreach (var player in players) player.DestroyAll();
+      playerContext.DestroyAll();
       foreach (var playerPresenter in playerPresenters) playerPresenter.DestroyAll();
 
       var save = saves[ui.GetSelectedSaveName];
       
       foreach (var (coord, name) in save.Player1BenchUnits) {
-        players[0].InstantiateToBench(name, coord, EPlayer.First);
+        playerContext.InstantiateToBench(name, coord, EPlayer.First);
         playerPresenters[0].InstantiateToBench(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BenchUnits) {
-        players[1].InstantiateToBench(name, coord, EPlayer.Second);
+        playerContext.InstantiateToBench(name, coord, EPlayer.Second);
         playerPresenters[1].InstantiateToBench(name, coord, EPlayer.Second);
       }
       foreach (var (coord, name) in save.Player1BoardUnits) {
-        players[0].InstantiateToBoard(name, coord, EPlayer.First);
+        playerContext.InstantiateToBoard(name, coord, EPlayer.First);
         playerPresenters[0].InstantiateToBoard(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BoardUnits) {
-        players[1].InstantiateToBoard(name, coord, EPlayer.Second);
+        playerContext.InstantiateToBoard(name, coord, EPlayer.Second);
         playerPresenters[1].InstantiateToBoard(name, coord, EPlayer.Second);
       }
     }
@@ -72,7 +71,7 @@ namespace Controller.Save {
     readonly BattleSaveUI ui;
     readonly SaveInfoLoader saveInfoLoader;
     readonly Dictionary<string, SaveInfo> saves;
-    readonly Player[] players;
+    readonly PlayerContext playerContext;
     readonly PlayerPresenter[] playerPresenters;
   }
 }

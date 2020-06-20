@@ -5,22 +5,22 @@ using View.UIs;
 
 namespace Controller {
   public class WorldContext {
-    public WorldContext(Player[] players, PlayerPresenter[] playerPresenters, BattleSetupUI battleSetupUI) {
-      this.players = players;
+    public WorldContext(PlayerContext playerContext, PlayerPresenter[] playerPresenters, BattleSetupUI battleSetupUI) {
+      this.playerContext = playerContext;
       this.playerPresenters = playerPresenters;
       this.battleSetupUI = battleSetupUI;
     }
     
     public void Move(Coord from, Coord to) {
       var selectedPlayerId = battleSetupUI.GetSelectedPlayerId;
-      var player = players[selectedPlayerId];
-      player.MoveUnit(from, to);
+      var player = (EPlayer) selectedPlayerId;
+      playerContext.MoveUnit(from, to, player);
       
       var playerPresenter = playerPresenters[selectedPlayerId];
       playerPresenter.MoveUnit(from, to);
     }
     
-    readonly Player[] players;
+    readonly PlayerContext playerContext;
     readonly PlayerPresenter[] playerPresenters;
     readonly BattleSetupUI battleSetupUI;
   }

@@ -6,9 +6,9 @@ using View.UIs;
 
 namespace Controller.NDebug {
   public class BattleSetupController : IDisposable {
-    public BattleSetupController(Player[] players, PlayerPresenter[] presenters, 
+    public BattleSetupController(PlayerContext playerContext, PlayerPresenter[] presenters, 
         BattleSetupUI ui) {
-      this.players = players;
+      this.playerContext = playerContext;
       this.presenters = presenters;
       this.ui = ui;
       ui.BAdd.onClick.AddListener(AddUnit);
@@ -18,13 +18,13 @@ namespace Controller.NDebug {
     void AddUnit() {
       var playerId = ui.GetSelectedPlayerId;
       var name = ui.GetSelectedUnitName;
-      var (isInstantiated, coord) = players[playerId].InstantiateToBenchStart(name, (EPlayer)playerId); 
+      var (isInstantiated, coord) = playerContext.InstantiateToBenchStart(name, (EPlayer)playerId); 
       if (isInstantiated) presenters[playerId].InstantiateToBench(name, coord, (EPlayer)playerId);
     }
     
     void RemoveUnit() {
       var id = ui.GetSelectedPlayerId;
-      var (isDestroyed, coord) = players[id].DestroyFromBenchEnd((EPlayer)id);
+      var (isDestroyed, coord) = playerContext.DestroyFromBenchEnd((EPlayer)id);
       if (isDestroyed) presenters[id].DestroyOnBench(coord);
     }
 
@@ -35,6 +35,6 @@ namespace Controller.NDebug {
 
     readonly BattleSetupUI ui;
     readonly PlayerPresenter[] presenters;
-    readonly Player[] players;
+    readonly PlayerContext playerContext;
   }
 }
