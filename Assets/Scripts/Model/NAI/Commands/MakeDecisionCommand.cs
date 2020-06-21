@@ -7,6 +7,7 @@ namespace Model.NAI.Commands {
     public MakeDecisionCommand(IAi ai, AiContext context, F32 time) {
       this.ai = ai;
       this.context = context;
+      //TODO: make method
       ai.DecisionTime = time;
       ai.TimeWhenDecisionWillBeExecuted = context.CurrentTime + time;
     }

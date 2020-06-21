@@ -21,25 +21,7 @@ namespace Model.NUnit {
       this.stats = stats;
     }
     
-    public void Reset() {
-      health.Reset();
-      attack.Reset();
-      movement.Reset();
-      target.Reset();
-      ai.Reset();
-      stats.Reset();
-    }
-
-    public override string ToString() => new StringBuilder()
-      .Append(health).Append("\n")
-      .Append(attack).Append("\n")
-      .Append(movement).Append("\n")
-      .Append(ai).Append("\n")
-      .Append(stats).Append("\n")
-      .Append(target).Append("\n")
-      .ToString();
-
-    #region Components
+       #region Components
 
     public F32 Health => health.Health;
     public bool IsAlive => health.IsAlive;
@@ -97,6 +79,26 @@ namespace Model.NUnit {
     public bool IsAllyWith(EPlayer player) => stats.IsAllyWith(player);
 
     #endregion
+    
+    public void Reset() {
+      health.Reset();
+      attack.Reset();
+      movement.Reset();
+      target.Reset();
+      ai.Reset();
+      stats.Reset();
+    }
+
+    public override string ToString() => new StringBuilder()
+      .Append(health).Append("\n")
+      .Append(attack).Append("\n")
+      .Append(movement).Append("\n")
+      .Append(ai).Append("\n")
+      .Append(stats).Append("\n")
+      .Append(target).Append("\n")
+      .ToString();
+
+ 
     
     readonly CHealth health;
     readonly CAttack attack;

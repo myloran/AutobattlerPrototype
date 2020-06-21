@@ -28,14 +28,14 @@ namespace Controller.NUnit {
       UnitDeselected = inputController.OnMouseUp
         .Where(_ => !UIExt.IsPointerOverUIElement())
         .Select(raycastController.FireRaycast)
-        .Where(_ => !raycastController.RaycastHitsUnit(_).isHit)
+        .Where(_ => !raycastController.RaycastHitsUnit(_).isHit) //TODO: do one raycast with layers combines
         .Where(raycastController.RaycastHitsGlobalCollider)
         .AsUnitObservable();
     }
 
     UnitSelectedEvent DragInfo(RaycastHit hit) {
       var u = hit.transform.GetComponent<UnitView>();
-      var c = coordFinder.FindClosest(u);
+      var c = coordFinder.FindClosest(u); //TODO: use TilePresenter
       return new UnitSelectedEvent(u, c);
     }
 

@@ -22,7 +22,7 @@ namespace Controller.NBattleSimulation {
 
     public void StopBattle() {
       isStarted = false;
-      eventHolder.ClearHeap();
+      eventHolder.ClearHeap(); //TODO: remove eventHolder?
     }
 
     public void Tick() {

@@ -11,7 +11,7 @@ namespace Shared {
     public static int Player2BenchId = -2;
     public static float TileHalfLength = 0.5f;
     public static int BoardSizeX = 8;
-    public static int BoardSizeY = 5;
+    public static int BoardSizeY = 6;
     public static int BenchSizeX = 10;
   }
 }

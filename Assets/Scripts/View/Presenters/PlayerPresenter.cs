@@ -8,6 +8,7 @@ using View.NUnit;
 
 namespace View.Presenters {
   public class PlayerPresenter {
+    //TODO: encapsulate those
     public readonly Dictionary<Coord, UnitView> BenchUnits = new Dictionary<Coord, UnitView>();
     public readonly Dictionary<Coord, UnitView> BoardUnits = new Dictionary<Coord, UnitView>();
     

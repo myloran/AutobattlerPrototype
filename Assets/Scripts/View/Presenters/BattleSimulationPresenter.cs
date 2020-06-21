@@ -6,7 +6,7 @@ using View.Exts;
 using View.NTile;
 
 namespace View.Presenters {
-  public class BattleSimulationPresenter {
+  public class BattleSimulationPresenter { //TODO: implement ISimulationTick?
     public BattleSimulationPresenter(TilePresenter tile, BoardPresenter board, 
         ISimulationTick view) {
       this.tile = tile;

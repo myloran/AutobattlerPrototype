@@ -12,7 +12,7 @@ namespace View.UIs {
       BRemove;
 
     public void Init(IEnumerable<string> names) {
-      var options = names.Select(n => new TMP_Dropdown.OptionData(n));
+      var options = names.Select(n => new TMP_Dropdown.OptionData(n)); //TODO: make extension
       DUnits.options.Clear();
       DUnits.options.AddRange(options);
     }

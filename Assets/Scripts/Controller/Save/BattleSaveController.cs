@@ -19,9 +19,9 @@ namespace Controller.Save {
       this.ui = ui;
       this.saveInfoLoader = saveInfoLoader;
       this.saves = saves;
-      ui.BAdd.onClick.AddListener(Save);
+      ui.BAdd.onClick.AddListener(Save); //TODO: move to unirx
       ui.BLoad.onClick.AddListener(Load);
-      ui.BLoadPrevious.onClick.AddListener(LoadPrevious);
+      ui.BLoadPrevious.onClick.AddListener(LoadPrevious); //TODO: remove for now
     }
 
     void Save() {
@@ -39,7 +39,8 @@ namespace Controller.Save {
     Dictionary<Coord, string> GetUnits(Dictionary<Coord, IUnit> dict) => dict
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name);
 
-    void Load() {
+    void Load() { //TODO: reset battle simulation
+      //TODO: Use PlayerSharedContext
       playerContext.DestroyAll();
       playerPresenterContext.DestroyAll();
 

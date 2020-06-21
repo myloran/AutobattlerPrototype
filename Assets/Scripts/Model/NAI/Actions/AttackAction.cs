@@ -12,7 +12,7 @@ namespace Model.NAI.Actions {
                     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       if (Unit.TargetExists) {
-        var deathCommand = new DeathCommand(Unit.Target, context);
+        var deathCommand = new DeathCommand(Unit.Target, context); //TODO: execute it directly in ApplyDamageCommand
         var applyDamageCommand = new ApplyDamageCommand(Unit, deathCommand, Bus);
         context.InsertCommand(Zero, applyDamageCommand); //inserting to heap because units can attack at the same time
       }

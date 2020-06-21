@@ -17,6 +17,7 @@ namespace Controller.NDebug {
       
       foreach (var unit in board.Values) {
         if (!unit.TargetExists) continue;
+        
         var from = tilePresenter.PositionAt(unit.Coord);
         var to = tilePresenter.PositionAt(unit.Target.Coord);
         Debug.DrawLine(from, to, Color.red);

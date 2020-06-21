@@ -20,7 +20,7 @@ namespace View.NUnit {
       var rotation = player.ToQuaternion();
       
       return Object.Instantiate(unitPrefab, position, rotation)
-        .Init(new UnitInfo(unitInfos[name]), player, mainCamera);
+        .Init(new UnitInfo(unitInfos[name]), player, mainCamera); //TODO: init HealthBar here
     }
 
     readonly TilePresenter tilePresenter;

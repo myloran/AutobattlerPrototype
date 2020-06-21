@@ -67,7 +67,8 @@ namespace Infrastructure {
       
       var tickController = new TickController();
       var inputController = new InputController(tickController);
-      var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library
+      //TODO: implement event bus that won't allocate(no delegates)
+      var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library from model
       EventBus.Log = m => log.Info($"{m}");
       var eventHolder = new EventHolder(eventBus);
 
@@ -89,7 +90,7 @@ namespace Infrastructure {
       
       #endregion
       #region Model
-                      
+      //TODO: replace board/bench dictionaries with array?                
       var unitFactory = new UnitFactory(units, new DecisionFactory(eventHolder));
       var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));
       var board = new Board();
@@ -125,7 +126,7 @@ namespace Infrastructure {
 
       var movementController = new MovementController(boardPresenter, tilePresenter);
       var attackController = new AttackController(boardPresenter, unitTooltipController);
-      eventBus.Register<StartMoveEvent>(movementController);
+      eventBus.Register<StartMoveEvent>(movementController); //TODO: register implicitly?
       eventBus.Register<FinishMoveEvent>(movementController);
       eventBus.Register<RotateEvent>(movementController);
       eventBus.Register<ApplyDamageEvent>(attackController);
@@ -170,7 +171,7 @@ namespace Infrastructure {
       #endregion
 
       yield return null;
-
+      //TODO: instead of init say something meaningful
       #region View
 
       BattleSetupUI.Init(units.Keys.ToList());
@@ -180,9 +181,9 @@ namespace Infrastructure {
       #endregion
       #region Infrastructure
 
-      eventHolder.Init(aiContext); //TODO: move parameters to constructor
-      tickController.Init(takenCoordDebugController, targetDebugController, uiDebugController, 
-        unitModelDebugController, realtimeBattleSimulationController, DebugController);
+      eventHolder.Init(aiContext); //TODO: remove
+      tickController.Init(takenCoordDebugController, targetDebugController, uiDebugController,  
+        unitModelDebugController, realtimeBattleSimulationController, DebugController); //TODO: register implicitly?
       inputController.Init();
 
       #endregion
@@ -203,6 +204,7 @@ namespace Infrastructure {
       #endregion
 
       MonoBehaviourCallBackController.Init(tickController);
+      //TODO: add IDisposable controllers to CompositeDisposable and reverse dispose them on unity OnDestroy callback 
     }
 
     static readonly Logger log = MainLog.GetLogger(nameof(CompositionRoot));

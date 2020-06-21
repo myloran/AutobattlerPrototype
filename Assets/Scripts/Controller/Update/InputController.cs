@@ -19,7 +19,7 @@ namespace Controller.Update {
 
     public void Dispose() => disposable.Clear();
 
-    bool IsMouseDown() => Input.GetMouseButtonDown(0);
+    bool IsMouseDown() => Input.GetMouseButtonDown(0); //TODO: make const LeftClick
     bool IsMouseHeld() => Input.GetMouseButton(0);
     bool IsMouseUp() => Input.GetMouseButtonUp(0);
 

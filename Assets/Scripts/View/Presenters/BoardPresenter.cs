@@ -21,7 +21,7 @@ namespace View.Presenters {
 
     public void MoveUnit(Coord from, Coord to) {
       var unit = units[from];
-      OnChangeCoord(to, unit);
+      OnChangeCoord(to, unit); //TODO: use UnitCoordChangedHandler
       AddUnit(to, unit);
       RemoveUnit(from);
     }

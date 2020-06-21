@@ -12,19 +12,21 @@ namespace Controller.NDebug {
       this.playerContext = playerContext;
       this.playerPresenterContext = playerPresenterContext;
       this.ui = ui;
-      ui.BAdd.onClick.AddListener(AddUnit);
+      ui.BAdd.onClick.AddListener(AddUnit); //TODO: move to unirx
       ui.BRemove.onClick.AddListener(RemoveUnit);
     }
 
     void AddUnit() {
       var playerId = ui.GetSelectedPlayerId;
       var name = ui.GetSelectedUnitName;
+      //TODO: use PlayerSharedContext
       var (isInstantiated, coord) = playerContext.InstantiateToBenchStart(name, (EPlayer)playerId); 
       if (isInstantiated) playerPresenterContext.InstantiateToBench(name, coord, (EPlayer)playerId);
     }
     
     void RemoveUnit() {
       var id = (EPlayer)ui.GetSelectedPlayerId;
+      //TODO: use PlayerSharedContext
       var (isDestroyed, coord) = playerContext.DestroyFromBenchEnd(id);
       if (isDestroyed) playerPresenterContext.DestroyFromBench(id, coord);
     }

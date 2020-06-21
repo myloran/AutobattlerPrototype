@@ -4,7 +4,7 @@ using Shared.Poco;
 
 namespace Shared.Shared.Client.Events {
   public class ApplyDamageEvent : IEvent {
-    public F32 Health { get; }
+    public F32 Health { get; } //TODO: rename to UpdateHealth?
     public Coord Coord { get; }
 
     public ApplyDamageEvent(F32 health, Coord coord) {

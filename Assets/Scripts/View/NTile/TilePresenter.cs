@@ -6,7 +6,7 @@ using static Shared.Const;
 using static UnityEngine.Mathf;
 
 namespace View.NTile {
-  public class TilePresenter {
+  public class TilePresenter { //TODO: rename to CoordFinder?
     public TilePresenter(TileStartPoints startPoints) => this.startPoints = startPoints;
 
     public Coord FindClosestCoord(Vector3 position, EPlayer selectedPlayer) {

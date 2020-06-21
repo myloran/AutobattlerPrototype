@@ -9,7 +9,8 @@ using View.UIs;
 using View.Views;
 
 namespace Controller.NTile {
-  public class CoordFinder {
+  public class CoordFinder { //TODO:rename to CoordFinderBySelectedPlayer, create in drag controller constructor
+    //TODO: extract interface?
     public CoordFinder(TilePresenter tilePresenter, BattleSetupUI battleSetupUI) {
       this.tilePresenter = tilePresenter;
       this.battleSetupUI = battleSetupUI;

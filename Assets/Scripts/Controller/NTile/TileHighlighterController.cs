@@ -38,8 +38,6 @@ namespace Controller.NTile {
 
     readonly TileSpawner tileSpawner;
     readonly UnitDragController untDragController;
-    readonly IObservable<CoordChangedEvent> coordChanged;
-    readonly IObservable<DragEndedEvent> dragEnded;
     readonly CompositeDisposable disposable = new CompositeDisposable();
   }
 }

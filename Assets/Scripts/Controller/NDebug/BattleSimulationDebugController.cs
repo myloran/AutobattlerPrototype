@@ -8,7 +8,8 @@ using View.UIs;
 namespace Controller.NDebug {
   public class BattleSimulationDebugController {
     public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui, 
-        AiContext context, PlayerContext playerContext, PlayerPresenterContext playerPresenterContext,
+        AiContext context, PlayerContext playerContext, 
+        PlayerPresenterContext playerPresenterContext,
         RealtimeBattleSimulationController realtimeBattleSimulationController, 
         BattleSimulationPresenter simulationPresenter) {
       this.simulation = simulation;
@@ -22,7 +23,7 @@ namespace Controller.NDebug {
       ui.OStart.OnValueChangedAsObservable().Where(b => b)
         .Subscribe(StartBattle).AddTo(ui.OStart);
       ui.OPause.OnValueChangedAsObservable()
-        .Subscribe(SetPaused).AddTo(ui.OStart);
+        .Subscribe(SetPaused).AddTo(ui.OPause);
       ui.SSpeed.OnValueChangedAsObservable()
         .Subscribe(SetSpeed).AddTo(ui.SSpeed);
       ui.BExecuteNextDecision.Sub(ExecuteNextCommand);
@@ -38,9 +39,10 @@ namespace Controller.NDebug {
     }
 
     void ExecuteNextCommand() {
+      //TODO: log command here
+      //TODO: pass debug controller to be able disable logging
       simulation.ExecuteNextCommand();
       simulationPresenter.SimulationTick(context.CurrentTime.Float);
-
       if (!simulation.IsBattleOver) return;
       
       ui.Disable();
@@ -51,6 +53,7 @@ namespace Controller.NDebug {
       ui.Disable();
     }
     
+    //TODO: extract realtime simulation
     void SetPaused(bool isPaused) => realtimeBattleSimulationController.SetPaused(isPaused);
     void SetSpeed(float speed) => realtimeBattleSimulationController.SetSpeed(speed);
     

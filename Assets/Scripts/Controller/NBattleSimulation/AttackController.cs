@@ -20,8 +20,8 @@ namespace Controller.NBattleSimulation {
       this.unitTooltipController = unitTooltipController;
     }
 
-    public void HandleEvent(ApplyDamageEvent e) {
-      if (!boardPresenter.ContainsUnit(e.Coord)) {
+    public void HandleEvent(ApplyDamageEvent e) { //TODO: rename to UpdateHealth?
+      if (!boardPresenter.ContainsUnit(e.Coord)) { //redundant check?
         log.Error("No unit view at coord:");
         return;
       }
@@ -31,7 +31,7 @@ namespace Controller.NBattleSimulation {
     }
 
     public void HandleEvent(DeathEvent e) {
-      boardPresenter.GetUnit(e.Coord).gameObject.Hide();
+      boardPresenter.GetUnit(e.Coord).gameObject.Hide(); //TODO: hide directly not using gameobject?
       boardPresenter.RemoveUnit(e.Coord);
     }
     

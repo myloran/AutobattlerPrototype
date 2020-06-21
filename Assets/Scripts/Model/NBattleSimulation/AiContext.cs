@@ -11,7 +11,7 @@ using Shared.Shared.Client.Abstraction;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
-  public class AiContext : ITime {
+  public class AiContext : ITime { //TODO: make interface that won't expose reset/checkBattleIsOveer/isBattleOVer 
     public bool IsCyclicDecision;
     
     public AiContext(Board board, AiHeap heap) {

@@ -12,7 +12,8 @@ namespace View.NTile {
       this.tileFactory = tileFactory;
     }
 
-    public void Init() {
+    public void Init() { //TODO: rename to SpawnTiles
+      //TODO: generate in editor?
       for (int x = 0; x < BoardSizeX; x++) {
         for (int y = 0; y < BoardSizeY; y++) {
           var coord = new Coord(x, y);

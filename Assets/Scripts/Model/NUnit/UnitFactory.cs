@@ -14,7 +14,7 @@ namespace Model.NUnit {
     
     public IUnit Create(string name, Coord coord, EPlayer player) {
       var info = infos[name];
-      var movement = new CMovement(coord, ToF32(info.MoveSpeed));
+      var movement = new CMovement(coord, ToF32(info.MoveSpeed)); //TODO: rename to MovementComponent
       var attack = new CAttack(movement, ToF32(info.Damage), ToF32(info.AttackSpeed), 
         ToF32(info.AttackRange * info.AttackRange), ToF32(info.AttackAnimationHitTime),
         ToF32(info.AttackAnimationTotalTime));

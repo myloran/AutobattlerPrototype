@@ -32,7 +32,7 @@ namespace View.Presenters {
     #endregion
 
     public Dictionary<Coord, UnitView> BoardUnits() {
-      var units = new Dictionary<Coord, UnitView>();
+      var units = new Dictionary<Coord, UnitView>(); //TODO: make ext to combine 2 dict
       
       foreach (var (coord, unit) in player1.BoardUnits) units[coord] = unit;
       foreach (var (coord, unit) in player2.BoardUnits) units[coord] = unit;

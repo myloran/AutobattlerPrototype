@@ -41,7 +41,7 @@ namespace Controller.NDebug {
     public void Dispose() => disposable.Clear();
                                                        
     void SelectUnitModel(UnitSelectedEvent e) {
-      if (!debugInfo.IsDebugOn) return;
+      if (!debugInfo.IsDebugOn) return; //redundant check?
       
       unit = board.GetUnit(e.StartCoord);
     }

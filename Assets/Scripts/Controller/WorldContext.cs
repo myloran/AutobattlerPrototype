@@ -5,7 +5,7 @@ using View.Presenters;
 using View.UIs;
 
 namespace Controller {
-  public class WorldContext {
+  public class WorldContext { //TODO: rename to PlayerSharedContext
     public WorldContext(PlayerContext playerContext, PlayerPresenterContext playerPresenterContext, BattleSetupUI battleSetupUI) {
       this.playerContext = playerContext;
       this.playerPresenterContext = playerPresenterContext;

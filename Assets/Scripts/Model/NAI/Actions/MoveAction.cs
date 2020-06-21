@@ -17,16 +17,23 @@ namespace Model.NAI.Actions {
     public MoveAction(IUnit unit, IEventBus bus) : base(unit, bus) { }
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      if (MoveOptimally(context)) return this;
+      if (mover.Move(Unit, context, out var info)) {
+        var (coord, time) = info;
+        new StartMoveCommand(context, Unit, coord, time, Bus).Execute(); 
+        context.InsertCommand(time, new FinishMoveCommand(context, Unit, coord, Bus));
+        context.InsertCommand(time, new MakeDecisionCommand(Unit, context, time));
+        return this;
+      }
 
-      if (context.IsSurrounded(Unit.Coord) && !Unit.IsWaiting) {
+      if (context.IsSurrounded(Unit.Coord) && !Unit.IsWaiting) { //TODO: guard against cyclic make decision in general way and remove IsWaiting
         Unit.IsWaiting = true;
         var decisionCommand = new WaitForAlliesToMoveCommand(Unit, context);
         context.InsertCommand(Zero, decisionCommand);
         return this;
       }
       Unit.IsWaiting = false;
-                                      
+                              
+      //TODO: remove find nearest target
       if (context.IsCyclicDecision) {
         log.Error($"Cyclic reference {nameof(MoveAction)}");
         return this;
@@ -36,106 +43,7 @@ namespace Model.NAI.Actions {
       return FindNearestTarget.MakeDecision(context);
     }
 
-    bool MoveOptimally(AiContext context) {
-      var targetCoord = Unit.Target.Coord;
-
-      var direction = (targetCoord - Unit.Coord).Normalized;
-      if (Move(context, Unit, direction)) return true;
-
-      var (direction1, direction2) = direction.GetClosestDirections();
-      if (SmartMove(context, Unit, direction1, direction2, targetCoord)) return true;
-
-      var direction3 = direction1.GetClosestDirection(direction);
-      var direction4 = direction2.GetClosestDirection(direction);
-      if (SmartMove(context, Unit, direction3, direction4, targetCoord)) return true;
-      
-      var direction5 = direction3.GetClosestDirection(direction1);
-      var direction6 = direction4.GetClosestDirection(direction2);
-      if (SmartMove(context, Unit, direction5, direction6, targetCoord)) return true;
-
-      return false;
-    }
-
-    bool SmartMove(AiContext context, IUnit unit, Coord direction1, Coord direction2, 
-        Coord targetCoord) {
-      var newCoord1 = unit.Coord + direction1;
-      var newCoord2 = unit.Coord + direction2;
-      var canMove1 = context.IsTileEmpty(newCoord1);
-      var canMove2 = context.IsTileEmpty(newCoord2);
-
-      if (canMove1 && canMove2) {
-        var (hasPos1, pos1) = CalculateNextMovePosition(context, newCoord1);
-        var (hasPos2, pos2) = CalculateNextMovePosition(context, newCoord2);
-
-          var distance1 = CoordExt.SqrDistance(targetCoord, pos1);
-          var distance2 = CoordExt.SqrDistance(targetCoord, pos2);
-
-          if (distance1 == distance2) {
-            if (hasPos1) return PureMove(newCoord2, direction2);
-            if (hasPos2) return PureMove(newCoord1, direction1);
-            
-            return PureMove(newCoord1, direction1);
-          }
-
-          return distance1 < distance2 
-            ? PureMove(newCoord1, direction1) 
-            : PureMove(newCoord2, direction2);
-      }
-
-      if (canMove1) return PureMove(newCoord1, direction1);
-      if (canMove2) return PureMove(newCoord2, direction2);
-
-      return false;
-          
-      bool PureMove(Coord newCoord, Coord direction) {
-        var time = unit.TimeToMove(direction.IsDiagonal);
-        new StartMoveCommand(context, unit, newCoord, time, Bus)
-          .Execute();
-      
-        context.InsertCommand(time, 
-          new FinishMoveCommand(context, unit, newCoord, Bus));
-      
-        context.InsertCommand(time, new MakeDecisionCommand(unit, context, time));
-        return true;
-      }
-    }
-
-    (bool, Coord) CalculateNextMovePosition(AiContext context, Coord coord) {
-      (bool, Coord) res = (false, coord);
-      
-      var direction = (Unit.Target.Coord - coord).Normalized;
-      if (TryMove(direction, ref res)) return res;
-
-      var (direction1, direction2) = direction.GetClosestDirections();
-      if (TryMove(direction1, ref res)) return res;
-      if (TryMove(direction2, ref res)) return res;
-
-      return res;
-      
-      bool TryMove(Coord moveDirection, ref (bool, Coord) result) {
-        var pos = coord + moveDirection;
-        if (!context.IsTileEmpty(pos)) return false;
-        
-        result = (true, pos);
-        return true;
-      }
-    }
-
-    bool Move(AiContext context, IUnit unit, Coord direction) {
-      var newCoord = unit.Coord + direction;
-      if (!context.IsTileEmpty(newCoord)) return false;
-      
-      var time = unit.TimeToMove(direction.IsDiagonal);
-      new StartMoveCommand(context, unit, newCoord, time, Bus)
-        .Execute();
-      
-      context.InsertCommand(time, 
-        new FinishMoveCommand(context, unit, newCoord, Bus));
-      
-      context.InsertCommand(time, new MakeDecisionCommand(unit, context, time));
-      return true;
-    }
-
+    static readonly Mover mover = new Mover();
     static readonly Logger log = MainLog.GetLogger(nameof(MoveAction));
   }
 }

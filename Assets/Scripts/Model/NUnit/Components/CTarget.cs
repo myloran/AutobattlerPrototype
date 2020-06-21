@@ -32,6 +32,7 @@ namespace Model.NUnit.Components {
         ? (true, units.MinBy(u => CoordExt.SqrDistance(movement.Coord, u.Coord))) 
         : (false, default);
 
+    //TODO: log target without it's target?
     public override string ToString() => TargetExists ? $"Target coord: {Target.Coord}" : "";
 
     readonly IMovement movement;

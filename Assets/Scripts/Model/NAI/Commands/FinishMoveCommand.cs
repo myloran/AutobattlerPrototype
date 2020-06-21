@@ -7,25 +7,25 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Commands {
   public class FinishMoveCommand : BaseCommand {
-    public FinishMoveCommand(AiContext context, IUnit unit, Coord newCoord, IEventBus bus) {
+    public FinishMoveCommand(AiContext context, IUnit unit, Coord to, IEventBus bus) {
       this.context = context;
       this.unit = unit;
-      this.newCoord = newCoord;
+      this.to = to;
       this.bus = bus;
     }
 
     public override void Execute() {
-      var fromCoord = unit.Coord;
-      context.RemoveUnit(unit.Coord);
-      unit.Coord = newCoord;
+      var from = unit.Coord;
+      context.RemoveUnit(from);
+      unit.Coord = to;
       unit.TakenCoord = Coord.Invalid;
       unit.ClearTarget();
-      bus.Raise(new FinishMoveEvent(fromCoord, newCoord));
+      bus.Raise(new FinishMoveEvent(from, to));
     }
 
     readonly AiContext context;
     readonly IUnit unit;
-    readonly Coord newCoord;
+    readonly Coord to;
     readonly IEventBus bus;
   }
 }

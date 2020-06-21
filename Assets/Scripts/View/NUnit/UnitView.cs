@@ -7,7 +7,7 @@ using View.NUnit.States;
 namespace View.NUnit {
   public class UnitView : MonoBehaviour {
     public UnitInfo Info;
-    public Animator Animator;
+    public Animator Animator; //TODO: make property instead
     HealthBar HealthBar;
     public float Height = 0.25f; //TODO: remove when replaced with pivot point
     public EPlayer Player;
@@ -26,6 +26,7 @@ namespace View.NUnit {
     }
 
     public void ResetState(Vector3 position) {
+      //TODO: reset state?
       transform.position = position;
       SetHealth(info.Health);
       this.Show();

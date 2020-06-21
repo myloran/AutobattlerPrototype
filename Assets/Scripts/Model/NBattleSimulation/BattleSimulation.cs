@@ -4,7 +4,7 @@ using Shared.Addons.OkwyLogging;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
-  public class BattleSimulation { //TODO: Think if it's controller
+  public class BattleSimulation {
     public bool IsBattleOver { get; private set; }
 
     public BattleSimulation(AiContext context, Board board, AiHeap heap) {

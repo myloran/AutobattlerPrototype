@@ -2,7 +2,7 @@ using Controller.NObserver;
 using UniRx;
 
 namespace Controller.Update {
-  public class TickController : BaseObservable<ITick>, ITick { //TODO: Consider instead of accepting ticks in constructor, allow to subscribe
+  public class TickController : BaseObservable<ITick>, ITick { //TODO: remove unused observer
     public System.IObservable<long> OnUpdate;
     
     public void Init(params ITick[] ticks) {

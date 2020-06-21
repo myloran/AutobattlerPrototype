@@ -15,7 +15,7 @@ namespace Controller.NDebug {
 
     public void Tick() {
       if (Input.GetKeyDown(KeyCode.F1)) {
-        isBattleSetupUIOn = !isBattleSetupUIOn;
+        isBattleSetupUIOn = !isBattleSetupUIOn; //TODO: extract to function
         battleSetupUI.gameObject.SetActive(isBattleSetupUIOn);
       }
       if (Input.GetKeyDown(KeyCode.F2)) {

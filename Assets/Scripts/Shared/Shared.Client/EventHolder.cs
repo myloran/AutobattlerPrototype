@@ -4,7 +4,7 @@ using Shared.Shared.Client.Abstraction;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Shared.Shared.Client {
-  public class EventHolder : IEventBus {
+  public class EventHolder : IEventBus { //TODO: implement easy replay by resetting/replaying events to selected time on high time scale?
     public bool NeedExecuteImmediately = true;
       
     public EventHolder(IEventBus bus) {

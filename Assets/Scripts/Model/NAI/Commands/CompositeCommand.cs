@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Model.NAI.Commands {
-  public class CompositeCommand : ICommand {
+  public class CompositeCommand : ICommand { //PriorityCommand
     public bool IsComposite { get; } = true;
     
     public CompositeCommand(params ICommand[] commands) {
@@ -18,7 +18,7 @@ namespace Model.NAI.Commands {
     }
 
     public void AddChild(ICommand command) {
-      if (command is MakeDecisionCommand)
+      if (command is MakeDecisionCommand) //TODO: expose enum type of command, remove isCOmposite, addChild
         commands.AddLast(command);
       else
         commands.AddFirst(command);
@@ -37,6 +37,6 @@ namespace Model.NAI.Commands {
       return text.ToString();
     }
 
-    readonly LinkedList<ICommand> commands = new LinkedList<ICommand>();
+    readonly LinkedList<ICommand> commands = new LinkedList<ICommand>(); //TODO: Compare performance to 2 lists
   }
 }
