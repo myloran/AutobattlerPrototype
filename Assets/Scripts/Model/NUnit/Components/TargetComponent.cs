@@ -6,10 +6,10 @@ using Shared.Exts;
 using Shared.Poco;
 
 namespace Model.NUnit.Components {
-  public class CTarget : ITarget {
+  public class TargetComponent : ITarget {
     public IUnit Target { get; private set; }
 
-    public CTarget(IMovement movement) => this.movement = movement;
+    public TargetComponent(IMovement movement) => this.movement = movement;
 
     public bool TargetExists => Target != null;
     public void Reset() => Target = null;
@@ -27,10 +27,8 @@ namespace Model.NUnit.Components {
       Target.SubToDeath(this);
     }
     
-    public (bool, IUnit) FindNearestTarget(IEnumerable<IUnit> units) =>
-      units.Any() 
-        ? (true, units.MinBy(u => CoordExt.SqrDistance(movement.Coord, u.Coord))) 
-        : (false, default);
+    public IUnit FindNearestTarget(IEnumerable<IUnit> units) =>
+      units.MinBy(u => CoordExt.SqrDistance(movement.Coord, u.Coord));
 
     //TODO: log target without it's target?
     public override string ToString() => TargetExists ? $"Target coord: {Target.Coord}" : "";

@@ -11,18 +11,11 @@ namespace Model.NAI.Actions {
     public AttackAction(IUnit unit, IEventBus bus) : base(unit, bus) { }
                     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      if (Unit.TargetExists) {
-        var deathCommand = new DeathCommand(Unit.Target, context); //TODO: execute it directly in ApplyDamageCommand
-        var applyDamageCommand = new ApplyDamageCommand(Unit, deathCommand, Bus);
-        context.InsertCommand(Zero, applyDamageCommand); //inserting to heap because units can attack at the same time
-      }
-
-      context.InsertCommand(Unit.TimeToFinishAttackAnimation, 
-        new FinishAttackCommand(Unit, Bus));
+      context.InsertCommand(Zero, new ApplyDamageCommand(Unit, context, Bus)); //inserting to heap because units can attack at the same time
+      context.InsertCommand(Unit.TimeToFinishAttackAnimation, new FinishAttackCommand(Unit, Bus));
       
       var time = Max(Unit.AttackSpeedTime, Unit.TimeToFinishAttackAnimation);
       context.InsertCommand(time, new MakeDecisionCommand(Unit, context, time));
-
       return this;
     }
   }

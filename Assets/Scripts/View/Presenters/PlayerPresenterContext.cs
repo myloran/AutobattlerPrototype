@@ -31,15 +31,7 @@ namespace View.Presenters {
 
     #endregion
 
-    public Dictionary<Coord, UnitView> BoardUnits() {
-      var units = new Dictionary<Coord, UnitView>(); //TODO: make ext to combine 2 dict
-      
-      foreach (var (coord, unit) in player1.BoardUnits) units[coord] = unit;
-      foreach (var (coord, unit) in player2.BoardUnits) units[coord] = unit;
-      
-      return units;
-    }
-    
+    public Dictionary<Coord, UnitView> BoardUnits() => player1.BoardUnits.With(player2.BoardUnits);
     PlayerPresenter Get(EPlayer player) => player == EPlayer.First ? player1 : player2;
     
     readonly PlayerPresenter player1, player2;

@@ -8,12 +8,13 @@ using Shared.Shared.Client.Events;
 using static Shared.Const;
 
 namespace Model.NAI.Actions {
-  public class WaitMoveDiff : BaseAction {
-    public WaitMoveDiff(IUnit unit, IEventBus bus) : base(unit, bus) { }
+  public class WaitDiffBetweenDiagonalAndStraightMove : BaseAction {
+    public WaitDiffBetweenDiagonalAndStraightMove(IUnit unit, IEventBus bus) : base(unit, bus) { }
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var decisionCommand = new MakeDecisionCommand(Unit, context, MoveDiffTime);
       context.InsertCommand(MoveDiffTime, decisionCommand);
+      
       Bus.Raise(new IdleEvent(Unit.Coord));
       return this;
     }

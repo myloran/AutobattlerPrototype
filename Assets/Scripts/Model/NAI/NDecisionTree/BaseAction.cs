@@ -1,3 +1,4 @@
+using Model.NAI.Commands;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using Model.NUnit.Abstraction;

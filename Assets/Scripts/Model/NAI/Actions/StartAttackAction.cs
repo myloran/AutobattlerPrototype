@@ -12,12 +12,12 @@ namespace Model.NAI.Actions {
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       Unit.StartAttack(context.CurrentTime);
-      var decisionCommand = new MakeDecisionCommand(Unit, context, Unit.AttackAnimationHitTime);
-      context.InsertCommand(Unit.AttackAnimationHitTime, decisionCommand);
+      
+      context.InsertCommand(Unit.AttackAnimationHitTime, 
+        new MakeDecisionCommand(Unit, context, Unit.AttackAnimationHitTime));
+      
       Bus.Raise(new RotateEvent(Unit.Coord, Unit.Target.Coord));
       Bus.Raise(new StartAttackEvent(Unit.Coord));
-      // var startMoveCommand = new ApplyDamageCommand(Unit.Movement, targetMovement, Bus);
-      //if health == 0 execute unit death command
       return this;
     }
   }

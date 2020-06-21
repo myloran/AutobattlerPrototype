@@ -1,18 +1,17 @@
 using System.Collections.Generic;
 using System.Text;
+using Model.NAI;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Model.NUnit.Components;
-using Shared;
 using Shared.Addons.Examples.FixMath;
 using Shared.Poco;
 
 namespace Model.NUnit {
-  //TODO: Use IUnit interface instead of Unit
   public class Unit : IUnit {
-    public Unit(CHealth health, CAttack attack, CMovement movement, CTarget target, CAi ai, 
-        CStats stats) {
+    public Unit(HealthComponent health, AttackComponent attack, MovementComponent movement, TargetComponent target, AiComponent ai, 
+        StatsComponent stats) {
       this.health = health;
       this.attack = attack;
       this.movement = movement;
@@ -21,7 +20,7 @@ namespace Model.NUnit {
       this.stats = stats;
     }
     
-       #region Components
+    #region Components
 
     public F32 Health => health.Health;
     public bool IsAlive => health.IsAlive;
@@ -42,7 +41,7 @@ namespace Model.NUnit {
     public bool TargetExists => target.TargetExists;
     public void ClearTarget() => target.ClearTarget();
     public void ChangeTargetTo(IUnit unit) => target.ChangeTargetTo(unit);
-    public (bool, IUnit) FindNearestTarget(IEnumerable<IUnit> units) => target.FindNearestTarget(units);
+    public IUnit FindNearestTarget(IEnumerable<IUnit> units) => target.FindNearestTarget(units);
 
     public Coord StartingCoord {
       get => movement.StartingCoord;
@@ -56,22 +55,17 @@ namespace Model.NUnit {
       get => movement.Coord;
       set => movement.Coord = value;
     }
+    public MoveInfo NextMove {
+      get => movement.NextMove;
+      set => movement.NextMove = value;
+    }
     public F32 TimeToMove(bool isDiagonal = true) => movement.TimeToMove(isDiagonal);
 
     public IDecisionTreeNode CurrentDecision => ai.CurrentDecision;
-    public F32 DecisionTime {
-      get => ai.DecisionTime;
-      set => ai.DecisionTime = value;
-    }
-    public F32 TimeWhenDecisionWillBeExecuted {
-      get => ai.TimeWhenDecisionWillBeExecuted;
-      set => ai.TimeWhenDecisionWillBeExecuted = value;
-    }
-    public bool IsWaiting {
-      get => ai.IsWaiting;
-      set => ai.IsWaiting = value;
-    }
+    public F32 DecisionTime => ai.DecisionTime;
+    public F32 TimeWhenDecisionWillBeExecuted => ai.TimeWhenDecisionWillBeExecuted;
     public void MakeDecision(AiContext context) => ai.MakeDecision(context);
+    public void SetDecisionTime(F32 currentTime, F32 time) => ai.SetDecisionTime(currentTime, time);
     public void SetDecisionTree(IDecisionTreeNode decisionTree) => ai.SetDecisionTree(decisionTree);
     
     public string Name => stats.Name;
@@ -97,14 +91,12 @@ namespace Model.NUnit {
       .Append(stats).Append("\n")
       .Append(target).Append("\n")
       .ToString();
-
- 
     
-    readonly CHealth health;
-    readonly CAttack attack;
-    readonly CTarget target;
-    readonly CMovement movement;
-    readonly CAi ai;
-    readonly CStats stats;
+    readonly HealthComponent health;
+    readonly AttackComponent attack;
+    readonly TargetComponent target;
+    readonly MovementComponent movement;
+    readonly AiComponent ai;
+    readonly StatsComponent stats;
   }
-}
+}       

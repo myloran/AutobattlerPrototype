@@ -2,14 +2,10 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Model.NAI.Commands {
-  public class CompositeCommand : ICommand { //PriorityCommand
-    public bool IsComposite { get; } = true;
+  public class PriorityCommand : ICommand {
+    public ECommand Type { get; } = ECommand.Other;
     
-    public CompositeCommand(params ICommand[] commands) {
-      foreach (var command in commands) {
-        AddChild(command);
-      }
-    }
+    public PriorityCommand(ICommand command) => AddChild(command);
 
     public void Execute() {
       foreach (var command in commands) {
@@ -18,7 +14,7 @@ namespace Model.NAI.Commands {
     }
 
     public void AddChild(ICommand command) {
-      if (command is MakeDecisionCommand) //TODO: expose enum type of command, remove isCOmposite, addChild
+      if (command.Type == ECommand.MakeDecision)
         commands.AddLast(command);
       else
         commands.AddFirst(command);
@@ -27,12 +23,8 @@ namespace Model.NAI.Commands {
     public override string ToString() {
       var text = new StringBuilder();
 
-      foreach (var command in commands) {
-        if (command.IsComposite)
-          text.Append(command).Append(", ");
-        else
-          text.Append(command.GetType().Name).Append(", ");
-      }
+      foreach (var command in commands) 
+        text.Append(command.GetType().Name).Append(", ");
 
       return text.ToString();
     }

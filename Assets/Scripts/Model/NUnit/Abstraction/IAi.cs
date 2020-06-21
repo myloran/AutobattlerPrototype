@@ -5,10 +5,9 @@ using Shared.Addons.Examples.FixMath;
 namespace Model.NUnit.Abstraction {
   public interface IAi {
     IDecisionTreeNode CurrentDecision { get; }
-    F32 DecisionTime { get; set; }
-    F32 TimeWhenDecisionWillBeExecuted { get; set; }
-    bool IsWaiting { get; set; }
+    F32 DecisionTime { get; }
+    F32 TimeWhenDecisionWillBeExecuted { get; }
     void MakeDecision(AiContext context);
-    void SetDecisionTree(IDecisionTreeNode decisionTree);
+    void SetDecisionTime(F32 currentTime, F32 time);
   }
 }

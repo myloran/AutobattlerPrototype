@@ -12,7 +12,7 @@ namespace Model.NAI.NDecisionTree {
 
     public IDecisionTreeNode MakeDecision(AiContext context) {
       message += decision.GetType().Name + "->";
-      if (decision is FindNearestTargetAction) { } else
+      if (decision is FindNearestTargetAction) { } else //TODO: refactor to use enum
       if (decision is BaseAction ba) {
         log.Info($"[{context.CurrentTime}] {ba.Unit.Coord} {message}");
         message = "";

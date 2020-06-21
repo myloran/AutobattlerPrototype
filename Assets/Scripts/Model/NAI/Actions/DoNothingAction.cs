@@ -5,8 +5,8 @@ using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 
 namespace Model.NAI.Actions {
-  public class NullAction : BaseAction {
-    public NullAction(IUnit unit, IEventBus bus) : base(unit, bus) { }
+  public class DoNothing : BaseAction {
+    public DoNothing(IUnit unit, IEventBus bus) : base(unit, bus) { }
     
     public override IDecisionTreeNode MakeDecision(AiContext context) => this;
   }

@@ -5,22 +5,23 @@ using Shared.Addons.Examples.FixMath;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NUnit.Components {
-  public class CAi : IAi {
+  public class AiComponent : IAi {
     public IDecisionTreeNode CurrentDecision { get; private set; }
-    public F32 DecisionTime { get; set; }
-    public F32 TimeWhenDecisionWillBeExecuted { get; set; }
-    public bool IsWaiting { get; set; }
+    public F32 DecisionTime { get; private set; }
+    public F32 TimeWhenDecisionWillBeExecuted { get; private set; }
 
     public void Reset() {
       DecisionTime = Zero;
       TimeWhenDecisionWillBeExecuted = Zero;
-      IsWaiting = false;
     }
 
-    public void MakeDecision(AiContext context) {
-      context.IsCyclicDecision = false;
-      CurrentDecision = decisionTree.MakeDecision(context);
+    public void SetDecisionTime(F32 currentTime, F32 time) {
+      DecisionTime = time;
+      TimeWhenDecisionWillBeExecuted = currentTime + time;
     }
+
+    public void MakeDecision(AiContext context) => 
+      CurrentDecision = decisionTree.MakeDecision(context);
 
     public void SetDecisionTree(IDecisionTreeNode decisionTree) => 
       this.decisionTree = CurrentDecision = decisionTree;

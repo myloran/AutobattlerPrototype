@@ -16,13 +16,11 @@ namespace Model.NAI.Commands {
         .Where(u => u.CurrentDecision.Type == EDecision.MoveAction);
 
       if (!units.Any()) {
-        log.Error("Surrounded, but allies are not moving"); //TODO: handle that case gracefully
+        log.Error("Surrounded, but allies are not moving"); //TODO: handle that case
         return;
       }
       var time = units.Min(u => u.DecisionTime);
-        
-      var decisionCommand = new MakeDecisionCommand(unit, context, time); //TODO: replace with ai.MakeDecision?
-      context.InsertCommand(time, decisionCommand);
+      context.InsertCommand(time, new MakeDecisionCommand(unit, context, time));
     }
 
     readonly IUnit unit;

@@ -6,11 +6,11 @@ using Shared.Poco;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NUnit.Components {
-  public class CAttack : IAttack {
+  public class AttackComponent : IAttack {
     public F32 Damage { get; }
     public F32 AttackAnimationHitTime { get; }
     
-    public CAttack(IMovement movement, F32 damage, F32 speed, F32 sqrRange, 
+    public AttackComponent(IMovement movement, F32 damage, F32 speed, F32 sqrRange, 
         F32 attackAnimationHitTime, F32 attackAnimationTotalTime) {
       this.movement = movement;
       this.sqrRange = sqrRange;

@@ -6,6 +6,6 @@ namespace Model.NUnit.Abstraction {
     bool TargetExists { get; }
     void ClearTarget();
     void ChangeTargetTo(IUnit unit);
-    (bool, IUnit) FindNearestTarget(IEnumerable<IUnit> units);
+    IUnit FindNearestTarget(IEnumerable<IUnit> units);
   }
 }

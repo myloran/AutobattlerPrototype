@@ -1,25 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Model.NAI.Commands;
-using Model.NUnit;
 using Model.NUnit.Abstraction;
-using Shared;
 using Shared.Addons.Examples.FixMath;
 using Shared.Poco;
-using Shared.Shared.Client;
 using Shared.Shared.Client.Abstraction;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
   public class AiContext : ITime { //TODO: make interface that won't expose reset/checkBattleIsOveer/isBattleOVer 
-    public bool IsCyclicDecision;
-    
     public AiContext(Board board, AiHeap heap) {
       this.board = board;
       this.heap = heap;
     }
     
-    public bool IsBattleOver => isPlayerDead && CurrentTime > playerDeathTime;
+    public bool IsPlayerDead;
+    public bool IsBattleOver => IsPlayerDead && CurrentTime > playerDeathTime;
 
     #region Heap
 
@@ -49,12 +45,12 @@ namespace Model.NBattleSimulation {
     public void CheckBattleIsOver() {
       if (board.HasUnits(EPlayer.First) && board.HasUnits(EPlayer.Second)) return;
       
-      isPlayerDead = true;
+      IsPlayerDead = true;
       playerDeathTime = CurrentTime;
     }
     
     public void Reset() {
-      isPlayerDead = false;
+      IsPlayerDead = false;
       CurrentTime = Zero;
       playerDeathTime = MaxValue;
       CheckBattleIsOver();
@@ -62,7 +58,6 @@ namespace Model.NBattleSimulation {
     
     readonly Board board;
     readonly AiHeap heap;
-    bool isPlayerDead;
     F32 playerDeathTime;
   }
 }

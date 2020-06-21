@@ -1,12 +1,13 @@
+using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Commands {
   public class ApplyDamageCommand : BaseCommand {
-    public ApplyDamageCommand(IUnit unit, DeathCommand deathCommand, IEventBus bus) {
+    public ApplyDamageCommand(IUnit unit, AiContext context, IEventBus bus) {
       this.unit = unit;
-      this.deathCommand = deathCommand;
+      this.context = context;
       this.bus = bus;
     }
 
@@ -17,7 +18,7 @@ namespace Model.NAI.Commands {
       target.TakeDamage(unit.Damage);
       
       if (!target.IsAlive) 
-        deathCommand.Execute();
+        new DeathCommand(target, context).Execute();
       
       bus.Raise(new ApplyDamageEvent(target.Health, target.Coord));
       
@@ -26,7 +27,7 @@ namespace Model.NAI.Commands {
     }
 
     readonly IUnit unit;
-    readonly DeathCommand deathCommand;
+    readonly AiContext context;
     readonly IEventBus bus;
   }
 }

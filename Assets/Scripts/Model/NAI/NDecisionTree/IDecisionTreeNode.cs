@@ -1,3 +1,4 @@
+using Model.NAI.Commands;
 using Model.NBattleSimulation;
 
 namespace Model.NAI.NDecisionTree {

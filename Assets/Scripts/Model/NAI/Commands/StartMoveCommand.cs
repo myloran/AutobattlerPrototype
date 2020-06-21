@@ -1,7 +1,6 @@
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
-using Shared;
 using Shared.Addons.Examples.FixMath;
 using Shared.Poco;
 using Shared.Shared.Client.Events;

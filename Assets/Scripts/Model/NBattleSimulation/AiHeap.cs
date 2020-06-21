@@ -13,13 +13,12 @@ namespace Model.NBattleSimulation {
       var nextTime = CurrentTime + time;
 
       if (nodes.ContainsKey(nextTime)) {
-        var existingNode = nodes[nextTime];
-        var existingCommand = existingNode.Data;
-        existingNode.Data = new CompositeCommand(existingCommand, command); //TODO: replace with once composite command instead of nested ones
+        var priorityCommand = nodes[nextTime].Data;
+        priorityCommand.AddChild(command);
         return;
       }
 
-      var node = new FibonacciHeapNode<ICommand, F32>(command, nextTime);
+      var node = new FibonacciHeapNode<PriorityCommand, F32>(new PriorityCommand(command), nextTime);
       aiHeap.Insert(node);
       nodes[nextTime] = node;
     }
@@ -45,11 +44,11 @@ namespace Model.NBattleSimulation {
       nodes.Clear();
     }
     
-    readonly FibonacciHeap<ICommand, F32> aiHeap = 
-      new FibonacciHeap<ICommand, F32>(MinValue); //TODO: use composite command instead of ICommand
+    readonly FibonacciHeap<PriorityCommand, F32> aiHeap = 
+      new FibonacciHeap<PriorityCommand, F32>(MinValue);
     
-    readonly Dictionary<F32, FibonacciHeapNode<ICommand, F32>> nodes = 
-      new Dictionary<F32, FibonacciHeapNode<ICommand, F32>>(); //TODO: fix allocations inside heap
+    readonly Dictionary<F32, FibonacciHeapNode<PriorityCommand, F32>> nodes = 
+      new Dictionary<F32, FibonacciHeapNode<PriorityCommand, F32>>(); //TODO: fix allocations inside heap
     static readonly Logger log = MainLog.GetLogger(nameof(AiContext));
   }
 }

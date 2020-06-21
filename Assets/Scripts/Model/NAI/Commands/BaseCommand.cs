@@ -1,9 +1,7 @@
 namespace Model.NAI.Commands {
   public abstract class BaseCommand : ICommand {
-    public bool IsComposite { get; } = false;
-
+    public virtual ECommand Type { get; } = ECommand.Other;
+    
     public abstract void Execute();
-
-    public void AddChild(ICommand command) { }
   }
 }

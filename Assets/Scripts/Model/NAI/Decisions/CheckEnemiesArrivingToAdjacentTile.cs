@@ -7,6 +7,7 @@ using Shared.Exts;
 using static Shared.Const;
 
 namespace Model.NAI.Decisions {
+  //TODO: Refactor to BaseDecision?
   public class CheckEnemiesArrivingToAdjacentTile : BaseDecision3 {
     public CheckEnemiesArrivingToAdjacentTile(IDecisionTreeNode firstNode, 
         IDecisionTreeNode secondNode, IDecisionTreeNode thirdNode, 

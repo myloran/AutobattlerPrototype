@@ -4,10 +4,10 @@ using Shared.Addons.Examples.FixMath;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NUnit.Components {
-  public class CHealth : IHealth {
+  public class HealthComponent : IHealth {
     public F32 Health { get; private set; }
 
-    public CHealth(F32 startingHealth, F32 armor) {
+    public HealthComponent(F32 startingHealth, F32 armor) {
       this.startingHealth = startingHealth;
       this.armor = armor;
     }

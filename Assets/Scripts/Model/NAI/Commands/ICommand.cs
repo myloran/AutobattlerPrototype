@@ -1,8 +1,7 @@
 
 namespace Model.NAI.Commands {
   public interface ICommand {
-    bool IsComposite { get; }
+    ECommand Type { get; }
     void Execute();
-    void AddChild(ICommand command);
   }
 }

@@ -14,14 +14,15 @@ namespace Model.NUnit {
     
     public IUnit Create(string name, Coord coord, EPlayer player) {
       var info = infos[name];
-      var movement = new CMovement(coord, ToF32(info.MoveSpeed)); //TODO: rename to MovementComponent
-      var attack = new CAttack(movement, ToF32(info.Damage), ToF32(info.AttackSpeed), 
+      var movement = new MovementComponent(coord, ToF32(info.MoveSpeed));
+      var health = new HealthComponent(ToF32(info.Health), ToF32(info.Armor));
+      
+      var attack = new AttackComponent(movement, ToF32(info.Damage), ToF32(info.AttackSpeed), 
         ToF32(info.AttackRange * info.AttackRange), ToF32(info.AttackAnimationHitTime),
         ToF32(info.AttackAnimationTotalTime));
-      var health = new CHealth(ToF32(info.Health), ToF32(info.Armor));
 
-      var unit = new Unit(health, attack, movement, new CTarget(movement), new CAi(),
-        new CStats(name, 1, player));
+      var unit = new Unit(health, attack, movement, new TargetComponent(movement), 
+        new AiComponent(), new StatsComponent(name, 1, player));
 
       unit.SetDecisionTree(decisionFactory.Create(unit));
 

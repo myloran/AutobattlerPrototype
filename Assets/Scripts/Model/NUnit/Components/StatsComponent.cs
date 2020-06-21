@@ -3,11 +3,11 @@ using Shared;
 using Shared.Poco;
 
 namespace Model.NUnit.Components {
-  public class CStats : IStats {
+  public class StatsComponent : IStats {
     public string Name { get; }
     public EPlayer Player { get; }
     
-    public CStats(string name, int level, EPlayer player) {
+    public StatsComponent(string name, int level, EPlayer player) {
       this.level = level;
       Player = player;
       Name = name;

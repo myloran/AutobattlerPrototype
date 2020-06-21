@@ -1,3 +1,4 @@
+using Model.NAI;
 using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Addons.Examples.FixMath;
@@ -5,12 +6,13 @@ using Shared.Poco;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NUnit.Components {
-  public class CMovement : IMovement {
+  public class MovementComponent : IMovement {
     public Coord StartingCoord { get; set; }
     public Coord TakenCoord { get; set; } = Coord.Invalid;
     public Coord Coord { get; set; }
+    public MoveInfo NextMove { get; set; }
     
-    public CMovement(Coord coord, F32 speed) {
+    public MovementComponent(Coord coord, F32 speed) {
       StartingCoord = coord;
       this.speed = speed;
     }

@@ -12,8 +12,8 @@ namespace Model.NAI.Actions {
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var time = Unit.Target.TimeWhenDecisionWillBeExecuted - context.CurrentTime;
-      var decisionCommand = new MakeDecisionCommand(Unit, context, time);
-      context.InsertCommand(time, decisionCommand);
+      context.InsertCommand(time, new MakeDecisionCommand(Unit, context, time));
+      
       Bus.Raise(new IdleEvent(Unit.Coord));
       return this;
     }
