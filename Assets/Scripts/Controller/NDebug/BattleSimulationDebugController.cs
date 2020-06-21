@@ -31,7 +31,7 @@ namespace Controller.NDebug {
       ui.BExecuteInRealtime.Sub(PlayBattleInRealtime);
     }
     
-    void StartBattle() {
+    public void StartBattle() {
       realtimeBattleSimulationController.StopBattle();
       simulation.PrepareBattle(playerContext);
       simulationPresenter.Reset(playerPresenterContext);

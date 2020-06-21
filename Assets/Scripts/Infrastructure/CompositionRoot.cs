@@ -99,9 +99,9 @@ namespace Infrastructure {
       var aiContext = new AiContext(board, aiHeap);
 
       #endregion
-      #region Context
+      #region Shared
 
-      var worldContext = new WorldContext(playerContext, playerPresenterContext, BattleSetupUI);
+      var worldContext = new PlayerSharedContext(playerContext, playerPresenterContext, BattleSetupUI);
 
       #endregion
       
@@ -137,25 +137,26 @@ namespace Infrastructure {
       eventBus.Register<StartAttackEvent>(attackController);
 
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
-        boardPresenter, movementController);
+        boardPresenter, movementController, movementController);
       
       var battleSimulation = new BattleSimulation(aiContext, board, aiHeap);
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
-        movementController, battleSimulation, eventHolder);
+        movementController, battleSimulation);
 
       #endregion
       #region Debug
-      
-      var battleSetupController = new BattleSetupController(playerContext, 
-        playerPresenterContext, BattleSetupUI);
-      
-      var battleSaveController = new BattleSaveController(playerContext, 
-        playerPresenterContext, BattleSaveUI, saveDataLoader, saves);
       
       var battleSimulationController = new BattleSimulationDebugController(
         battleSimulation, BattleSimulationUI, 
         aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController,
         battleSimulationPresenter);
+      
+      var battleSaveController = new BattleSaveController(playerContext, 
+        playerPresenterContext, BattleSaveUI, saveDataLoader, saves,
+        battleSimulationController);
+      
+      var battleSetupController = new BattleSetupController(playerContext, 
+        playerPresenterContext, BattleSetupUI);
 
       var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
         DebugController.Info, unitSelectionController, battleStateController);

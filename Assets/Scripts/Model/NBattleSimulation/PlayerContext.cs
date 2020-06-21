@@ -14,7 +14,7 @@ namespace Model.NBattleSimulation {
     public PlayerContext(Player player1, Player player2) {
       this.player1 = player1;
       this.player2 = player2;
-    }
+    }                                                          
     
     #region Player
 
@@ -45,6 +45,14 @@ namespace Model.NBattleSimulation {
     }
 
     #endregion
+
+    public IUnit GetUnit(Coord coord) {
+      var (hasUnit1, unit1) = Get(EPlayer.First).GetUnit(coord);
+      if (hasUnit1) return unit1;
+      var (hasUnit2, unit2) = Get(EPlayer.Second).GetUnit(coord);
+      if (hasUnit2) return unit2;
+      return default;
+    }
 
     public Dictionary<Coord, IUnit> BoardUnits() => player1.BoardUnits.With(player2.BoardUnits);
     Player Get(EPlayer player) => player == EPlayer.First ? player1 : player2;

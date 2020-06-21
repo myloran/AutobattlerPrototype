@@ -1,4 +1,5 @@
 using Shared;
+using Shared.Abstraction;
 using Shared.Exts;
 using Shared.Shared.Client;
 using Shared.Shared.Client.Abstraction;
@@ -7,14 +8,16 @@ using View.NTile;
 
 namespace View.Presenters {
   public class BattleSimulationPresenter : ISimulationTick {
-    public BattleSimulationPresenter(CoordFinder tile, BoardPresenter board, 
-        ISimulationTick view) {
+    public BattleSimulationPresenter(CoordFinder tile, BoardPresenter board,
+      ISimulationTick tickables, IReset resettables) {
       this.tile = tile;
       this.board = board;
-      this.view = view;
+      this.tickables = tickables;
+      this.resettables = resettables;
     }
     
     public void Reset(PlayerPresenterContext context) {
+      resettables.Reset();
       var boardUnits = context.BoardUnits();
       foreach (var (coord, unit) in boardUnits) {
         var position = tile.PositionAt(coord).WithY(unit.Height);
@@ -23,10 +26,11 @@ namespace View.Presenters {
       board.Reset(boardUnits);
     }
     
-    public void SimulationTick(float time) => view.SimulationTick(time);
+    public void SimulationTick(float time) => tickables.SimulationTick(time);
 
     readonly BoardPresenter board;
     readonly CoordFinder tile;
-    readonly ISimulationTick view;
+    readonly ISimulationTick tickables;
+    readonly IReset resettables;
   }
 }

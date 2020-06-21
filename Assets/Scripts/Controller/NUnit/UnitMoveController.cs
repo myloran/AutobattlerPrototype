@@ -4,7 +4,7 @@ using UniRx;
 
 namespace Controller.NUnit {
   public class UnitMoveController : IDisposable {
-    public UnitMoveController(WorldContext context, UnitDragController unitDragController) {
+    public UnitMoveController(PlayerSharedContext context, UnitDragController unitDragController) {
       this.context = context;
       this.unitDragController = unitDragController;
     }
@@ -14,7 +14,7 @@ namespace Controller.NUnit {
 
     void MoveUnit(DragEndedEvent e) => context.Move(e.Start, e.Last);
 
-    readonly WorldContext context;
+    readonly PlayerSharedContext context;
     readonly UnitDragController unitDragController;
     readonly CompositeDisposable disposable = new CompositeDisposable();
   }

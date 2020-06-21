@@ -47,6 +47,12 @@ namespace Model.NBattleSimulation {
       return (false, default);
     }
 
+    public (bool, IUnit) GetUnit(Coord coord) {
+      if (BoardUnits.TryGetValue(coord, out var unit1)) return (true, unit1);
+      if (BenchUnits.TryGetValue(coord, out var unit2)) return (true, unit2);
+      return (false, default);
+    }
+
     public void DestroyAll() {
       BenchUnits.Clear();
       BoardUnits.Clear();

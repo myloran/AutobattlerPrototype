@@ -12,6 +12,8 @@ namespace Model.NAI.Commands {
     }
 
     public override void Execute() {
+      if (!unit.TargetExists) return;
+      
       var target = unit.Target;
       if (!target.IsAlive) return;
       

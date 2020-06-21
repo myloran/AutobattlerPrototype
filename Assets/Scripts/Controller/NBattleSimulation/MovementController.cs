@@ -19,7 +19,7 @@ using View.Views;
 namespace Controller.NBattleSimulation {
   public class MovementController : IEventHandler<StartMoveEvent>, 
       IEventHandler<FinishMoveEvent>, IEventHandler<RotateEvent>, 
-      IEventHandler<IdleEvent>, ISimulationTick {
+      IEventHandler<IdleEvent>, ISimulationTick, IReset {
     public MovementController(BoardPresenter boardPresenter, CoordFinder coordFinder) {
       this.boardPresenter = boardPresenter;
       this.coordFinder = coordFinder;
@@ -50,6 +50,8 @@ namespace Controller.NBattleSimulation {
     
     public void HandleEvent(IdleEvent e) => 
       boardPresenter.GetUnit(e.Coord).ChangeStateTo(EState.Idle);
+
+    public void Reset() => routines.Clear();
 
     readonly CoordFinder coordFinder;
     readonly Dictionary<Coord, MoveRoutine> routines = new Dictionary<Coord, MoveRoutine>();

@@ -44,10 +44,13 @@ namespace Controller.NDebug {
 
     public void Dispose() => disposable.Clear();
                                                        
-    void SelectUnitModel(UnitSelectedEvent e) =>
+    void SelectUnitModel(UnitSelectedEvent e) {
+      if (!debugInfo.IsDebugOn) return; //redundant check?
+
       unit = battleStateController.IsBattleStarted 
         ? board.GetUnit(e.StartCoord) 
-        : playerContext.GetBoardUnitDict(e.Unit.Player)[e.StartCoord];
+        : playerContext.GetUnit(e.StartCoord);
+    }
 
     readonly PlayerContext playerContext;
     readonly Board board;

@@ -30,6 +30,8 @@ namespace View.Presenters {
     
     
     public void DestroyAll() {
+      foreach (var unit in BenchUnits.Values) Object.Destroy(unit.gameObject);
+      foreach (var unit in BoardUnits.Values) Object.Destroy(unit.gameObject);
       BenchUnits.Clear();
       BoardUnits.Clear();
     }

@@ -1,24 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Controller.NDebug;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Exts;
 using Shared.Poco;
+using UnityEngine;
 using View.Presenters;
 using View.UIs;
 
 namespace Controller.Save {
   public class BattleSaveController : IDisposable {
     public BattleSaveController(PlayerContext playerContext, PlayerPresenterContext playerPresenterContext,
-      BattleSaveUI ui, SaveInfoLoader saveInfoLoader, Dictionary<string, SaveInfo> saves) {
+      BattleSaveUI ui, SaveInfoLoader saveInfoLoader, Dictionary<string, SaveInfo> saves,
+      BattleSimulationDebugController battleSimulationController) {
       this.playerContext = playerContext;
       this.playerPresenterContext = playerPresenterContext;
       this.ui = ui;
       this.saveInfoLoader = saveInfoLoader;
       this.saves = saves;
+      this.battleSimulationController = battleSimulationController;
       ui.BAdd.onClick.AddListener(Save); //TODO: move to unirx
       ui.BLoad.onClick.AddListener(Load);
       ui.BLoadPrevious.onClick.AddListener(LoadPrevious); //TODO: remove for now
@@ -39,9 +43,11 @@ namespace Controller.Save {
     Dictionary<Coord, string> GetUnits(Dictionary<Coord, IUnit> dict) => dict
       .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name);
 
-    void Load() { //TODO: reset battle simulation
-      //TODO: Use PlayerSharedContext
-      playerContext.DestroyAll();
+    void Load() { //TODO: Use PlayerSharedContext
+      var timeScaleBefore = Time.timeScale;
+      Time.timeScale = 0;
+      
+      playerContext.DestroyAll(); 
       playerPresenterContext.DestroyAll();
 
       var save = saves[ui.GetSelectedSaveName];
@@ -62,6 +68,8 @@ namespace Controller.Save {
         playerContext.InstantiateToBoard(name, coord, EPlayer.Second);
         playerPresenterContext.InstantiateToBoard(name, coord, EPlayer.Second);
       }
+      battleSimulationController.StartBattle();
+      Time.timeScale = timeScaleBefore;
     }
     
     void LoadPrevious() { }
@@ -75,6 +83,7 @@ namespace Controller.Save {
     readonly BattleSaveUI ui;
     readonly SaveInfoLoader saveInfoLoader;
     readonly Dictionary<string, SaveInfo> saves;
+    readonly BattleSimulationDebugController battleSimulationController;
     readonly PlayerContext playerContext;
     readonly PlayerPresenterContext playerPresenterContext;
   }
