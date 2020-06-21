@@ -7,6 +7,7 @@ using Shared;
 using Shared.Abstraction;
 using Shared.Poco;
 using UniRx;
+using UniRx.Diagnostics;
 using UnityEngine;
 using View.NUnit;
 
@@ -15,12 +16,12 @@ namespace Controller.UnitDrag {
     public IObservable<CoordChangedEvent> CoordChanged;
     public IObservable<DragEndedEvent> DragEnded;
     
-    public UnitDragController(RaycastController raycastController, CoordFinder coordFinder,
+    public UnitDragController(RaycastController raycastController, CoordFinderBySelectedPlayer coordFinderBySelectedPlayer,
         InputController inputController, UnitSelectionController unitSelectionController,
         IPredicate<UnitSelectedEvent> canStartDrag) {
       this.raycastController = raycastController;
       this.canStartDrag = canStartDrag;
-      this.coordFinder = coordFinder;
+      this.coordFinderBySelectedPlayer = coordFinderBySelectedPlayer;
       this.inputController = inputController;
       this.unitSelectionController = unitSelectionController;
     }
@@ -71,7 +72,7 @@ namespace Controller.UnitDrag {
       unit.transform.position = mousePosition + new Vector3(0, 1, 0);
 
     (bool, CoordChangedEvent) CoordIsChanged(Vector3 mousePosition) {
-      var coord = coordFinder.Find(mousePosition);
+      var coord = coordFinderBySelectedPlayer.Find(mousePosition);
       
       return coord == lastCoord 
         ? (false, default) 
@@ -86,7 +87,7 @@ namespace Controller.UnitDrag {
     public void Dispose() => disposable.Clear();
 
     readonly RaycastController raycastController;
-    readonly CoordFinder coordFinder;
+    readonly CoordFinderBySelectedPlayer coordFinderBySelectedPlayer;
     readonly InputController inputController;
     readonly UnitSelectionController unitSelectionController;
     readonly IPredicate<UnitSelectedEvent> canStartDrag;

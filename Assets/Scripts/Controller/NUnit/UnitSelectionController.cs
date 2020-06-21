@@ -4,6 +4,7 @@ using Controller.NTile;
 using Controller.Update;
 using UniRx;
 using UnityEngine;
+using View.NTile;
 using View.NUnit;
 
 namespace Controller.NUnit {
@@ -35,7 +36,7 @@ namespace Controller.NUnit {
 
     UnitSelectedEvent DragInfo(RaycastHit hit) {
       var u = hit.transform.GetComponent<UnitView>();
-      var c = coordFinder.FindClosest(u); //TODO: use TilePresenter
+      var c = coordFinder.FindClosestCoord(u.transform.position, u.Player);
       return new UnitSelectedEvent(u, c);
     }
 

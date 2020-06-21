@@ -31,7 +31,9 @@ namespace View.Presenters {
 
     #endregion
 
-    public Dictionary<Coord, UnitView> BoardUnits() => player1.BoardUnits.With(player2.BoardUnits);
+    public Dictionary<Coord, UnitView> BoardUnits() => 
+      player1.BoardUnits.With(player2.BoardUnits);
+    
     PlayerPresenter Get(EPlayer player) => player == EPlayer.First ? player1 : player2;
     
     readonly PlayerPresenter player1, player2;

@@ -8,22 +8,27 @@ using View.NTile;
 namespace View.NUnit {
   public class UnitViewFactory {
     public UnitViewFactory(Dictionary<string, UnitInfo> unitInfos, UnitView unitPrefab, 
-        TilePresenter tilePresenter, Camera mainCamera) {
+        CoordFinder coordFinder, Camera mainCamera) {
       this.unitInfos = unitInfos;
       this.unitPrefab = unitPrefab;
-      this.tilePresenter = tilePresenter;
+      this.coordFinder = coordFinder;
       this.mainCamera = mainCamera;
     }
 
     public UnitView Create(string name, Coord coord, EPlayer player) {
-      var position = tilePresenter.PositionAt(coord).WithY(unitPrefab.Height);
+      var position = coordFinder.PositionAt(coord).WithY(unitPrefab.Height);
       var rotation = player.ToQuaternion();
+      var unitInfo = unitInfos[name];
       
-      return Object.Instantiate(unitPrefab, position, rotation)
-        .Init(new UnitInfo(unitInfos[name]), player, mainCamera); //TODO: init HealthBar here
+      var obj = Object.Instantiate(unitPrefab, position, rotation);
+      
+      var healthBar = obj.GetComponentInChildren<HealthBar>()
+        .Init(player.ToColor(), unitInfo.Health, mainCamera);
+       
+      return obj.Init(new UnitInfo(unitInfo), player, healthBar);
     }
 
-    readonly TilePresenter tilePresenter;
+    readonly CoordFinder coordFinder;
     readonly Camera mainCamera;
     readonly UnitView unitPrefab;
     readonly Dictionary<string, UnitInfo> unitInfos;

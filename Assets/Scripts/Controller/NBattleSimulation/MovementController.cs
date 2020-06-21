@@ -20,15 +20,15 @@ namespace Controller.NBattleSimulation {
   public class MovementController : IEventHandler<StartMoveEvent>, 
       IEventHandler<FinishMoveEvent>, IEventHandler<RotateEvent>, 
       IEventHandler<IdleEvent>, ISimulationTick {
-    public MovementController(BoardPresenter boardPresenter, TilePresenter tilePresenter) {
+    public MovementController(BoardPresenter boardPresenter, CoordFinder coordFinder) {
       this.boardPresenter = boardPresenter;
-      this.tilePresenter = tilePresenter;
+      this.coordFinder = coordFinder;
     }
     
     public void HandleEvent(StartMoveEvent e) {
       var unit = boardPresenter.GetUnit(e.From);
-      var from = tilePresenter.PositionAt(e.From).WithY(unit.Height);
-      var to = tilePresenter.PositionAt(e.To).WithY(unit.Height);
+      var from = coordFinder.PositionAt(e.From).WithY(unit.Height);
+      var to = coordFinder.PositionAt(e.To).WithY(unit.Height);
       routines[e.From] = new MoveRoutine(unit.transform, from, to, e.StartingTime.Float, e.Duration.Float);
       unit.transform.rotation = (e.To - e.From).ToQuaternion(); 
       unit.ChangeStateTo(EState.Walking); //TODO: make specific animation event and handle them in animation controller?
@@ -51,7 +51,7 @@ namespace Controller.NBattleSimulation {
     public void HandleEvent(IdleEvent e) => 
       boardPresenter.GetUnit(e.Coord).ChangeStateTo(EState.Idle);
 
-    readonly TilePresenter tilePresenter;
+    readonly CoordFinder coordFinder;
     readonly Dictionary<Coord, MoveRoutine> routines = new Dictionary<Coord, MoveRoutine>();
     readonly BoardPresenter boardPresenter;
   }

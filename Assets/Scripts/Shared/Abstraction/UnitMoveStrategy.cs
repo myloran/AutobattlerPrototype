@@ -11,7 +11,7 @@ namespace Shared.Abstraction {
     }
     
     public void MoveUnit(Coord from, Coord to) {
-      var fromDict = from.Y < 0 ? benchUnits : boardUnits;
+      var fromDict = from.Y < 0 ? benchUnits : boardUnits; //TODO: replace magic numbers
       var toDict = to.Y < 0 ? benchUnits : boardUnits;
 
       if (!fromDict.ContainsKey(from)) {

@@ -7,7 +7,7 @@ using View.NUnit;
 
 namespace View.Presenters {
   public class BoardPresenter {
-    public BoardPresenter(TilePresenter tilePresenter) => tile = tilePresenter;
+    public BoardPresenter(UnitViewCoordChangedHandler handler) => this.handler = handler;
 
     #region Dict
 
@@ -21,19 +21,14 @@ namespace View.Presenters {
 
     public void MoveUnit(Coord from, Coord to) {
       var unit = units[from];
-      OnChangeCoord(to, unit); //TODO: use UnitCoordChangedHandler
+      handler.Handle(new UnitCoordChanged<UnitView>(unit, to));
       AddUnit(to, unit);
       RemoveUnit(from);
     }
     
     public void Reset(Dictionary<Coord, UnitView> units) => this.units = units;
 
-    void OnChangeCoord(Coord coord, UnitView unit) {
-      var toPosition = tile.PositionAt(coord).WithY(unit.Height);
-      unit.transform.position = toPosition;
-    }
-
-    readonly TilePresenter tile;
+    readonly UnitViewCoordChangedHandler handler;
     Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>();
   }
 }

@@ -5,6 +5,7 @@ using Model;
 using View.UIs;
 using UniRx;
 using Controller.Exts;
+using Controller.NBattleSimulation;
 using Controller.NUnit;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
@@ -12,12 +13,15 @@ using Unit = Model.NUnit.Unit;
 
 namespace Controller.NDebug {
   public class UnitModelDebugController : ITick, IDisposable {
-    public UnitModelDebugController(Board board, ModelUI ui, DebugInfo debugInfo,
-      UnitSelectionController unitSelectionController) {
+    public UnitModelDebugController(PlayerContext playerContext, Board board,
+        ModelUI ui, DebugInfo debugInfo, UnitSelectionController unitSelectionController,
+        BattleStateController battleStateController) {
+      this.playerContext = playerContext;
       this.board = board;
       this.ui = ui;
       this.debugInfo = debugInfo;
       this.unitSelectionController = unitSelectionController;
+      this.battleStateController = battleStateController;
     }
 
     public void Init() {
@@ -40,16 +44,17 @@ namespace Controller.NDebug {
 
     public void Dispose() => disposable.Clear();
                                                        
-    void SelectUnitModel(UnitSelectedEvent e) {
-      if (!debugInfo.IsDebugOn) return; //redundant check?
-      
-      unit = board.GetUnit(e.StartCoord);
-    }
+    void SelectUnitModel(UnitSelectedEvent e) =>
+      unit = battleStateController.IsBattleStarted 
+        ? board.GetUnit(e.StartCoord) 
+        : playerContext.GetBoardUnitDict(e.Unit.Player)[e.StartCoord];
 
+    readonly PlayerContext playerContext;
     readonly Board board;
     readonly ModelUI ui;
     readonly DebugInfo debugInfo;
     readonly UnitSelectionController unitSelectionController;
+    readonly BattleStateController battleStateController;
     readonly CompositeDisposable disposable =new CompositeDisposable();
     IUnit unit;
     bool isOn;

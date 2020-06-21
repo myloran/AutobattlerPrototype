@@ -1,63 +1,44 @@
+using System.Collections.Generic;
 using Shared;
 using Shared.Poco;
 using UnityEngine;
 using View.Views;
 using static Shared.Const;
-using static UnityEngine.Mathf;
 
 namespace View.NTile {
-  public class TilePresenter { //TODO: rename to CoordFinder?
-    public TilePresenter(TileStartPoints startPoints) => this.startPoints = startPoints;
-
-    public Coord FindClosestCoord(Vector3 position, EPlayer selectedPlayer) {
-      var (didFind, coord) = FindCoordOnBenches(position, selectedPlayer);
-      return didFind ? coord : FindCoordOnBoard(position);
+  public class TilePresenter {
+    public TilePresenter(TileStartPoints startPoints, TileViewFactory tileFactory) {
+      this.startPoints = startPoints;
+      this.tileFactory = tileFactory;
     }
 
-    public Coord FindClosestCoordLimitedByPlayerSide(Vector3 position, EPlayer selectedPlayer) {
-      var (didFind, coord) = FindCoordOnBenches(position, selectedPlayer);
-      return didFind ? coord : FindCoordOnBoard(position).LimitByPlayerSide(selectedPlayer);
-    }
-
-    (bool, Coord) FindCoordOnBenches(Vector3 position, EPlayer selectedPlayer) {
-      if (position.z - TileHalfLength < startPoints.Bench1.position.z && selectedPlayer == EPlayer.First) {
-        var coord = FindCoordOnBench(position, startPoints.Bench1.position, selectedPlayer);
-        return (true, coord);
+    public void SpawnTiles() {
+      //TODO: generate in editor?
+      for (int x = 0; x < BoardSizeX; x++) {
+        for (int y = 0; y < BoardSizeY; y++) {
+          var coord = new Coord(x, y);
+          var position = startPoints.Board.position + new Vector3(x, 0, y);
+          tiles[coord] = tileFactory.Create(position);
+        }
       }
-
-      if (position.z + TileHalfLength > startPoints.Bench2.position.z && selectedPlayer == EPlayer.Second) {
-        var coord = FindCoordOnBench(position, startPoints.Bench2.position, selectedPlayer);
-        return (true, coord);
+      
+      for (int x = 0; x < BenchSizeX; x++) {
+        var coord = new Coord(x, Player1BenchId);
+        tiles[coord] = tileFactory.Create(startPoints.Bench1.position + new Vector3(x, 0, 0));
       }
-
-      return (false, default);
-    }
-
-    public Vector3 PositionAt(Coord coord) {
-      var startPoint = coord.IsPlayer1Bench() ? startPoints.Bench1
-        : coord.IsPlayer2Bench() ? startPoints.Bench2
-        : startPoints.Board;
-      return startPoint.position + new Vector3(coord.X, 0, Max(coord.Y, 0));
-    }
-
-    Coord FindCoordOnBoard(Vector3 position) {
-      var indexPosition = position - startPoints.Board.position;
-      var indexX = RoundToInt(indexPosition.x);
-      var indexY = RoundToInt(indexPosition.z);
-      var x = Clamp(indexX, 0, BoardSizeX - 1);
-      var y = Clamp(indexY, 0, BoardSizeY - 1);
-
-      return new Coord(x, y);
+      
+      for (int x = 0; x < BenchSizeX; x++) {
+        var coord = new Coord(x, Player2BenchId);
+        tiles[coord] = tileFactory.Create(startPoints.Bench2.position + new Vector3(x, 0, 0));
+      }
     }
     
-    Coord FindCoordOnBench(Vector3 position, Vector3 startPosition, EPlayer selectedPlayer) {
-      var indexPosition = position - startPosition;
-      var index = RoundToInt(indexPosition.x);
-      var indexClamped = Clamp(index, 0, BenchSizeX - 1); 
-      
-      return new Coord(indexClamped, selectedPlayer.BenchId());
-    }
+    public TileView TileAt(Coord coord) => tiles[coord];
+    public IEnumerable<TileView> Values => tiles.Values;
 
+    readonly TileViewFactory tileFactory;
     readonly TileStartPoints startPoints;
+    readonly Dictionary<Coord, TileView> tiles = new Dictionary<Coord, TileView>(
+      BoardSizeX * BoardSizeY + BenchSizeX * 2);
   }
 }

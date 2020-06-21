@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine.UI;
+using View.Exts;
 
 namespace View.UIs {
   public class BattleSetupUI : AutoReferencer<BattleSetupUI> {
@@ -11,11 +12,7 @@ namespace View.UIs {
     public Button BAdd,
       BRemove;
 
-    public void Init(IEnumerable<string> names) {
-      var options = names.Select(n => new TMP_Dropdown.OptionData(n)); //TODO: make extension
-      DUnits.options.Clear();
-      DUnits.options.AddRange(options);
-    }
+    public void Init(IEnumerable<string> names) => DUnits.ResetOptions(names);
 
     public string GetSelectedUnitName => DUnits.options[DUnits.value].text;
     public int GetSelectedPlayerId => DPlayers.value;

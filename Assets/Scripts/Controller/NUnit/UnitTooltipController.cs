@@ -23,7 +23,7 @@ namespace Controller.NUnit {
 
     void UpdateTooltip(UnitSelectedEvent e) {
       unit = e.Unit;
-      ui.SetUnitData(e.Unit.Info);
+      ui.SetUnitData(e.Unit.Stats);
       ui.Show();
     }
 

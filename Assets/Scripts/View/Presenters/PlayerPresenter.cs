@@ -3,19 +3,16 @@ using Shared;
 using Shared.Abstraction;
 using Shared.Poco;
 using UnityEngine;
-using View.NTile;
 using View.NUnit;
 
 namespace View.Presenters {
   public class PlayerPresenter {
-    //TODO: encapsulate those
     public readonly Dictionary<Coord, UnitView> BenchUnits = new Dictionary<Coord, UnitView>();
     public readonly Dictionary<Coord, UnitView> BoardUnits = new Dictionary<Coord, UnitView>();
     
-    public PlayerPresenter(TilePresenter tilePresenter, UnitViewFactory factory) {
+    public PlayerPresenter(UnitViewFactory factory, UnitViewCoordChangedHandler handler) {
       this.factory = factory;
-      unitMoveStrategy = new UnitMoveStrategy<UnitView>(BoardUnits, BenchUnits,
-        new UnitViewCoordChangedHandler(tilePresenter));
+      unitMoveStrategy = new UnitMoveStrategy<UnitView>(BenchUnits, BoardUnits, handler);
     }
     
     public void MoveUnit(Coord from, Coord to) => unitMoveStrategy.MoveUnit(from, to);

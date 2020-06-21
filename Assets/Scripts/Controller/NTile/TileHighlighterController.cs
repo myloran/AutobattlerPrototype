@@ -8,9 +8,9 @@ using View.NTile;
 
 namespace Controller.NTile {
   public class TileHighlighterController : IDisposable {
-    public TileHighlighterController(TileSpawner tileSpawner, 
+    public TileHighlighterController(TilePresenter tilePresenter, 
         UnitDragController untDragController) {
-      this.tileSpawner = tileSpawner;
+      this.tilePresenter = tilePresenter;
       this.untDragController = untDragController;
     }
 
@@ -19,13 +19,13 @@ namespace Controller.NTile {
       untDragController.DragEnded.Subscribe(Unhighlight).AddTo(disposable);
     }
 
-    void Unhighlight(DragEndedEvent e) => tileSpawner.TileAt(e.Last).Unhighlight();
+    void Unhighlight(DragEndedEvent e) => tilePresenter.TileAt(e.Last).Unhighlight();
 
     void ChangeHighlight(CoordChangedEvent e) {
       if (e.From != Coord.Invalid)
-        tileSpawner.TileAt(e.From).Unhighlight();
+        tilePresenter.TileAt(e.From).Unhighlight();
         
-      tileSpawner.TileAt(e.To).Highlight();
+      tilePresenter.TileAt(e.To).Highlight();
       
       //   //if swap previous, cancel it
       //   if (tile.Unit != null) {
@@ -36,7 +36,7 @@ namespace Controller.NTile {
     
     public void Dispose() => disposable.Clear();
 
-    readonly TileSpawner tileSpawner;
+    readonly TilePresenter tilePresenter;
     readonly UnitDragController untDragController;
     readonly CompositeDisposable disposable = new CompositeDisposable();
   }

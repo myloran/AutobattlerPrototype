@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Controller.Exts;
 using TMPro;
+using UniRx;
 using UnityEngine.UI;
 using View.Exts;
 
@@ -15,17 +17,14 @@ namespace View.UIs {
       BLoadPrevious;
     
     public void Init(IEnumerable<string> names) {
-      var options = names.Select(n => new TMP_Dropdown.OptionData(n));
-      DSaves.options.Clear();
-      DSaves.options.AddRange(options);
+      DSaves.ResetOptions(names);
 
-      if (!DSaves.options.Any()) {
-        BLoad.Disable();
-      }
+      if (!DSaves.options.Any()) BLoad.Disable();
       BLoadPrevious.Disable();
       BAdd.Disable();
-      FSaveName.onValueChanged.AddListener(CheckSaveEnabled);
-      BAdd.onClick.AddListener(CheckLoadEnabled);
+      
+      FSaveName.onValueChanged.AsObservable().Subscribe(CheckSaveEnabled).AddTo(this);
+      BAdd.Sub(CheckLoadEnabled);
     }
 
     public string SaveName => FSaveName.text;
@@ -36,11 +35,6 @@ namespace View.UIs {
     void CheckLoadEnabled() {
       BLoad.Enable();
       BLoadPrevious.Enable();
-    }
-
-    void OnDestroy() {
-      FSaveName.onValueChanged.RemoveListener(CheckSaveEnabled);
-      BAdd.onClick.RemoveListener(CheckLoadEnabled);
     }
   }
 }

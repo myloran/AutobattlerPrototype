@@ -79,14 +79,15 @@ namespace Infrastructure {
       #endregion
       #region View
       
-      var tileSpawner = new TileSpawner(TileStartPoints, new TileViewFactory(TileViewPrefab));
-      var tilePresenter = new TilePresenter(TileStartPoints);
-      var unitViewFactory = new UnitViewFactory(units, UnitViewPrefab, tilePresenter, mainCamera);
-      var boardPresenter = new BoardPresenter(tilePresenter);
+      var tileSpawner = new TilePresenter(TileStartPoints, new TileViewFactory(TileViewPrefab));
+      var coordFinder = new CoordFinder(TileStartPoints);
+      var unitViewFactory = new UnitViewFactory(units, UnitViewPrefab, coordFinder, mainCamera);
+      var unitViewCoordChangedHandler = new UnitViewCoordChangedHandler(coordFinder);
+      var boardPresenter = new BoardPresenter(unitViewCoordChangedHandler);
       
       var playerPresenterContext = new PlayerPresenterContext(
-        new PlayerPresenter(tilePresenter, unitViewFactory), 
-        new PlayerPresenter(tilePresenter, unitViewFactory));
+        new PlayerPresenter(unitViewFactory, unitViewCoordChangedHandler), 
+        new PlayerPresenter(unitViewFactory, unitViewCoordChangedHandler));
       
       #endregion
       #region Model
@@ -104,17 +105,18 @@ namespace Infrastructure {
 
       #endregion
       
-      var coordFinder = new CoordFinder(tilePresenter, BattleSetupUI);
       var unitSelectionController = new UnitSelectionController(
         inputController, raycastController, coordFinder);
       var unitTooltipController = new UnitTooltipController(
         UnitTooltipUI, unitSelectionController);
       
       #region Unit drag
-      
+
+      var battleStateController = new BattleStateController(BattleSimulationUI);
       var unitDragController = new UnitDragController(raycastController, 
-        coordFinder, inputController, unitSelectionController, 
-        new CanStartDrag(new BattleStateController(BattleSimulationUI), BattleSetupUI));
+        new CoordFinderBySelectedPlayer(coordFinder, BattleSetupUI), 
+        inputController, unitSelectionController, 
+        new CanStartDrag(battleStateController, BattleSetupUI));
       
       var tileHighlightController = new TileHighlighterController(tileSpawner, 
         unitDragController);
@@ -124,7 +126,7 @@ namespace Infrastructure {
       #endregion
       #region Battle simulation
 
-      var movementController = new MovementController(boardPresenter, tilePresenter);
+      var movementController = new MovementController(boardPresenter, coordFinder);
       var attackController = new AttackController(boardPresenter, unitTooltipController);
       eventBus.Register<StartMoveEvent>(movementController); //TODO: register implicitly?
       eventBus.Register<FinishMoveEvent>(movementController);
@@ -134,7 +136,7 @@ namespace Infrastructure {
       eventBus.Register<IdleEvent>(movementController);
       eventBus.Register<StartAttackEvent>(attackController);
 
-      var battleSimulationPresenter = new BattleSimulationPresenter(tilePresenter, 
+      var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, movementController);
       
       var battleSimulation = new BattleSimulation(aiContext, board, aiHeap);
@@ -155,14 +157,14 @@ namespace Infrastructure {
         aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController,
         battleSimulationPresenter);
 
-      var unitModelDebugController = new UnitModelDebugController(
-        board, ModelUI, DebugController.Info, unitSelectionController);
+      var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
+        DebugController.Info, unitSelectionController, battleStateController);
       
       var takenCoordDebugController = new TakenCoordDebugController(board, DebugController,
         tileSpawner);
       
       var targetDebugController = new TargetDebugController(
-        board, tilePresenter, DebugController.Info);
+        board, coordFinder, DebugController.Info);
       
       var uiDebugController = new UIDebugController(
         BattleSetupUI, BattleSaveUI, BattleSimulationUI,
@@ -176,7 +178,7 @@ namespace Infrastructure {
 
       BattleSetupUI.Init(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
-      tileSpawner.Init();
+      tileSpawner.SpawnTiles();
 
       #endregion
       #region Infrastructure
