@@ -2,6 +2,7 @@ using System;
 using Controller.Exts;
 using UniRx;
 using UnityEngine;
+using static Shared.Const;
 
 namespace Controller.Update {
   public class InputController : IDisposable {
@@ -19,9 +20,9 @@ namespace Controller.Update {
 
     public void Dispose() => disposable.Clear();
 
-    bool IsMouseDown() => Input.GetMouseButtonDown(0); //TODO: make const LeftClick
-    bool IsMouseHeld() => Input.GetMouseButton(0);
-    bool IsMouseUp() => Input.GetMouseButtonUp(0);
+    bool IsMouseDown() => Input.GetMouseButtonDown(LeftButton);
+    bool IsMouseHeld() => Input.GetMouseButton(LeftButton);
+    bool IsMouseUp() => Input.GetMouseButtonUp(LeftButton);
 
     readonly TickController tickController;
     readonly CompositeDisposable disposable = new CompositeDisposable();

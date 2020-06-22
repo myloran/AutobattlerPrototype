@@ -1,14 +1,16 @@
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
-using Shared.Poco;
+using Shared.Primitives;
+using static Shared.Primitives.CoordExt;
 
 namespace Model.NAI {
   public class MoveFinder {
-    public bool Find(IUnit unit, AiContext context, out MoveInfo moveInfo) {
+    public MoveInfo MoveInfo;
+
+    public bool Find(IUnit unit, AiContext context) {
       this.context = context;
       this.unit = unit;
       targetCoord = unit.Target.Coord;
-      moveInfo = MoveFinder.moveInfo;
       
       var direction = (targetCoord - unit.Coord).Normalized;
       if (CheckMove(direction)) return true;
@@ -43,8 +45,8 @@ namespace Model.NAI {
       bool CheckSimulatedMove() {
         var (canMoveNext1, nextCoord1) = SimulateMove(coord1);
         var (canMoveNext2, nextCoord2) = SimulateMove(coord2);
-        var distance1 = CoordExt.SqrDistance(targetCoord, nextCoord1);
-        var distance2 = CoordExt.SqrDistance(targetCoord, nextCoord2);
+        var distance1 = SqrDistance(targetCoord, nextCoord1);
+        var distance2 = SqrDistance(targetCoord, nextCoord2);
 
         if (distance1 == distance2) return SelectShorterMove();
 
@@ -63,7 +65,7 @@ namespace Model.NAI {
 
     bool SelectMove(Coord coord, Coord direction) {
       var time = unit.TimeToMove(direction.IsDiagonal);
-      moveInfo.Update(coord, time);
+      MoveInfo = new MoveInfo(coord, time);
       return true;
     }
 
@@ -71,19 +73,19 @@ namespace Model.NAI {
       (bool, Coord) res = (false, coord);
       
       var direction = (unit.Target.Coord - coord).Normalized;
-      if (CheckMove(direction, ref res)) return res;
+      if (CheckMove(direction)) return res;
 
       var (direction1, direction2) = direction.GetClosestDirections();
-      if (CheckMove(direction1, ref res)) return res;
-      if (CheckMove(direction2, ref res)) return res;
+      if (CheckMove(direction1)) return res;
+      if (CheckMove(direction2)) return res;
 
       return res;
       
-      bool CheckMove(Coord moveDirection, ref (bool, Coord) result) {
+      bool CheckMove(Coord moveDirection) {
         var pos = coord + moveDirection;
         if (!context.IsTileEmpty(pos)) return false;
         
-        result = (true, pos);
+        res = (true, pos);
         return true;
       }
     }
@@ -97,7 +99,5 @@ namespace Model.NAI {
 
     IUnit unit;
     AiContext context;
-    Coord targetCoord;
-    static readonly MoveInfo moveInfo = new MoveInfo();
-  }
+    Coord targetCoord; }
 }

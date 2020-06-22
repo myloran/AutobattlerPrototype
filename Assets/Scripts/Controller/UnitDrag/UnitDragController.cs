@@ -5,7 +5,7 @@ using Controller.NUnit;
 using Controller.Update;
 using Shared;
 using Shared.Abstraction;
-using Shared.Poco;
+using Shared.Primitives;
 using UniRx;
 using UniRx.Diagnostics;
 using UnityEngine;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Shared;
 using Shared.Abstraction;
-using Shared.Poco;
+using Shared.Primitives;
 using UnityEngine;
 using View.NUnit;
 

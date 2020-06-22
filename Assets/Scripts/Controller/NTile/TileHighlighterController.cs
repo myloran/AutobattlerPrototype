@@ -1,7 +1,7 @@
 using System;
 using Controller.UnitDrag;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using View.Presenters;
 using UniRx;
 using View.NTile;
@@ -26,12 +26,6 @@ namespace Controller.NTile {
         tilePresenter.TileAt(e.From).Unhighlight();
         
       tilePresenter.TileAt(e.To).Highlight();
-      
-      //   //if swap previous, cancel it
-      //   if (tile.Unit != null) {
-      //     SwapUnits(tile, oldTile);
-      //   }
-      //   //swap units if tile with unit
     }
     
     public void Dispose() => disposable.Clear();

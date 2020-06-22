@@ -47,9 +47,7 @@ namespace Controller.NDebug {
     void SelectUnitModel(UnitSelectedEvent e) {
       if (!debugInfo.IsDebugOn) return; //redundant check?
 
-      unit = battleStateController.IsBattleStarted 
-        ? board.GetUnit(e.StartCoord) 
-        : playerContext.GetUnit(e.StartCoord);
+      unit = board.TryGetUnit(e.StartCoord) ?? playerContext.GetUnit(e.StartCoord);
     }
 
     readonly PlayerContext playerContext;

@@ -12,7 +12,7 @@ namespace Controller.NUnit {
     public void Init() => unitDragController.DragEnded.Subscribe(MoveUnit).AddTo(disposable);
     public void Dispose() => disposable.Clear();
 
-    void MoveUnit(DragEndedEvent e) => context.Move(e.Start, e.Last);
+    void MoveUnit(DragEndedEvent e) => context.Move(e.Start, e.Last); //TODO: expose unitMoved event so that battle simulation will subscribe and add the unit to simulation
 
     readonly PlayerSharedContext context;
     readonly UnitDragController unitDragController;

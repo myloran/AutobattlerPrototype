@@ -8,8 +8,8 @@ namespace Model.NAI.Decisions {
       : base(trueNode, falseNode, unit) { }
     
     protected override bool GetBranch(AiContext context) {
-      var canMove = moveFinder.Find(Unit, context, out var moveInfo);
-      Unit.NextMove = moveInfo;
+      var canMove = moveFinder.Find(Unit, context);
+      Unit.NextMove = moveFinder.MoveInfo;
       return canMove;
     }
     

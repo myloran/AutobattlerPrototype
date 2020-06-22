@@ -1,13 +1,13 @@
 using PlasticFloor.EventBus;
 using Shared.Addons.Examples.FixMath;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Shared.Shared.Client.Events {
-  public class ApplyDamageEvent : IEvent {
-    public F32 Health { get; } //TODO: rename to UpdateHealth?
+  public class UpdateHealthEvent : IEvent {
+    public F32 Health { get; } 
     public Coord Coord { get; }
 
-    public ApplyDamageEvent(F32 health, Coord coord) {
+    public UpdateHealthEvent(F32 health, Coord coord) {
       Health = health;
       Coord = coord;
     }

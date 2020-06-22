@@ -1,4 +1,4 @@
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Shared {
   public struct UnitCoordChanged<T> {

@@ -1,5 +1,5 @@
 using PlasticFloor.EventBus;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Shared.Shared.Client.Events {
   public class DeathEvent : IEvent {

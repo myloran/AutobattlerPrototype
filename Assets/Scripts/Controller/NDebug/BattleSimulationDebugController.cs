@@ -19,28 +19,39 @@ namespace Controller.NDebug {
       this.playerPresenterContext = playerPresenterContext;
       this.realtimeBattleSimulationController = realtimeBattleSimulationController;
       this.simulationPresenter = simulationPresenter;
+    }
 
-      ui.OStart.OnValueChangedAsObservable().Where(b => b)
-        .Subscribe(StartBattle).AddTo(ui.OStart);
-      ui.OPause.OnValueChangedAsObservable()
-        .Subscribe(SetPaused).AddTo(ui.OPause);
-      ui.SSpeed.OnValueChangedAsObservable()
-        .Subscribe(SetSpeed).AddTo(ui.SSpeed);
+    public void InitSubs() {
+      BattleControlSubs();
+      BattleSimulationSubs();
+    }
+
+    void BattleSimulationSubs() {
       ui.BExecuteNextDecision.Sub(ExecuteNextCommand);
       ui.BExecuteAllDecisions.Sub(ExecuteAllCommands);
       ui.BExecuteInRealtime.Sub(PlayBattleInRealtime);
     }
-    
+
+    void BattleControlSubs() {
+      ui.OStart.OnValueChangedAsObservable().Where(b => b)
+        .Subscribe(StartBattle).AddTo(ui.OStart);
+
+      ui.OPause.OnValueChangedAsObservable()
+        .Subscribe(SetPaused).AddTo(ui.OPause);
+
+      ui.SSpeed.OnValueChangedAsObservable()
+        .Subscribe(SetSpeed).AddTo(ui.SSpeed);
+    }
+
     public void StartBattle() {
       realtimeBattleSimulationController.StopBattle();
       simulation.PrepareBattle(playerContext);
       simulationPresenter.Reset(playerPresenterContext);
       ui.SetEnabled(!simulation.IsBattleOver);
     }
-
+                       
     void ExecuteNextCommand() {
-      //TODO: log command here
-      //TODO: pass debug controller to be able disable logging
+      //TODO: log command here and pass debug controller to be able disable logging
       simulation.ExecuteNextCommand();
       simulationPresenter.SimulationTick(context.CurrentTime.Float);
       if (!simulation.IsBattleOver) return;

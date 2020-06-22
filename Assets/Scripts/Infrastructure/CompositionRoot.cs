@@ -71,14 +71,11 @@ namespace Infrastructure {
       var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library from model
       EventBus.Log = m => log.Info($"{m}");
       var eventHolder = new EventHolder(eventBus);
-
-      var mainCamera = Camera.main;
-      var raycastController = new RaycastController(mainCamera, 
-        LayerMask.GetMask("Terrain", "GlobalCollider"), LayerMask.GetMask("Unit"));
       
       #endregion
       #region View
       
+      var mainCamera = Camera.main;
       var tileSpawner = new TilePresenter(TileStartPoints, new TileViewFactory(TileViewPrefab));
       var coordFinder = new CoordFinder(TileStartPoints);
       var unitViewFactory = new UnitViewFactory(units, UnitViewPrefab, coordFinder, mainCamera);
@@ -104,12 +101,18 @@ namespace Infrastructure {
       var worldContext = new PlayerSharedContext(playerContext, playerPresenterContext, BattleSetupUI);
 
       #endregion
+      #region Controller
+
+      var raycastController = new RaycastController(mainCamera, 
+        LayerMask.GetMask("Terrain", "GlobalCollider"), LayerMask.GetMask("Unit"));
       
-      var unitSelectionController = new UnitSelectionController(
-        inputController, raycastController, coordFinder);
-      var unitTooltipController = new UnitTooltipController(
-        UnitTooltipUI, unitSelectionController);
+      var unitSelectionController = new UnitSelectionController(inputController, 
+        raycastController, coordFinder);
       
+      var unitTooltipController = new UnitTooltipController(UnitTooltipUI, 
+        unitSelectionController);
+
+      #endregion
       #region Unit drag
 
       var battleStateController = new BattleStateController(BattleSimulationUI);
@@ -128,32 +131,34 @@ namespace Infrastructure {
 
       var movementController = new MovementController(boardPresenter, coordFinder);
       var attackController = new AttackController(boardPresenter, unitTooltipController);
-      eventBus.Register<StartMoveEvent>(movementController); //TODO: register implicitly?
+      var animationController = new AnimationController(boardPresenter);
+      eventBus.Register<StartMoveEvent>(movementController, animationController); //TODO: register implicitly?
       eventBus.Register<FinishMoveEvent>(movementController);
       eventBus.Register<RotateEvent>(movementController);
-      eventBus.Register<ApplyDamageEvent>(attackController);
+      eventBus.Register<UpdateHealthEvent>(attackController);
       eventBus.Register<DeathEvent>(attackController);
-      eventBus.Register<IdleEvent>(movementController);
-      eventBus.Register<StartAttackEvent>(attackController);
+      eventBus.Register<IdleEvent>(animationController);
+      eventBus.Register<StartAttackEvent>(animationController);
 
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, movementController, movementController);
       
       var battleSimulation = new BattleSimulation(aiContext, board, aiHeap);
+      
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
         movementController, battleSimulation);
 
       #endregion
       #region Debug
       
-      var battleSimulationController = new BattleSimulationDebugController(
+      var battleSimulationDebugController = new BattleSimulationDebugController(
         battleSimulation, BattleSimulationUI, 
         aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController,
         battleSimulationPresenter);
       
       var battleSaveController = new BattleSaveController(playerContext, 
         playerPresenterContext, BattleSaveUI, saveDataLoader, saves,
-        battleSimulationController);
+        battleSimulationDebugController);
       
       var battleSetupController = new BattleSetupController(playerContext, 
         playerPresenterContext, BattleSetupUI);
@@ -202,6 +207,7 @@ namespace Infrastructure {
       #region Debug
 
       unitModelDebugController.Init();
+      battleSimulationDebugController.InitSubs();
       DebugController.Init(UnitTooltipUI);
 
       #endregion

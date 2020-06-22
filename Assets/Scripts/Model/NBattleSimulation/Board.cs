@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using static Shared.Const;
 
 namespace Model.NBattleSimulation {
@@ -13,7 +13,11 @@ namespace Model.NBattleSimulation {
     public void AddUnit(Coord coord, IUnit unit) => units[coord] = unit;
     public void RemoveUnit(Coord coord) => units.Remove(coord);
     public bool ContainsUnit(Coord coord) => units.ContainsKey(coord);
-    public IUnit GetUnit(Coord coord) => units[coord];
+    
+    public IUnit TryGetUnit(Coord coord) {
+      units.TryGetValue(coord, out var unit);
+      return unit;
+    }
 
     #endregion
     

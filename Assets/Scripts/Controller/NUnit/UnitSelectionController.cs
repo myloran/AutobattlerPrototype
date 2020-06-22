@@ -35,9 +35,9 @@ namespace Controller.NUnit {
     }
 
     UnitSelectedEvent DragInfo(RaycastHit hit) {
-      var u = hit.transform.GetComponent<UnitView>();
-      var c = coordFinder.FindClosestCoord(u.transform.position, u.Player);
-      return new UnitSelectedEvent(u, c);
+      var unit = hit.transform.GetComponent<UnitView>();
+      var coord = coordFinder.FindClosestCoord(unit.transform.position, unit.Player);
+      return new UnitSelectedEvent(unit, coord);
     }
 
     public void Dispose() => disposable?.Dispose();

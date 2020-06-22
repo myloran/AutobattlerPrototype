@@ -1,6 +1,6 @@
 using Model.NUnit.Abstraction;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Model.NUnit.Components {
   public class StatsComponent : IStats {

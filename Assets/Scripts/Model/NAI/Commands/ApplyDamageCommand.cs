@@ -22,7 +22,7 @@ namespace Model.NAI.Commands {
       if (!target.IsAlive) 
         new DeathCommand(target, context).Execute();
       
-      bus.Raise(new ApplyDamageEvent(target.Health, target.Coord));
+      bus.Raise(new UpdateHealthEvent(target.Health, target.Coord));
       
       if (!target.IsAlive) 
         bus.Raise(new DeathEvent(target.Coord));

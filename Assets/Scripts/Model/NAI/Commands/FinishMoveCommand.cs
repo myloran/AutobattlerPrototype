@@ -2,7 +2,7 @@ using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Commands {

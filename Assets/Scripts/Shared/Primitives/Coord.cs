@@ -3,10 +3,10 @@ using MessagePack;
 using static Shared.Const;
 using static UnityEngine.Mathf;
 
-namespace Shared.Poco {
+namespace Shared.Primitives {
   [Serializable]
   [MessagePackObject]
-  public struct Coord {
+  public struct Coord : IEquatable<Coord> {
     public static Coord Invalid = new Coord(-1, -1);
     [Key(0)] public int X; 
     [Key(1)] public int Y;
@@ -16,13 +16,8 @@ namespace Shared.Poco {
       Y = y;
     }
     
-    public bool Equals(Coord other) {
-      return X == other.X && Y == other.Y;
-    }
-
-    public override bool Equals(object obj) {
-      return obj is Coord other && Equals(other);
-    }
+    public bool Equals(Coord other) => X == other.X && Y == other.Y;
+    public override bool Equals(object obj) => obj is Coord other && Equals(other);
 
     public override int GetHashCode() {
       unchecked {
@@ -84,6 +79,6 @@ namespace Shared.Poco {
       return new Coord(minX, minY);
     }
     
-    public static int SqrDistance(this Coord self, Coord to) => Diff(self, to).SqrMagnitude;
+    public static int SqrDistance(Coord self, Coord to) => Diff(self, to).SqrMagnitude; 
   }
 }

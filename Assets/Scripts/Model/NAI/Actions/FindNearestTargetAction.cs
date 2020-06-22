@@ -11,7 +11,8 @@ namespace Model.NAI.Actions {
     public FindNearestTargetAction(IUnit unit, IEventBus bus) : base(unit, bus) { }
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      var units = context.EnemyUnits(Unit.Player);
+      var units = context.EnemyUnits(Unit.Player); 
+      //TODO: check if it's moving and if so record that in unit
       var target = Unit.FindNearestTarget(units);
       Unit.ChangeTargetTo(target);
       

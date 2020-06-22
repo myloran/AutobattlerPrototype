@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Model.NUnit.Abstraction;
 using Model.NUnit.Components;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NUnit {

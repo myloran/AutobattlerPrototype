@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Shared.Abstraction {
   public class UnitMoveStrategy<T> {

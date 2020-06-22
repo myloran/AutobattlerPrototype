@@ -1,6 +1,6 @@
 using Controller.NBattleSimulation;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using UnityEngine;
 using View.NTile;
 using View.Presenters;

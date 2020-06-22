@@ -1,7 +1,7 @@
 using System;
 using MessagePack;
 
-namespace Shared.Poco {
+namespace Shared.Primitives {
   [Serializable]
   [MessagePackObject]
   public class UnitInfo {

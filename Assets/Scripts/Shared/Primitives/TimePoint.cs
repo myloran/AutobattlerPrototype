@@ -1,6 +1,6 @@
 using System;
 
-namespace Shared.Poco {
+namespace Shared.Primitives {
   public struct TimePoint : IComparable<TimePoint> {
     public readonly float Point;
     

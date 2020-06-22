@@ -1,7 +1,7 @@
 using static Shared.Const;
-using static Shared.Poco.EPlayer;
+using static Shared.Primitives.EPlayer;
 
-namespace Shared.Poco {
+namespace Shared.Primitives {
   public enum EPlayer {
     First = 0,
     Second = 1,

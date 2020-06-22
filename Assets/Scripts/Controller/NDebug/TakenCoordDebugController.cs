@@ -3,7 +3,7 @@ using Model.NBattleSimulation;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using UnityEngine;
 using View.NTile;
 using View.Presenters;

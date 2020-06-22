@@ -4,7 +4,7 @@ using MessagePack;
 using MessagePack.Resolvers;
 using Newtonsoft.Json;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using UnityEngine;
 
 namespace Infrastructure {

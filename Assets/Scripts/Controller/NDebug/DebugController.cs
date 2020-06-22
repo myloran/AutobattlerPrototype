@@ -12,8 +12,8 @@ namespace Controller.NDebug {
     public void Init(UnitTooltipUI unitTooltipUI) {
       unitTooltipUICanvas = unitTooltipUI.GetComponent<Canvas>();
       WasLogEnabled = Info.IsLogEnabled;
-      CheckLog(); 
-      //TODO: check debug also?
+      CheckLog();
+      CheckDebug();
     }
 
     public void Tick() {
@@ -28,14 +28,7 @@ namespace Controller.NDebug {
       }
     }
 
-    void CheckDebug() {
-      if (Info.IsDebugOn) {
-        unitTooltipUICanvas.enabled = false;
-      }
-      else {
-        unitTooltipUICanvas.enabled = true;
-      }
-    }
+    void CheckDebug() => unitTooltipUICanvas.enabled = !Info.IsDebugOn;
 
     void CheckLog() {
       if (Info.IsLogEnabled)

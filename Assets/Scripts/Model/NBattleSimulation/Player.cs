@@ -3,7 +3,7 @@ using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Abstraction;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Model.NBattleSimulation {
   public class Player {

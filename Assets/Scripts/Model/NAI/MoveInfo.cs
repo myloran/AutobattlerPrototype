@@ -1,10 +1,15 @@
 using Shared.Addons.Examples.FixMath;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Model.NAI {
-  public class MoveInfo {
+  public struct MoveInfo {
     public Coord Coord;
     public F32 Time;
+
+    public MoveInfo(Coord coord, F32 time) {
+      Coord = coord;
+      Time = time;
+    }
 
     public void Update(Coord coord, F32 time) {
       Coord = coord;

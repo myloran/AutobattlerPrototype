@@ -1,5 +1,5 @@
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Controller.UnitDrag {
   public struct CoordChangedEvent {

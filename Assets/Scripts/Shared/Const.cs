@@ -13,5 +13,6 @@ namespace Shared {
     public static int BoardSizeX = 8;
     public static int BoardSizeY = 6;
     public static int BenchSizeX = 10;
+    public static int LeftButton = 0;
   }
 }

@@ -1,7 +1,7 @@
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Model.NAI.Commands {
   public class DeathCommand : BaseCommand {

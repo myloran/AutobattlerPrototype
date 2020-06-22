@@ -1,5 +1,5 @@
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using View.NUnit;
 
 namespace Controller.NUnit {

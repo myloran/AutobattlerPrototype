@@ -1,6 +1,6 @@
 using Model.NBattleSimulation;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using View.Presenters;
 using View.UIs;
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Shared;
-using Shared.Poco;
+using Shared.Primitives;
 using View.Exts;
 using View.NTile;
 using View.NUnit;
@@ -26,7 +26,7 @@ namespace View.Presenters {
       RemoveUnit(from);
     }
     
-    public void Reset(Dictionary<Coord, UnitView> units) => this.units = units;
+    public void SetUnits(Dictionary<Coord, UnitView> units) => this.units = units;
 
     readonly UnitViewCoordChangedHandler handler;
     Dictionary<Coord, UnitView> units = new Dictionary<Coord, UnitView>();

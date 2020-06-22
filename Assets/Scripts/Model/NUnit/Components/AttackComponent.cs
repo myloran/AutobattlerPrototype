@@ -2,8 +2,8 @@ using System;
 using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Addons.Examples.FixMath;
-using Shared.Poco;
 using static Shared.Addons.Examples.FixMath.F32;
+using static Shared.Primitives.CoordExt;
 
 namespace Model.NUnit.Components {
   public class AttackComponent : IAttack {
@@ -32,7 +32,7 @@ namespace Model.NUnit.Components {
       : throw new Exception();
 
     public bool IsWithinAttackRange(IMovement target) => 
-      CoordExt.SqrDistance(movement.Coord, target.Coord) <= sqrRange; //TODO: check if coord == coord.Normalized is more performant
+      SqrDistance(movement.Coord, target.Coord) <= sqrRange; //TODO: check if coord == coord.Normalized is more performant
 
     public void StartAttack(F32 currentTime) => lastStartAttackTime = currentTime;
     public void EndAttack() => lastStartAttackTime = ToF32(0);

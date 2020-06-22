@@ -3,7 +3,7 @@ using System.Linq;
 using Model.NAI.Commands;
 using Model.NUnit.Abstraction;
 using Shared.Addons.Examples.FixMath;
-using Shared.Poco;
+using Shared.Primitives;
 using Shared.Shared.Client.Abstraction;
 using static Shared.Addons.Examples.FixMath.F32;
 

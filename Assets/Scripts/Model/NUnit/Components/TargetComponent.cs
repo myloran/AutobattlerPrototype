@@ -3,7 +3,7 @@ using System.Linq;
 using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Exts;
-using Shared.Poco;
+using static Shared.Primitives.CoordExt;
 
 namespace Model.NUnit.Components {
   public class TargetComponent : ITarget {
@@ -28,7 +28,7 @@ namespace Model.NUnit.Components {
     }
     
     public IUnit FindNearestTarget(IEnumerable<IUnit> units) =>
-      units.MinBy(u => CoordExt.SqrDistance(movement.Coord, u.Coord));
+      units.MinBy(u => SqrDistance(movement.Coord, u.Coord));
 
     //TODO: log target without it's target?
     public override string ToString() => TargetExists ? $"Target coord: {Target.Coord}" : "";

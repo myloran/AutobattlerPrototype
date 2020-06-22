@@ -4,7 +4,7 @@ using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
 using Shared.Exts;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Model.NBattleSimulation {
   public class PlayerContext {

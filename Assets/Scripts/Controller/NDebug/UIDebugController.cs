@@ -1,45 +1,47 @@
+using System;
 using Controller.Update;
 using UnityEngine;
-using View;
 using View.UIs;
+using static UnityEngine.Input;
+using static UnityEngine.KeyCode;
 
 namespace Controller.NDebug {
   public class UIDebugController : ITick {
     public UIDebugController(BattleSetupUI battleSetupUI, BattleSaveUI battleSaveUI, 
         BattleSimulationUI battleSimulationUI, UnitModelDebugController unitModelDebugController) {
-      this.battleSetupUI = battleSetupUI;
-      this.battleSaveUI = battleSaveUI;
-      this.battleSimulationUI = battleSimulationUI;
-      this.unitModelDebugController = unitModelDebugController;
+      battleSave = new ComponentEnabler(SetActive(battleSaveUI));
+      battleSetup = new ComponentEnabler(SetActive(battleSetupUI));
+      battleSimulation = new ComponentEnabler(SetActive(battleSimulationUI));
+      unitModelDebug = new ComponentEnabler(unitModelDebugController.SetActive);
     }
+
+    Action<bool> SetActive(Component component) => b => component.gameObject.SetActive(b);
 
     public void Tick() {
-      if (Input.GetKeyDown(KeyCode.F1)) {
-        isBattleSetupUIOn = !isBattleSetupUIOn; //TODO: extract to function
-        battleSetupUI.gameObject.SetActive(isBattleSetupUIOn);
-      }
-      if (Input.GetKeyDown(KeyCode.F2)) {
-        isBattleSaveUIOn = !isBattleSaveUIOn;
-        battleSaveUI.gameObject.SetActive(isBattleSaveUIOn);
-      }
-      if (Input.GetKeyDown(KeyCode.F3)) {
-        isBattleSimulationUIOn = !isBattleSimulationUIOn;
-        battleSimulationUI.gameObject.SetActive(isBattleSimulationUIOn);
-      }
-      if (Input.GetKeyDown(KeyCode.F4)) {
-        isUnitModelDebugControllerOn = !isUnitModelDebugControllerOn;
-        unitModelDebugController.SetActive(isUnitModelDebugControllerOn);
-      }
+      if (GetKeyDown(F1)) battleSetup.Toggle();
+      if (GetKeyDown(F2)) battleSave.Toggle();
+      if (GetKeyDown(F3)) battleSimulation.Toggle();
+      if (GetKeyDown(F4)) unitModelDebug.Toggle();
     }
 
-    readonly BattleSetupUI battleSetupUI;
-    readonly BattleSaveUI battleSaveUI;
-    readonly BattleSimulationUI battleSimulationUI;
-    readonly UnitModelDebugController unitModelDebugController;
-    
-    bool isBattleSetupUIOn,
-      isBattleSaveUIOn,
-      isBattleSimulationUIOn,
-      isUnitModelDebugControllerOn;
+    readonly ComponentEnabler battleSetup, 
+      battleSave, 
+      battleSimulation, 
+      unitModelDebug;
+
+    class ComponentEnabler {
+      public ComponentEnabler(Action<bool> action, bool isOn = false) {
+        this.action = action;
+        this.isOn = isOn;
+      }
+
+      public void Toggle() {
+        isOn = !isOn;
+        action(isOn);
+      }
+      
+      readonly Action<bool> action;
+      bool isOn;
+    }
   }
 }

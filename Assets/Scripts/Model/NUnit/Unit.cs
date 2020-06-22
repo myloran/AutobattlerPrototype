@@ -6,7 +6,7 @@ using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Model.NUnit.Components;
 using Shared.Addons.Examples.FixMath;
-using Shared.Poco;
+using Shared.Primitives;
 
 namespace Model.NUnit {
   public class Unit : IUnit {

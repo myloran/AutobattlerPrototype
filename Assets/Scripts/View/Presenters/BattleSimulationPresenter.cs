@@ -23,7 +23,7 @@ namespace View.Presenters {
         var position = tile.PositionAt(coord).WithY(unit.Height);
         unit.ResetState(position);
       }
-      board.Reset(boardUnits);
+      board.SetUnits(boardUnits);
     }
     
     public void SimulationTick(float time) => tickables.SimulationTick(time);

@@ -46,6 +46,7 @@ namespace Model.NUnit {
       return isPlayerDead;
     }
     
+    //TODO: provide from outside model and allow to stop logs
     IDecisionTreeNode WithLogging(IDecisionTreeNode decision) => new LoggingDecorator(decision);
     
     readonly IEventBus bus;
