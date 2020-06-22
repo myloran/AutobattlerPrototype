@@ -45,10 +45,11 @@ namespace Model.NBattleSimulation {
     }
     
     readonly FibonacciHeap<PriorityCommand, F32> aiHeap = 
-      new FibonacciHeap<PriorityCommand, F32>(MinValue);
+      new FibonacciHeap<PriorityCommand, F32>(MinValue); //TODO: Pool commands
     
+    //TODO: optimize capacity
     readonly Dictionary<F32, FibonacciHeapNode<PriorityCommand, F32>> nodes = 
-      new Dictionary<F32, FibonacciHeapNode<PriorityCommand, F32>>(); //TODO: fix allocations inside heap
+      new Dictionary<F32, FibonacciHeapNode<PriorityCommand, F32>>(100); //TODO: fix allocations inside heap
     static readonly Logger log = MainLog.GetLogger(nameof(AiContext));
   }
 }

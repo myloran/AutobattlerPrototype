@@ -68,6 +68,7 @@ namespace Shared.Primitives {
 
     public static bool IsPlayer1Bench(this Coord coord) => coord.Y == Player1BenchId;
     public static bool IsPlayer2Bench(this Coord coord) => coord.Y == Player2BenchId;
+    public static bool IsBench(this Coord coord) => coord.Y < 0;
     
     public static bool BelongsToPlayer(this Coord coord, EPlayer player) => 
       coord.Y == player.BenchId();

@@ -15,6 +15,7 @@ using Model.NUnit;
 using Shared;
 using UnityEngine;
 using Model;
+using Model.NAI.NDecisionTree;
 using PlasticFloor.EventBus;
 using Shared.Abstraction;
 using Shared.Addons.OkwyLogging;
@@ -71,7 +72,8 @@ namespace Infrastructure {
       var inputController = new InputController(tickController);
       //TODO: implement event bus that won't allocate(no delegates)
       var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library from model
-      EventBus.Log = m => log.Info($"{m}");
+      EventBus.Log = m => log.Info($"{m}"); //TODO: remove that lmao
+      EventBus.IsLogOn = () => DebugController.Info.IsDebugOn;
       
       #endregion
       #region View
@@ -90,7 +92,8 @@ namespace Infrastructure {
       #endregion
       #region Model
       //TODO: replace board/bench dictionaries with array?                
-      var unitFactory = new UnitFactory(units, new DecisionFactory(eventBus));
+      var unitFactory = new UnitFactory(units, 
+        new DecisionFactory(eventBus, d => new LoggingDecorator(d, DebugController.Info)));
       var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));
       var board = new Board();
       var aiHeap = new AiHeap();
@@ -216,7 +219,6 @@ namespace Infrastructure {
       #endregion
 
       MonoBehaviourCallBackController.StartUpdating(tickController);
-      //TODO: add IDisposable controllers to CompositeDisposable and reverse dispose them on unity OnDestroy callback 
     }
 
     void OnDestroy() => disposable.Clear();

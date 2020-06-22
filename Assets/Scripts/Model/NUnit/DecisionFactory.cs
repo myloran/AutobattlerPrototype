@@ -1,3 +1,4 @@
+using System;
 using Model.NAI;
 using Model.NAI.Actions;
 using Model.NAI.Decisions;
@@ -7,48 +8,49 @@ using PlasticFloor.EventBus;
 
 namespace Model.NUnit {
   public class DecisionFactory {
-    public DecisionFactory(IEventBus bus) => this.bus = bus;
+    public DecisionFactory(IEventBus bus, Func<IDecisionTreeNode, IDecisionTreeNode> log) {
+      this.bus = bus;
+      this.log = log;
+    }
 
     public IDecisionTreeNode Create(IUnit unit) { //TODO: replace ienumerable in model to avoid allocations 
       //TODO: Think of mechanism to not queue MakeDecision command and instead subscribe to interested events and make decision when something happens
-      var doNothing = WithLogging(new DoNothing(unit, bus));
-      var findNearestTargetAction = WithLogging(new FindNearestTargetAction(unit, bus));
-      var startAttack = WithLogging(new StartAttackAction(unit, bus));
-      var attack = WithLogging(new AttackAction(unit, bus));
-      var waitFirstEnemyArriving = WithLogging(new WaitFirstEnemyArriving(unit, bus));
-      var waitMoveDiff = WithLogging(new WaitDiffBetweenDiagonalAndStraightMove(unit, bus));
-      var move = WithLogging(new MoveAction(unit, bus));
+      var doNothing = log(new DoNothing(unit, bus));
+      var findNearestTargetAction = log(new FindNearestTargetAction(unit, bus));
+      var startAttack = log(new StartAttackAction(unit, bus));
+      var attack = log(new AttackAction(unit, bus));
+      var waitFirstEnemyArriving = log(new WaitFirstEnemyArriving(unit, bus));
+      var waitMoveDiff = log(new WaitDiffBetweenDiagonalAndStraightMove(unit, bus));
+      var move = log(new MoveAction(unit, bus));
       var waitForAlliesToMoveAction = new WaitForAlliesToMoveAction(unit, bus);
 
-      var isSurrounded = WithLogging(new IsSurrounded(
+      var isSurrounded = log(new IsSurrounded(
         waitForAlliesToMoveAction, doNothing, unit));
 
-      var canMove = WithLogging(new CanMove(move, isSurrounded, unit));
+      var canMove = log(new CanMove(move, isSurrounded, unit));
       
       var isEnemyArrivingToAdjacentTile = new CheckEnemiesArrivingToAdjacentTile(
         canMove, waitFirstEnemyArriving, waitMoveDiff, unit);
 
-      var canStartAttack = WithLogging(new CanStartAttack(
+      var canStartAttack = log(new CanStartAttack(
         startAttack, attack, unit));
       
-      var isWithinAttackRangeDecision = WithLogging(new IsWithinAttackRange(
+      var isWithinAttackRangeDecision = log(new IsWithinAttackRange(
         canStartAttack, isEnemyArrivingToAdjacentTile, unit));
       
-      var hasTarget = WithLogging(new HasTarget(
+      var hasTarget = log(new HasTarget(
         isWithinAttackRangeDecision, findNearestTargetAction, unit));
 
-      var isAlive = WithLogging(new IsAlive(
+      var isAlive = log(new IsAlive(
         hasTarget, doNothing, unit));
 
-      var isPlayerDead = WithLogging(new IsPlayerDead(
+      var isPlayerDead = log(new IsPlayerDead(
         doNothing, isAlive, unit));
 
       return isPlayerDead;
     }
     
-    //TODO: provide from outside model and allow to stop logs
-    IDecisionTreeNode WithLogging(IDecisionTreeNode decision) => new LoggingDecorator(decision);
-    
     readonly IEventBus bus;
+    readonly Func<IDecisionTreeNode, IDecisionTreeNode> log;
   }
 }

@@ -11,8 +11,8 @@ namespace Shared.Abstraction {
     }
     
     public void MoveUnit(Coord from, Coord to) {
-      var fromDict = from.Y < 0 ? benchUnits : boardUnits; //TODO: replace magic numbers
-      var toDict = to.Y < 0 ? benchUnits : boardUnits;
+      var fromDict = from.IsBench() ? benchUnits : boardUnits;
+      var toDict = to.IsBench() ? benchUnits : boardUnits;
 
       if (!fromDict.ContainsKey(from)) {
         // log.Error($"Dict does not have unit at coord: {from}");

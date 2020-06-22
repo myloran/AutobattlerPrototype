@@ -71,7 +71,7 @@ namespace Model.NBattleSimulation {
         }
     }
     
-    Dictionary<Coord, IUnit> units = new Dictionary<Coord, IUnit>(MaxUnitsOnBoard);
+    Dictionary<Coord, IUnit> units = new Dictionary<Coord, IUnit>(MaxUnitsOnBoard * 2); //when unit moves it occupies tile thus * 2
     PlayerContext context;
   }
 }
