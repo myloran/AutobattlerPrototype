@@ -17,14 +17,21 @@ namespace View.UIs {
       BLoadPrevious;
     
     public void Init(IEnumerable<string> names) {
+      Reset(names);
+      Subs();
+    }
+
+    void Subs() {
+      FSaveName.onValueChanged.AsObservable().Subscribe(CheckSaveEnabled).AddTo(this);
+      BAdd.Sub(CheckLoadEnabled);
+    }
+
+    void Reset(IEnumerable<string> names) {
       DSaves.ResetOptions(names);
 
       if (!DSaves.options.Any()) BLoad.Disable();
       BLoadPrevious.Disable();
       BAdd.Disable();
-      
-      FSaveName.onValueChanged.AsObservable().Subscribe(CheckSaveEnabled).AddTo(this);
-      BAdd.Sub(CheckLoadEnabled);
     }
 
     public string SaveName => FSaveName.text;

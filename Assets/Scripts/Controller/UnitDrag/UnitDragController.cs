@@ -26,18 +26,17 @@ namespace Controller.UnitDrag {
       this.unitSelectionController = unitSelectionController;
     }
     
-    public void Init() {
+    public void SubToUnitSelection() {
       HandleStartDrag();
       HandleDrag();
       HandleStopDrag();
     }
     
-    void HandleStartDrag() {
+    void HandleStartDrag() =>
       unitSelectionController.UnitSelected
         .Where(canStartDrag.Check)
         .Subscribe(StartDrag)
         .AddTo(disposable);
-    }
 
     void HandleDrag() {
       CoordChanged = inputController.OnMouseHeld

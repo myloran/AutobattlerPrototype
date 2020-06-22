@@ -182,37 +182,38 @@ namespace Infrastructure {
       //TODO: instead of init say something meaningful
       #region View
 
-      BattleSetupUI.Init(units.Keys.ToList());
+      BattleSetupUI.SetDropdownOptions(units.Keys.ToList());
       BattleSaveUI.Init(saves.Keys.ToList());
       tileSpawner.SpawnTiles();
 
       #endregion
       #region Infrastructure
 
-      eventHolder.Init(aiContext); //TODO: remove
-      tickController.Init(takenCoordDebugController, targetDebugController, uiDebugController,  
-        unitModelDebugController, realtimeBattleSimulationController, DebugController); //TODO: register implicitly?
-      inputController.Init();
+      eventHolder.SetTime(aiContext); //TODO: remove
+      tickController.InitObservable(takenCoordDebugController, targetDebugController, 
+        uiDebugController, unitModelDebugController, realtimeBattleSimulationController, 
+        DebugController); //TODO: register implicitly?
+      inputController.InitObservables();
 
       #endregion
       #region Controller
 
-      unitSelectionController.Init();
-      unitDragController.Init();
-      tileHighlightController.Init();
-      unitMoveController.Init();
-      unitTooltipController.Init();
+      unitSelectionController.SubToInput();
+      unitDragController.SubToUnitSelection();
+      tileHighlightController.SubToDrag();
+      unitMoveController.SubToDrag();
+      unitTooltipController.SubToUnitSelection();
 
       #endregion
       #region Debug
 
-      unitModelDebugController.Init();
-      battleSimulationDebugController.InitSubs();
+      unitModelDebugController.SubToUnitSelection();
+      battleSimulationDebugController.SubToUI();
       DebugController.Init(UnitTooltipUI);
 
       #endregion
 
-      MonoBehaviourCallBackController.Init(tickController);
+      MonoBehaviourCallBackController.StartUpdating(tickController);
       //TODO: add IDisposable controllers to CompositeDisposable and reverse dispose them on unity OnDestroy callback 
     }
 

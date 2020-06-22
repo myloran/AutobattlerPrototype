@@ -24,7 +24,7 @@ namespace Controller.NDebug {
       this.battleStateController = battleStateController;
     }
 
-    public void Init() {
+    public void SubToUnitSelection() {
       unitSelectionController.UnitSelected.Subscribe(SelectUnitModel).AddTo(disposable);
       // unitSelectionController.UnitDeselected.Subscribe(Hide).AddTo(disposable);
     }

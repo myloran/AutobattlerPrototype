@@ -21,7 +21,7 @@ namespace Controller.NDebug {
       this.simulationPresenter = simulationPresenter;
     }
 
-    public void InitSubs() {
+    public void SubToUI() {
       BattleControlSubs();
       BattleSimulationSubs();
     }

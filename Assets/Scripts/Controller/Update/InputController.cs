@@ -12,7 +12,7 @@ namespace Controller.Update {
 
     public InputController(TickController tickController) => this.tickController = tickController;
 
-    public void Init() {  
+    public void InitObservables() {  
       OnMouseDown = tickController.OnUpdate.Where(IsMouseDown).Connect(disposable);
       OnMouseHeld = tickController.OnUpdate.Where(IsMouseHeld).Connect(disposable);
       OnMouseUp = tickController.OnUpdate.Where(IsMouseUp);

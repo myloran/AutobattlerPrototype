@@ -19,19 +19,26 @@ namespace Controller.NUnit {
       this.coordFinder = coordFinder;
     }
     
-    public void Init() {
-      UnitSelected = inputController.OnMouseDown
-        .Select(raycastController.FireRaycast)
-        .SelectWhere(raycastController.RaycastHitsUnit)
-        .Select(DragInfo)
-        .Connect(disposable);
+    public void SubToInput() {
+      InitUnitSelected();
+      InitUnitDeselected();
+    }
 
+    void InitUnitDeselected() {
       UnitDeselected = inputController.OnMouseUp
         .Where(_ => !UIExt.IsPointerOverUIElement())
         .Select(raycastController.FireRaycast)
         .Where(_ => !raycastController.RaycastHitsUnit(_).isHit) //TODO: do one raycast with layers combines
         .Where(raycastController.RaycastHitsGlobalCollider)
         .AsUnitObservable();
+    }
+
+    void InitUnitSelected() {
+      UnitSelected = inputController.OnMouseDown
+        .Select(raycastController.FireRaycast)
+        .SelectWhere(raycastController.RaycastHitsUnit)
+        .Select(DragInfo)
+        .Connect(disposable);
     }
 
     UnitSelectedEvent DragInfo(RaycastHit hit) {

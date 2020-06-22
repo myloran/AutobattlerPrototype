@@ -14,7 +14,7 @@ namespace Controller.NTile {
       this.untDragController = untDragController;
     }
 
-    public void Init() {
+    public void SubToDrag() {
       untDragController.CoordChanged.Subscribe(ChangeHighlight).AddTo(disposable);
       untDragController.DragEnded.Subscribe(Unhighlight).AddTo(disposable);
     }

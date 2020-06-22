@@ -16,7 +16,7 @@ namespace Controller.NUnit {
       this.unitSelectionController = unitSelectionController;
     }
 
-    public void Init() {
+    public void SubToUnitSelection() {
       unitSelectionController.UnitSelected.Subscribe(UpdateTooltip).AddTo(disposable);
       unitSelectionController.UnitDeselected.Subscribe(ui.Hide).AddTo(disposable);
     }  

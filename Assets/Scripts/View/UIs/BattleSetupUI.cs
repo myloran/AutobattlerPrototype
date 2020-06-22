@@ -12,7 +12,7 @@ namespace View.UIs {
     public Button BAdd,
       BRemove;
 
-    public void Init(IEnumerable<string> names) => DUnits.ResetOptions(names);
+    public void SetDropdownOptions(IEnumerable<string> names) => DUnits.ResetOptions(names);
 
     public string GetSelectedUnitName => DUnits.options[DUnits.value].text;
     public int GetSelectedPlayerId => DPlayers.value;

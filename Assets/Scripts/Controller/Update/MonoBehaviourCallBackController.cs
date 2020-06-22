@@ -7,7 +7,7 @@ namespace Controller.Update {
         tick.Tick();
     }
 
-    public void Init(ITick tick) {
+    public void StartUpdating(ITick tick) {
       this.tick = tick;
       isInit = true;
     }

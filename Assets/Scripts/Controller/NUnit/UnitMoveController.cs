@@ -9,7 +9,7 @@ namespace Controller.NUnit {
       this.unitDragController = unitDragController;
     }
 
-    public void Init() => unitDragController.DragEnded.Subscribe(MoveUnit).AddTo(disposable);
+    public void SubToDrag() => unitDragController.DragEnded.Subscribe(MoveUnit).AddTo(disposable);
     public void Dispose() => disposable.Clear();
 
     void MoveUnit(DragEndedEvent e) => context.Move(e.Start, e.Last); //TODO: expose unitMoved event so that battle simulation will subscribe and add the unit to simulation

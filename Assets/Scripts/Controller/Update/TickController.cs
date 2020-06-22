@@ -4,7 +4,7 @@ namespace Controller.Update {
   public class TickController : ITick {
     public System.IObservable<long> OnUpdate;
     
-    public void Init(params ITick[] ticks) {
+    public void InitObservable(params ITick[] ticks) {
       this.ticks = ticks;
       OnUpdate = Observable.EveryUpdate();
     }

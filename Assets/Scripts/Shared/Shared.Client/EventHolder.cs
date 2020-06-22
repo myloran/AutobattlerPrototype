@@ -11,7 +11,7 @@ namespace Shared.Shared.Client {
       this.bus = bus;
     }
     
-    public void Init(ITime time) => this.time = time;
+    public void SetTime(ITime time) => this.time = time;
 
     public bool HasEventInHeap => events.Min() != null;
     public F32 NextEventTime => events.Min().Key;
