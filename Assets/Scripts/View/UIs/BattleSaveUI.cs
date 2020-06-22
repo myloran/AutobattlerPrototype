@@ -16,7 +16,7 @@ namespace View.UIs {
       BLoad,
       BLoadPrevious;
     
-    public void Init(IEnumerable<string> names) {
+    public void SubToUI(IEnumerable<string> names) {
       Reset(names);
       Subs();
     }

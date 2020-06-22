@@ -24,6 +24,9 @@ namespace Controller.Save {
       this.saveInfoLoader = saveInfoLoader;
       this.saves = saves;
       this.battleSimulationController = battleSimulationController;
+    }
+
+    public void SubToUI() {
       ui.BAdd.Sub(Save);
       ui.BLoad.Sub(Load);
       // ui.BLoadPrevious.Sub(LoadPrevious);

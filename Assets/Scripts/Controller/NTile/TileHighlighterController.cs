@@ -7,14 +7,14 @@ using UniRx;
 using View.NTile;
 
 namespace Controller.NTile {
-  public class TileHighlighterController : IDisposable {
+  public class TileHighlighterController {
     public TileHighlighterController(TilePresenter tilePresenter, 
         UnitDragController untDragController) {
       this.tilePresenter = tilePresenter;
       this.untDragController = untDragController;
     }
 
-    public void SubToDrag() {
+    public void SubToDrag(CompositeDisposable disposable) {
       untDragController.CoordChanged.Subscribe(ChangeHighlight).AddTo(disposable);
       untDragController.DragEnded.Subscribe(Unhighlight).AddTo(disposable);
     }
@@ -28,10 +28,7 @@ namespace Controller.NTile {
       tilePresenter.TileAt(e.To).Highlight();
     }
     
-    public void Dispose() => disposable.Clear();
-
     readonly TilePresenter tilePresenter;
     readonly UnitDragController untDragController;
-    readonly CompositeDisposable disposable = new CompositeDisposable();
   }
 }

@@ -1,6 +1,5 @@
 using System;
 using Controller.Exts;
-using Controller.NTile;
 using Controller.Update;
 using UniRx;
 using UnityEngine;
@@ -8,7 +7,7 @@ using View.NTile;
 using View.NUnit;
 
 namespace Controller.NUnit {
-  public class UnitSelectionController : IDisposable {
+  public class UnitSelectionController {
     public IObservable<UnitSelectedEvent> UnitSelected;
     public IObservable<Unit> UnitDeselected;
     
@@ -19,27 +18,28 @@ namespace Controller.NUnit {
       this.coordFinder = coordFinder;
     }
     
-    public void SubToInput() {
+    public void SubToInput(CompositeDisposable disposable) {
       InitUnitSelected();
       InitUnitDeselected();
+      
+      void InitUnitDeselected() {
+        UnitDeselected = inputController.OnMouseUp
+          .Where(_ => !UIExt.IsPointerOverUIElement())
+          .Select(raycastController.FireRaycast)
+          .Where(_ => !raycastController.RaycastHitsUnit(_).isHit) //TODO: do one raycast with layers combines
+          .Where(raycastController.RaycastHitsGlobalCollider)
+          .AsUnitObservable();
+      }
+
+      void InitUnitSelected() {
+        UnitSelected = inputController.OnMouseDown
+          .Select(raycastController.FireRaycast)
+          .SelectWhere(raycastController.RaycastHitsUnit)
+          .Select(DragInfo)
+          .Connect(disposable);
+      }
     }
 
-    void InitUnitDeselected() {
-      UnitDeselected = inputController.OnMouseUp
-        .Where(_ => !UIExt.IsPointerOverUIElement())
-        .Select(raycastController.FireRaycast)
-        .Where(_ => !raycastController.RaycastHitsUnit(_).isHit) //TODO: do one raycast with layers combines
-        .Where(raycastController.RaycastHitsGlobalCollider)
-        .AsUnitObservable();
-    }
-
-    void InitUnitSelected() {
-      UnitSelected = inputController.OnMouseDown
-        .Select(raycastController.FireRaycast)
-        .SelectWhere(raycastController.RaycastHitsUnit)
-        .Select(DragInfo)
-        .Connect(disposable);
-    }
 
     UnitSelectedEvent DragInfo(RaycastHit hit) {
       var unit = hit.transform.GetComponent<UnitView>();
@@ -47,11 +47,8 @@ namespace Controller.NUnit {
       return new UnitSelectedEvent(unit, coord);
     }
 
-    public void Dispose() => disposable?.Dispose();
-    
     readonly InputController inputController;
     readonly RaycastController raycastController;
     readonly CoordFinder coordFinder;
-    readonly CompositeDisposable disposable = new CompositeDisposable();
   }
 }

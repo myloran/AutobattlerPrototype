@@ -1,20 +1,13 @@
-using System;
 using System.Collections.Generic;
 using PlasticFloor.EventBus;
-using Shared;
 using Shared.Abstraction;
 using Shared.Primitives;
-using Shared.Shared.Client;
 using Shared.Shared.Client.Abstraction;
 using Shared.Shared.Client.Events;
-using UnityEngine;
 using View;
 using View.Exts;
 using View.NTile;
-using View.NUnit;
-using View.NUnit.States;
 using View.Presenters;
-using View.Views;
 
 namespace Controller.NBattleSimulation {
   public class MovementController : IEventHandler<StartMoveEvent>, 

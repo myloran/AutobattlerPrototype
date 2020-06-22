@@ -6,7 +6,7 @@ using View.NUnit;
 using View.UIs;
 
 namespace Controller.NUnit {
-  public class UnitTooltipController : IDisposable {
+  public class UnitTooltipController {
     readonly UnitTooltipUI ui;
     readonly UnitSelectionController unitSelectionController;
 
@@ -16,7 +16,7 @@ namespace Controller.NUnit {
       this.unitSelectionController = unitSelectionController;
     }
 
-    public void SubToUnitSelection() {
+    public void SubToUnitSelection(CompositeDisposable disposable) {
       unitSelectionController.UnitSelected.Subscribe(UpdateTooltip).AddTo(disposable);
       unitSelectionController.UnitDeselected.Subscribe(ui.Hide).AddTo(disposable);
     }  
@@ -32,9 +32,6 @@ namespace Controller.NUnit {
         ui.SetHealth(health);
     }
     
-    public void Dispose() => disposable.Dispose();
-    
     UnitView unit;
-    readonly CompositeDisposable disposable = new CompositeDisposable();
   }
 }

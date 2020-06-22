@@ -13,6 +13,9 @@ namespace Controller.NDebug {
       this.playerContext = playerContext;
       this.playerPresenterContext = playerPresenterContext;
       this.ui = ui;
+    }
+
+    public void SubToUI() {
       ui.BAdd.Sub(AddUnit);
       ui.BRemove.Sub(RemoveUnit);
     }

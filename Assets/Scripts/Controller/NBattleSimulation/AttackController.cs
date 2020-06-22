@@ -1,13 +1,8 @@
 using Controller.NUnit;
 using PlasticFloor.EventBus;
-using Shared.Abstraction;
 using Shared.Addons.OkwyLogging;
-using Shared.Shared.Client;
-using Shared.Shared.Client.Abstraction;
 using Shared.Shared.Client.Events;
 using View.Exts;
-using View.NUnit;
-using View.NUnit.States;
 using View.Presenters;
 using Logger = Shared.Addons.OkwyLogging.Logger;
 
@@ -32,6 +27,5 @@ namespace Controller.NBattleSimulation {
     
     readonly BoardPresenter boardPresenter;
     readonly UnitTooltipController unitTooltipController;
-    static readonly Logger log = MainLog.GetLogger(nameof(AttackController));
   }
 }

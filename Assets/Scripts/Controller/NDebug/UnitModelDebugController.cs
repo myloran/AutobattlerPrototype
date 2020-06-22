@@ -1,30 +1,22 @@
-using System;
-using Controller.UnitDrag;
 using Controller.Update;
-using Model;
 using View.UIs;
 using UniRx;
-using Controller.Exts;
-using Controller.NBattleSimulation;
 using Controller.NUnit;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
-using Unit = Model.NUnit.Unit;
 
 namespace Controller.NDebug {
-  public class UnitModelDebugController : ITick, IDisposable {
+  public class UnitModelDebugController : ITick {
     public UnitModelDebugController(PlayerContext playerContext, Board board,
-        ModelUI ui, DebugInfo debugInfo, UnitSelectionController unitSelectionController,
-        BattleStateController battleStateController) {
+        ModelUI ui, DebugInfo debugInfo, UnitSelectionController unitSelectionController) {
       this.playerContext = playerContext;
       this.board = board;
       this.ui = ui;
       this.debugInfo = debugInfo;
       this.unitSelectionController = unitSelectionController;
-      this.battleStateController = battleStateController;
     }
 
-    public void SubToUnitSelection() {
+    public void SubToUnitSelection(CompositeDisposable disposable) {
       unitSelectionController.UnitSelected.Subscribe(SelectUnitModel).AddTo(disposable);
       // unitSelectionController.UnitDeselected.Subscribe(Hide).AddTo(disposable);
     }
@@ -42,21 +34,14 @@ namespace Controller.NDebug {
       ui.gameObject.SetActive(isOn);
     }
 
-    public void Dispose() => disposable.Clear();
-                                                       
-    void SelectUnitModel(UnitSelectedEvent e) {
-      if (!debugInfo.IsDebugOn) return; //redundant check?
-
+    void SelectUnitModel(UnitSelectedEvent e) => 
       unit = board.TryGetUnit(e.StartCoord) ?? playerContext.GetUnit(e.StartCoord);
-    }
 
     readonly PlayerContext playerContext;
     readonly Board board;
     readonly ModelUI ui;
     readonly DebugInfo debugInfo;
     readonly UnitSelectionController unitSelectionController;
-    readonly BattleStateController battleStateController;
-    readonly CompositeDisposable disposable =new CompositeDisposable();
     IUnit unit;
     bool isOn;
   }

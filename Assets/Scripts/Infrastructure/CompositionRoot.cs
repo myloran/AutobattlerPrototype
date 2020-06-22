@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Controller;
@@ -19,6 +20,7 @@ using Shared.Abstraction;
 using Shared.Addons.OkwyLogging;
 using Shared.Shared.Client;
 using Shared.Shared.Client.Events;
+using UniRx;
 using View;
 using View.NTile;
 using View.NUnit;
@@ -70,7 +72,6 @@ namespace Infrastructure {
       //TODO: implement event bus that won't allocate(no delegates)
       var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library from model
       EventBus.Log = m => log.Info($"{m}");
-      var eventHolder = new EventHolder(eventBus);
       
       #endregion
       #region View
@@ -89,7 +90,7 @@ namespace Infrastructure {
       #endregion
       #region Model
       //TODO: replace board/bench dictionaries with array?                
-      var unitFactory = new UnitFactory(units, new DecisionFactory(eventHolder));
+      var unitFactory = new UnitFactory(units, new DecisionFactory(eventBus));
       var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));
       var board = new Board();
       var aiHeap = new AiHeap();
@@ -164,7 +165,7 @@ namespace Infrastructure {
         playerPresenterContext, BattleSetupUI);
 
       var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
-        DebugController.Info, unitSelectionController, battleStateController);
+        DebugController.Info, unitSelectionController);
       
       var takenCoordDebugController = new TakenCoordDebugController(board, DebugController,
         tileSpawner);
@@ -179,17 +180,15 @@ namespace Infrastructure {
       #endregion
 
       yield return null;
-      //TODO: instead of init say something meaningful
       #region View
 
       BattleSetupUI.SetDropdownOptions(units.Keys.ToList());
-      BattleSaveUI.Init(saves.Keys.ToList());
+      BattleSaveUI.SubToUI(saves.Keys.ToList());
       tileSpawner.SpawnTiles();
 
       #endregion
       #region Infrastructure
 
-      eventHolder.SetTime(aiContext); //TODO: remove
       tickController.InitObservable(takenCoordDebugController, targetDebugController, 
         uiDebugController, unitModelDebugController, realtimeBattleSimulationController, 
         DebugController); //TODO: register implicitly?
@@ -198,16 +197,19 @@ namespace Infrastructure {
       #endregion
       #region Controller
 
-      unitSelectionController.SubToInput();
-      unitDragController.SubToUnitSelection();
-      tileHighlightController.SubToDrag();
-      unitMoveController.SubToDrag();
-      unitTooltipController.SubToUnitSelection();
+      unitSelectionController.SubToInput(disposable);
+      battleStateController.SubToUI();
+      unitDragController.SubToUnitSelection(disposable);
+      tileHighlightController.SubToDrag(disposable);
+      unitMoveController.SubToDrag(disposable);
+      unitTooltipController.SubToUnitSelection(disposable);
 
       #endregion
       #region Debug
 
-      unitModelDebugController.SubToUnitSelection();
+      battleSaveController.SubToUI();
+      battleSetupController.SubToUI();
+      unitModelDebugController.SubToUnitSelection(disposable);
       battleSimulationDebugController.SubToUI();
       DebugController.Init(UnitTooltipUI);
 
@@ -217,6 +219,9 @@ namespace Infrastructure {
       //TODO: add IDisposable controllers to CompositeDisposable and reverse dispose them on unity OnDestroy callback 
     }
 
+    void OnDestroy() => disposable.Clear();
+
     static readonly Logger log = MainLog.GetLogger(nameof(CompositionRoot));
+    readonly CompositeDisposable disposable = new CompositeDisposable();
   }
 }

@@ -17,6 +17,6 @@ namespace Controller.NBattleSimulation {
     public void HandleEvent(StartAttackEvent e) => 
       board.GetUnit(e.Coord).ChangeStateTo(EState.Attacking);
 
-    BoardPresenter board;
+    readonly BoardPresenter board;
   }
 }
