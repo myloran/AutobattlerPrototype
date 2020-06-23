@@ -4,6 +4,9 @@ using Model.NUnit.Abstraction;
 
 namespace Model.NAI.Decisions {
   public class CanMove : BaseDecision {
+    public override EDecision Type { get; } = EDecision.CanMove;
+    public CanMove() { }
+
     public CanMove(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, IUnit unit) 
       : base(trueNode, falseNode, unit) { }
     

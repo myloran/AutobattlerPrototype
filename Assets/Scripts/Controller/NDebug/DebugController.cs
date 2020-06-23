@@ -1,4 +1,5 @@
 using Controller.Update;
+using Infrastructure.OkwyLoggingUnity;
 using Shared.Addons.OkwyLogging;
 using UnityEngine;
 using View.UIs;
@@ -32,7 +33,7 @@ namespace Controller.NDebug {
 
     void CheckLog() {
       if (Info.IsLogEnabled)
-        MainLog.DefaultInit();
+        OkwyDefaultLog.DefaultInit();
       else
         MainLog.ResetAppenders();
     }

@@ -8,6 +8,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAI.Actions {
   public class FindNearestTargetAction : BaseAction {
+    public override EDecision Type { get; } = EDecision.FindNearestTarget;
     public FindNearestTargetAction(IUnit unit, IEventBus bus) : base(unit, bus) { }
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {

@@ -8,6 +8,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Actions {
   public class WaitFirstEnemyArriving : BaseAction {
+    public override EDecision Type { get; } = EDecision.WaitFirstEnemyArriving;
     public WaitFirstEnemyArriving(IUnit unit, IEventBus bus) : base(unit, bus) { }
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {

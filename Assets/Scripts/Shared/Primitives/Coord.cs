@@ -1,7 +1,7 @@
 using System;
 using MessagePack;
 using static Shared.Const;
-using static UnityEngine.Mathf;
+using static Shared.Exts.MathExt;
 
 namespace Shared.Primitives {
   [Serializable]

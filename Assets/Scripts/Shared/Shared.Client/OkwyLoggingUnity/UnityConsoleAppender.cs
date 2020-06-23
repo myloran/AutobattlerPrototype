@@ -1,7 +1,9 @@
-﻿using Shared.Addons.OkwyLogging.Formatters;
+﻿using Shared.Addons.OkwyLogging;
+using Shared.Addons.OkwyLogging.Formatters;
 using UnityEngine;
+using Logger = Shared.Addons.OkwyLogging.Logger;
 
-namespace Shared.Addons.OkwyLogging.Appenders {
+namespace Infrastructure.OkwyLoggingUnity {
     public class UnityConsoleAppender {
         IFormatter formatter;
 
@@ -25,12 +27,14 @@ namespace Shared.Addons.OkwyLogging.Appenders {
                 : message, logLevel);
 
         void LogMessage(string message, LogLevel lvl) {
+#if UNITY_5_3_OR_NEWER
             if (lvl == LogLevel.Error)
                 Debug.LogError(message);
             else if (lvl == LogLevel.Warn)
                 Debug.LogWarning(message);
             else
                 Debug.Log(message);
+#endif
         }
     }
 }

@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using Shared.Addons.OkwyLogging.Appenders;
-using Shared.Addons.OkwyLogging.Formatters;
-using UnityEngine;
 
 namespace Shared.Addons.OkwyLogging {
   public static class MainLog {
@@ -89,15 +85,6 @@ namespace Shared.Addons.OkwyLogging {
         RemoveAppender(appender);
       }
       _appenders = null;
-    }
-
-    public static void DefaultInit() {
-      globalLogLevel = LogLevel.Info;
-      ResetAppenders();
-      AddAppender(new FileWriterAppender(
-        Path.Combine(Application.persistentDataPath, "Application.log"),
-        new FullFormatter()).WriteLine);
-      AddAppender(new UnityConsoleAppender(new TimeFormatter()).WriteLine);
     }
 
     static readonly List<LogDelegate> appenders = new List<LogDelegate>();

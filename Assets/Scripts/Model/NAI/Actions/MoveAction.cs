@@ -6,7 +6,7 @@ using PlasticFloor.EventBus;
 
 namespace Model.NAI.Actions {
   public class MoveAction : BaseAction {
-    public override EDecision Type { get; } = EDecision.MoveAction;
+    public override EDecision Type { get; } = EDecision.Move;
     
     public MoveAction(IUnit unit, IEventBus bus) : base(unit, bus) { }
 

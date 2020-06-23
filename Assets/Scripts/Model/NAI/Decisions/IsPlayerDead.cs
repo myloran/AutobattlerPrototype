@@ -4,6 +4,8 @@ using Model.NUnit.Abstraction;
 
 namespace Model.NAI.Decisions {
   public class IsPlayerDead : BaseDecision {
+    public override EDecision Type { get; } = EDecision.IsPlayerDead;
+
     public IsPlayerDead(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, IUnit unit) 
       : base(trueNode, falseNode, unit) { }
 

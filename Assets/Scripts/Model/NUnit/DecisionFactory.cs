@@ -47,6 +47,21 @@ namespace Model.NUnit {
       var isPlayerDead = log(new IsPlayerDead(
         doNothing, isAlive, unit));
 
+      // isPlayerDead.Do(doNothing).Else(isAlive);
+      // isAlive.Do(hasTarget).Else(doNothing);
+      // hasTarget.Do(isWithinAttackRangeDecision).Else(findNearestTargetAction);
+      // isWithinAttackRangeDecision.Do(canStartAttack).Else(isEnemyArrivingToAdjacentTile);
+      // isEnemyArrivingToAdjacentTile.Do()
+      // canStartAttack.Do(startAttack).Else(attack);
+      //
+      //   
+      //               canStartAttack.Do(
+      //                   startAttack).Else(
+      //                 attack)).Else(
+      //             isEnemyArrivingToAdjacentTile)).Else(
+      //         findNearestTargetAction)).OnFalse(
+      //     doNothing));
+
       return isPlayerDead;
     }
     
