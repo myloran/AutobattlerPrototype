@@ -6,11 +6,12 @@ using PlasticFloor.EventBus;
 
 namespace Model.NAI.NDecisionTree {
   public abstract class BaseAction : IDecisionTreeNode {
-    public virtual EDecision Type { get; } = EDecision.BaseAction;
-    public readonly IUnit Unit;
-    protected readonly IEventBus Bus;
+    public IUnit Unit;
+    protected IEventBus Bus;
     
-    protected BaseAction(IUnit unit, IEventBus bus) {
+    public virtual EDecision Type { get; } = EDecision.BaseAction;
+    
+    protected void Init(IUnit unit, IEventBus bus) {
       Bus = bus;
       Unit = unit;
     }

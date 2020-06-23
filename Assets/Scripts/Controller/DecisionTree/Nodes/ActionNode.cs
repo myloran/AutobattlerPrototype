@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using Model.NAI.NDecisionTree;
+using UnityEngine;
 using XNode;
 
-namespace Data.DecisionTree.Nodes {
-	public class ActionNode : Node {
+namespace Controller.DecisionTree.Nodes {
+	public class ActionNode : Node, IDecisionTreeTypeNode {
 		[Input(connectionType = ConnectionType.Override), HideInInspector] public bool input;
 
+		public int Selected { get; set; }
+
+		public EDecision Type { get; } = EDecision.BaseAction;
+		
 		// Use this for initialization
 		protected override void Init() {
 			base.Init();
@@ -15,5 +20,6 @@ namespace Data.DecisionTree.Nodes {
 		public override object GetValue(NodePort port) {
 			return null; // Replace this
 		}
+
 	}
 }

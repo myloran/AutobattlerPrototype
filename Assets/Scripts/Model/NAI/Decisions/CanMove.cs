@@ -5,11 +5,7 @@ using Model.NUnit.Abstraction;
 namespace Model.NAI.Decisions {
   public class CanMove : BaseDecision {
     public override EDecision Type { get; } = EDecision.CanMove;
-    public CanMove() { }
 
-    public CanMove(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, IUnit unit) 
-      : base(trueNode, falseNode, unit) { }
-    
     protected override bool GetBranch(AiContext context) {
       var canMove = moveFinder.Find(Unit, context);
       Unit.NextMove = moveFinder.MoveInfo;

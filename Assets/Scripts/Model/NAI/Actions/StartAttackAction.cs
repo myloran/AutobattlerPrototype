@@ -9,7 +9,6 @@ using Shared.Shared.Client.Events;
 namespace Model.NAI.Actions {
   public class StartAttackAction : BaseAction {
     public override EDecision Type { get; } = EDecision.StartAttack;
-    public StartAttackAction(IUnit unit, IEventBus bus) : base(unit, bus) { }
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       Unit.StartAttack(context.CurrentTime);

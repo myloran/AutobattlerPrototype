@@ -1,0 +1,17 @@
+{
+    "name": "DecisionTreeGraph",
+    "references": [
+        "GUID:b8e24fd1eb19b4226afebb2810e3c19b",
+        "GUID:d228a877cb3fc0e4688a979afcc663f8",
+        "GUID:274ace330c83660bf9d794592a06a80a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

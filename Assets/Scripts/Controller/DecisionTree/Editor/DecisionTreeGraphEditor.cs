@@ -1,8 +1,7 @@
 using System;
-using UnityEngine;
 using XNodeEditor;
 
-namespace Data.DecisionTree.Editor {
+namespace Controller.DecisionTree.Editor {
   [CustomNodeGraphEditor(typeof(DecisionTreeGraph))]
   public class DecisionTreeGraphEditor : NodeGraphEditor{
     public override string GetNodeMenuName(Type type) =>
