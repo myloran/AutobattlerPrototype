@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Controller;
+using Controller.Ai;
 using Controller.DecisionTree.Data;
 using Controller.DecisionTree.Visitor;
 using Controller.NBattleSimulation;
@@ -67,7 +68,7 @@ namespace Infrastructure {
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
       var decisionTreeLoader = new DecisionTreeLoader();
-      var component = decisionTreeLoader.Load();
+      var decisionTreeComponent = decisionTreeLoader.Load();
       
       #endregion
       #region Infrastructure
@@ -95,11 +96,15 @@ namespace Infrastructure {
       
       #endregion
       #region Model
-      //TODO: replace board/bench dictionaries with array?                
-      var decisionTreeCreatorVisitor = new DecisionTreeCreatorVisitor();
-      var unitFactory = new UnitFactory(units, 
-        new DecisionFactory(eventBus, d => new LoggingDecorator(d, DebugController.Info),
-          decisionTreeCreatorVisitor, component));
+      var decisionTreeLookup = new DecisionTreeLookup(); 
+      
+      var decisionTreeCreatorVisitor = new DecisionTreeCreatorVisitor(eventBus, 
+        d => new LoggingDecorator(d, DebugController.Info), decisionTreeLookup);
+      
+      var unitFactory = new UnitFactory(units, new DecisionFactory(
+        decisionTreeCreatorVisitor, decisionTreeComponent));
+      
+      //TODO: replace board/bench dictionaries with array?               
       var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));
       var board = new Board();
       var aiHeap = new AiHeap();

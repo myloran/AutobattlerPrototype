@@ -1,14 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Controller.DecisionTree.Data;
+using Model;
 using Model.NAI.NDecisionTree;
-using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 
 namespace Controller.DecisionTree.Visitor {
-  //TODO: move functionality to composite/refactor
+  //TODO: refactor
   public class DecisionTreeCreatorVisitor : IDecisionTreeDataVisitor<IDecisionTreeNode> {
+    public DecisionTreeCreatorVisitor(IEventBus bus,
+        Func<IDecisionTreeNode, IDecisionTreeNode> log, DecisionTreeLookup lookup) {
+      this.log = log;
+      this.lookup = lookup;
+      this.bus = bus;
+    }
+    
+    public void Init() => decisionTypes = lookup.LookupDecisionTypes();
+    
     public IDecisionTreeNode VisitDecision(DecisionData data) {
       if (data.Components.Count != 2) throw new Exception($"decision: {data.Type}");
       
@@ -16,7 +24,7 @@ namespace Controller.DecisionTree.Visitor {
       var decision = (BaseDecision)Activator.CreateInstance(type);
       var onTrue = data.Components[0].Accept(this);
       var onFalse = data.Components[1].Accept(this);
-      decision.Init(onTrue, onFalse, unit);
+      decision.Init(onTrue, onFalse);
 
       return log(decision);
     }
@@ -24,34 +32,13 @@ namespace Controller.DecisionTree.Visitor {
     public IDecisionTreeNode VisitAction(ActionData data) {
       var type = decisionTypes[data.Type];
       var action = (BaseAction)Activator.CreateInstance(type);
-      action.Init(unit, bus);
+      action.Init(bus);
       return log(action);
     }
 
-    public void Init() => decisionTypes = LookupDecisionTypes(typeof(IDecisionTreeNode),
-      typeof(BaseAction), typeof(BaseDecision));
-
-
-    public IDecisionTreeNode Create(IDecisionTreeComponent component, IUnit unit, IEventBus bus,
-        Func<IDecisionTreeNode, IDecisionTreeNode> log) {
-      this.log = log;
-      this.bus = bus;
-      this.unit = unit;
-      return component.Accept(this);
-    }
-
-    //TODO: check if list contains interfaces/abstract classes
-    Dictionary<EDecision, Type> LookupDecisionTypes(Type type, params Type[] typesExcluded) =>
-      AppDomain.CurrentDomain.GetAssemblies()
-        .SelectMany(s => s.GetTypes())
-        .Where(type.IsAssignableFrom)
-        .Where(t => t != type && typesExcluded.Select(t2 => t != t2).All(t2 => t2))
-        .Select(t => (t, (IDecisionTreeNode)Activator.CreateInstance(t)))
-        .ToDictionary(n => n.Item2.Type, n => n.t);
-    
     Dictionary<EDecision, Type> decisionTypes = new Dictionary<EDecision, Type>();
-    IUnit unit;
-    IEventBus bus;
-    Func<IDecisionTreeNode, IDecisionTreeNode> log;
+    readonly IEventBus bus;
+    readonly Func<IDecisionTreeNode, IDecisionTreeNode> log;
+    readonly DecisionTreeLookup lookup;
   }
 }

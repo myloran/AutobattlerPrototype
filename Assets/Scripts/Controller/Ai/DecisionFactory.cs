@@ -1,34 +1,28 @@
-using System;
 using Controller.DecisionTree.Data;
 using Controller.DecisionTree.Visitor;
 using Model.NAI.NDecisionTree;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
-using PlasticFloor.EventBus;
 
-namespace Controller {
+namespace Controller.Ai {
   public class DecisionFactory : IDecisionTreeFactory {
-    public DecisionFactory(IEventBus bus, Func<IDecisionTreeNode, IDecisionTreeNode> log, 
-        DecisionTreeCreatorVisitor decisionTreeCreator, IDecisionTreeComponent component) {
-      this.bus = bus;
-      this.log = log;
-      this.decisionTreeCreator = decisionTreeCreator;
+    public DecisionFactory(DecisionTreeCreatorVisitor decisionTreeCreatorVisitor, 
+        IDecisionTreeComponent component) {
+      this.decisionTreeCreatorVisitor = decisionTreeCreatorVisitor;
       this.component = component;
     }
 
     public IDecisionTreeNode Create(IUnit unit) { //TODO: replace ienumerable in model to avoid allocations 
       //TODO: Think of mechanism to not queue MakeDecision command and instead subscribe to interested events and make decision when something happens
        if (decisionTree == null) 
-         decisionTree = decisionTreeCreator.Create(component, unit, bus, log);
+         decisionTree = component.Accept(decisionTreeCreatorVisitor);
 
        var clone = decisionTree.Clone();
        clone.SetUnit(unit);
        return clone;
     }
     
-    readonly IEventBus bus;
-    readonly Func<IDecisionTreeNode, IDecisionTreeNode> log;
-    readonly DecisionTreeCreatorVisitor decisionTreeCreator;
+    readonly DecisionTreeCreatorVisitor decisionTreeCreatorVisitor;
     readonly IDecisionTreeComponent component;
     IDecisionTreeNode decisionTree;
   }

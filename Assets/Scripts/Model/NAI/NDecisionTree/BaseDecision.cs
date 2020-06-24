@@ -25,10 +25,9 @@ namespace Model.NAI.NDecisionTree {
       return to;
     }
 
-    public void Init(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, IUnit unit) {
-      this.TrueNode = trueNode;
-      this.FalseNode = falseNode;
-      Unit = unit;
+    public void Init(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode) {
+      TrueNode = trueNode;
+      FalseNode = falseNode;
     }
 
     protected abstract bool GetBranch(AiContext context);

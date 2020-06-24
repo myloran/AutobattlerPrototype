@@ -9,11 +9,8 @@ namespace Model.NAI.NDecisionTree {
     
     public virtual EDecision Type { get; } = EDecision.BaseAction;
 
-    public void Init(IUnit unit, IEventBus bus) {
-      Bus = bus;
-      Unit = unit;
-    }
-    
+    public void Init(IEventBus bus) => Bus = bus;
+
     protected IDecisionTreeNode BaseClone(BaseAction from, BaseAction to) {
       to.Bus = from.Bus;
       return to;
