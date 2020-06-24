@@ -1,5 +1,5 @@
 using System;
-using Controller.DecisionTree.Nodes;
+using Controller.DecisionTree.Visitor;
 using MessagePack;
 using Model.NAI.NDecisionTree;
 
@@ -13,8 +13,7 @@ namespace Controller.DecisionTree.Data {
 
     public DecisionData(EDecision type) => Type = type;
 
-    public override T Accept<T>(IVisitor<T> visitor, T state) => 
-      visitor.VisitDecision(this, state);
+    public override T Accept<T>(IVisitor<T> visitor) => visitor.VisitDecision(this);
 
     public override string ToString() => $"{Type}, {nameof(Components)}: {string.Join(",", Components)}";
   }

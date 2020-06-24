@@ -10,6 +10,8 @@ namespace Controller.NDebug {
       this.debugInfo = debugInfo;
     }
 
+    public LoggingDecorator() { }
+
     public EDecision Type { get; } = EDecision.LoggingDecorator;
 
     public IDecisionTreeNode MakeDecision(AiContext context) {

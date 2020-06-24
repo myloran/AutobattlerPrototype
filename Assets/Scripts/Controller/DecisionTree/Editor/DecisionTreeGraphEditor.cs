@@ -5,8 +5,8 @@ namespace Controller.DecisionTree.Editor {
   [CustomNodeGraphEditor(typeof(DecisionTreeGraph))]
   public class DecisionTreeGraphEditor : NodeGraphEditor{
     public override string GetNodeMenuName(Type type) =>
-      type.Namespace == "Data.DecisionTree.Nodes" 
-        ? base.GetNodeMenuName(type).Replace("Data/Decision Tree/Nodes/", "") 
+      type.Namespace == "Controller.DecisionTree.Nodes" 
+        ? base.GetNodeMenuName(type).Replace("Controller/Decision Tree/Nodes/", "") 
         : null;
 
     public override void OnOpen() {

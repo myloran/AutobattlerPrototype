@@ -6,11 +6,11 @@ namespace Model.NAI.NDecisionTree {
   public abstract class BaseDecision : IDecisionTreeNode {
     public IDecisionTreeNode TrueNode, 
       FalseNode;
-    protected IUnit Unit;
+    public IUnit Unit;
 
     public virtual EDecision Type { get; } = EDecision.BaseDecision;
-    
-    protected void Init(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, IUnit unit) {
+
+    public void Init(IDecisionTreeNode trueNode, IDecisionTreeNode falseNode, IUnit unit) {
       this.TrueNode = trueNode;
       this.FalseNode = falseNode;
       Unit = unit;

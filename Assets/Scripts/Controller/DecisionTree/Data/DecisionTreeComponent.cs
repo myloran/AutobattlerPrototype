@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Controller.DecisionTree.Nodes;
+using Controller.DecisionTree.Visitor;
 using MessagePack;
 
 namespace Controller.DecisionTree.Data {
@@ -14,7 +15,7 @@ namespace Controller.DecisionTree.Data {
     public void AddRange(IEnumerable<DecisionTreeComponent> components) => 
       Components.AddRange(components);
     
-    public abstract T Accept<T>(IVisitor<T> visitor, T state);
+    public abstract T Accept<T>(IVisitor<T> visitor);
 
     public override string ToString() => $"{nameof(Components)}: {string.Join(",", Components)}";
   }

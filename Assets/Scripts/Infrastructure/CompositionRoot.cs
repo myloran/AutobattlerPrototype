@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Controller;
+using Controller.DecisionTree.Data;
+using Controller.DecisionTree.Visitor;
 using Controller.NBattleSimulation;
 using Controller.NDebug;
 using Controller.NTile;
@@ -64,6 +66,8 @@ namespace Infrastructure {
       var units = new UnitInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
+      var decisionTreeLoader = new DecisionTreeLoader();
+      var component = decisionTreeLoader.Load();
       
       #endregion
       #region Infrastructure
@@ -92,8 +96,10 @@ namespace Infrastructure {
       #endregion
       #region Model
       //TODO: replace board/bench dictionaries with array?                
+      var decisionTreeCreatorVisitor = new DecisionTreeCreatorVisitor();
       var unitFactory = new UnitFactory(units, 
-        new DecisionFactory(eventBus, d => new LoggingDecorator(d, DebugController.Info)));
+        new DecisionFactory(eventBus, d => new LoggingDecorator(d, DebugController.Info),
+          decisionTreeCreatorVisitor, component));
       var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));
       var board = new Board();
       var aiHeap = new AiHeap();
@@ -183,13 +189,6 @@ namespace Infrastructure {
       #endregion
 
       yield return null;
-      #region View
-
-      BattleSetupUI.SetDropdownOptions(units.Keys.ToList());
-      BattleSaveUI.SubToUI(saves.Keys.ToList());
-      tileSpawner.SpawnTiles();
-
-      #endregion
       #region Infrastructure
 
       tickController.InitObservable(takenCoordDebugController, targetDebugController, 
@@ -198,6 +197,14 @@ namespace Infrastructure {
       inputController.InitObservables();
 
       #endregion
+      #region View
+
+      BattleSetupUI.SetDropdownOptions(units.Keys.ToList());
+      BattleSaveUI.SubToUI(saves.Keys.ToList());
+      tileSpawner.SpawnTiles();
+
+      #endregion
+      decisionTreeCreatorVisitor.Init();
       #region Controller
 
       unitSelectionController.SubToInput(disposable);

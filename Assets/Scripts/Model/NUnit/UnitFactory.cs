@@ -7,7 +7,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NUnit {
   public class UnitFactory {
-    public UnitFactory(Dictionary<string, UnitInfo> infos, DecisionFactory decisionFactory) {
+    public UnitFactory(Dictionary<string, UnitInfo> infos, IDecisionTreeFactory decisionFactory) {
       this.infos = infos;
       this.decisionFactory = decisionFactory;
     }
@@ -30,6 +30,6 @@ namespace Model.NUnit {
     }
 
     readonly Dictionary<string, UnitInfo> infos;
-    readonly DecisionFactory decisionFactory;
+    readonly IDecisionTreeFactory decisionFactory;
   }
 }

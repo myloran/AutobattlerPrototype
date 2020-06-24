@@ -14,10 +14,10 @@ namespace Controller.DecisionTree.Nodes {
 
       var firstNode = GetPort("output").Connection.node;
       var component = CreateComponent(firstNode);
-      Debug.Log($"before: {component}");
+      // Debug.Log($"before: {component}");
       loader.Save(component);
       var c2 = loader.Load();
-      Debug.Log($"after: {c2}");
+      // Debug.Log($"after: {c2}");
     }
 
     public DecisionTreeComponent CreateComponent(Node node) {
@@ -25,7 +25,7 @@ namespace Controller.DecisionTree.Nodes {
 
       var typeNode = node as IDecisionTreeTypeNode;
       var type = (EDecision) decisionTreeGraph.DecisionIds[typeNode.Selected];
-      Debug.Log($"decision: {type}");
+      // Debug.Log($"decision: {type}");
       var decisionData = new DecisionData(type);
       
       var components = node.Outputs
@@ -39,7 +39,7 @@ namespace Controller.DecisionTree.Nodes {
     DecisionTreeComponent CreateAction(Node node) {
       var typeNode = node as IDecisionTreeTypeNode;
       var type = (EDecision) decisionTreeGraph.ActionIds[typeNode.Selected];
-      Debug.Log($"action: {type}");
+      // Debug.Log($"action: {type}");
       return new ActionData(type);
     }
 

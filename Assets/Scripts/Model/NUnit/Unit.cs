@@ -36,7 +36,11 @@ namespace Model.NUnit {
     public bool IsWithinAttackRange(IMovement target) => attack.IsWithinAttackRange(target);
     public void StartAttack(F32 currentTime) => attack.StartAttack(currentTime);
     public void EndAttack() => attack.EndAttack();
-    
+
+    public IEnumerable<IUnit> ArrivingTargets {
+      get => target.ArrivingTargets;
+      set => target.ArrivingTargets = value;
+    }
     public IUnit Target => target.Target;
     public bool TargetExists => target.TargetExists;
     public void ClearTarget() => target.ClearTarget();

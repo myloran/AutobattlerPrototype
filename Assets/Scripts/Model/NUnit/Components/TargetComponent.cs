@@ -8,6 +8,7 @@ using static Shared.Primitives.CoordExt;
 namespace Model.NUnit.Components {
   public class TargetComponent : ITarget {
     public IUnit Target { get; private set; }
+    public IEnumerable<IUnit> ArrivingTargets { get; set; }
 
     public TargetComponent(IMovement movement) => this.movement = movement;
 

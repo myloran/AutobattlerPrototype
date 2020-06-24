@@ -12,7 +12,7 @@ namespace Model.NAI.Commands {
       ai.SetDecisionTime(context.CurrentTime, time);
     }
 
-    public override void Execute() => ai.MakeDecision(context);
+    public override void Execute() => ai.MakeDecision(context); //TODO: remove reference on context from ai
 
     readonly IAi ai;
     readonly AiContext context;

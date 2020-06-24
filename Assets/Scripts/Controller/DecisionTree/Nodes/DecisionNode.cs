@@ -10,7 +10,7 @@ namespace Controller.DecisionTree.Nodes {
 
 		public int Selected { get; set; } //TODO: Set Selected on windows focused based on decision id
 
-		public EDecision Type { get; } = EDecision.BaseAction;
+		public EDecision Type { get; } = EDecision.BaseDecision; //TODO: remove it to remove reference to model
 		
 		// Use this for initialization
 		protected override void Init() {

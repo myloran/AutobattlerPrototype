@@ -19,5 +19,7 @@ namespace Model.NAI.NDecisionTree {
     IsPlayerDead = 15,
     IsSurrounded = 16,
     IsWithingAttackRange = 17,
+    AreEnemiesArrivingToAdjacentTile = 18,
+    NeedToWaitFirstEnemyArriving = 19
   }
 }

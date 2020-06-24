@@ -10,8 +10,8 @@ namespace Model.NAI.NDecisionTree {
     protected IEventBus Bus;
     
     public virtual EDecision Type { get; } = EDecision.BaseAction;
-    
-    protected void Init(IUnit unit, IEventBus bus) {
+
+    public void Init(IUnit unit, IEventBus bus) {
       Bus = bus;
       Unit = unit;
     }
