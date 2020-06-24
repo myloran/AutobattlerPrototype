@@ -285,10 +285,6 @@ namespace MessagePack.Internal
             BuiltinResolver.Instance, // Try Builtin
             AttributeFormatterResolver.Instance, // Try use [MessagePackFormatter]
 
-#if UNITY_2018_3_OR_NEWER
-            MessagePack.Unity.UnityResolver.Instance,
-#endif
-
 #if !ENABLE_IL2CPP && !NET_STANDARD_2_0
             DynamicEnumResolver.Instance, // Try Enum
 #endif

@@ -1,11 +1,9 @@
 {
     "name": "Shared",
-    "references": [
-        "GUID:274ace330c83660bf9d794592a06a80a"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
