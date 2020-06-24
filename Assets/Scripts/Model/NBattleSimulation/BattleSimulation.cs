@@ -47,7 +47,7 @@ namespace Model.NBattleSimulation {
     }
 
     public void ExecuteCommandsTill(F32 time) {
-      while (!IsBattleOver && heap.NextEventTime < time) {
+      while (!IsBattleOver && heap.HasEventInHeap && heap.NextEventTime < time) {
         ExecuteNextCommand();
       }
     }

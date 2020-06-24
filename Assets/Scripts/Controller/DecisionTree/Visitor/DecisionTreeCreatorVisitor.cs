@@ -16,7 +16,6 @@ namespace Controller.DecisionTree.Visitor {
       var decision = (BaseDecision)Activator.CreateInstance(type);
       var onTrue = data.Components[0].Accept(this);
       var onFalse = data.Components[1].Accept(this);
-      decision.Do(onTrue).Else(onFalse);
       decision.Init(onTrue, onFalse, unit);
 
       return log(decision);

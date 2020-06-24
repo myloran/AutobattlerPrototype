@@ -10,7 +10,7 @@ namespace Model.NAI.Decisions {
     protected override bool GetBranch(AiContext context) {
       Unit.ArrivingTargets = context.GetAdjacentUnits(Unit.Coord)
         .Where(u => !u.IsAllyWith(Unit.Player));
-      return !Unit.ArrivingTargets.Any();
+      return Unit.ArrivingTargets.Any();
     }
   }
 }

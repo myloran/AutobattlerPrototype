@@ -14,10 +14,10 @@ namespace Controller.DecisionTree.Nodes {
 
       var firstNode = GetPort("output").Connection.node;
       var component = CreateComponent(firstNode);
-      // Debug.Log($"before: {component}");
+      Debug.Log($"before: {component}");
       loader.Save(component);
       var c2 = loader.Load();
-      // Debug.Log($"after: {c2}");
+      Debug.Log($"after: {c2}");
     }
 
     public DecisionTreeComponent CreateComponent(Node node) {
@@ -43,9 +43,9 @@ namespace Controller.DecisionTree.Nodes {
       return new ActionData(type);
     }
 
-    static Node SelectConnectionNode(NodePort o, EDecision type2) {
-      if (o.ConnectionCount == 0) throw new Exception($"Decision {type2} does not have connection");
-      return o.Connection.node;
+    static Node SelectConnectionNode(NodePort port, EDecision type2) {
+      if (port.ConnectionCount == 0) throw new Exception($"Decision {type2} does not have connection");
+      return port.Connection.node;
     }
 
     readonly DecisionTreeLoader loader = new DecisionTreeLoader();
