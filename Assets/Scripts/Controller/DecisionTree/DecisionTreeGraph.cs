@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Controller.DecisionTree.Nodes;
 using Model.NAI.NDecisionTree;
 using UnityEngine;
 using XNode;
@@ -16,6 +17,12 @@ namespace Controller.DecisionTree {
 		public void Init() {
 			Lookup<BaseDecision>(out DecisionTypes, out DecisionIds);
 			Lookup<BaseAction>(out ActionTypes, out ActionIds);
+
+			foreach (var node in nodes) {
+				if (node is DecisionTreeSaverNode saver) {
+					saver.Load();
+				}
+			}
 		}
 
 		void Lookup<T>(out string[] types, out int[] ids) {
@@ -24,6 +31,7 @@ namespace Controller.DecisionTree {
 			ids = decisionEnums.Cast<int>().ToArray();
 		}
 
+		//TODO: extract
 		IEnumerable<EDecision> LookupDecisionTreeEnums(Type type) =>
 			AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(s => s.GetTypes())

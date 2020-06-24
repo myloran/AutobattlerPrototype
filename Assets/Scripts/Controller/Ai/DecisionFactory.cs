@@ -7,7 +7,7 @@ using Model.NUnit.Abstraction;
 namespace Controller.Ai {
   public class DecisionFactory : IDecisionTreeFactory {
     public DecisionFactory(DecisionTreeCreatorVisitor decisionTreeCreatorVisitor, 
-        IDecisionTreeComponent component) {
+        DecisionTreeComponent component) {
       this.decisionTreeCreatorVisitor = decisionTreeCreatorVisitor;
       this.component = component;
     }
@@ -23,7 +23,7 @@ namespace Controller.Ai {
     }
     
     readonly DecisionTreeCreatorVisitor decisionTreeCreatorVisitor;
-    readonly IDecisionTreeComponent component;
+    readonly DecisionTreeComponent component;
     IDecisionTreeNode decisionTree;
   }
 }

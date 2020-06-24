@@ -16,14 +16,12 @@ namespace Controller.DecisionTree.Nodes {
       var component = CreateComponent(firstNode);
       Debug.Log($"before: {component}");
       loader.Save(component);
-      var c2 = loader.Load();
-      Debug.Log($"after: {c2}");
     }
 
-    IDecisionTreeComponent CreateComponent(Node node) {
+    DecisionTreeComponent CreateComponent(Node node) {
       if (!node.Outputs.Any()) return CreateAction(node);
 
-      var typeNode = node as IDecisionTreeTypeNode;
+      var typeNode = node as ISelected;
       var type = (EDecision) decisionTreeGraph.DecisionIds[typeNode.Selected];
       // Debug.Log($"decision: {type}");
       var decisionData = new DecisionData {Type = type};
@@ -35,14 +33,14 @@ namespace Controller.DecisionTree.Nodes {
       return decisionData;
     }
 
-    IDecisionTreeComponent CreateComponentFromPort(Node node, EDecision type, string name) {
+    DecisionTreeComponent CreateComponentFromPort(Node node, EDecision type, string name) {
       var port = node.GetPort(name);
       var connectionNode = SelectConnectionNode(port, type);
       return CreateComponent(connectionNode);
     }
 
-    IDecisionTreeComponent CreateAction(Node node) {
-      var typeNode = node as IDecisionTreeTypeNode;
+    DecisionTreeComponent CreateAction(Node node) {
+      var typeNode = node as ISelected;
       var type = (EDecision) decisionTreeGraph.ActionIds[typeNode.Selected];
       // Debug.Log($"action: {type}");
       return new ActionData {Type = type};
@@ -56,39 +54,51 @@ namespace Controller.DecisionTree.Nodes {
     readonly DecisionTreeLoader loader = new DecisionTreeLoader();
     DecisionTreeGraph decisionTreeGraph;
 
-    // firstNode.AcceptVisitor(this);
-      // GetDecision(firstNode);
-      //
-      // EDecision GetDecision(Node node) {
-      //   if (!node.Outputs.Any()) {
-      //     var typeNode = node as IDecisionTreeTypeNode;
-      //     var type = (EDecision) decisionTreeGraph.ActionIds[typeNode.Selected];
-      //     return new ActionData(type);
-      //   } 
-      //     
-      //   foreach (var o in node.Outputs) {
-      //     var node2 = o.Connection.node;
-      //     var typeNode2 = node2 as IDecisionTreeTypeNode;
-      //   }
-
-      // var node = GetPort("output").Connection.node;
-      // var typeNode = node as IDecisionTreeTypeNode;
-      //
-      // if (typeNode.Type == EDecision.BaseAction) {
-      //   var type = (EDecision) decisionTreeGraph.ActionIds[typeNode.Selected];
-      // var action = new ActionData(type);
-      // }
-      // else {
-      //   foreach (var o in node.Outputs) {
-      //     var node2 = o.Connection.node;
-      //     var typeNode2 = node2 as IDecisionTreeTypeNode;
-      //   }
-      // }
-      // }
-    
-
     public override object GetValue(NodePort port) {
       return null; // Replace this
+    }
+
+    public void Load() {
+      decisionTreeGraph = graph as DecisionTreeGraph;
+      
+      var component = loader.Load();
+      Debug.Log($"Load: {component}");
+      var firstNode = GetPort("output").Connection.node;
+      LoadComponent(firstNode, component);
+    }
+
+    void LoadComponent(Node node, DecisionTreeComponent component) {
+      if (!node.Outputs.Any()) {
+        SetSelectedIndex(decisionTreeGraph.ActionIds);
+        return;
+      }
+      SetSelectedIndex(decisionTreeGraph.DecisionIds);
+
+      var decision = component as DecisionData;
+      LoadComponentFromPort(node, component.Type, "Output1", decision.Components[0]);
+      LoadComponentFromPort(node, component.Type, "Output2", decision.Components[1]);
+      
+      void SetSelectedIndex(int[] ids) {
+        var selectedIndex = 0;
+        
+        for (int i = 0; i < ids.Length; i++) {
+          if (ids[i] != (int) component.Type) continue;
+
+          selectedIndex = i;
+          break;
+        }
+
+        var selectable = node as ISelected;
+        selectable.Selected = selectedIndex;
+      }
+    }
+
+
+    void LoadComponentFromPort(Node node, EDecision type, string name,
+        DecisionTreeComponent decisionComponent) {
+      var port = node.GetPort(name);
+      var connectionNode = SelectConnectionNode(port, type);
+      LoadComponent(connectionNode, decisionComponent);
     }
   }
 }
