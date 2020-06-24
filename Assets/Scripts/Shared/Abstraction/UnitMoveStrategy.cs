@@ -13,12 +13,6 @@ namespace Shared.Abstraction {
     public void MoveUnit(Coord from, Coord to) {
       var fromDict = from.IsBench() ? benchUnits : boardUnits;
       var toDict = to.IsBench() ? benchUnits : boardUnits;
-
-      if (!fromDict.ContainsKey(from)) {
-        log.Error($"Dict does not have unit at coord: {from}");
-        return;
-      }
-
       var unit = fromDict[from];
       var hasUnitAtDestination = toDict.ContainsKey(to);
 
@@ -46,7 +40,5 @@ namespace Shared.Abstraction {
     readonly IHandler<UnitCoordChanged<T>> unitCoordChangedHandler;
     readonly Dictionary<Coord, T> benchUnits,
       boardUnits;
-
-    static readonly Shared.Addons.OkwyLogging.Logger log = Shared.Addons.OkwyLogging.MainLog.GetLogger(nameof(UnitMoveStrategy<T>));
   }
 }

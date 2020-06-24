@@ -1,9 +1,6 @@
 using Model.NAI.Commands;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
-using Model.NUnit;
-using Model.NUnit.Abstraction;
-using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Actions {
