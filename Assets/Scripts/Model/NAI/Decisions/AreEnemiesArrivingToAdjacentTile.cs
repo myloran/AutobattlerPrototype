@@ -6,6 +6,7 @@ namespace Model.NAI.Decisions {
   //TODO: Refactor to BaseDecision?
   public class AreEnemiesArrivingToAdjacentTile : BaseDecision {
     public override EDecision Type { get; } = EDecision.AreEnemiesArrivingToAdjacentTile;
+    public override IDecisionTreeNode Clone() => BaseClone(this, new AreEnemiesArrivingToAdjacentTile());
 
     protected override bool GetBranch(AiContext context) {
       Unit.ArrivingTargets = context.GetAdjacentUnits(Unit.Coord)

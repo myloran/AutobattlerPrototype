@@ -7,6 +7,7 @@ using PlasticFloor.EventBus;
 namespace Model.NAI.Actions {
   public class MoveAction : BaseAction {
     public override EDecision Type { get; } = EDecision.Move;
+    public override IDecisionTreeNode Clone() => BaseClone(this, new MoveAction());
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var (coord, time) = Unit.NextMove;

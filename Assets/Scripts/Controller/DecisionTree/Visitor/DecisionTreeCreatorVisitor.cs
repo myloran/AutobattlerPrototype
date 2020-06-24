@@ -8,7 +8,7 @@ using PlasticFloor.EventBus;
 
 namespace Controller.DecisionTree.Visitor {
   //TODO: move functionality to composite/refactor
-  public class DecisionTreeCreatorVisitor : IVisitor<IDecisionTreeNode> {
+  public class DecisionTreeCreatorVisitor : IDecisionTreeDataVisitor<IDecisionTreeNode> {
     public IDecisionTreeNode VisitDecision(DecisionData data) {
       if (data.Components.Count != 2) throw new Exception($"decision: {data.Type}");
       
@@ -32,7 +32,7 @@ namespace Controller.DecisionTree.Visitor {
       typeof(BaseAction), typeof(BaseDecision));
 
 
-    public IDecisionTreeNode Create(DecisionTreeComponent component, IUnit unit, IEventBus bus,
+    public IDecisionTreeNode Create(IDecisionTreeComponent component, IUnit unit, IEventBus bus,
         Func<IDecisionTreeNode, IDecisionTreeNode> log) {
       this.log = log;
       this.bus = bus;

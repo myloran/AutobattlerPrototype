@@ -6,6 +6,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 namespace Model.NAI.Actions {
   public class AttackAction : BaseAction {
     public override EDecision Type { get; } = EDecision.Attack;
+    public override IDecisionTreeNode Clone() => BaseClone(this, new AttackAction());
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       context.InsertCommand(Zero, new ApplyDamageCommand(Unit, context, Bus)); //inserting to heap because units can attack at the same time

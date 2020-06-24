@@ -20,13 +20,13 @@ namespace Controller.DecisionTree.Nodes {
       Debug.Log($"after: {c2}");
     }
 
-    DecisionTreeComponent CreateComponent(Node node) {
+    IDecisionTreeComponent CreateComponent(Node node) {
       if (!node.Outputs.Any()) return CreateAction(node);
 
       var typeNode = node as IDecisionTreeTypeNode;
       var type = (EDecision) decisionTreeGraph.DecisionIds[typeNode.Selected];
       // Debug.Log($"decision: {type}");
-      var decisionData = new DecisionData(type);
+      var decisionData = new DecisionData {Type = type};
 
       var onTrue = CreateComponentFromPort(node, type, "Output1");
       var onFalse = CreateComponentFromPort(node, type, "Output2");
@@ -35,17 +35,17 @@ namespace Controller.DecisionTree.Nodes {
       return decisionData;
     }
 
-    DecisionTreeComponent CreateComponentFromPort(Node node, EDecision type, string name) {
+    IDecisionTreeComponent CreateComponentFromPort(Node node, EDecision type, string name) {
       var port = node.GetPort(name);
       var connectionNode = SelectConnectionNode(port, type);
       return CreateComponent(connectionNode);
     }
 
-    DecisionTreeComponent CreateAction(Node node) {
+    IDecisionTreeComponent CreateAction(Node node) {
       var typeNode = node as IDecisionTreeTypeNode;
       var type = (EDecision) decisionTreeGraph.ActionIds[typeNode.Selected];
       // Debug.Log($"action: {type}");
-      return new ActionData(type);
+      return new ActionData {Type = type};
     }
 
     static Node SelectConnectionNode(NodePort port, EDecision type2) {
