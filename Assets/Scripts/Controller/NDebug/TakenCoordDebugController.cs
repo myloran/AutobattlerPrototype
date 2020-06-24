@@ -43,6 +43,8 @@ namespace Controller.NDebug {
 
     void ClearHighlight() {
       foreach (var tile in tilePresenter.Values) {
+        if (tile.GetColor() == Color.green) return;
+        
         tile.Unhighlight();
       }
     }

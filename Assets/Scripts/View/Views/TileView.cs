@@ -9,7 +9,8 @@ namespace View.Views {
 
     public void Highlight() => material.color = Color.green;
     public void Unhighlight() => material.color = Color.white;
-    public void Debug(Color color) => material.color = color; 
+    public void Debug(Color color) => material.color = color;
+    public Color GetColor() => material.color;
   
     Material material;
   }
