@@ -18,12 +18,10 @@ namespace Controller.DecisionTree.Visitor {
     public void Init() => decisionTypes = lookup.LookupDecisionTypes();
     
     public IDecisionTreeNode VisitDecision(DecisionData data) {
-      if (data.Components.Count != 2) throw new Exception($"decision: {data.Type}");
-      
       var type = decisionTypes[data.Type];
       var decision = (BaseDecision)Activator.CreateInstance(type);
-      var onTrue = data.Components[0].Accept(this);
-      var onFalse = data.Components[1].Accept(this);
+      var onTrue = data.OnTrue.Accept(this);
+      var onFalse = data.OnFalse.Accept(this);
       decision.Init(onTrue, onFalse);
 
       return log(decision);

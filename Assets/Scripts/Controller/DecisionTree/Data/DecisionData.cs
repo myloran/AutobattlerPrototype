@@ -8,14 +8,12 @@ namespace Controller.DecisionTree.Data {
   [MessagePackObject]
   [Serializable]
   public class DecisionData : DecisionTreeComponent {
-    [Key(1)] public List<DecisionTreeComponent> Components = new List<DecisionTreeComponent>();
-    
-    public void AddRange(IEnumerable<DecisionTreeComponent> components) => 
-      Components.AddRange(components);
+    [Key(1)] public DecisionTreeComponent OnTrue;
+    [Key(2)] public DecisionTreeComponent OnFalse;
     
     public override T Accept<T>(IDecisionTreeDataVisitor<T> decisionTreeDataVisitor) => 
       decisionTreeDataVisitor.VisitDecision(this);
 
-    public override string ToString() => $"{Type}, {nameof(Components)}: {string.Join(",", Components)}";
+    public override string ToString() => $"{Type}, {OnTrue} {OnFalse}";
   }
 }

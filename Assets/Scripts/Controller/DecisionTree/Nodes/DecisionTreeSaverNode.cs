@@ -19,40 +19,34 @@ namespace Controller.DecisionTree.Nodes {
     }
 
     DecisionTreeComponent CreateComponent(Node node) {
-      if (!node.Outputs.Any()) return CreateAction(node);
+      if (!node.Outputs.Any()) return CreateAction();
 
-      var typeNode = node as ISelected;
-      var type = (EDecision) decisionTreeGraph.DecisionIds[typeNode.Selected];
-      // Debug.Log($"decision: {type}");
-      var decisionData = new DecisionData {Type = type};
-
-      var onTrue = CreateComponentFromPort(node, type, "Output1");
-      var onFalse = CreateComponentFromPort(node, type, "Output2");
+      var decisionSelected = node as ISelected;
+      var decisionType = (EDecision) decisionTreeGraph.DecisionIds[decisionSelected.Selected];
       
-      decisionData.AddRange(new[] {onTrue, onFalse});
-      return decisionData;
+      return new DecisionData {
+        Type = decisionType,
+        OnTrue = CreateComponentFromPort("Output1"),
+        OnFalse = CreateComponentFromPort("Output2")
+      };
+     
+      DecisionTreeComponent CreateAction() {
+        var actionSelected = node as ISelected;
+        var actionType = (EDecision) decisionTreeGraph.ActionIds[actionSelected.Selected];
+        return new ActionData {Type = actionType};
+      }
+      
+      DecisionTreeComponent CreateComponentFromPort(string name) {
+        var port = node.GetPort(name);
+        var connectionNode = SelectConnectionNode(port, decisionType);
+        return CreateComponent(connectionNode);
+      }
     }
 
-    DecisionTreeComponent CreateComponentFromPort(Node node, EDecision type, string name) {
-      var port = node.GetPort(name);
-      var connectionNode = SelectConnectionNode(port, type);
-      return CreateComponent(connectionNode);
-    }
-
-    DecisionTreeComponent CreateAction(Node node) {
-      var typeNode = node as ISelected;
-      var type = (EDecision) decisionTreeGraph.ActionIds[typeNode.Selected];
-      // Debug.Log($"action: {type}");
-      return new ActionData {Type = type};
-    }
-
-    static Node SelectConnectionNode(NodePort port, EDecision type2) {
+    Node SelectConnectionNode(NodePort port, EDecision type2) {
       if (port.ConnectionCount == 0) throw new Exception($"Decision {type2} does not have connection");
       return port.Connection.node;
     }
-
-    readonly DecisionTreeLoader loader = new DecisionTreeLoader();
-    DecisionTreeGraph decisionTreeGraph;
 
     public override object GetValue(NodePort port) {
       return null; // Replace this
@@ -72,11 +66,12 @@ namespace Controller.DecisionTree.Nodes {
         SetSelectedIndex(decisionTreeGraph.ActionIds);
         return;
       }
+      
       SetSelectedIndex(decisionTreeGraph.DecisionIds);
 
       var decision = component as DecisionData;
-      LoadComponentFromPort(node, component.Type, "Output1", decision.Components[0]);
-      LoadComponentFromPort(node, component.Type, "Output2", decision.Components[1]);
+      LoadComponentFromPort("Output1", decision.OnTrue);
+      LoadComponentFromPort("Output2", decision.OnFalse);
       
       void SetSelectedIndex(int[] ids) {
         var selectedIndex = 0;
@@ -91,14 +86,16 @@ namespace Controller.DecisionTree.Nodes {
         var selectable = node as ISelected;
         selectable.Selected = selectedIndex;
       }
+      
+      void LoadComponentFromPort(string name,
+          DecisionTreeComponent decisionComponent) {
+        var port = node.GetPort(name);
+        var connectionNode = SelectConnectionNode(port, component.Type);
+        LoadComponent(connectionNode, decisionComponent);
+      }
     }
 
-
-    void LoadComponentFromPort(Node node, EDecision type, string name,
-        DecisionTreeComponent decisionComponent) {
-      var port = node.GetPort(name);
-      var connectionNode = SelectConnectionNode(port, type);
-      LoadComponent(connectionNode, decisionComponent);
-    }
+    readonly DecisionTreeLoader loader = new DecisionTreeLoader();
+    DecisionTreeGraph decisionTreeGraph;
   }
 }
