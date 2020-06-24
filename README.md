@@ -1,4 +1,4 @@
-## Project features:
+### Project features:
 - clean code
 - adherence to SOLID/GRASP and other principles
 - use of patterns when apropriate
