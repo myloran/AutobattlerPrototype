@@ -20,20 +20,25 @@ namespace Controller.DecisionTree.Nodes {
       Debug.Log($"after: {c2}");
     }
 
-    public DecisionTreeComponent CreateComponent(Node node) {
+    DecisionTreeComponent CreateComponent(Node node) {
       if (!node.Outputs.Any()) return CreateAction(node);
 
       var typeNode = node as IDecisionTreeTypeNode;
       var type = (EDecision) decisionTreeGraph.DecisionIds[typeNode.Selected];
       // Debug.Log($"decision: {type}");
       var decisionData = new DecisionData(type);
+
+      var onTrue = CreateComponentFromPort(node, type, "Output1");
+      var onFalse = CreateComponentFromPort(node, type, "Output2");
       
-      var components = node.Outputs
-        .Select(o => SelectConnectionNode(o, type))
-        .Select(CreateComponent);
-      
-      decisionData.AddRange(components);
+      decisionData.AddRange(new[] {onTrue, onFalse});
       return decisionData;
+    }
+
+    DecisionTreeComponent CreateComponentFromPort(Node node, EDecision type, string name) {
+      var port = node.GetPort(name);
+      var connectionNode = SelectConnectionNode(port, type);
+      return CreateComponent(connectionNode);
     }
 
     DecisionTreeComponent CreateAction(Node node) {
