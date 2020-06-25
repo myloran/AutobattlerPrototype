@@ -1,3 +1,6 @@
+
+[Autobattler project features. Explanation of MVA architecture, layer separation. DI, RX, patterns](https://youtu.be/sAe_zIHv9k8)
+
 ### Project features:
 - clean code
 - adherence to SOLID/GRASP and other principles
