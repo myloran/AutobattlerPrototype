@@ -3,8 +3,6 @@
 
 // Must be placed within a folder named "Editor"
 using System;
-using System.Reflection;
-using System.Collections;
 using System.Collections.Generic;
 using Addons.ScriptableObjectDrawer;
 using UnityEngine;

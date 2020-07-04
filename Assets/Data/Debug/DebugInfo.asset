@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DebugInfo
   m_EditorClassIdentifier: 
   IsLogEnabled: 0
-  IsDebugOn: 1
+  IsDebugOn: 0
