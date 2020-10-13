@@ -9,6 +9,7 @@ using Controller.NDebug;
 using Controller.NTile;
 using Controller.NUnit;
 using Controller.Save;
+using Controller.Test;
 using Controller.UnitDrag;
 using Controller.Update;
 using Model.NBattleSimulation;
