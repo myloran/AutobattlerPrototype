@@ -16,8 +16,7 @@ namespace Infrastructure {
 
       foreach (var file in files) {
         var text = File.ReadAllText(file);
-        var bytes = MessagePackSerializer.ConvertFromJson(text);
-        var unit = MessagePackSerializer.Deserialize<UnitInfo>(bytes);
+        var unit = JsonConvert.DeserializeObject<UnitInfo>(text);
         units[unit.Name] = unit;
       }
 

@@ -1,1 +1,11 @@
-["Justicar", 500, 2, 70, 0.6, 1, 1, 0.16]
+{
+  "Name": "Justicar",
+  "Health": 500,
+  "Armor": 2,
+  "Damage": 70,
+  "AttackSpeed": 0.6,
+  "AttackRange": 1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+}

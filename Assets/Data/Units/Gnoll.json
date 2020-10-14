@@ -1,1 +1,11 @@
-["Gnoll", 450, 1, 90, 0.8, 1, 1, 0.5, 1]
+{
+  "Name": "Gnoll",
+  "Health": 450,
+  "Armor": 1,
+  "Damage": 90,
+  "AttackSpeed": 0.8,
+  "AttackRange": 1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+}
