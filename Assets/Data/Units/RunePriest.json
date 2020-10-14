@@ -1,0 +1,11 @@
+{
+  "Name": "RunePriest",
+  "Health": 600,
+  "Armor": 4,
+  "Damage": 25,
+  "AttackSpeed": 0.5,
+  "AttackRange": 1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+}

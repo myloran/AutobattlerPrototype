@@ -1,0 +1,7 @@
+{
+  "Name": "Melee",
+  "Target": "Unit",
+  "UnitTargetingRule": "Closest",
+  "Damage": 200,  
+  "Range": 1,
+}

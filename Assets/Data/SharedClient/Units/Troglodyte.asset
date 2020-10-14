@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b70062526c3a484aa32042229322d29a, type: 3}
   m_Name: Troglodyte
   m_EditorClassIdentifier: 
-  Name: 
-  Model: {fileID: 0}
+  Model: {fileID: 2060010547026406617, guid: 9af87ab5632b87647873ca4a9ba81a8d, type: 3}

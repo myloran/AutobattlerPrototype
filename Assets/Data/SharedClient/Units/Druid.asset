@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b70062526c3a484aa32042229322d29a, type: 3}
   m_Name: Druid
   m_EditorClassIdentifier: 
-  Name: 
-  Model: {fileID: 0}
+  Model: {fileID: 679029188012155629, guid: 65940a1c4090ada4a92e5edac10f0b0f, type: 3}

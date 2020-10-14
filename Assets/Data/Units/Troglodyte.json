@@ -1,0 +1,11 @@
+{
+  "Name": "Troglodyte",
+  "Health": 400,
+  "Armor": 2,
+  "Damage": 60,
+  "AttackSpeed": 0.6,
+  "AttackRange": 1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+}

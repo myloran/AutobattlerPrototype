@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b70062526c3a484aa32042229322d29a, type: 3}
   m_Name: RunePriest
   m_EditorClassIdentifier: 
-  Name: 
-  Model: {fileID: 0}
+  Model: {fileID: 6598839468605295032, guid: 1fc95c6367d615b498b5f576a7f7de57, type: 3}

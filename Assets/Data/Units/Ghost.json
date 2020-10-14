@@ -1,0 +1,11 @@
+{
+  "Name": "Ghost",
+  "Health": 300,
+  "Armor": 1,
+  "Damage": 50,
+  "AttackSpeed": 0.5,
+  "AttackRange": 1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+}
