@@ -17,6 +17,7 @@ using Model.NBattleSimulation;
 using Model.NUnit;
 using UnityEngine;
 using Model;
+using Model.NAbility;
 using PlasticFloor.EventBus;
 using Shared.Addons.OkwyLogging;
 using Shared.Shared.Client.Events;
@@ -61,6 +62,7 @@ namespace Infrastructure {
       
       log.Info("\n\nStart");
       var units = new UnitInfoLoader().Load();
+      var abilities = new AbilityInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
       var decisionTreeLoader = new DecisionTreeLoader();
@@ -96,9 +98,9 @@ namespace Infrastructure {
       
       var decisionTreeCreatorVisitor = new DecisionTreeCreatorVisitor(eventBus, 
         d => new LoggingDecorator(d, DebugController.Info), decisionTreeLookup);
-      
+
       var unitFactory = new UnitFactory(units, new DecisionFactory(
-        decisionTreeCreatorVisitor, decisionTreeComponent));
+        decisionTreeCreatorVisitor, decisionTreeComponent), new AbilityFactory(abilities));
       
       //TODO: replace board/bench dictionaries with array?               
       var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));

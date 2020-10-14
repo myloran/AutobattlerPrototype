@@ -3,7 +3,6 @@ using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 
 namespace Model.NAI.Decisions {
-  //TODO: Refactor to BaseDecision?
   public class AreEnemiesArrivingToAdjacentTile : BaseDecision {
     public override EDecision Type { get; } = EDecision.AreEnemiesArrivingToAdjacentTile;
     public override IDecisionTreeNode Clone() => BaseClone(this, new AreEnemiesArrivingToAdjacentTile());

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using Model.NAbility;
 using Model.NAI;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
@@ -10,14 +11,15 @@ using Shared.Primitives;
 
 namespace Model.NUnit {
   public class Unit : IUnit {
-    public Unit(HealthComponent health, AttackComponent attack, MovementComponent movement, TargetComponent target, AiComponent ai, 
-        StatsComponent stats) {
+    public Unit(HealthComponent health, AttackComponent attack, MovementComponent movement, TargetComponent target,
+        AiComponent ai, StatsComponent stats, AbilityComponent ability) {
       this.health = health;
       this.attack = attack;
       this.movement = movement;
       this.target = target;
       this.ai = ai;
       this.stats = stats;
+      this.ability = ability;
     }
     
     #region Components
@@ -75,6 +77,12 @@ namespace Model.NUnit {
     public string Name => stats.Name;
     public EPlayer Player => stats.Player;
     public bool IsAllyWith(EPlayer player) => stats.IsAllyWith(player);
+    
+    public bool HasManaAccumulated => ability.HasManaAccumulated;
+    public void AccumulateMana() => ability.AccumulateMana();
+    public bool IsWithinAbilityRange(IMovement movement) => ability.IsWithinAbilityRange(movement);
+    public void StartCastingAbility(F32 currentTime) => ability.StartCastingAbility(currentTime);
+    public void EndCastingAbility() => ability.EndCastingAbility();
 
     #endregion
     
@@ -102,5 +110,6 @@ namespace Model.NUnit {
     readonly MovementComponent movement;
     readonly AiComponent ai;
     readonly StatsComponent stats;
+    readonly AbilityComponent ability;
   }
 }       

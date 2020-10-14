@@ -20,6 +20,12 @@ namespace Model.NAI.NDecisionTree {
     IsSurrounded = 16,
     IsWithingAttackRange = 17,
     AreEnemiesArrivingToAdjacentTile = 18,
-    NeedToWaitFirstEnemyArriving = 19
+    NeedToWaitFirstEnemyArriving = 19,
+    CanCastAbility = 20,
+    IsWithingAbilityRange = 21,
+    CanStartCastingAbility = 22,
+    CastAbility = 23,
+    StartCastingAbility = 24,
+    HasManaAccumulated = 25,
   }
 }

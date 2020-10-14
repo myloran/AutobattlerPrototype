@@ -20,7 +20,7 @@ namespace Model.NUnit.Components {
       AttackAnimationHitTime = attackAnimationHitTime;
     }
 
-    public void Reset() => lastStartAttackTime = Zero;
+    public void Reset() => EndAttack();
 
     public bool CanStartAttack(F32 currentTime) => 
       lastStartAttackTime + AttackAnimationHitTime < currentTime;
@@ -35,7 +35,7 @@ namespace Model.NUnit.Components {
       SqrDistance(movement.Coord, target.Coord) <= sqrRange; //TODO: check if coord == coord.Normalized is more performant
 
     public void StartAttack(F32 currentTime) => lastStartAttackTime = currentTime;
-    public void EndAttack() => lastStartAttackTime = ToF32(0);
+    public void EndAttack() => lastStartAttackTime = Zero;
 
     public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
     
