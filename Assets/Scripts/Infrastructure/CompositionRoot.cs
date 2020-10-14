@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Controller;
 using Controller.Ai;
@@ -48,6 +49,7 @@ namespace Infrastructure {
     #region View
 
     public TileStartPoints TileStartPoints;
+    public UnitViewInfoHolder UnitViewInfoHolder; 
     public UnitView UnitViewPrefab;
     public TileView TileViewPrefab;
 
@@ -80,7 +82,7 @@ namespace Infrastructure {
       var mainCamera = Camera.main;
       var tileSpawner = new TilePresenter(TileStartPoints, new TileViewFactory(TileViewPrefab));
       var coordFinder = new CoordFinder(TileStartPoints);
-      var unitViewFactory = new UnitViewFactory(units, UnitViewPrefab, coordFinder, mainCamera);
+      var unitViewFactory = new UnitViewFactory(units, UnitViewInfoHolder, coordFinder, mainCamera);
       var unitViewCoordChangedHandler = new UnitViewCoordChangedHandler(coordFinder);
       var boardPresenter = new BoardPresenter(unitViewCoordChangedHandler);
       
