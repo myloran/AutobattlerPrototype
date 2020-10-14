@@ -1,0 +1,11 @@
+{
+  "Name": "BattleDwarf",
+  "Health": 700,
+  "Armor": 5,
+  "Damage": 40,
+  "AttackSpeed": 0.4,
+  "AttackRange": 1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+}

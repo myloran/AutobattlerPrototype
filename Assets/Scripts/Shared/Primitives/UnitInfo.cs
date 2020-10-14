@@ -3,17 +3,16 @@ using MessagePack;
 
 namespace Shared.Primitives {
   [Serializable]
-  [MessagePackObject]
   public class UnitInfo {
-    [Key(0)] public string Name;
-    [Key(1)] public float Health;
-    [Key(2)] public int Armor;
-    [Key(3)] public float Damage;
-    [Key(4)] public float AttackSpeed;
-    [Key(5)] public float AttackRange;
-    [Key(6)] public float MoveSpeed;
-    [Key(7)] public float AttackAnimationHitTime;
-    [Key(8)] public float AttackAnimationTotalTime;
+    public string Name;
+    public float Health;
+    public int Armor;
+    public float Damage;
+    public float AttackSpeed;
+    public float AttackRange;
+    public float MoveSpeed;
+    public float AttackAnimationHitTime;
+    public float AttackAnimationTotalTime;
 
     public UnitInfo() { }
 
