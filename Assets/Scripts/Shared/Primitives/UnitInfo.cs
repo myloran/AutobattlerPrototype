@@ -12,6 +12,7 @@ namespace Shared.Primitives {
     public float MoveSpeed;
     public float AttackAnimationHitTime;
     public float AttackAnimationTotalTime;
+    public float ManaPerAttack;
 
     public UnitInfo() { }
 
@@ -25,6 +26,7 @@ namespace Shared.Primitives {
       MoveSpeed = info.MoveSpeed;
       AttackAnimationHitTime = info.AttackAnimationHitTime;
       AttackAnimationTotalTime = info.AttackAnimationTotalTime;
+      ManaPerAttack = info.ManaPerAttack;
     }
   }
 }

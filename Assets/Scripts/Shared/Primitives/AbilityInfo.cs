@@ -19,6 +19,8 @@ namespace Shared.Primitives {
     public EUnitTargetingRule UnitTargetingRule;
     public float Damage;
     public float Range;
+    public float AnimationHitTime;
+    public float AnimationTotalTime;
 
     public AbilityInfo() { }
 

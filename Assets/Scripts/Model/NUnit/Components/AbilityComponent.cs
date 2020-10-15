@@ -1,78 +1,48 @@
-using System.Collections.Generic;
-using Model.NUnit;
+using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Shared.Addons.Examples.FixMath;
-using Shared.Primitives;
 using static Shared.Addons.Examples.FixMath.F32;
 using static Shared.Primitives.CoordExt;
 
 namespace Model.NAbility {
   public class AbilityComponent : IAbility {
-    F32 mana,
-      sqrRange,
-      manaPerAttack,
-      lastStartCastTime;
+    public Ability Ability { get; set; }
+    public F32 CastHitTime { get; }
 
+    public AbilityComponent(IMovement movement, F32 sqrRange, F32 manaPerAttack, F32 castAnimationHitTime, 
+        F32 animationTotalTime) {
+      this.sqrRange = sqrRange;
+      this.manaPerAttack = manaPerAttack;
+      CastHitTime = castAnimationHitTime;
+      this.animationTotalTime = animationTotalTime;
+      this.movement = movement;
+    }
+    
     public bool HasManaAccumulated => mana == 100;
 
     public void AccumulateMana() {
       mana += manaPerAttack;
-
       Clamp(mana, Zero, FromFloat(100));
     }
 
-    public bool IsWithinAbilityRange(IMovement movement) {
-      var targetUnit = targetSelector.Select();
-      // var sqrRange = ToF32(range * range);
+    public bool IsWithinAbilityRange(AiContext context) {
+      var targetUnit = Ability.SelectTarget(context);
       return SqrDistance(movement.Coord, targetUnit.Coord) <= sqrRange;
     }
     
-    public bool CanExecuteAbility(F32 currentTime) => lastStartCastTime < currentTime;
-    public void StartCastingAbility(F32 currentTime) => lastStartCastTime = currentTime;
-    public void EndCastingAbility() => lastStartCastTime = mana = Zero;
-
-    // public void Execute() {
-    //   if (target == ETarget.Unit && unitTargetingRule == EUnitTargetingRule.Closest) {
-    //     var units = targetSelector.Select();
-    //     var targetUnit = context.GetClosestUnit(unit.Coord);
-    //     effect.Execute(units);
-    //   }
-    // }
-
-    ITargetSelector targetSelector;
-    IEffect effect;
-
-
-    List<AbilityComponent> nestedAbilities = new List<AbilityComponent>();
-    Unit unit;
-    Coord tile;
-
-    F32 damage;
-    F32 time;
-    ETarget target;
-    EUnitTargetingRule unitTargetingRule;
-
-    public AbilityComponent SelectTarget(ETarget target) {
-      this.target = target;
-      return this;
-    }
-
-    public AbilityComponent SelectUnitTargetingRule(EUnitTargetingRule rule) {
-      unitTargetingRule = rule;
-      return this;
-    }
+    public F32 TimeToFinishCast => animationTotalTime - CastHitTime;
+    public bool CanStartCasting(F32 currentTime) => lastStartCastTime + CastHitTime < currentTime;
+    public void StartCasting(F32 currentTime) => lastStartCastTime = currentTime;
+    public void EndCasting() => lastStartCastTime = mana = Zero;
+    public void CastAbility(AiContext context) => Ability.Cast(context);
     
-    public AbilityComponent SetRange(F32 range) {
-      this.sqrRange = range;
-      return this;
-    }
+    readonly IMovement movement;
     
-    public AbilityComponent SetDamage(F32 damage) {
-      this.damage = damage;
-      return this;
-    }
+    readonly F32 sqrRange, //TODO: move it to ability
+      manaPerAttack,
+      animationTotalTime;
 
-    // Target
-    //select a unit, 
+    F32 mana,
+      lastStartCastTime;
   }
 }

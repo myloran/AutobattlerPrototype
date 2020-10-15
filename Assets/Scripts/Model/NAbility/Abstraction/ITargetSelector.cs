@@ -1,9 +1,8 @@
-using System.Collections.Generic;
-using Model.NUnit;
+using Model.NBattleSimulation;
+using Model.NUnit.Abstraction;
 
-namespace Model.NAbility {
+namespace Model.NAbility.Abstraction {
   public interface ITargetSelector {
-    IEnumerable<Unit> Targets { get; }
-    Unit Select();
+    IUnit Select(AiContext context);
   }
 }

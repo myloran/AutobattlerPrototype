@@ -6,6 +6,6 @@ namespace Model.NAI.Decisions {
     public override EDecision Type { get; } = EDecision.CanStartCastingAbility;
     public override IDecisionTreeNode Clone() => BaseClone(this, new CanStartCastingAbility());
 
-    protected override bool GetBranch(AiContext context) => Unit.HasManaAccumulated;
+    protected override bool GetBranch(AiContext context) => Unit.CanStartCasting(context.CurrentTime);
   }
 }

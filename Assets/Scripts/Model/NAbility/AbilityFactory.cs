@@ -1,23 +1,39 @@
 using System.Collections.Generic;
+using Model.NAbility.Abstraction;
+using Model.NAbility.Effects;
+using Model.NUnit.Abstraction;
+using PlasticFloor.EventBus;
 using Shared.Primitives;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAbility {
   public class AbilityFactory {
-    public AbilityFactory(Dictionary<string, AbilityInfo> abilities) {
+    public AbilityFactory(Dictionary<string, AbilityInfo> abilities, IEventBus bus) {
       this.abilities = abilities;
+      this.bus = bus;
     }
 
-    public AbilityComponent Create(string name) {
-      var info = abilities[name];
-      var ability = new AbilityComponent()
-        .SelectTarget(info.Target)
-        .SelectUnitTargetingRule(info.UnitTargetingRule)
-        .SetDamage(ToF32(info.Damage))
-        .SetRange(ToF32(info.Range));
-      return ability;
+    public Ability Create(IUnit unit) {
+      var info = abilities[unit.Name];
+
+      ITargetSelector targetSelector = null;
+      if (info.Target == ETarget.Unit && info.UnitTargetingRule == EUnitTargetingRule.Closest) {
+        targetSelector = new ClosestUnitTargetSelector(info, unit);
+      }
+
+      ITargetsSelector targetsSelector = null;
+      targetsSelector = new SingleTargetsSelector();
+
+      IEffect effect = null;
+      if (info.Damage > 0) {
+        effect = new DamageEffect(bus, ToF32((int) info.Damage));
+      }
+
+
+      return new Ability(targetSelector, targetsSelector, effect);
     }
-    
+
     readonly Dictionary<string, AbilityInfo> abilities;
+    readonly IEventBus bus;
   }
-}
+}                      

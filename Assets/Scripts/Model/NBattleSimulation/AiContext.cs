@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Model.NAI.Commands;
+using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared.Addons.Examples.FixMath;
 using Shared.Primitives;
@@ -39,6 +40,7 @@ namespace Model.NBattleSimulation {
     public bool IsTileEmpty(Coord coord) => !board.ContainsUnit(coord) && coord.IsInsideBoard();
     public void AddUnit(Coord coord, IUnit unit) => board.AddUnit(coord, unit);
     public void RemoveUnit(Coord coord) => board.RemoveUnit(coord);
+    public IUnit FindClosestUnitTo(Coord coord, EPlayer player) => board.FindClosestUnitTo(coord, player);
 
     #endregion
 
@@ -48,6 +50,7 @@ namespace Model.NBattleSimulation {
       IsPlayerDead = true;
       playerDeathTime = CurrentTime;
     }
+
     
     public void Reset() {
       IsPlayerDead = false;

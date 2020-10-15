@@ -77,12 +77,17 @@ namespace Model.NUnit {
     public string Name => stats.Name;
     public EPlayer Player => stats.Player;
     public bool IsAllyWith(EPlayer player) => stats.IsAllyWith(player);
-    
+
+    public F32 CastHitTime => ability.CastHitTime;
+    public F32 TimeToFinishCast => ability.TimeToFinishCast;
     public bool HasManaAccumulated => ability.HasManaAccumulated;
     public void AccumulateMana() => ability.AccumulateMana();
-    public bool IsWithinAbilityRange(IMovement movement) => ability.IsWithinAbilityRange(movement);
-    public void StartCastingAbility(F32 currentTime) => ability.StartCastingAbility(currentTime);
-    public void EndCastingAbility() => ability.EndCastingAbility();
+    public bool IsWithinAbilityRange(AiContext context) => ability.IsWithinAbilityRange(context);
+    public bool CanStartCasting(F32 currentTime) => ability.CanStartCasting(currentTime);
+    public void StartCasting(F32 currentTime) => ability.StartCasting(currentTime);
+    public void EndCasting() => ability.EndCasting();
+    public void CastAbility(AiContext context) => ability.CastAbility(context);
+    public void SetAbility(Ability ability) => this.ability.Ability = ability;
 
     #endregion
     

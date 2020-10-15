@@ -100,7 +100,8 @@ namespace Infrastructure {
         d => new LoggingDecorator(d, DebugController.Info), decisionTreeLookup);
 
       var unitFactory = new UnitFactory(units, new DecisionFactory(
-        decisionTreeCreatorVisitor, decisionTreeComponent), new AbilityFactory(abilities));
+        decisionTreeCreatorVisitor, decisionTreeComponent), abilities, 
+        new AbilityFactory(abilities, eventBus));
       
       //TODO: replace board/bench dictionaries with array?               
       var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));
