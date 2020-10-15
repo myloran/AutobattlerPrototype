@@ -8,4 +8,5 @@
   "MoveSpeed": 1,
   "AttackAnimationHitTime": 0.5,
   "AttackAnimationTotalTime": 1,
+  "ManaPerAttack": 30,
 }
