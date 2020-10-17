@@ -17,6 +17,7 @@ namespace Model.NAI.Commands {
       var target = unit.Target;
       if (!target.IsAlive) return;
       
+      unit.AccumulateMana();
       target.TakeDamage(unit.Damage);
       
       if (!target.IsAlive) 

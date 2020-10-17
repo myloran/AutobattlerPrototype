@@ -78,6 +78,7 @@ namespace Model.NUnit {
     public EPlayer Player => stats.Player;
     public bool IsAllyWith(EPlayer player) => stats.IsAllyWith(player);
 
+    public IUnit AbilityTarget => ability.AbilityTarget;
     public F32 CastHitTime => ability.CastHitTime;
     public F32 TimeToFinishCast => ability.TimeToFinishCast;
     public bool HasManaAccumulated => ability.HasManaAccumulated;
@@ -98,6 +99,7 @@ namespace Model.NUnit {
       target.Reset();
       ai.Reset();
       stats.Reset();
+      ability.Reset();
     }
 
     public override string ToString() => new StringBuilder()
@@ -106,6 +108,7 @@ namespace Model.NUnit {
       .Append(movement).Append("\n")
       .Append(ai).Append("\n")
       .Append(stats).Append("\n")
+      .Append(ability).Append("\n")
       .Append(target).Append("\n")
       .ToString();
     

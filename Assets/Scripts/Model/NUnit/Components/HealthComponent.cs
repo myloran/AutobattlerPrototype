@@ -23,7 +23,7 @@ namespace Model.NUnit.Components {
     public void UnsubFromDeath(ITarget target) => observers.Remove(target);
 
     public void TakeDamage(F32 damage) {
-      var damageDealt = damage - damage * armor / (armor + 10);
+      var damageDealt = damage - damage * armor / (armor + 10); //TODO: take magic resist into account when taking ability damage
       Health -= damageDealt;
       Health = Clamp(Health, Zero, startingHealth);
       

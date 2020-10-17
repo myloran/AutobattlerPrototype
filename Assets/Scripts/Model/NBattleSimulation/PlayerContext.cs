@@ -21,7 +21,7 @@ namespace Model.NBattleSimulation {
     public IEnumerable<IUnit> GetBoardUnits(EPlayer player) => 
       Get(player).BoardUnits.Values;
 
-    public bool HasUnits(EPlayer player) =>
+    public bool HasAliveUnits(EPlayer player) =>
       Get(player).BoardUnits.Values.Any(u => u.IsAlive);
 
     public void MoveUnit(Coord from, Coord to, EPlayer player) => 

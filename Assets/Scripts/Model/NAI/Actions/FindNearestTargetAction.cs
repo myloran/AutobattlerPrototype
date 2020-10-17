@@ -13,7 +13,6 @@ namespace Model.NAI.Actions {
       //TODO: check if it's moving and if so record that in unit
       var target = context.FindClosestUnitTo(Unit.Coord, Unit.Player.Opposite());
       Unit.ChangeTargetTo(target);
-      
       context.InsertCommand(Zero, new MakeDecisionCommand(Unit, context, Zero));
       return this;
     }

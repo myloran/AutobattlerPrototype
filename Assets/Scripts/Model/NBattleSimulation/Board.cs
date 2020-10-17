@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Model.NUnit;
 using Model.NUnit.Abstraction;
 using Shared;
@@ -28,7 +29,7 @@ namespace Model.NBattleSimulation {
     }
 
     public IEnumerable<IUnit> GetPlayerUnits(EPlayer player) => context.GetBoardUnits(player);
-    public bool HasUnits(EPlayer player) => context.HasUnits(player);
+    public bool HasAliveUnits(EPlayer player) => context.HasAliveUnits(player);
 
     public bool IsSurrounded(Coord coord) {
       for (int x = -1; x <= 1; x++) {

@@ -24,8 +24,8 @@ namespace Model.NAI.NDecisionTree {
     CanCastAbility = 20,
     IsWithingAbilityRange = 21,
     CanStartCastingAbility = 22,
-    CastAbility = 23,
-    StartCastingAbility = 24,
+    Cast = 23,
+    StartCastAction = 24,
     HasManaAccumulated = 25,
     NeedTwoTileAttackRange = 26,
   }

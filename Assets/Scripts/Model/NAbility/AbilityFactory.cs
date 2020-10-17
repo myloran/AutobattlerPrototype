@@ -13,8 +13,8 @@ namespace Model.NAbility {
       this.bus = bus;
     }
 
-    public Ability Create(IUnit unit) {
-      var info = abilities[unit.Name];
+    public Ability Create(IUnit unit, string abilityName) {
+      var info = abilities[abilityName];
 
       ITargetSelector targetSelector = null;
       if (info.Target == ETarget.Unit && info.UnitTargetingRule == EUnitTargetingRule.Closest) {

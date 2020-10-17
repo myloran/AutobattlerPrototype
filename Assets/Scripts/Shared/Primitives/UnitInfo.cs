@@ -13,6 +13,7 @@ namespace Shared.Primitives {
     public float AttackAnimationHitTime;
     public float AttackAnimationTotalTime;
     public float ManaPerAttack;
+    public string AbilityName;
 
     public UnitInfo() { }
 

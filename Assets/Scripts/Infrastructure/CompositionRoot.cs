@@ -153,6 +153,7 @@ namespace Infrastructure {
       eventBus.Register<DeathEvent>(attackController);
       eventBus.Register<IdleEvent>(animationController);
       eventBus.Register<StartAttackEvent>(animationController);
+      eventBus.Register<StartCastEvent>(animationController);
 
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, movementController, movementController);

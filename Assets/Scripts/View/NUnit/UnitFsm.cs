@@ -7,6 +7,7 @@ namespace View.NUnit {
       idle = new IdleState(unit);
       move = new MoveState(unit);
       attack = new AttackState(unit);
+      cast = new CastState(unit);
       current = idle;
     }
     
@@ -21,6 +22,9 @@ namespace View.NUnit {
         case EState.Attacking:
           ChangeStateTo(attack);
           break;
+        case EState.Casting:
+          ChangeStateTo(cast);
+          break;
         default:
           throw new ArgumentOutOfRangeException(nameof(state), state, null);
       }
@@ -34,7 +38,8 @@ namespace View.NUnit {
 
     readonly IState idle, 
       move, 
-      attack;
+      attack,
+      cast;
     IState current;
   }
 }

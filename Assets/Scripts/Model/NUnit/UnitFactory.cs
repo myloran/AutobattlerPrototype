@@ -24,7 +24,7 @@ namespace Model.NUnit {
         ToF32(info.AttackRange * info.AttackRange), ToF32(info.AttackAnimationHitTime),
         ToF32(info.AttackAnimationTotalTime));
       
-      var abilityInfo = abilities[name];
+      var abilityInfo = abilities[info.AbilityName];
       var sqrRange = ToF32(abilityInfo.Range * abilityInfo.Range);
       
       var abilityComponent = new AbilityComponent(movement, sqrRange, ToF32(info.ManaPerAttack),
@@ -34,7 +34,7 @@ namespace Model.NUnit {
         new AiComponent(), new StatsComponent(name, 1, player), abilityComponent);
 
       unit.SetDecisionTree(decisionFactory.Create(unit));
-      unit.SetAbility(abilityFactory.Create(unit));
+      unit.SetAbility(abilityFactory.Create(unit, info.AbilityName));
 
       return unit;
     }

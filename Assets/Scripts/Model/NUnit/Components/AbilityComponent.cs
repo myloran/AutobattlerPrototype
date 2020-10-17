@@ -7,6 +7,7 @@ using static Shared.Primitives.CoordExt;
 namespace Model.NAbility {
   public class AbilityComponent : IAbility {
     public Ability Ability { get; set; }
+    public IUnit AbilityTarget { get; private set; }
     public F32 CastHitTime { get; }
 
     public AbilityComponent(IMovement movement, F32 sqrRange, F32 manaPerAttack, F32 castAnimationHitTime, 
@@ -18,16 +19,18 @@ namespace Model.NAbility {
       this.movement = movement;
     }
     
+    public void Reset() => mana = Zero;
+
     public bool HasManaAccumulated => mana == 100;
 
     public void AccumulateMana() {
       mana += manaPerAttack;
-      Clamp(mana, Zero, FromFloat(100));
+      mana = Clamp(mana, Zero, ToF32(100));
     }
 
     public bool IsWithinAbilityRange(AiContext context) {
-      var targetUnit = Ability.SelectTarget(context);
-      return SqrDistance(movement.Coord, targetUnit.Coord) <= sqrRange;
+      AbilityTarget = Ability.SelectTarget(context);
+      return SqrDistance(movement.Coord, AbilityTarget.Coord) <= sqrRange;
     }
     
     public F32 TimeToFinishCast => animationTotalTime - CastHitTime;
@@ -35,6 +38,8 @@ namespace Model.NAbility {
     public void StartCasting(F32 currentTime) => lastStartCastTime = currentTime;
     public void EndCasting() => lastStartCastTime = mana = Zero;
     public void CastAbility(AiContext context) => Ability.Cast(context);
+    
+    public override string ToString() => $"{nameof(mana)}: {mana}, {nameof(lastStartCastTime)}: {lastStartCastTime}";
     
     readonly IMovement movement;
     

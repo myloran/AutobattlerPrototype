@@ -45,7 +45,7 @@ namespace Model.NBattleSimulation {
     #endregion
 
     public void CheckBattleIsOver() {
-      if (board.HasUnits(EPlayer.First) && board.HasUnits(EPlayer.Second)) return;
+      if (board.HasAliveUnits(EPlayer.First) && board.HasAliveUnits(EPlayer.Second)) return;
       
       IsPlayerDead = true;
       playerDeathTime = CurrentTime;

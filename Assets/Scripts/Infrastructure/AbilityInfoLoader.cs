@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Infrastructure {
   public class AbilityInfoLoader {
     public Dictionary<string, AbilityInfo> Load() {
-      var dataFolderPath = Path.Combine(Application.dataPath, "Data", "Units");
+      var dataFolderPath = Path.Combine(Application.dataPath, "Data", "Abilities");
       var files = Directory.GetFiles(dataFolderPath, "*.json");
       var abilities = new Dictionary<string, AbilityInfo>();
 

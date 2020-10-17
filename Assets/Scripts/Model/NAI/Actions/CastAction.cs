@@ -4,9 +4,9 @@ using Model.NBattleSimulation;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAI.Actions {
-  public class CastAbilityAction : BaseAction {
-    public override EDecision Type { get; } = EDecision.CastAbility;
-    public override IDecisionTreeNode Clone() => BaseClone(this, new CastAbilityAction());
+  public class CastAction : BaseAction {
+    public override EDecision Type { get; } = EDecision.Cast;
+    public override IDecisionTreeNode Clone() => BaseClone(this, new CastAction());
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       context.InsertCommand(Zero, new CastAbilityCommand(Unit, context)); //inserting to heap because units can attack at the same time
