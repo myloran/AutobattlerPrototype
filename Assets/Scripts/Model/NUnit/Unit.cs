@@ -79,6 +79,7 @@ namespace Model.NUnit {
     public bool IsAllyWith(EPlayer player) => stats.IsAllyWith(player);
 
     public IUnit AbilityTarget => ability.AbilityTarget;
+    public F32 Mana => ability.Mana;
     public F32 CastHitTime => ability.CastHitTime;
     public F32 TimeToFinishCast => ability.TimeToFinishCast;
     public bool HasManaAccumulated => ability.HasManaAccumulated;

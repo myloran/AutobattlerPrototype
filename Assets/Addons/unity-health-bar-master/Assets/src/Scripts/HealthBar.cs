@@ -29,7 +29,7 @@ public class HealthBar : MonoBehaviour {
   void UpdateRotation() {
     var position = transform.position;
     var targetPosition = mainCamera.transform.position; 
-    var target = new Vector3(position.x, targetPosition.y, targetPosition.z);
+    var target = new Vector3(position.x, -targetPosition.y, -targetPosition.z);
     transform.LookAt(target);
   }
 

@@ -24,6 +24,7 @@ namespace Model.NAI.Commands {
         new DeathCommand(target, context).Execute();
       
       bus.Raise(new UpdateHealthEvent(target.Health, target.Coord));
+      bus.Raise(new UpdateManaEvent(unit.Mana, unit.Coord));
       
       if (!target.IsAlive) 
         bus.Raise(new DeathEvent(target.Coord));

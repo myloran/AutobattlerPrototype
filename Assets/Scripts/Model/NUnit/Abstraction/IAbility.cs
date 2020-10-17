@@ -4,6 +4,7 @@ using Shared.Addons.Examples.FixMath;
 namespace Model.NUnit.Abstraction {
   public interface IAbility {
     IUnit AbilityTarget { get; }
+    F32 Mana { get; }
     F32 CastHitTime { get; }
     F32 TimeToFinishCast { get; }
     bool HasManaAccumulated { get; }

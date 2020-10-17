@@ -150,6 +150,7 @@ namespace Infrastructure {
       eventBus.Register<FinishMoveEvent>(movementController);
       eventBus.Register<RotateEvent>(movementController);
       eventBus.Register<UpdateHealthEvent>(attackController);
+      eventBus.Register<UpdateManaEvent>(attackController);
       eventBus.Register<DeathEvent>(attackController);
       eventBus.Register<IdleEvent>(animationController);
       eventBus.Register<StartAttackEvent>(animationController);

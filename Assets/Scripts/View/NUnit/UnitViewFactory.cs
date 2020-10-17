@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Addons.Assets.src.Scripts;
 using Shared.Primitives;
 using UnityEngine;
 using View.Exts;
@@ -26,8 +27,11 @@ namespace View.NUnit {
       
       var healthBar = obj.GetComponentInChildren<HealthBar>()
         .Init(player.ToColor(), unitInfo.Health, mainCamera);
+      
+      var manaBar = obj.GetComponentInChildren<ManaBar>()
+        .Init(100, mainCamera);
        
-      return obj.Init(new UnitInfo(unitInfo), player, healthBar);
+      return obj.Init(new UnitInfo(unitInfo), player, healthBar, manaBar);
     }
 
     readonly CoordFinder coordFinder;

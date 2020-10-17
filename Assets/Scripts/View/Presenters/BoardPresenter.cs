@@ -16,6 +16,7 @@ namespace View.Presenters {
     public void RemoveUnit(Coord coord) => units.Remove(coord);
     public bool ContainsUnit(Coord coord) => units.ContainsKey(coord); 
     public UnitView GetUnit(Coord coord) => units[coord];
+    public bool TryGetUnit(Coord coord, out UnitView unit) => units.TryGetValue(coord, out unit);
 
     #endregion
 

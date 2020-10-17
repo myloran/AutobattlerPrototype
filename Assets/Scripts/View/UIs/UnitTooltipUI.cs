@@ -1,6 +1,7 @@
 using Shared;
 using Shared.Primitives;
 using TMPro;
+using View.NUnit;
 
 namespace View.UIs {
   public class UnitTooltipUI : AutoReferencer<UnitTooltipUI> {
@@ -12,7 +13,7 @@ namespace View.UIs {
       TAttackRange,
       TMoveSpeed;
 
-    public void SetUnitData(UnitInfo unit) {
+    public void SetUnitData(UnitStats unit) {
       TName.text = "Name: " + unit.Name;
       THealth.text = "Health: " + unit.Health;
       TArmor.text = "Armor: " + unit.Armor;
