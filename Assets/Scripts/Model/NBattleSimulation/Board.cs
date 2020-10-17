@@ -73,7 +73,7 @@ namespace Model.NBattleSimulation {
     }
     
     public IUnit FindClosestUnitTo(Coord coord, EPlayer player) => 
-      GetPlayerUnits(player).MinBy(u => CoordExt.SqrDistance(coord, u.Coord));
+      GetPlayerUnits(player).Where(u => u.IsAlive).MinBy(u => CoordExt.SqrDistance(coord, u.Coord));
 
     Dictionary<Coord, IUnit> units = new Dictionary<Coord, IUnit>(MaxUnitsOnBoard * 2); //when unit moves it occupies tile thus * 2
     PlayerContext context;
