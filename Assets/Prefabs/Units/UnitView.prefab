@@ -110,20 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2938eef4c47488f99eccc804fbf4e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stats:
-    Name: 
-    Health: 0
-    Armor: 0
-    Damage: 0
-    AttackSpeed: 0
-    AttackRange: 0
-    MoveSpeed: 0
-    AttackAnimationHitTime: 0
-    AttackAnimationTotalTime: 0
-    ManaPerAttack: 0
-    AbilityName: 
+  AnimatorController: {fileID: 9100000, guid: 1c0a1e7ee1f0d304095ad2562a901d8a, type: 2}
   Animator: {fileID: 0}
-  Height: 0.25
+  Height: 0
   Player: 0
   Level: 1
 --- !u!1001 &1010070793434864472
@@ -206,7 +195,7 @@ PrefabInstance:
     - target: {fileID: 8095004718898099118, guid: 81436f386ae1b154a96ebc423e2976f9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.8201
+      value: 1.0701
       objectReference: {fileID: 0}
     - target: {fileID: 8095004718898099118, guid: 81436f386ae1b154a96ebc423e2976f9,
         type: 3}
@@ -459,7 +448,7 @@ PrefabInstance:
     - target: {fileID: 4594390143909014358, guid: bd6b74dc09f6e854ca66c5bb499e55d6,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.8201
+      value: 1.0701
       objectReference: {fileID: 0}
     - target: {fileID: 4594390143909014358, guid: bd6b74dc09f6e854ca66c5bb499e55d6,
         type: 3}

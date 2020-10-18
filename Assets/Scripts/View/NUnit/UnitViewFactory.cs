@@ -22,14 +22,18 @@ namespace View.NUnit {
       var unitInfo = unitInfos[name];
       
       var obj = Object.Instantiate(unit, position, rotation);
-      var model = unitViewInfoHolder.Infos[name].Model;
-      Object.Instantiate(model, obj.transform);
+      var viewInfo = unitViewInfoHolder.Infos[name];
+      Object.Instantiate(viewInfo.Model, obj.transform);
       
       var healthBar = obj.GetComponentInChildren<HealthBar>()
         .Init(player.ToColor(), unitInfo.Health, mainCamera);
       
       var manaBar = obj.GetComponentInChildren<ManaBar>()
         .Init(100, mainCamera);
+      
+      obj.Animator = obj.GetComponentInChildren<Animator>();
+      obj.Animator.runtimeAnimatorController = viewInfo.AnimatorController;
+      obj.Animator.applyRootMotion = false;
        
       return obj.Init(new UnitInfo(unitInfo), player, healthBar, manaBar);
     }

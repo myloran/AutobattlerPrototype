@@ -7,7 +7,7 @@ using View.NUnit.States;
 namespace View.NUnit {
   public class UnitView : MonoBehaviour {
     public UnitStats Stats;
-    public Animator Animator;
+    public Animator Animator { get; set; }
     public float Height = 0.25f; //TODO: remove when replaced with pivot point
     public EPlayer Player;
     public int Level = 1; 
@@ -16,11 +16,9 @@ namespace View.NUnit {
       this.info = new UnitInfo(info);
       this.healthBar = healthBar;
       this.manaBar = manaBar;
-      Stats = new UnitStats(info);
       Player = player;
-      Animator = GetComponentInChildren<Animator>();
+      Stats = new UnitStats(info);
       fsm = new UnitFsm(this);
-
       return this;
     }
 
