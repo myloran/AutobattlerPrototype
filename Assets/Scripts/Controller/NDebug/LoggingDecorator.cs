@@ -26,7 +26,7 @@ namespace Controller.NDebug {
       if (!debugInfo.IsDebugOn) return decision.MakeDecision(context);
       
       message += decision.GetType().Name + "->";
-      if (decision is FindNearestTargetAction) { } else //TODO: refactor to use enum
+      if (decision is FindNearestTargetAction) { } else //when 2 units are using that, it displays incorrectly //TODO: refactor to use enum
       if (decision is BaseAction ba) {
         log.Info($"[{context.CurrentTime}] {ba.Unit.Coord} {message}");
         message = "";
