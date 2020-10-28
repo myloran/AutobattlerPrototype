@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b70062526c3a484aa32042229322d29a, type: 3}
   m_Name: RunePriest
   m_EditorClassIdentifier: 
-  Model: {fileID: 6598839468605295032, guid: 1fc95c6367d615b498b5f576a7f7de57, type: 3}
+  Model: {fileID: -927199367670048503, guid: 6f26ae8c36ee7564ba44b37907724ea2, type: 3}
+  AnimatorController: {fileID: 9100000, guid: 1c0a1e7ee1f0d304095ad2562a901d8a, type: 2}

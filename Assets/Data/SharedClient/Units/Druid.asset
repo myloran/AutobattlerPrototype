@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Druid
   m_EditorClassIdentifier: 
   Model: {fileID: -927199367670048503, guid: 111cb4908f1e688428b916bb00e809da, type: 3}
+  AnimatorController: {fileID: 9100000, guid: 1c0a1e7ee1f0d304095ad2562a901d8a, type: 2}
