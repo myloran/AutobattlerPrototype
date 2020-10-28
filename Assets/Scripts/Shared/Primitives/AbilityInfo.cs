@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Shared.Primitives {
   public enum ETarget {
@@ -11,16 +12,27 @@ namespace Shared.Primitives {
     Closest,
     Farest,
   }
+
+  public enum ETiming {
+    Once,
+    Period,
+  }
   
   [Serializable]
   public class AbilityInfo {
     public string Name;
+    public List<string> NestedAbilities = new List<string>();
     public ETarget Target;
     public EUnitTargetingRule UnitTargetingRule;
+    public ETiming Timing;
+    public bool IsTimingOverridden;
     public float Damage;
     public float Range;
     public float AnimationHitTime;
     public float AnimationTotalTime;
+    public float TimingPeriod;
+    public int TimingCount;
+    public float TimingInitialDelay;
 
     public AbilityInfo() { }
 
@@ -30,6 +42,11 @@ namespace Shared.Primitives {
       UnitTargetingRule = info.UnitTargetingRule;
       Damage = info.Damage;
       Range = info.Range;
+      Timing = info.Timing;
+      TimingPeriod = info.TimingPeriod;
+      TimingCount = info.TimingCount;
+      IsTimingOverridden = info.IsTimingOverridden;
+      TimingInitialDelay = info.TimingInitialDelay;
     }
   }
 }

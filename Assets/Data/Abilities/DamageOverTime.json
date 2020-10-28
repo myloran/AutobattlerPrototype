@@ -1,0 +1,9 @@
+{
+  "Name": "DamageOverTime",
+  "IsTimingOverridden": true,
+  "Timing": "Period",
+  "Damage": 50,  
+  "TimingPeriod": 0.5,
+  "TimingCount": 4,
+  "InitialDelay": 0.5,
+}

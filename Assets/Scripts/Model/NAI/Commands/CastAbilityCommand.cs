@@ -12,10 +12,10 @@ namespace Model.NAI.Commands {
     }
 
     public override void Execute() {
-      if (!unit.TargetExists) return;
+      if (!unit.TargetExists) return; //TODO: check is probably not required
       
       var target = unit.Target;
-      if (!target.IsAlive) return;
+      if (!target.IsAlive) return; //TODO: check is probably not required
 
       unit.CastAbility(context);
       bus.Raise(new UpdateManaEvent(unit.Mana, unit.Coord));
