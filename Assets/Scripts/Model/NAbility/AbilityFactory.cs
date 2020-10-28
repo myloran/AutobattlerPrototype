@@ -25,25 +25,25 @@ namespace Model.NAbility {
 
       ITargetsSelector targetsSelector = new SingleTargetsSelector();
 
-      IEffect effect;
+      var effects = new List<IEffect>();
       if (info.Damage > 0) {
-        effect = new DamageEffect(bus, ToF32((int) info.Damage));
+        effects.Add(new DamageEffect(bus, ToF32(info.Damage)));
       }
-      else {
-        effect = new NothingEffect();
+      else if (info.SilenceDuration > 0) {
+        effects.Add(new SilenceEffect(bus, ToF32(info.SilenceDuration)));
       }
 
       ITiming timing = null;
       if (info.Timing == ETiming.Once) {
         timing = new OnceTiming();
-      }
-      if (info.Timing == ETiming.Period) {
+      } 
+      else if (info.Timing == ETiming.Period) {
         timing = new PeriodTiming(ToF32(info.TimingPeriod), info.TimingCount, ToF32(info.TimingInitialDelay));
       }
       
       var nestedAbilities = info.NestedAbilities.Select(a => Create(unit, a));
 
-      return new Ability(targetSelector, targetsSelector, effect, timing, info.IsTimingOverridden, nestedAbilities);
+      return new Ability(targetSelector, targetsSelector, effects, timing, info.IsTimingOverridden, nestedAbilities);
     }
 
     readonly Dictionary<string, AbilityInfo> abilities;

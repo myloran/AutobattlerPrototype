@@ -1,4 +1,5 @@
 using Addons.Assets.src.Scripts;
+using Shared.Addons.Examples.FixMath;
 using Shared.Primitives;
 using UnityEngine;
 using View.Exts;
@@ -41,6 +42,10 @@ namespace View.NUnit {
     public void SetMana(float amount) {
       Stats.Mana = amount;
       manaBar.SetCurrentMana(amount);
+    }
+    
+    public void UpdateSilenceDuration(float duration) {
+      //TODO: do the thing  
     }
 
     UnitFsm fsm;

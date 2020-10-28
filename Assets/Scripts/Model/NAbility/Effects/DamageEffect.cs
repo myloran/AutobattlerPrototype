@@ -28,7 +28,6 @@ namespace Model.NAbility.Effects {
       }
     }
 
-
     readonly IEventBus bus;
     readonly F32 damage;
   }

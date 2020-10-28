@@ -11,16 +11,16 @@ namespace Model.NAbility {
   public class Ability {
     public readonly bool IsTimingOverridden;
     public readonly IEnumerable<Ability> NestedAbilities;
-    public readonly IEffect Effect;
+    public readonly List<IEffect> Effects;
     public readonly ITiming Timing;
     public ITargetSelector TargetSelector;
     public ITargetsSelector TargetsSelector;
     
-    public Ability(ITargetSelector targetSelector, ITargetsSelector targetsSelector, IEffect effect, ITiming timing, 
+    public Ability(ITargetSelector targetSelector, ITargetsSelector targetsSelector, List<IEffect> effects, ITiming timing, 
         bool isTimingOverridden = false, IEnumerable<Ability> nestedAbilities = null) {
       TargetSelector = targetSelector;
       TargetsSelector = targetsSelector;
-      Effect = effect;
+      Effects = effects;
       Timing = timing;
       IsTimingOverridden = isTimingOverridden;
       NestedAbilities = nestedAbilities ?? new List<Ability>();
@@ -33,7 +33,9 @@ namespace Model.NAbility {
     public void Execute(AiContext context) {
       var target = TargetSelector.Select(context);
       var targets = TargetsSelector.Select(target).ToList();
-      Effect.Apply(context, targets);
+      
+      foreach (var effect in Effects)
+        effect.Apply(context, targets);
 
       foreach (var nestedAbility in NestedAbilities) {
         if (nestedAbility.IsTimingOverridden && nestedAbility.Timing.HasNext()) {
@@ -42,7 +44,8 @@ namespace Model.NAbility {
           nestedAbility.Cast(nestedAbility.Timing.GetNext(), context);
         }
         else {
-          nestedAbility.Effect.Apply(context, targets);
+          foreach (var effect in nestedAbility.Effects)
+            effect.Apply(context, targets);
         }
       }
 

@@ -33,6 +33,7 @@ namespace Shared.Primitives {
     public float TimingPeriod;
     public int TimingCount;
     public float TimingInitialDelay;
+    public float SilenceDuration;
 
     public AbilityInfo() { }
 

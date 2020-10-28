@@ -90,6 +90,9 @@ namespace Model.NUnit {
     public void EndCasting() => ability.EndCasting();
     public void CastAbility(AiContext context) => ability.CastAbility(context);
     public void SetAbility(Ability ability) => this.ability.Ability = ability;
+    public bool IsSilenced => ability.IsSilenced;
+    public F32 SilenceDuration => ability.SilenceDuration;
+    public void ApplySilence(F32 duration) => ability.ApplySilence(duration);
 
     #endregion
     

@@ -28,7 +28,7 @@ namespace Model.NUnit {
       var sqrRange = ToF32(abilityInfo.Range * abilityInfo.Range);
       
       var abilityComponent = new AbilityComponent(movement, sqrRange, ToF32(info.ManaPerAttack),
-        ToF32(abilityInfo.AnimationHitTime), ToF32(abilityInfo.AnimationTotalTime));
+        ToF32(abilityInfo.AnimationHitTime), ToF32(abilityInfo.AnimationTotalTime), new SilenceComponent());
 
       var unit = new Unit(health, attack, movement, new TargetComponent(movement), 
         new AiComponent(), new StatsComponent(name, 1, player), abilityComponent);

@@ -146,6 +146,7 @@ namespace Infrastructure {
       var movementController = new MovementController(boardPresenter, coordFinder);
       var attackController = new AttackController(boardPresenter, unitTooltipController);
       var animationController = new AnimationController(boardPresenter);
+      var unitViewController = new UnitViewController(boardPresenter);
       eventBus.Register<StartMoveEvent>(movementController, animationController); //TODO: register implicitly?
       eventBus.Register<FinishMoveEvent>(movementController);
       eventBus.Register<RotateEvent>(movementController);
@@ -155,6 +156,7 @@ namespace Infrastructure {
       eventBus.Register<IdleEvent>(animationController);
       eventBus.Register<StartAttackEvent>(animationController);
       eventBus.Register<StartCastEvent>(animationController);
+      eventBus.Register<UpdateSilenceDurationEvent>(unitViewController);
 
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, movementController, movementController);

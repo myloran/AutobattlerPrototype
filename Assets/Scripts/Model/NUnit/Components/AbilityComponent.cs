@@ -1,5 +1,6 @@
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
+using Model.NUnit.Components;
 using Shared.Addons.Examples.FixMath;
 using static Shared.Addons.Examples.FixMath.F32;
 using static Shared.Primitives.CoordExt;
@@ -7,18 +8,34 @@ using static Shared.Primitives.CoordExt;
 namespace Model.NAbility {
   public class AbilityComponent : IAbility {
     public Ability Ability { get; set; }
+    public ISilence Silence { get; }
     public IUnit AbilityTarget { get; private set; }
     public F32 CastHitTime { get; }
-    public F32 Mana { get; private set; }
+    public F32 Mana { get; private set; } //TODO: extract stuff related to mana into separate component
 
     public AbilityComponent(IMovement movement, F32 sqrRange, F32 manaPerAttack, F32 castAnimationHitTime, 
-        F32 animationTotalTime) {
+        F32 animationTotalTime, ISilence silence) {
       this.sqrRange = sqrRange;
       this.manaPerAttack = manaPerAttack;
       CastHitTime = castAnimationHitTime;
       this.animationTotalTime = animationTotalTime;
       this.movement = movement;
+      Silence = silence;
     }
+    //TODO: THE PLAN, don't forget about it
+    //refactor decision tree graph to compose multiple components into one or at least allow to accept input from multiple sources
+    //create IsSilencedDecision
+    //subscribe to silence event
+    //react to silence event(clean up ability casting logic, notify view, make new instant decision)
+    //display silence on the view properly
+
+    #region Silence
+
+    public bool IsSilenced => Silence.IsSilenced;
+    public F32 SilenceDuration => Silence.SilenceDuration;
+    public void ApplySilence(F32 duration) => Silence.ApplySilence(duration);
+    
+    #endregion
     
     public void Reset() => Mana = Zero;
 
