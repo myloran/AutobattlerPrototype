@@ -34,6 +34,7 @@ namespace Model.NAI.NDecisionTree {
 
     public IDecisionTreeNode MakeDecision(AiContext context) {
       var branch = GetBranch(context) ? TrueNode : FalseNode;
+      //TODO: add debug check if decision is the one we want to stop and exit immediately after that, so that we can see game state in our point of interest
       return branch.MakeDecision(context);
     }
   }

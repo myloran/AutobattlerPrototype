@@ -10,6 +10,7 @@ namespace Model.NAI.Commands {
     public void Execute() {
       foreach (var command in commands) {
         command.Execute();;
+        //TODO: add debug check if command is the one we want to stop and exit immediately after that, so that we can see game state in our point of interest
       }
     }
 
