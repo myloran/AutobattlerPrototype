@@ -1,4 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="CommandsWindow.uss" />
-    <ui:Button text="Button" display-tooltip-when-elided="true" name="Command" class="no-shrink small-text-size" style="-unity-text-align: middle-center; width: auto; padding-left: 1px; padding-right: 1px; margin-left: 1px; margin-right: 1px; padding-top: 0; padding-bottom: 0;" />
+    <ui:Button text="Button" display-tooltip-when-elided="true" name="Command" class="small-text-size" style="-unity-text-align: middle-center; width: auto; padding-left: 1px; padding-right: 1px; margin-left: 1px; margin-right: 1px; padding-top: 0; padding-bottom: 0;" />
 </ui:UXML>

@@ -3,7 +3,7 @@
     <ui:VisualElement name="CommandElement" style="flex-direction: row; font-size: 9px;">
         <ui:Label text="44.44" display-tooltip-when-elided="true" name="Time" class="no-padding small-text-size time" style="flex-grow: 0; flex-basis: 0; -unity-text-align: middle-center;" />
         <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="CommandsScroll" style="flex-grow: 1;">
-            <ui:VisualElement name="Commands" style="flex-direction: row;" />
+            <ui:VisualElement name="Commands" style="flex-direction: row; flex-wrap: wrap;" />
         </ui:ScrollView>
     </ui:VisualElement>
 </ui:UXML>
