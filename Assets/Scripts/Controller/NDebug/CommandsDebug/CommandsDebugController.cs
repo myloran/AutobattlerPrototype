@@ -16,6 +16,13 @@ namespace Controller.NDebug {
     public void Init() {
       ShowUI();
       aiHeap.OnInsert += OnInsert;
+      aiHeap.OnReset += OnReset;
+    }
+
+    void OnReset() {
+      commands.Clear();
+      commandRows.Clear();
+      commandsContainer.Clear();
     }
 
     void OnInsert(F32 time, ICommand command) {

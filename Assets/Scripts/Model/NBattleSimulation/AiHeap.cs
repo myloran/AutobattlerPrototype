@@ -10,6 +10,7 @@ namespace Model.NBattleSimulation {
   public class AiHeap : IAiHeap {
     public readonly SortedDictionary<F32, PriorityCommand> DebugTree = new SortedDictionary<F32, PriorityCommand>();
     public Action<F32, ICommand> OnInsert = (v, c) => {};
+    public Action OnReset = () => {};
 
     public F32 CurrentTime { get; set; }
     
@@ -20,7 +21,7 @@ namespace Model.NBattleSimulation {
       if (nodes.ContainsKey(nextTime)) {
         var priorityCommand = nodes[nextTime].Data;
         priorityCommand.AddChild(command);
-        OnInsert.Invoke(nextTime, command);
+        OnInsert(nextTime, command);
         return;
       }
 
@@ -29,7 +30,7 @@ namespace Model.NBattleSimulation {
       aiHeap.Insert(node);
       DebugTree[nextTime] = pCommand;
       nodes[nextTime] = node;
-      OnInsert.Invoke(nextTime, command);
+      OnInsert(nextTime, command);
     }
 
     public (bool IsEmpty, ICommand Command) RemoveMin() {
@@ -52,6 +53,7 @@ namespace Model.NBattleSimulation {
     public void Reset() {
       aiHeap.Clear();
       nodes.Clear();
+      OnReset();
     }
     
     readonly FibonacciHeap<PriorityCommand, F32> aiHeap = 
