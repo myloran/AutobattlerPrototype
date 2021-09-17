@@ -15,3 +15,11 @@
     margin-left: 0;
     margin-right: 0;
 }
+
+.small-text-size {
+    font-size: 12px;
+}
+
+.time {
+    min-width: 36px;
+}

@@ -2,8 +2,8 @@
     <Style src="CommandsWindow.uss" />
     <ui:VisualElement name="CommandsWindow">
         <ui:VisualElement name="CommandsHeader" style="flex-direction: row;">
-            <ui:Label text="Time" display-tooltip-when-elided="true" name="TimeLabel" class="no-padding" style="flex-grow: 0; flex-basis: 0; min-width: 27px; -unity-text-align: upper-center; font-size: 9px; -unity-font-style: bold;" />
-            <ui:Label text="Commands" display-tooltip-when-elided="true" name="CommandsLabel" class="no-padding" style="flex-grow: 1; flex-basis: 0; -unity-text-align: upper-center; font-size: 9px; -unity-font-style: bold;" />
+            <ui:Label text="Time" display-tooltip-when-elided="true" name="TimeLabel" class="no-padding small-text-size time" style="flex-grow: 0; flex-basis: 0; -unity-text-align: upper-center; -unity-font-style: bold;" />
+            <ui:Label text="Commands" display-tooltip-when-elided="true" name="CommandsLabel" class="no-padding small-text-size" style="flex-grow: 1; flex-basis: 0; -unity-text-align: upper-center; -unity-font-style: bold;" />
         </ui:VisualElement>
         <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="CommandsBody" />
     </ui:VisualElement>
