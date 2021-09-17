@@ -3,6 +3,7 @@ using Model.NAI.Commands;
 using Model.NBattleSimulation;
 using Shared.Addons.Examples.FixMath;
 using Shared.Exts;
+using UnityEditor.SceneManagement;
 using UnityEngine.UIElements;
 using View.UIToolkit;
 
@@ -82,8 +83,16 @@ namespace Controller.NDebug {
     TemplateContainer CreateCommandButton(ICommand command) {
       var template = ui.CommandTemplate.Instantiate();
       var button = template.Q<Button>();
-      button.text = command.GetType().Name;
+      var commandName = command.GetType().Name;
+      button.text = SimplifyCommandName(commandName);
       return template;
+    }
+
+    string SimplifyCommandName(string name) {
+      var index = name.LastIndexOf('C');
+      return index > 0 
+        ? name.Substring(0, index) 
+        : name;
     }
     
     readonly AiHeap aiHeap;
