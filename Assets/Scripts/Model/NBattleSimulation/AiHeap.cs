@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FibonacciHeap;
 using Model.NAI.Commands;
@@ -6,24 +7,32 @@ using Shared.Addons.OkwyLogging;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
-  public class AiHeap {
+  public class AiHeap : IAiHeap {
+    public readonly SortedDictionary<F32, PriorityCommand> DebugTree = new SortedDictionary<F32, PriorityCommand>();
+    public Action<F32, ICommand> OnInsert = (v, c) => {};
+
     public F32 CurrentTime { get; set; }
     
+    //execute event on state change, so that command window can subscribe to changes
     public void InsertCommand(F32 time, ICommand command) {
       var nextTime = CurrentTime + time;
 
       if (nodes.ContainsKey(nextTime)) {
         var priorityCommand = nodes[nextTime].Data;
         priorityCommand.AddChild(command);
+        OnInsert.Invoke(nextTime, command);
         return;
       }
 
-      var node = new FibonacciHeapNode<PriorityCommand, F32>(new PriorityCommand(command), nextTime);
+      var pCommand = new PriorityCommand(command);
+      var node = new FibonacciHeapNode<PriorityCommand, F32>(pCommand, nextTime);
       aiHeap.Insert(node);
+      DebugTree[nextTime] = pCommand;
       nodes[nextTime] = node;
+      OnInsert.Invoke(nextTime, command);
     }
 
-    public (bool, ICommand) RemoveMin() {
+    public (bool IsEmpty, ICommand Command) RemoveMin() {
       var node = aiHeap.RemoveMin();
       if (node == null) {
         log.Info("The battle is over");
@@ -32,7 +41,8 @@ namespace Model.NBattleSimulation {
       var time = node.Key;
       var command = node.Data;
       CurrentTime = time;
-      nodes.Remove(CurrentTime);
+      DebugTree.Remove(time);
+      nodes.Remove(time);
       return (false, command);
     }
     

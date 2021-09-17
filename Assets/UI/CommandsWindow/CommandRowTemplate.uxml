@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="CommandsWindow.uss" />
+    <ui:VisualElement name="CommandElement" style="flex-direction: row; font-size: 9px;">
+        <ui:Label text="44.44" display-tooltip-when-elided="true" name="Time" class="no-padding" style="flex-grow: 0; flex-basis: 0; min-width: 27px; -unity-text-align: middle-center; font-size: 9px;" />
+        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="CommandsScroll" style="flex-grow: 1;">
+            <ui:VisualElement name="Commands" style="flex-direction: row;" />
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

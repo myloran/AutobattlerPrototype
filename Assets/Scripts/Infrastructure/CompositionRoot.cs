@@ -26,6 +26,7 @@ using View.NTile;
 using View.NUnit;
 using View.Presenters;
 using View.UIs;
+using View.UIToolkit;
 using View.Views;
 using Logger = Shared.Addons.OkwyLogging.Logger;
 
@@ -45,6 +46,7 @@ namespace Infrastructure {
     public BattleSimulationUI BattleSimulationUI;
     public UnitTooltipUI UnitTooltipUI;
     public ModelUI ModelUI;
+    public CommandsDebugUI CommandsDebugUI;
 
     #endregion
     #region View
@@ -58,6 +60,8 @@ namespace Infrastructure {
     #endregion
 
     IEnumerator Start() {
+      #region Infrastructure
+      
       #region Config
       
       log.Info("\n\nStart");
@@ -69,7 +73,6 @@ namespace Infrastructure {
       var decisionTreeComponent = decisionTreeLoader.Load();
       
       #endregion
-      #region Infrastructure
       
       var tickController = new TickController();
       var inputController = new InputController(tickController);
@@ -116,6 +119,8 @@ namespace Infrastructure {
 
       #endregion
       #region Controller
+      
+      #region Unit selection
 
       var raycastController = new RaycastController(mainCamera, 
         LayerMask.GetMask("Terrain", "GlobalCollider"), LayerMask.GetMask("Unit"));
@@ -181,6 +186,8 @@ namespace Infrastructure {
       var battleSetupController = new BattleSetupController(playerContext, 
         playerPresenterContext, BattleSetupUI);
 
+      var commandsDebugController = new CommandsDebugController(aiHeap, CommandsDebugUI);
+
       var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
         DebugController.Info, unitSelectionController);
       
@@ -194,6 +201,8 @@ namespace Infrastructure {
         BattleSetupUI, BattleSaveUI, BattleSimulationUI,
         unitModelDebugController);
 
+      #endregion
+      
       #endregion
 
       yield return null;
@@ -212,7 +221,11 @@ namespace Infrastructure {
       tileSpawner.SpawnTiles();
 
       #endregion
+      #region Model
+
       decisionTreeCreatorVisitor.Init();
+
+      #endregion
       #region Controller
 
       unitSelectionController.SubToInput(disposable);
@@ -221,15 +234,17 @@ namespace Infrastructure {
       tileHighlightController.SubToDrag(disposable);
       unitMoveController.SubToDrag(disposable);
       unitTooltipController.SubToUnitSelection(disposable);
-
-      #endregion
+      
       #region Debug
 
       battleSaveController.SubToUI();
       battleSetupController.SubToUI();
       unitModelDebugController.SubToUnitSelection(disposable);
       battleSimulationDebugController.SubToUI();
+      commandsDebugController.Init();
       DebugController.Init(UnitTooltipUI);
+
+      #endregion
 
       #endregion
 

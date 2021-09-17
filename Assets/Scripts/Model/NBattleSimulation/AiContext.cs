@@ -26,7 +26,7 @@ namespace Model.NBattleSimulation {
     }
 
     public void InsertCommand(F32 time, ICommand command) => heap.InsertCommand(time, command);
-    public (bool, ICommand) RemoveMin() => heap.RemoveMin();
+    public (bool IsEmpty, ICommand Command) RemoveMin() => heap.RemoveMin();
 
     #endregion
     #region Board
