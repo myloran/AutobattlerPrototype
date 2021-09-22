@@ -6,7 +6,7 @@ namespace Model.NAI.Commands {
   public class MakeDecisionCommand : BaseCommand {
     public override ECommand Type { get; } = ECommand.MakeDecision;
 
-    public MakeDecisionCommand(IAi ai, AiContext context, F32 time) {
+    public MakeDecisionCommand(IUnit ai, AiContext context, F32 time) : base(ai) {
       this.ai = ai;
       this.context = context;
       ai.SetDecisionTime(context.CurrentTime, time);

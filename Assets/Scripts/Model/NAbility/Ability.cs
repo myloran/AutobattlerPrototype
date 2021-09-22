@@ -9,6 +9,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAbility {
   public class Ability {
+    public readonly IUnit Unit;
     public readonly bool IsTimingOverridden;
     public readonly IEnumerable<Ability> NestedAbilities;
     public readonly List<IEffect> Effects;
@@ -16,8 +17,9 @@ namespace Model.NAbility {
     public ITargetSelector TargetSelector;
     public ITargetsSelector TargetsSelector;
     
-    public Ability(ITargetSelector targetSelector, ITargetsSelector targetsSelector, List<IEffect> effects, ITiming timing, 
+    public Ability(IUnit unit, ITargetSelector targetSelector, ITargetsSelector targetsSelector, List<IEffect> effects, ITiming timing, 
         bool isTimingOverridden = false, IEnumerable<Ability> nestedAbilities = null) {
+      Unit = unit;
       TargetSelector = targetSelector;
       TargetsSelector = targetsSelector;
       Effects = effects;

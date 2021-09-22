@@ -5,7 +5,7 @@ using Shared.Primitives;
 
 namespace Model.NAI.Commands {
   public class DeathCommand : BaseCommand {
-    public DeathCommand(IUnit target, AiContext context) {
+    public DeathCommand(IUnit target, AiContext context) : base(target) {
       this.target = target;
       this.context = context;
     }

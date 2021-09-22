@@ -43,7 +43,7 @@ namespace Model.NAbility {
       
       var nestedAbilities = info.NestedAbilities.Select(a => Create(unit, a));
 
-      return new Ability(targetSelector, targetsSelector, effects, timing, info.IsTimingOverridden, nestedAbilities);
+      return new Ability(unit, targetSelector, targetsSelector, effects, timing, info.IsTimingOverridden, nestedAbilities);
     }
 
     readonly Dictionary<string, AbilityInfo> abilities;

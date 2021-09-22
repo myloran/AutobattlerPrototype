@@ -4,7 +4,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Commands {
   public class FinishAttackCommand : BaseCommand {
-    public FinishAttackCommand(IUnit unit, IEventBus bus) {
+    public FinishAttackCommand(IUnit unit, IEventBus bus) : base(unit) {
       this.unit = unit;
       this.bus = bus;
     }

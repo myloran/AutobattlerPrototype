@@ -5,7 +5,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Commands {
   public class CastAbilityCommand : BaseCommand {
-    public CastAbilityCommand(IUnit unit, AiContext context, IEventBus bus) {
+    public CastAbilityCommand(IUnit unit, AiContext context, IEventBus bus) : base(unit) {
       this.unit = unit;
       this.context = context;
       this.bus = bus;

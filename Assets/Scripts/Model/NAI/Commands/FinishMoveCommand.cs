@@ -7,7 +7,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Commands {
   public class FinishMoveCommand : BaseCommand {
-    public FinishMoveCommand(AiContext context, IUnit unit, Coord to, IEventBus bus) {
+    public FinishMoveCommand(AiContext context, IUnit unit, Coord to, IEventBus bus) : base(unit) {
       this.context = context;
       this.unit = unit;
       this.to = to;

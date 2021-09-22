@@ -22,7 +22,7 @@ namespace Controller.NDebug {
       tree[time] = command;
     }
 
-    public (bool, ICommand) RemoveMin() {
+    public (bool IsEmpty, PriorityCommand PriorityCommand) RemoveMin() {
       var result = aiHeap.RemoveMin();
       tree.Remove(CurrentTime);
       return result;

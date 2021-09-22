@@ -6,7 +6,7 @@ using Shared.Addons.OkwyLogging;
 
 namespace Model.NAI.Commands {
   public class WaitForAlliesToMoveCommand : BaseCommand {
-    public WaitForAlliesToMoveCommand(IUnit unit, AiContext context) {
+    public WaitForAlliesToMoveCommand(IUnit unit, AiContext context) : base(unit) {
       this.unit = unit;
       this.context = context;
     }

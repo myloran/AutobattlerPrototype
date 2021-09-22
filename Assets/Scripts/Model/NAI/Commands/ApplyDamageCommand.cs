@@ -5,7 +5,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Commands {
   public class ApplyDamageCommand : BaseCommand {
-    public ApplyDamageCommand(IUnit unit, AiContext context, IEventBus bus) {
+    public ApplyDamageCommand(IUnit unit, AiContext context, IEventBus bus) : base(unit) {
       this.unit = unit;
       this.context = context;
       this.bus = bus;

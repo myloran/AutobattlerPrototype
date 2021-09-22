@@ -8,7 +8,7 @@ using Shared.Shared.Client.Events;
 namespace Model.NAI.Commands {
   public class StartMoveCommand : BaseCommand {
     public StartMoveCommand(AiContext context, IUnit unit, Coord newCoord,
-        F32 duration, IEventBus bus) {
+        F32 duration, IEventBus bus) : base(unit) {
       this.context = context;
       startingTime = context.CurrentTime;
       this.unit = unit;

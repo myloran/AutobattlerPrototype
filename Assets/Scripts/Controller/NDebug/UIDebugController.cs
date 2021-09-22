@@ -1,34 +1,14 @@
 using System;
 using Controller.Update;
 using UnityEngine;
+using UnityEngine.UIElements;
 using View.UIs;
+using View.UIToolkit;
 using static UnityEngine.Input;
 using static UnityEngine.KeyCode;
 
 namespace Controller.NDebug {
   public class UIDebugController : ITick {
-    public UIDebugController(BattleSetupUI battleSetupUI, BattleSaveUI battleSaveUI, 
-        BattleSimulationUI battleSimulationUI, UnitModelDebugController unitModelDebugController) {
-      battleSave = new ComponentEnabler(SetActive(battleSaveUI));
-      battleSetup = new ComponentEnabler(SetActive(battleSetupUI));
-      battleSimulation = new ComponentEnabler(SetActive(battleSimulationUI));
-      unitModelDebug = new ComponentEnabler(unitModelDebugController.SetActive);
-    }
-
-    Action<bool> SetActive(Component component) => b => component.gameObject.SetActive(b);
-
-    public void Tick() {
-      if (GetKeyDown(F1)) battleSetup.Toggle();
-      if (GetKeyDown(F2)) battleSave.Toggle();
-      if (GetKeyDown(F3)) battleSimulation.Toggle();
-      if (GetKeyDown(F4)) unitModelDebug.Toggle();
-    }
-
-    readonly ComponentEnabler battleSetup, 
-      battleSave, 
-      battleSimulation, 
-      unitModelDebug;
-
     class ComponentEnabler {
       public ComponentEnabler(Action<bool> action, bool isOn = false) {
         this.action = action;
@@ -43,5 +23,35 @@ namespace Controller.NDebug {
       readonly Action<bool> action;
       bool isOn;
     }
+    
+    public UIDebugController(BattleSetupUI battleSetupUI, BattleSaveUI battleSaveUI,
+        BattleSimulationUI battleSimulationUI, UnitModelDebugController unitModelDebugController,
+        CommandsDebugUI commandsDebugUI) {
+      commandsDebug = new ComponentEnabler(SetActiveUI(commandsDebugUI.Document));
+      battleSave = new ComponentEnabler(SetActiveMonoBehaviour(battleSaveUI));
+      battleSetup = new ComponentEnabler(SetActiveMonoBehaviour(battleSetupUI));
+      battleSimulation = new ComponentEnabler(SetActiveMonoBehaviour(battleSimulationUI));
+      unitModelDebug = new ComponentEnabler(unitModelDebugController.SetActive);
+    }
+
+    Action<bool> SetActiveMonoBehaviour(Component component) => b => component.gameObject.SetActive(b);
+    Action<bool> SetActiveUI(UIDocument document) => b => {
+      document.rootVisualElement.style.opacity = b ? 1 : 0;
+      // document.rootVisualElement.visible = b;
+    };
+
+    public void Tick() {
+      if (GetKeyDown(F1)) battleSetup.Toggle();
+      if (GetKeyDown(F2)) battleSave.Toggle();
+      if (GetKeyDown(F3)) battleSimulation.Toggle();
+      if (GetKeyDown(F4)) unitModelDebug.Toggle();
+      if (GetKeyDown(F5)) commandsDebug.Toggle();
+    }
+
+    readonly ComponentEnabler battleSetup, 
+      battleSave, 
+      battleSimulation, 
+      unitModelDebug,
+      commandsDebug;
   }
 }

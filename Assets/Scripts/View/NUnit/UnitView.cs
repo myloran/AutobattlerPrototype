@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Addons.Assets.src.Scripts;
 using Shared.Addons.Examples.FixMath;
 using Shared.Primitives;
@@ -20,6 +21,13 @@ namespace View.NUnit {
       Player = player;
       Stats = new UnitStats(info);
       fsm = new UnitFsm(this);
+#if UNITY_EDITOR
+      foreach (var meshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) {
+        meshRenderer.material = new Material(meshRenderer.material);
+        debugMaterials.Add(meshRenderer.material);
+        debugMaterialInitialColors.Add(meshRenderer.material.color);
+      }
+#endif
       return this;
     }
 
@@ -47,7 +55,22 @@ namespace View.NUnit {
     public void UpdateSilenceDuration(float duration) {
       //TODO: do the thing  
     }
+    
+    public void Highlight() {
+      foreach (var material in debugMaterials) {
+        material.color = Color.green;
+      }
+    }
+    
+    public void Unhighlight() {
+      for (var i = 0; i < debugMaterials.Count; i++) {
+        var material = debugMaterials[i];
+        material.color = debugMaterialInitialColors[i];
+      }
+    }
 
+    readonly List<Material> debugMaterials = new List<Material>();
+    readonly List<Color> debugMaterialInitialColors = new List<Color>();
     UnitFsm fsm;
     UnitInfo info;
     HealthBar healthBar;

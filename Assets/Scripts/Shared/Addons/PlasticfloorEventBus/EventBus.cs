@@ -48,16 +48,17 @@ namespace PlasticFloor.EventBus {
     }
 
     void HandleWithRegisteredDelegates<TEvent>(TEvent @event, bool safe = false) where TEvent : IEvent {
-      if (_handlers.ContainsKey(@event.GetType()))
+      if (_handlers.ContainsKey(@event.GetType())) {
         _handlers[@event.GetType()].ForEach(h => {
           h.DynamicInvoke(@event);
           // ExecuteHandler((EventHandlerDelegate<TEvent>) h, @event, safe);
-          if (IsLogOn()) Log(@event.GetType().Name + " " + @event);
         });
+        if (IsLogOn()) Log(@event.GetType().Name + " " + @event);
+      }
     }
 
-    public static Action<string> Log = _ => {};
-    public static Func<bool> IsLogOn = () => false;
+    public Action<string> Log = _ => {};
+    public Func<bool> IsLogOn = () => false;
 
     void HandleWithHandlerProviders<TEvent>(TEvent e, bool safe = false) where TEvent : IEvent {
       _handlerProviders.ForEach(handlerProvider => {

@@ -5,6 +5,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
   public class BattleSimulation {
+    public ICommand LastCommandBeingExecuted;
     public bool IsBattleOver { get; private set; }
 
     public BattleSimulation(AiContext context, Board board, AiHeap heap) {
@@ -32,12 +33,15 @@ namespace Model.NBattleSimulation {
     }
 
     public void ExecuteNextCommand() {
-      var (isEmpty, command) = context.RemoveMin();
+      var (isEmpty, priorityCommand) = context.RemoveMin();
       IsBattleOver = isEmpty || context.IsBattleOver;
       if (IsBattleOver) return;
       
-      log.Info($"{context.CurrentTime}: {command}");
-      command.Execute();
+      log.Info($"{context.CurrentTime}: {priorityCommand}");
+      foreach (var command in priorityCommand.Commands) {
+        LastCommandBeingExecuted = command;
+        command.Execute();
+      }
     }
 
     public void ExecuteAllCommands() {

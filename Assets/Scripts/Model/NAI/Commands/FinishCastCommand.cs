@@ -4,7 +4,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Commands {
   public class FinishCastCommand : BaseCommand {
-    public FinishCastCommand(IUnit unit, IEventBus bus) {
+    public FinishCastCommand(IUnit unit, IEventBus bus) : base(unit) {
       this.unit = unit;
       this.bus = bus;
     }

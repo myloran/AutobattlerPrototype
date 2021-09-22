@@ -1,29 +1,59 @@
 using System.Collections.Generic;
 using Model.NAI.Commands;
 using Model.NBattleSimulation;
+using Model.NUnit.Abstraction;
+using PlasticFloor.EventBus;
 using Shared.Addons.Examples.FixMath;
 using Shared.Exts;
-using UnityEditor.SceneManagement;
 using UnityEngine.UIElements;
+using View.Presenters;
 using View.UIToolkit;
 
 namespace Controller.NDebug {
   public class CommandsDebugController {
-    public CommandsDebugController(AiHeap aiHeap, CommandsDebugUI ui) {
+    class UnitDebugStuff {
+      public readonly IUnit Unit;
+      public readonly ICommand Command;
+      public readonly TemplateContainer Template;
+
+      public bool IsOn;
+
+      public UnitDebugStuff(IUnit unit, ICommand command, TemplateContainer template) {
+        Unit = unit;
+        Command = command;
+        Template = template;
+      }
+    }
+    
+    public CommandsDebugController(AiHeap aiHeap, BoardPresenter boardPresenter, BattleSimulation battleSimulation,
+        CommandsDebugUI ui, EventBus eventBus) {
       this.aiHeap = aiHeap;
+      this.boardPresenter = boardPresenter;
+      this.battleSimulation = battleSimulation;
       this.ui = ui;
+      this.eventBus = eventBus;
     }
 
     public void Init() {
-      ShowUI();
+      InitUI();
+      eventBus.Log += Log;
       aiHeap.OnInsert += OnInsert;
       aiHeap.OnReset += OnReset;
     }
 
+    void Log(string obj) {
+      if (commandEvents.TryGetValue(battleSimulation.LastCommandBeingExecuted, out var events))
+        events.Add(obj);
+      else
+        commandEvents.Add(battleSimulation.LastCommandBeingExecuted, new List<string> {obj});
+    }
+
     void OnReset() {
+      unitStuff.Clear();
       commands.Clear();
       commandRows.Clear();
       commandsContainer.Clear();
+      commandEvents.Clear();
     }
 
     void OnInsert(F32 time, ICommand command) {
@@ -65,9 +95,11 @@ namespace Controller.NDebug {
       }
     }
 
-    void ShowUI() {
+    void InitUI() {
       var root = ui.Document.rootVisualElement;
       commandsContainer = root.Q<VisualElement>("CommandsBody");
+      ui.Document.rootVisualElement.style.opacity = 0;
+      // ui.Document.rootVisualElement.visible = false;
     }
 
     TemplateContainer CreateCommandRow(F32 time, ICommand command) {
@@ -85,7 +117,70 @@ namespace Controller.NDebug {
       var button = template.Q<Button>();
       var commandName = command.GetType().Name;
       button.text = SimplifyCommandName(commandName);
+      var baseCommand = command as BaseCommand;
+      unitStuff[button] = new UnitDebugStuff(baseCommand?.Unit, command, template);
+      button.RegisterCallback<MouseEnterEvent>(OnEnter);
+      button.RegisterCallback<MouseLeaveEvent>(OnLeave);
+      button.RegisterCallback<ClickEvent>(OnClick);
       return template;
+    }
+
+    void OnClick(ClickEvent evt) {
+      if (evt.target is Button button && unitStuff.TryGetValue(button, out var unitDebugStuff) 
+                                      && commandEvents.TryGetValue(unitDebugStuff.Command, out var events)) {
+        unitDebugStuff.IsOn = !unitDebugStuff.IsOn;
+        
+        if (unitDebugStuff.IsOn)
+          CreateEventRow(unitDebugStuff.Template, events);
+        else
+          HideEventRow(unitDebugStuff.Template, events);
+      }
+    }
+
+    void HideEventRow(TemplateContainer commandTemplate, List<string> events) {
+      if (events.Count == 0) return;
+
+      var groupBox = commandTemplate.Q<GroupBox>();
+      SetBorderWidthTo(groupBox, 0);
+
+      for (int i = groupBox.childCount - 1; i >= 0; i--) {
+        groupBox.RemoveAt(i);
+      }
+    }
+
+    void CreateEventRow(TemplateContainer commandTemplate, List<string> events) {
+      if (events.Count == 0) return;
+
+      var groupBox = commandTemplate.Q<GroupBox>();
+      SetBorderWidthTo(groupBox, 1);
+
+      foreach (var evnt in events) {
+        var template = ui.EventTemplate.Instantiate();
+        var button = template.Q<Button>();
+        button.text = evnt;
+        groupBox.Add(template);
+      }
+    }
+
+    static void SetBorderWidthTo(GroupBox groupBox, int value) {
+      groupBox.style.borderBottomWidth = value;
+      groupBox.style.borderTopWidth = value;
+      groupBox.style.borderLeftWidth = value;
+      groupBox.style.borderRightWidth = value;
+    }
+
+    void OnEnter(MouseEnterEvent evt) {
+      if (evt.target is Button button && unitStuff.TryGetValue(button, out var stuff) 
+                                      && boardPresenter.TryGetUnit(stuff.Unit.Coord, out var unitView)) {
+        unitView.Highlight();
+      }
+    }
+    
+    void OnLeave(MouseLeaveEvent evt) {
+      if (evt.target is Button button && unitStuff.TryGetValue(button, out var stuff)
+                                      && boardPresenter.TryGetUnit(stuff.Unit.Coord, out var unitView)) {
+        unitView.Unhighlight();
+      }
     }
 
     string SimplifyCommandName(string name) {
@@ -96,9 +191,14 @@ namespace Controller.NDebug {
     }
     
     readonly AiHeap aiHeap;
+    readonly BoardPresenter boardPresenter;
+    readonly BattleSimulation battleSimulation;
     readonly CommandsDebugUI ui;
+    readonly EventBus eventBus;
+    readonly Dictionary<Button, UnitDebugStuff> unitStuff = new Dictionary<Button, UnitDebugStuff>();
     readonly Dictionary<F32, TemplateContainer> commandRows = new Dictionary<F32, TemplateContainer>();
     readonly SortedDictionary<F32, PriorityCommand> commands = new SortedDictionary<F32, PriorityCommand>();
+    readonly Dictionary<ICommand, List<string>> commandEvents = new Dictionary<ICommand, List<string>>();
     VisualElement commandsContainer;
   }
 }

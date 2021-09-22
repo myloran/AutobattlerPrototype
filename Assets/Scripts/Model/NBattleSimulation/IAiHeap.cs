@@ -8,7 +8,7 @@ namespace Model.NBattleSimulation {
     F32 NextEventTime { get; }
     
     void InsertCommand(F32 time, ICommand command);
-    (bool IsEmpty, ICommand Command) RemoveMin();
+    (bool IsEmpty, PriorityCommand PriorityCommand) RemoveMin();
     void Reset();
   }
 }

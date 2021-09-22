@@ -33,7 +33,7 @@ namespace Model.NBattleSimulation {
       OnInsert(nextTime, command);
     }
 
-    public (bool IsEmpty, ICommand Command) RemoveMin() {
+    public (bool IsEmpty, PriorityCommand PriorityCommand) RemoveMin() {
       var node = aiHeap.RemoveMin();
       if (node == null) {
         log.Info("The battle is over");

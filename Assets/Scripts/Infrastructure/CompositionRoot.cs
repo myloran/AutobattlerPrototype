@@ -77,10 +77,10 @@ namespace Infrastructure {
       var tickController = new TickController();
       var inputController = new InputController(tickController);
       //TODO: implement event bus that won't allocate(no delegates)
-      var eventBus = new EventBus(); //TODO: stop using eventbus Ievent interface to remove reference on that library from model
-      EventBus.Log = m => log.Info($"{m}"); //TODO: remove that lmao
-      EventBus.IsLogOn = () => DebugController.Info.IsDebugOn;
-      
+      var eventBus = new EventBus { //TODO: stop using eventbus Ievent interface to remove reference on that library from model
+        Log = m => log.Info($"{m}"), IsLogOn = () => DebugController.Info.IsDebugOn //TODO: remove that lmao
+      };
+
       #endregion
       #region View
       
@@ -186,7 +186,7 @@ namespace Infrastructure {
       var battleSetupController = new BattleSetupController(playerContext, 
         playerPresenterContext, BattleSetupUI);
 
-      var commandsDebugController = new CommandsDebugController(aiHeap, CommandsDebugUI);
+      var commandsDebugController = new CommandsDebugController(aiHeap, boardPresenter, battleSimulation, CommandsDebugUI, eventBus);
 
       var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
         DebugController.Info, unitSelectionController);
@@ -199,7 +199,7 @@ namespace Infrastructure {
       
       var uiDebugController = new UIDebugController(
         BattleSetupUI, BattleSaveUI, BattleSimulationUI,
-        unitModelDebugController);
+        unitModelDebugController, CommandsDebugUI);
 
       #endregion
       

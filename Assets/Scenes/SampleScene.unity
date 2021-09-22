@@ -8007,6 +8007,8 @@ MonoBehaviour:
     type: 3}
   CommandElementTemplate: {fileID: 9197481963319205126, guid: 9d6ad8952f9cf0e48a372c11d3f40c88,
     type: 3}
+  EventTemplate: {fileID: 9197481963319205126, guid: b3d8bc3d2620ad04a8b797258d6bc3d8,
+    type: 3}
 --- !u!114 &1509705340
 MonoBehaviour:
   m_ObjectHideFlags: 0
