@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Model.NAI.Commands;
 using Model.NBattleSimulation;
@@ -5,7 +6,9 @@ using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared.Addons.Examples.FixMath;
 using Shared.Exts;
+using UnityEngine;
 using UnityEngine.UIElements;
+using View.NUnit;
 using View.Presenters;
 using View.UIToolkit;
 
@@ -50,14 +53,14 @@ namespace Controller.NDebug {
 
     void OnReset() {
       unitStuff.Clear();
-      commands.Clear();
+      sortedCommands.Clear();
       commandRows.Clear();
       commandsContainer.Clear();
       commandEvents.Clear();
     }
 
     void OnInsert(F32 time, ICommand command) {
-      if (commands.TryGetValue(time, out var priorityCommand)) {
+      if (sortedCommands.TryGetValue(time, out var priorityCommand)) {
         priorityCommand.AddChild(command);
         var commandRow = commandRows[time];
         var body = commandRow.Q<VisualElement>("Commands");
@@ -65,7 +68,7 @@ namespace Controller.NDebug {
         body.Add(template);
       }
       else {
-        commands.Add(time, new PriorityCommand(command));
+        sortedCommands.Add(time, new PriorityCommand(command));
         
         if (commandsContainer.childCount == 0) {
           var commandRow = CreateCommandRow(time, command);
@@ -76,7 +79,7 @@ namespace Controller.NDebug {
 
         //Use left node instead
         var previousTime = F32.MinValue;
-        foreach (var (time2, _) in commands) {
+        foreach (var (time2, _) in sortedCommands) {
           if (time == time2) break;
           previousTime = time2;
         }
@@ -116,8 +119,14 @@ namespace Controller.NDebug {
       var button = template.Q<Button>();
       var commandName = command.GetType().Name;
       button.text = SimplifyCommandName(commandName);
-      var baseCommand = command as BaseCommand;
-      unitStuff[button] = new UnitDebugStuff(baseCommand?.Unit, command, template);
+      if (command is BaseCommand baseCommand) {
+        unitStuff[button] = new UnitDebugStuff(baseCommand.Unit, command, template);
+        
+        if (unitCommands.TryGetValue(baseCommand.Unit, out var commands))
+          commands.Add(button);
+        else
+          unitCommands[baseCommand.Unit] = new List<Button> {button};
+      }
       button.RegisterCallback<MouseEnterEvent>(OnEnter);
       button.RegisterCallback<MouseLeaveEvent>(OnLeave);
       button.RegisterCallback<ClickEvent>(OnClick);
@@ -172,13 +181,30 @@ namespace Controller.NDebug {
       if (evt.target is Button button && unitStuff.TryGetValue(button, out var stuff) 
                                       && boardPresenter.TryGetUnit(stuff.Unit.Coord, out var unitView)) {
         unitView.Highlight();
+        HighlightButton(button);
+        HighlightUnitButtons(stuff.Unit, HighlightButton);
       }
     }
-    
+
+    void HighlightButton(Button button) {
+      defaultButtonBackgroundColor = button.style.backgroundColor; 
+      button.style.backgroundColor = new StyleColor(Color.green);
+    }
+
+    void UnhighlightButton(Button button) => button.style.backgroundColor = defaultButtonBackgroundColor;
+
+    void HighlightUnitButtons(IUnit unit, Action<Button> highlight) {
+      if (!unitCommands.TryGetValue(unit, out var buttons)) return;
+      
+      foreach (var button in buttons) highlight(button);
+    }
+
     void OnLeave(MouseLeaveEvent evt) {
       if (evt.target is Button button && unitStuff.TryGetValue(button, out var stuff)
                                       && boardPresenter.TryGetUnit(stuff.Unit.Coord, out var unitView)) {
         unitView.Unhighlight();
+        UnhighlightButton(button);
+        HighlightUnitButtons(stuff.Unit, UnhighlightButton);
       }
     }
 
@@ -196,8 +222,10 @@ namespace Controller.NDebug {
     readonly EventBus eventBus;
     readonly Dictionary<Button, UnitDebugStuff> unitStuff = new Dictionary<Button, UnitDebugStuff>();
     readonly Dictionary<F32, TemplateContainer> commandRows = new Dictionary<F32, TemplateContainer>();
-    readonly SortedDictionary<F32, PriorityCommand> commands = new SortedDictionary<F32, PriorityCommand>();
+    readonly SortedDictionary<F32, PriorityCommand> sortedCommands = new SortedDictionary<F32, PriorityCommand>();
     readonly Dictionary<ICommand, List<string>> commandEvents = new Dictionary<ICommand, List<string>>();
+    readonly Dictionary<IUnit, List<Button>> unitCommands = new Dictionary<IUnit, List<Button>>();
     VisualElement commandsContainer;
+    StyleColor defaultButtonBackgroundColor;
   }
 }
