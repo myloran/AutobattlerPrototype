@@ -35,10 +35,7 @@ namespace Controller.NDebug {
     }
 
     Action<bool> SetActiveMonoBehaviour(Component component) => b => component.gameObject.SetActive(b);
-    Action<bool> SetActiveUI(UIDocument document) => b => {
-      document.rootVisualElement.style.opacity = b ? 1 : 0;
-      // document.rootVisualElement.visible = b;
-    };
+    Action<bool> SetActiveUI(UIDocument document) => b => document.rootVisualElement.visible = b;
 
     public void Tick() {
       if (GetKeyDown(F1)) battleSetup.Toggle();

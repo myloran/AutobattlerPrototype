@@ -98,8 +98,7 @@ namespace Controller.NDebug {
     void InitUI() {
       var root = ui.Document.rootVisualElement;
       commandsContainer = root.Q<VisualElement>("CommandsBody");
-      ui.Document.rootVisualElement.style.opacity = 0;
-      // ui.Document.rootVisualElement.visible = false;
+      ui.Document.rootVisualElement.visible = false;
     }
 
     TemplateContainer CreateCommandRow(F32 time, ICommand command) {
