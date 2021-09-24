@@ -7,6 +7,7 @@ using Controller.DecisionTree.Data;
 using Controller.DecisionTree.Visitor;
 using Controller.NBattleSimulation;
 using Controller.NDebug;
+using Controller.NDebug.CommandsDebug;
 using Controller.NTile;
 using Controller.NUnit;
 using Controller.Save;
@@ -186,7 +187,10 @@ namespace Infrastructure {
       var battleSetupController = new BattleSetupController(playerContext, 
         playerPresenterContext, BattleSetupUI);
 
-      var commandsDebugController = new CommandsDebugController(aiHeap, boardPresenter, battleSimulation, CommandsDebugUI, eventBus);
+      var commandEvents = new EventRow(battleSimulation, eventBus, CommandsDebugUI.EventTemplate);
+      var commandButtonStyler = new CommandButtonStyler(boardPresenter);
+      var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandsDebugUI);
+      var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandsDebugUI);
 
       var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
         DebugController.Info, unitSelectionController);
@@ -237,6 +241,7 @@ namespace Infrastructure {
       
       #region Debug
 
+      commandEvents.AddTo(disposable);
       battleSaveController.SubToUI();
       battleSetupController.SubToUI();
       unitModelDebugController.SubToUnitSelection(disposable);

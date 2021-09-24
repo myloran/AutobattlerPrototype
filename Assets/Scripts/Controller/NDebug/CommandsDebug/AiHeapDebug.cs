@@ -3,7 +3,7 @@ using Model.NAI.Commands;
 using Model.NBattleSimulation;
 using Shared.Addons.Examples.FixMath;
 
-namespace Controller.NDebug {
+namespace Controller.NDebug.CommandsDebug {
   public class AiHeapDebug : IAiHeap {
     public AiHeapDebug(IAiHeap aiHeap) {
       this.aiHeap = aiHeap;

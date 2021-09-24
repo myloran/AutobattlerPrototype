@@ -5,7 +5,7 @@ namespace View.UIToolkit {
   public class CommandsDebugUI : MonoBehaviour {
     public UIDocument Document;
     public VisualTreeAsset CommandTemplate,
-      CommandElementTemplate,
+      CommandRowTemplate,
       EventTemplate;
   }
 }
