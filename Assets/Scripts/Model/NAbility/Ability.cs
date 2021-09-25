@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Model.NAbility.Abstraction;
@@ -17,8 +18,8 @@ namespace Model.NAbility {
     public ITargetSelector TargetSelector;
     public ITargetsSelector TargetsSelector;
     
-    public Ability(IUnit unit, ITargetSelector targetSelector, ITargetsSelector targetsSelector, List<IEffect> effects, ITiming timing, 
-        bool isTimingOverridden = false, IEnumerable<Ability> nestedAbilities = null) {
+    public Ability(IUnit unit, ITargetSelector targetSelector, ITargetsSelector targetsSelector, List<IEffect> effects, 
+      ITiming timing, bool isTimingOverridden = false, IEnumerable<Ability> nestedAbilities = null) {
       Unit = unit;
       TargetSelector = targetSelector;
       TargetsSelector = targetsSelector;
@@ -35,26 +36,47 @@ namespace Model.NAbility {
     public void Execute(AiContext context) {
       var target = TargetSelector.Select(context);
       var targets = TargetsSelector.Select(target).ToList();
-      
-      foreach (var effect in Effects)
-        effect.Apply(context, targets);
+      HandleTiming(context, targets, ApplyEffects);
+    }
 
-      foreach (var nestedAbility in NestedAbilities) {
-        if (nestedAbility.IsTimingOverridden && nestedAbility.Timing.HasNext()) {
-          nestedAbility.TargetSelector = TargetSelector;
-          nestedAbility.TargetsSelector = TargetsSelector;
-          nestedAbility.Cast(nestedAbility.Timing.GetNext(), context);
-        }
-        else {
-          foreach (var effect in nestedAbility.Effects)
-            effect.Apply(context, targets);
-        }
+    void HandleTiming(AiContext context, List<IUnit> targets, Action<AiContext, List<IUnit>> applyEffects) {
+      if (!Timing.HasNext()) return;
+
+      if (Timing.IsTimeReset || Timing.GetNext() == Zero) {
+        Timing.IsTimeReset = false;
+        Timing.Tick();
+        applyEffects(context, targets);
       }
 
       if (!Timing.HasNext()) return;
 
-      var time = Timing.GetNext();
-      Cast(time, context);
+      Timing.IsTimeReset = true;
+      Cast(Timing.GetNext(), context);
+    }
+
+    void ApplyEffects(AiContext context, List<IUnit> targets) {
+      foreach (var effect in Effects)
+        effect.Apply(context, targets);
+
+      foreach (var ability in NestedAbilities) {
+        ability.TargetSelector = TargetSelector;
+        ability.TargetsSelector = TargetsSelector;
+        
+        //if target selector is overriden, we need to reevaluate targets
+        //nestedAbility.Execute(context); //wasted performance, share result if target selector is the same
+        if (ability.IsTimingOverridden) {
+          ability.HandleTiming(context, targets, ability.ApplyEffects);
+        }
+        else {
+          foreach (var effect in ability.Effects)
+            effect.Apply(context, targets);
+        }
+      }
+    }
+
+    public void Reset() {
+      Timing.Reset();
+      foreach (var ability in NestedAbilities) ability.Reset();
     }
   }
 }

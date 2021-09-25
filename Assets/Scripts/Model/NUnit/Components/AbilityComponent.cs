@@ -1,6 +1,5 @@
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
-using Model.NUnit.Components;
 using Shared.Addons.Examples.FixMath;
 using static Shared.Addons.Examples.FixMath.F32;
 using static Shared.Primitives.CoordExt;
@@ -37,7 +36,10 @@ namespace Model.NAbility {
     
     #endregion
     
-    public void Reset() => Mana = Zero;
+    public void Reset() {
+      Mana = Zero;
+      Ability.Reset();
+    }
 
     public bool HasManaAccumulated => Mana == 100;
 
@@ -57,8 +59,8 @@ namespace Model.NAbility {
     public void EndCasting() => lastStartCastTime = Zero;
     
     public void CastAbility(AiContext context) {
+      Reset();
       Ability.Cast(context);
-      Mana = Zero;
     }
 
     public override string ToString() => $"{nameof(Mana)}: {Mana}, {nameof(lastStartCastTime)}: {lastStartCastTime}";
