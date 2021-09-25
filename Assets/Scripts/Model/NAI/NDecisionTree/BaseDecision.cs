@@ -7,17 +7,19 @@ namespace Model.NAI.NDecisionTree {
     public IDecisionTreeNode TrueNode, 
       FalseNode;
 
-    protected IUnit Unit { get; set; }
-    
+    IUnit unit;
+    public IUnit Unit {
+      get => unit;
+      set {
+        unit = value;
+        TrueNode.Unit = unit;
+        FalseNode.Unit = unit;
+      }
+    }
+
     public virtual EDecision Type { get; } = EDecision.BaseDecision;
     
     public abstract IDecisionTreeNode Clone();
-    
-    public void SetUnit(IUnit unit) {
-      Unit = unit;
-      TrueNode.SetUnit(unit);
-      FalseNode.SetUnit(unit);
-    }
 
     protected IDecisionTreeNode BaseClone(BaseDecision from, BaseDecision to) {
       to.TrueNode = from.TrueNode.Clone();

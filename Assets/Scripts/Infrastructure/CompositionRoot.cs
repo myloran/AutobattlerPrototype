@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Controller;
@@ -98,10 +99,11 @@ namespace Infrastructure {
       
       #endregion
       #region Model
-      var decisionTreeLookup = new DecisionTreeLookup(); 
-      
+      var decisionTreeLookup = new DecisionTreeLookup();
+
+      Action makeDecisionLog = () => {};
       var decisionTreeCreatorVisitor = new DecisionTreeCreatorVisitor(eventBus, 
-        d => new LoggingDecorator(d, DebugController.Info), decisionTreeLookup);
+        d => new LoggingDecorator(d, DebugController.Info, makeDecisionLog), decisionTreeLookup);
 
       var unitFactory = new UnitFactory(units, new DecisionFactory(
         decisionTreeCreatorVisitor, decisionTreeComponent), abilities, 

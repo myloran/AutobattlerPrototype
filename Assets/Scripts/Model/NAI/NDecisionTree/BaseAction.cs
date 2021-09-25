@@ -17,8 +17,6 @@ namespace Model.NAI.NDecisionTree {
     }
 
     public abstract IDecisionTreeNode Clone();
-    public void SetUnit(IUnit unit) => Unit = unit;
-
     public abstract IDecisionTreeNode MakeDecision(AiContext context);
   }
 }

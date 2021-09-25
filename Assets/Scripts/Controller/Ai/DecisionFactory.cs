@@ -18,7 +18,7 @@ namespace Controller.Ai {
          decisionTree = component.Accept(decisionTreeCreatorVisitor);
 
        var clone = decisionTree.Clone();
-       clone.SetUnit(unit);
+       clone.Unit = unit;
        return clone;
     }
     
