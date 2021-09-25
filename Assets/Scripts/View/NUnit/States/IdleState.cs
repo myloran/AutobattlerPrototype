@@ -7,6 +7,6 @@ namespace View.NUnit.States {
     public override void OnEnter() => Unit.Animator.SetBool(isIdle, true);
     public override void OnExit() => Unit.Animator.SetBool(isIdle, false);
     
-    static readonly int isIdle = Animator.StringToHash("IsIdle");
+    readonly int isIdle = Animator.StringToHash("IsIdle");
   }
 }

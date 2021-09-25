@@ -7,6 +7,6 @@ namespace View.NUnit.States {
     public override void OnEnter() => Unit.Animator.SetBool(isAttacking, true);
     public override void OnExit() => Unit.Animator.SetBool(isAttacking, false);
     
-    static readonly int isAttacking = Animator.StringToHash("IsAttacking");
+    readonly int isAttacking = Animator.StringToHash("IsAttacking");
   }
 }

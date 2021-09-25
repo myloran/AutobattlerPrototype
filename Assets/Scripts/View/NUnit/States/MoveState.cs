@@ -7,6 +7,6 @@ namespace View.NUnit.States {
     public override void OnEnter() => Unit.Animator.SetBool(isWalking, true);
     public override void OnExit() => Unit.Animator.SetBool(isWalking, false);
     
-    static readonly int isWalking = Animator.StringToHash("IsWalking");
+    readonly int isWalking = Animator.StringToHash("IsWalking");
   }
 }
