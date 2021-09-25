@@ -14,8 +14,6 @@ namespace Controller.NDebug.CommandsDebug {
       this.styler = styler;
     }
     
-    public void Init() => eventRow.Init();
-
     public void OnReset() {
       eventRow.OnReset();
       commandStuff.Clear();

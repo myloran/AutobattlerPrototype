@@ -16,9 +16,14 @@ namespace Controller.NDebug.CommandsDebug {
 
     public void Init() {
       InitUI();
-      commandRow.Init();
       aiHeap.OnInsert += OnInsert;
       aiHeap.OnReset += OnReset;
+    }
+    
+    void InitUI() {
+      var root = ui.Document.rootVisualElement;
+      commandsContainer = root.Q<VisualElement>("CommandsBody");
+      ui.Document.rootVisualElement.visible = false;
     }
 
     void OnReset() {
@@ -75,12 +80,6 @@ namespace Controller.NDebug.CommandsDebug {
       }
 
       return previousTime;
-    }
-
-    void InitUI() {
-      var root = ui.Document.rootVisualElement;
-      commandsContainer = root.Q<VisualElement>("CommandsBody");
-      ui.Document.rootVisualElement.visible = false;
     }
 
     readonly AiHeap aiHeap;

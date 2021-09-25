@@ -243,11 +243,11 @@ namespace Infrastructure {
       
       #region Debug
 
-      commandEvents.AddTo(disposable);
       battleSaveController.SubToUI();
       battleSetupController.SubToUI();
       unitModelDebugController.SubToUnitSelection(disposable);
       battleSimulationDebugController.SubToUI();
+      commandEvents.Init(disposable);
       commandsDebugController.Init();
       DebugController.Init(UnitTooltipUI);
 

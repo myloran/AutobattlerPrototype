@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Model.NAI.Commands;
 using Model.NBattleSimulation;
 using PlasticFloor.EventBus;
+using UniRx;
 using UnityEngine.UIElements;
 
 namespace Controller.NDebug.CommandsDebug {
@@ -13,7 +14,11 @@ namespace Controller.NDebug.CommandsDebug {
       this.eventTemplate = eventTemplate;
     }
     
-    public void Init() => eventBus.Log += Log;
+    public void Init(CompositeDisposable disposable) {
+      eventBus.Log += Log;
+      disposable.Add(this);
+    }
+
     public void OnReset() => commandEvents.Clear();
     public void Dispose() => eventBus.Log -= Log;
 
