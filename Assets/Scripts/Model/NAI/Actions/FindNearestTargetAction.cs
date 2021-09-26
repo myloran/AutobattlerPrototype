@@ -6,7 +6,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAI.Actions {
   public class FindNearestTargetAction : BaseAction {
-    public override EDecision Type { get; } = EDecision.FindNearestTarget;
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.FindNearestTarget;
     public override IDecisionTreeNode Clone() => BaseClone(this, new FindNearestTargetAction());
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {

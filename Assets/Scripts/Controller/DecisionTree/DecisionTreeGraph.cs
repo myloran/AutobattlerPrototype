@@ -5,24 +5,23 @@ using Controller.DecisionTree.Nodes;
 using Model.NAI.NDecisionTree;
 using UnityEngine;
 using XNode;
+using IDecisionTreeNode = Model.NAI.NDecisionTree.IDecisionTreeNode;
 
 namespace Controller.DecisionTree {
 	[CreateAssetMenu]
 	public class DecisionTreeGraph : NodeGraph {
 		[HideInInspector] public string[] DecisionTypes;
 		[HideInInspector] public string[] ActionTypes;
-		[HideInInspector] public int[] DecisionIds;
-		[HideInInspector] public int[] ActionIds;
+		[HideInInspector] public int[] DecisionTypeIds;
+		[HideInInspector] public int[] ActionTypeIds;
 
 		public void Init() {
-			Lookup<BaseDecision>(out DecisionTypes, out DecisionIds);
-			Lookup<BaseAction>(out ActionTypes, out ActionIds);
+			Lookup<BaseDecision>(out DecisionTypes, out DecisionTypeIds);
+			Lookup<BaseAction>(out ActionTypes, out ActionTypeIds);
 
-			foreach (var node in nodes) {
-				if (node is DecisionTreeSaverNode saver) {
+			foreach (var node in nodes)
+				if (node is DecisionTreeSaverNode saver)
 					saver.Load();
-				}
-			}
 		}
 
 		void Lookup<T>(out string[] types, out int[] ids) {
@@ -32,7 +31,7 @@ namespace Controller.DecisionTree {
 		}
 
 		//TODO: extract
-		IEnumerable<EDecision> LookupDecisionTreeEnums(Type type) =>
+		IEnumerable<EDecisionTreeType> LookupDecisionTreeEnums(Type type) =>
 			AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(s => s.GetTypes())
 				.Where(type.IsAssignableFrom)

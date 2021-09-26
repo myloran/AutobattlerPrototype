@@ -6,10 +6,10 @@ using Model.NAI.NDecisionTree;
 namespace Model {
   public class DecisionTreeLookup {
     //TODO: check if list contains interfaces/abstract classes
-    public Dictionary<EDecision, Type> LookupDecisionTypes() =>
+    public Dictionary<EDecisionTreeType, Type> LookupDecisionTypes() =>
       LookupDecisionTypes(typeof(IDecisionTreeNode), typeof(BaseAction), typeof(BaseDecision));
     
-    public Dictionary<EDecision, Type> LookupDecisionTypes(Type type, params Type[] typesExcluded) =>
+    public Dictionary<EDecisionTreeType, Type> LookupDecisionTypes(Type type, params Type[] typesExcluded) =>
       AppDomain.CurrentDomain.GetAssemblies()
         .SelectMany(s => s.GetTypes())
         .Where(type.IsAssignableFrom)

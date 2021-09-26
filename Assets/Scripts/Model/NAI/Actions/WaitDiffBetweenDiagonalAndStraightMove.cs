@@ -9,7 +9,7 @@ using static Shared.Const;
 
 namespace Model.NAI.Actions {
   public class WaitDiffBetweenDiagonalAndStraightMove : BaseAction {
-    public override EDecision Type { get; } = EDecision.WaitDiffBetweenDiagonalAndStraightMove;
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.WaitDiffBetweenDiagonalAndStraightMove;
     public override IDecisionTreeNode Clone() => BaseClone(this, new WaitDiffBetweenDiagonalAndStraightMove());
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {

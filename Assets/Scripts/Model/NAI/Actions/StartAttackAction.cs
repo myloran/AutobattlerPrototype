@@ -5,7 +5,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Actions {
   public class StartAttackAction : BaseAction {
-    public override EDecision Type { get; } = EDecision.StartAttack;
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.StartAttack;
     public override IDecisionTreeNode Clone() => BaseClone(this, new StartAttackAction());
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {

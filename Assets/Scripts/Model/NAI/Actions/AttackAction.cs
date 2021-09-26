@@ -5,7 +5,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAI.Actions {
   public class AttackAction : BaseAction {
-    public override EDecision Type { get; } = EDecision.Attack;
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.Attack;
     public override IDecisionTreeNode Clone() => BaseClone(this, new AttackAction());
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {

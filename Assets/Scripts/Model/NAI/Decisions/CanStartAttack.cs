@@ -3,7 +3,7 @@ using Model.NBattleSimulation;
 
 namespace Model.NAI.Decisions {
   public class CanStartAttack : BaseDecision {
-    public override EDecision Type { get; } = EDecision.CanStartAttack;
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.CanStartAttack;
     public override IDecisionTreeNode Clone() => BaseClone(this, new CanStartAttack());
     
     protected override bool GetBranch(AiContext context) => 

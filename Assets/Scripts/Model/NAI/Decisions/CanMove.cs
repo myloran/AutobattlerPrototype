@@ -4,7 +4,7 @@ using Model.NUnit.Abstraction;
 
 namespace Model.NAI.Decisions {
   public class CanMove : BaseDecision {
-    public override EDecision Type { get; } = EDecision.CanMove;
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.CanMove;
     public override IDecisionTreeNode Clone() => BaseClone(this, new CanMove());
 
     protected override bool GetBranch(AiContext context) {

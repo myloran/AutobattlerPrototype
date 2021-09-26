@@ -22,7 +22,15 @@ namespace Controller.DecisionTree.Editor {
         
         var node = target as ActionNode;
         var graph = node.graph as DecisionTreeGraph;
-        node.Selected = EditorGUILayout.Popup(node.Selected, graph.ActionTypes, GUILayout.Width(150));
+        
+        EditorGUI.BeginChangeCheck();
+        var nodeTypeId = EditorGUILayout.Popup(node.TypeId, graph.ActionTypes, GUILayout.Width(150));
+        
+        if (EditorGUI.EndChangeCheck()) {
+          Undo.RecordObject(target, "Change action type");
+          node.TypeId = nodeTypeId;
+        }
+        
       GUILayout.EndHorizontal();
       
       EditorGUIUtility.labelWidth = 60;

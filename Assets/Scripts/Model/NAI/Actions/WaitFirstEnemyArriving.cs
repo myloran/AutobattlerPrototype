@@ -8,7 +8,7 @@ using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Actions {
   public class WaitFirstEnemyArriving : BaseAction {
-    public override EDecision Type { get; } = EDecision.WaitFirstEnemyArriving;
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.WaitFirstEnemyArriving;
     public override IDecisionTreeNode Clone() => BaseClone(this, new WaitFirstEnemyArriving());
     
     public override IDecisionTreeNode MakeDecision(AiContext context) {

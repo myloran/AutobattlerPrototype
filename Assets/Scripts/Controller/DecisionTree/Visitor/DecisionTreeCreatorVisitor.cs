@@ -34,7 +34,7 @@ namespace Controller.DecisionTree.Visitor {
       return log(action);
     }
 
-    Dictionary<EDecision, Type> decisionTypes = new Dictionary<EDecision, Type>();
+    Dictionary<EDecisionTreeType, Type> decisionTypes = new Dictionary<EDecisionTreeType, Type>();
     readonly IEventBus bus;
     readonly Func<IDecisionTreeNode, IDecisionTreeNode> log;
     readonly DecisionTreeLookup lookup;

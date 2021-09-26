@@ -5,7 +5,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAI.Actions {
   public class CastAction : BaseAction {
-    public override EDecision Type { get; } = EDecision.Cast;
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.Cast;
     public override IDecisionTreeNode Clone() => BaseClone(this, new CastAction());
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {

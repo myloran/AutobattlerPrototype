@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using Controller.DecisionTree.Visitor;
 using MessagePack;
-using Model.NAI.NDecisionTree;
 
 namespace Controller.DecisionTree.Data {
   [MessagePackObject]

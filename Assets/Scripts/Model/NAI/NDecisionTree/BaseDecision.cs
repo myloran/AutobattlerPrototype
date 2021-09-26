@@ -17,7 +17,7 @@ namespace Model.NAI.NDecisionTree {
       }
     }
 
-    public virtual EDecision Type { get; } = EDecision.BaseDecision;
+    public virtual EDecisionTreeType Type { get; } = EDecisionTreeType.BaseDecision;
     
     public abstract IDecisionTreeNode Clone();
 

@@ -7,7 +7,7 @@ using Shared.Addons.OkwyLogging;
 
 namespace Controller.NDebug {
   public class LoggingDecorator : IDecisionTreeNode {
-    public EDecision Type { get; } = EDecision.LoggingDecorator;
+    public EDecisionTreeType Type { get; } = EDecisionTreeType.LoggingDecorator;
 
     IUnit unit;
     public IUnit Unit {

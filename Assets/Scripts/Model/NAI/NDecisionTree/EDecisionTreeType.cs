@@ -1,6 +1,6 @@
 namespace Model.NAI.NDecisionTree {
   //enum is used for versioning, careful with replacing enum values 
-  public enum EDecision {
+  public enum EDecisionTreeType {
     BaseDecision = 0,
     BaseAction = 1,
     LoggingDecorator = 2,

@@ -17,14 +17,17 @@ namespace Controller.DecisionTree.Editor {
       NodePort output2 = target.GetPort("Output2");
 
       GUILayout.BeginHorizontal();
-        EditorGUI.BeginChangeCheck();
         if (input != null) NodeEditorGUILayout.PortField(GUIContent.none, input, GUILayout.MinWidth(0));
         
         var node = target as DecisionNode;
         var graph = node.graph as DecisionTreeGraph;
-        node.Selected = EditorGUILayout.Popup(node.Selected, graph.DecisionTypes, GUILayout.Width(150));
+        
+        EditorGUI.BeginChangeCheck();
+        var nodeTypeId = EditorGUILayout.Popup(node.TypeId, graph.DecisionTypes, GUILayout.Width(150));
         
         if (EditorGUI.EndChangeCheck()) {
+          Undo.RecordObject(target, "Changed decision type");
+          node.TypeId = nodeTypeId;
           // Debug.Log(_options[_selected]);
         }
         

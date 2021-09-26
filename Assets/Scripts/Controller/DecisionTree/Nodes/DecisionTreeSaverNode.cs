@@ -21,8 +21,8 @@ namespace Controller.DecisionTree.Nodes {
     DecisionTreeComponent CreateComponent(Node node) {
       if (!node.Outputs.Any()) return CreateAction();
 
-      var decisionSelected = node as ISelected;
-      var decisionType = (EDecision) decisionTreeGraph.DecisionIds[decisionSelected.Selected];
+      var decisionNode = node as IDecisionTreeNodeType;
+      var decisionType = (EDecisionTreeType) decisionTreeGraph.DecisionTypeIds[decisionNode.TypeId];
       
       return new DecisionData {
         Type = decisionType,
@@ -31,8 +31,8 @@ namespace Controller.DecisionTree.Nodes {
       };
      
       DecisionTreeComponent CreateAction() {
-        var actionSelected = node as ISelected;
-        var actionType = (EDecision) decisionTreeGraph.ActionIds[actionSelected.Selected];
+        var action = node as IDecisionTreeNodeType;
+        var actionType = (EDecisionTreeType) decisionTreeGraph.ActionTypeIds[action.TypeId];
         return new ActionData {Type = actionType};
       }
       
@@ -43,7 +43,7 @@ namespace Controller.DecisionTree.Nodes {
       }
     }
 
-    Node SelectConnectionNode(NodePort port, EDecision type2) {
+    Node SelectConnectionNode(NodePort port, EDecisionTreeType type2) {
       if (port.ConnectionCount == 0) throw new Exception($"Decision {type2} does not have connection");
       return port.Connection.node;
     }
@@ -62,33 +62,32 @@ namespace Controller.DecisionTree.Nodes {
     }
 
     void LoadComponent(Node node, DecisionTreeComponent component) {
-      if (!node.Outputs.Any()) {
-        SetSelectedIndex(decisionTreeGraph.ActionIds);
+      if (!node.Outputs.Any()) { //TODO: add a button force reload and recreate node if missing
+        SetNodeTypeId(decisionTreeGraph.ActionTypeIds);
         return;
       }
       
-      SetSelectedIndex(decisionTreeGraph.DecisionIds);
+      SetNodeTypeId(decisionTreeGraph.DecisionTypeIds);
 
       var decision = component as DecisionData;
       LoadComponentFromPort("Output1", decision.OnTrue);
       LoadComponentFromPort("Output2", decision.OnFalse);
       
-      void SetSelectedIndex(int[] ids) {
-        var selectedIndex = 0;
+      void SetNodeTypeId(int[] ids) {
+        var type = 0;
         
         for (int i = 0; i < ids.Length; i++) {
           if (ids[i] != (int) component.Type) continue;
 
-          selectedIndex = i;
+          type = i;
           break;
         }
 
-        var selectable = node as ISelected;
-        selectable.Selected = selectedIndex;
+        if (node is IDecisionTreeNodeType decisionTreeNode)
+          decisionTreeNode.TypeId = type;
       }
       
-      void LoadComponentFromPort(string name,
-          DecisionTreeComponent decisionComponent) {
+      void LoadComponentFromPort(string name, DecisionTreeComponent decisionComponent) {
         var port = node.GetPort(name);
         var connectionNode = SelectConnectionNode(port, component.Type);
         LoadComponent(connectionNode, decisionComponent);

@@ -4,7 +4,7 @@ using Model.NBattleSimulation;
 
 namespace Model.NAI.Decisions {
   public class AreEnemiesArrivingToAdjacentTile : BaseDecision {
-    public override EDecision Type { get; } = EDecision.AreEnemiesArrivingToAdjacentTile;
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.AreEnemiesArrivingToAdjacentTile;
     public override IDecisionTreeNode Clone() => BaseClone(this, new AreEnemiesArrivingToAdjacentTile());
 
     protected override bool GetBranch(AiContext context) {

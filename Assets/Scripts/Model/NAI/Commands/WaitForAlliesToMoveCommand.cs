@@ -13,7 +13,7 @@ namespace Model.NAI.Commands {
 
     public override void Execute() {
       var units = context.GetSurroundUnits(unit.Coord)
-        .Where(u => u.CurrentDecision.Type == EDecision.Move);
+        .Where(u => u.CurrentDecision.Type == EDecisionTreeType.Move);
 
       if (!units.Any()) {
         log.Error("Surrounded, but allies are not moving"); //TODO: handle that case

@@ -31,6 +31,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 2
 --- !u!114 &-9030020913047601394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +63,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 6
 --- !u!114 &-8758006679594716261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +123,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 10
 --- !u!114 &-8401501166760021403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,6 +183,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 12
 --- !u!114 &-8276779354837695543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,6 +243,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 2
 --- !u!114 &-7177736770102760314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +275,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 8
 --- !u!114 &-7176554419310262675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,6 +335,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 6
 --- !u!114 &-3874383149616793710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,6 +367,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 3
 --- !u!114 &-3848435871307306813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,6 +399,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 7
 --- !u!114 &-3434430196831418545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,6 +431,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 1
 --- !u!114 &-2934166684726848063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,6 +463,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 7
 --- !u!114 &-1851302405648974402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,6 +523,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 0
 --- !u!114 &-1670534342119498710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,6 +583,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 7
 --- !u!114 &-1590002221757261746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -602,6 +615,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 5
 --- !u!114 &-1458314271338250220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,6 +647,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 9
 --- !u!114 &-1307862791220352307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,6 +707,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 0
 --- !u!114 &-1193481162404941742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,6 +739,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 8
 --- !u!114 &-955925837613485448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -749,6 +766,35 @@ MonoBehaviour:
       - fieldName: Output2
         node: {fileID: 6263077682036390768}
         reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  input: 0
+  typeId: 2
+--- !u!114 &-177559762682224075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc029cbc587e4973becea2344faec57e, type: 3}
+  m_Name: Nested Decision Tree
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 616, y: 72}
+  ports:
+    keys:
+    - input
+    values:
+    - _fieldName: input
+      _node: {fileID: -177559762682224075}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
       _direction: 0
       _connectionType: 1
       _typeConstraint: 0
@@ -801,6 +847,7 @@ MonoBehaviour:
   - {fileID: 6263077682036390768}
   - {fileID: 2157799323883653023}
   - {fileID: -955925837613485448}
+  - {fileID: -177559762682224075}
   DecisionTypes:
   - AreEnemiesArrivingToAdjacentTile
   - CanCastAbility
@@ -818,17 +865,17 @@ MonoBehaviour:
   - NeedTwoTileAttackRange
   ActionTypes:
   - Attack
-  - CastAbility
+  - Cast
   - DoNothing
   - FindNearestTarget
   - Move
   - StartAttack
-  - StartCastingAbility
+  - StartCastAction
   - WaitDiffBetweenDiagonalAndStraightMove
   - WaitFirstEnemyArriving
   - WaitForAlliesToMove
-  DecisionIds: 12000000140000000b0000000c00000016000000190000000d0000000e0000000f000000100000001500000011000000130000001a000000
-  ActionIds: 0400000017000000050000000600000003000000070000001800000008000000090000000a000000
+  DecisionTypeIds: 12000000140000000b0000000c00000016000000190000000d0000000e0000000f000000100000001500000011000000130000001a000000
+  ActionTypeIds: 0400000017000000050000000600000003000000070000001800000008000000090000000a000000
 --- !u!114 &354838979644086510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -888,6 +935,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 9
 --- !u!114 &363313222150888289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -919,6 +967,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 2
 --- !u!114 &2157799323883653023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -950,6 +999,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 9
 --- !u!114 &2332649237936660533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,6 +1059,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 3
 --- !u!114 &2396735759541925620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,6 +1091,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 2
 --- !u!114 &2885964064266078890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1099,6 +1151,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 4
 --- !u!114 &3016659514889001319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1130,6 +1183,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 4
 --- !u!114 &3836123975078638995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1220,6 +1274,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 12
 --- !u!114 &5375549161437308653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1279,6 +1334,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 8
 --- !u!114 &5663764878819586696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1310,6 +1366,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 4
 --- !u!114 &6263077682036390768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1369,6 +1426,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 9
 --- !u!114 &6718157229326097403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1428,6 +1486,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 2
 --- !u!114 &6795503429350582341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1459,6 +1518,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   input: 0
+  typeId: 0
 --- !u!114 &6911448149560134484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1518,6 +1578,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 11
 --- !u!114 &9195970315320471513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1577,3 +1638,4 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
+  typeId: 5

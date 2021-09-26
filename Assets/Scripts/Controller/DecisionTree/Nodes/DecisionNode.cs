@@ -1,13 +1,21 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using XNode;
 
 namespace Controller.DecisionTree.Nodes {
-	public class DecisionNode : Node, ISelected {
+	public class DecisionNode : Node, IDecisionTreeNodeType {
 		[Input(connectionType = ConnectionType.Override), HideInInspector] public bool Input;
 		[Output(connectionType = ConnectionType.Override), HideInInspector] public bool Output1;
 		[Output(connectionType = ConnectionType.Override), HideInInspector] public bool Output2;
 
-		public int Selected { get; set; } //TODO: Set Selected on windows focused based on decision id
+		[SerializeField]
+		[HideInInspector]
+		int typeId;
+		public int TypeId {
+			get => typeId;
+			set => typeId = value;
+		}
+
 
 		// Use this for initialization
 		protected override void Init() {
