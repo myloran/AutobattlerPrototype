@@ -10,18 +10,22 @@ using IDecisionTreeNode = Model.NAI.NDecisionTree.IDecisionTreeNode;
 namespace Controller.DecisionTree {
 	[CreateAssetMenu]
 	public class DecisionTreeGraph : NodeGraph {
-		[HideInInspector] public string[] DecisionTypes;
-		[HideInInspector] public string[] ActionTypes;
+		[HideInInspector] public string[] DecisionTypeNames;
+		[HideInInspector] public string[] ActionTypeNames;
 		[HideInInspector] public int[] DecisionTypeIds;
 		[HideInInspector] public int[] ActionTypeIds;
+		public Action OnInit = () => {};
 
 		public void Init() {
-			Lookup<BaseDecision>(out DecisionTypes, out DecisionTypeIds);
-			Lookup<BaseAction>(out ActionTypes, out ActionTypeIds);
+			Lookup<BaseDecision>(out DecisionTypeNames, out DecisionTypeIds);
+			Lookup<BaseAction>(out ActionTypeNames, out ActionTypeIds);
 
 			foreach (var node in nodes)
 				if (node is DecisionTreeSaverNode saver)
 					saver.Load();
+			
+			OnInit();
+			OnInit = () => { };
 		}
 
 		void Lookup<T>(out string[] types, out int[] ids) {

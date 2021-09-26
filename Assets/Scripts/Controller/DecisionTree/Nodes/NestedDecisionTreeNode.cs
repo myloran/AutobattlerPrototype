@@ -2,7 +2,7 @@ using UnityEngine;
 using XNode;
 
 namespace Controller.DecisionTree.Nodes {
-  public class ComposableNode : Node {
+  public class NestedDecisionTreeNode : Node {
     [Node.InputAttribute(connectionType = Node.ConnectionType.Override), HideInInspector] public bool input;
 
     public int Selected { get; set; }

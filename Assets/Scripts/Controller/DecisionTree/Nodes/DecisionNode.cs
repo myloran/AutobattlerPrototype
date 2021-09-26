@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 using XNode;
 
@@ -15,7 +17,6 @@ namespace Controller.DecisionTree.Nodes {
 			get => typeId;
 			set => typeId = value;
 		}
-
 
 		// Use this for initialization
 		protected override void Init() {

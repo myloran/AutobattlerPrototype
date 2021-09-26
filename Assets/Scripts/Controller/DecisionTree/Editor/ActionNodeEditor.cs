@@ -24,7 +24,7 @@ namespace Controller.DecisionTree.Editor {
         var graph = node.graph as DecisionTreeGraph;
         
         EditorGUI.BeginChangeCheck();
-        var nodeTypeId = EditorGUILayout.Popup(node.TypeId, graph.ActionTypes, GUILayout.Width(150));
+        var nodeTypeId = EditorGUILayout.Popup(node.TypeId, graph.ActionTypeNames, GUILayout.Width(150));
         
         if (EditorGUI.EndChangeCheck()) {
           Undo.RecordObject(target, "Change action type");
