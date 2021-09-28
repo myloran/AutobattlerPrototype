@@ -3,7 +3,7 @@ using XNode;
 
 namespace Controller.DecisionTree.Nodes {
 	public class ActionNode : Node, IDecisionTreeNodeType {
-		[Input(connectionType = ConnectionType.Override), HideInInspector] public bool input;
+		[Input(connectionType = ConnectionType.Override), HideInInspector] public bool Input;
 
 		[SerializeField]
 		[HideInInspector]

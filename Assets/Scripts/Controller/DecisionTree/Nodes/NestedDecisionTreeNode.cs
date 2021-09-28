@@ -3,10 +3,10 @@ using XNode;
 
 namespace Controller.DecisionTree.Nodes {
   public class NestedDecisionTreeNode : Node {
-    [Node.InputAttribute(connectionType = Node.ConnectionType.Override), HideInInspector] public bool input;
+    [Input(connectionType = ConnectionType.Override), HideInInspector] public bool Input;
 
-    public int Selected { get; set; }
-
+    public DecisionTreeGraph Graph;
+    
     // Use this for initialization
     protected override void Init() {
       base.Init();

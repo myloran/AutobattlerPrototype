@@ -15,12 +15,12 @@ namespace Controller.DecisionTree.Editor {
         return;
       }
 
-      NodePort input = target.GetPort("input");
+      var node = target as ActionNode;
+      NodePort input = target.GetPort(nameof(node.Input));
 
       GUILayout.BeginHorizontal();
         if (input != null) NodeEditorGUILayout.PortField(GUIContent.none, input, GUILayout.MinWidth(0));
         
-        var node = target as ActionNode;
         var graph = node.graph as DecisionTreeGraph;
         
         EditorGUI.BeginChangeCheck();

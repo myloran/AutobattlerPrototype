@@ -71,7 +71,7 @@ namespace Infrastructure {
       var abilities = new AbilityInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
-      var decisionTreeLoader = new DecisionTreeLoader();
+      var decisionTreeLoader = new DecisionTreeDataLoader();
       var decisionTreeComponent = decisionTreeLoader.Load();
       
       #endregion

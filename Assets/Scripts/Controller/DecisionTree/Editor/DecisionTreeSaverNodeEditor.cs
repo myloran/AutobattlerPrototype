@@ -13,7 +13,8 @@ namespace Controller.DecisionTree.Editor {
         return;
       }
 
-      NodePort output = target.GetPort("output");
+      var saverNode = target as DecisionTreeSaverNode;
+      NodePort output = target.GetPort(nameof(saverNode.Output));
 
       GUILayout.BeginHorizontal();
         if (output != null) NodeEditorGUILayout.PortField(GUIContent.none, output, GUILayout.MinWidth(0));

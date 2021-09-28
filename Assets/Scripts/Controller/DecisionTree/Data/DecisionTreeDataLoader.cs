@@ -6,7 +6,7 @@ using UnityEngine;
 using static System.IO.File;
 
 namespace Controller.DecisionTree.Data {
-  public class DecisionTreeLoader {
+  public class DecisionTreeDataLoader {
     public DecisionTreeComponent Load() {
       var path = Path.Combine(Application.dataPath, "Data", "DecisionTree", "current" + ".json");
       var bytes = ReadAllBytes(path);
