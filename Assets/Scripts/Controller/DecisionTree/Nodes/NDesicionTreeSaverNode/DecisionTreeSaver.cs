@@ -16,7 +16,19 @@ namespace Controller.DecisionTree.Nodes {
     }
 
     DecisionTreeComponent CreateComponent(Node node, DecisionTreeGraph decisionTreeGraph) {
-      if (!node.Outputs.Any()) return CreateAction();
+      if (!node.Outputs.Any()) {
+        if (node is NestedDecisionTreeNode nestedNode) {
+          var parent = (ParentDecisionTreeNode)nestedNode.Graph.nodes.FirstOrDefault(n => n is ParentDecisionTreeNode);
+          if (parent == null) {
+            throw new Exception($"ParentDecisionTreeNode is missing in graph: {nestedNode.graph.name}");
+          }
+
+          var port = parent.GetOutputPort(nameof(parent.Output));
+          return CreateComponent(port.Connection.node, decisionTreeGraph);
+        }
+
+        return CreateAction();
+      }
 
       var decisionNode = node as DecisionNode;
       var decisionType = (EDecisionTreeType) decisionTreeGraph.DecisionTypeIds[decisionNode.TypeId];
