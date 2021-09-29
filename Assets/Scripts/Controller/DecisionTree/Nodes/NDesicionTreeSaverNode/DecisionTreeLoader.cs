@@ -17,6 +17,15 @@ namespace Controller.DecisionTree.Nodes {
 
     void LoadComponent(Node node, DecisionTreeComponent component, DecisionTreeGraph decisionTreeGraph) {
       if (!node.Outputs.Any()) { //TODO: add a button force reload and recreate node if missing
+        if (node is NestedDecisionTreeNode nestedNode) {
+          var parent = (ParentDecisionTreeNode)nestedNode.Graph.nodes.FirstOrDefault(n => n is ParentDecisionTreeNode);
+          if (parent == null) {
+            throw new Exception($"ParentDecisionTreeNode is missing in graph: {nestedNode.graph.name}");
+          }
+
+          var port = parent.GetOutputPort(nameof(parent.Output));
+          LoadComponent(port.Connection.node, component, decisionTreeGraph);
+        }
         SetNodeTypeId(decisionTreeGraph.ActionTypeIds);
         return;
       }
