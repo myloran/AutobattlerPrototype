@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Controller.DecisionTree.Editor.Exts;
 using Controller.DecisionTree.Nodes;
 using UnityEditor;
 using UnityEngine;
@@ -31,7 +33,6 @@ namespace Controller.DecisionTree.Editor {
         if (EditorGUI.EndChangeCheck()) {
           Undo.RecordObject(target, "Changed decision type");
           node.TypeId = nodeTypeId;
-          // Debug.Log(_options[_selected]);
         }
         
         if (output1 != null) NodeEditorGUILayout.PortField(GUIContent.none, output1, GUILayout.MinWidth(0));
@@ -52,20 +53,23 @@ namespace Controller.DecisionTree.Editor {
     }
 
 		void ConvertToNestedDecisionTree() {
-			if (TryGetNestedGraphAssetPath(out var nestedGraphAssetPath)) return;
+			if (!TryGetNestedGraphAssetPath(out var nestedGraphAssetPath)) return;
 			
 			var assetPath = AssetDatabase.GenerateUniqueAssetPath(nestedGraphAssetPath);
 			var nestedGraph = ScriptableObject.CreateInstance<DecisionTreeGraph>();
 			var nodes = CopyNodes();
 			var currentGraphEditor = NodeEditorWindow.current.graphEditor;
-			nestedGraph.OnInit += () => PasteNodes(nodes, currentGraphEditor);
+			nestedGraph.OnInit += () => {
+				PasteNodes(nodes);
+				RemoveNodes(nodes, currentGraphEditor);
+				LinkToParentDecisionTree(target.graph as DecisionTreeGraph);
+			};
 			
 			var node = (NestedDecisionTreeNode)NodeEditorWindow.current.graphEditor.CreateNode(typeof(NestedDecisionTreeNode), target.position);
 			node.Graph = nestedGraph;
 			var port = node.GetPort(nameof(node.Input));
 			var otherPort = DisconnectCurrentNode();
 			port.Connect(otherPort);
-			// port.AddConnections();
 			
 			AssetDatabase.CreateAsset(nestedGraph, assetPath);
 			AssetDatabase.SaveAssets();
@@ -74,6 +78,16 @@ namespace Controller.DecisionTree.Editor {
 			Selection.activeObject = nestedGraph;
 		}
 
+		void LinkToParentDecisionTree(DecisionTreeGraph targetGraph) {
+			var decisionNode = (DecisionNode)NodeEditorWindow.current.graph.nodes.MinBy(n => n.position.x);
+			var decisionPort = decisionNode.GetInputPort(nameof(decisionNode.Input));
+			var offset = new Vector2(-300, 0);
+			var parentNode = (ParentDecisionTreeNode)NodeEditorWindow.current.graphEditor.CreateNode(typeof(ParentDecisionTreeNode), decisionNode.position + offset);
+			var parentPort = parentNode.GetOutputPort(nameof(parentNode.Output));
+			parentNode.Graph = targetGraph;
+			parentPort.Connect(decisionPort);
+		}
+		
 		NodePort DisconnectCurrentNode() {
 			var currentNode = target as DecisionNode;
 			var currentPort = currentNode.GetPort(nameof(currentNode.Input));
@@ -94,27 +108,27 @@ namespace Controller.DecisionTree.Editor {
 		bool TryGetNestedGraphAssetPath(out string nestedGraphAssetPath) {
 			nestedGraphAssetPath = default;
 			var graph = target.graph;
-			if (TryGetNestedGraphFolderPath(graph, out var nestedGraphFolderPath)) return true;
-			if (TryGetDecisionTypeName(graph, out var decisionTypeName)) return true;
+			if (!TryGetNestedGraphFolderPath(graph, out var nestedGraphFolderPath)) return false;
+			if (!TryGetDecisionTypeName(graph, out var decisionTypeName)) return false;
 			if (!Directory.Exists(nestedGraphFolderPath)) Directory.CreateDirectory(nestedGraphFolderPath);
 
 			var nestedGraphName = decisionTypeName + ".asset";
 			nestedGraphAssetPath = Path.Combine(nestedGraphFolderPath, nestedGraphName);
-			return false;
+			return true;
 		}
 
-		static bool TryGetNestedGraphFolderPath(NodeGraph graph, out string nestedGraphFolderPath) {
+		bool TryGetNestedGraphFolderPath(NodeGraph graph, out string nestedGraphFolderPath) {
 			nestedGraphFolderPath = default;
 			var graphAssetPath = AssetDatabase.GetAssetPath(graph);
 			var graphFolderPath = Path.GetDirectoryName(graphAssetPath);
 
 			if (graphFolderPath == null) {
 				Debug.LogError($"{nameof(graphFolderPath)} is null");
-				return true;
+				return false;
 			}
 
 			nestedGraphFolderPath = Path.Combine(graphFolderPath, graph.name);
-			return false;
+			return true;
 		}
 
 		bool TryGetDecisionTypeName(NodeGraph graph, out string decisionTypeName) {
@@ -122,17 +136,17 @@ namespace Controller.DecisionTree.Editor {
 			var decisionTreeGraph = graph as DecisionTreeGraph;
 			if (decisionTreeGraph == null) {
 				Debug.LogError($"Can only convert inside DecisionTreeGraph");
-				return true;
+				return false;
 			}
 
 			var decision = target as DecisionNode;
 			if (decisionTreeGraph.DecisionTypeNames.Length < decision.TypeId) {
 				Debug.LogError($"{nameof(decision.TypeId)} is missing inside {nameof(decisionTreeGraph.DecisionTypeNames)}");
-				return true;
+				return false;
 			}
 
 			decisionTypeName = decisionTreeGraph.DecisionTypeNames[decision.TypeId];
-			return false;
+			return true;
 		}
 
 		List<Node> CopyNodes() {
@@ -141,12 +155,11 @@ namespace Controller.DecisionTree.Editor {
 			return nodes;
 		}
 
-		void PasteNodes(List<Node> nodes, NodeGraphEditor currentGraphEditor) {
+		void PasteNodes(List<Node> nodes) {
 			var previousCopyBuffer = NodeEditorWindow.copyBuffer;
 			NodeEditorWindow.copyBuffer = nodes.ToArray();
 			NodeEditorWindow.current.PasteNodes(target.position + new Vector2(100, 100));
 			NodeEditorWindow.copyBuffer = previousCopyBuffer;
-			RemoveNodes(nodes, currentGraphEditor);
 		}
 		
 		void AddChildNodes(Node node, List<Node> nodes) {
