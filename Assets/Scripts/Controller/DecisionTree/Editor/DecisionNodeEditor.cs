@@ -49,7 +49,8 @@ namespace Controller.DecisionTree.Editor {
 
     public override void AddContextMenuItems(GenericMenu menu) {
 	    base.AddContextMenuItems(menu);
-	    menu.AddItem(new GUIContent("Convert To Nested Decision Tree"), false, ConvertToNestedDecisionTree);
+	    menu.AddItem(new GUIContent("Convert To New Nested Decision Tree"), false, ConvertToNestedDecisionTree);
+	    menu.AddItem(new GUIContent("Convert To Existing Nested Decision Tree"), false, ConvertToExistingDecisionTree);
     }
 
 		void ConvertToNestedDecisionTree() {
@@ -76,6 +77,17 @@ namespace Controller.DecisionTree.Editor {
 			NodeEditorWindow.Open(nestedGraph);
 			EditorUtility.FocusProjectWindow();
 			Selection.activeObject = nestedGraph;
+		}
+		
+		void ConvertToExistingDecisionTree() {
+			var nodes = CopyNodes();
+			var currentGraphEditor = NodeEditorWindow.current.graphEditor;
+			var node = (NestedDecisionTreeNode)currentGraphEditor.CreateNode(typeof(NestedDecisionTreeNode), target.position);
+			var port = node.GetPort(nameof(node.Input));
+			var otherPort = DisconnectCurrentNode();
+			port.Connect(otherPort);
+			
+			RemoveNodes(nodes, currentGraphEditor);
 		}
 
 		void LinkToParentDecisionTree(DecisionTreeGraph targetGraph) {
