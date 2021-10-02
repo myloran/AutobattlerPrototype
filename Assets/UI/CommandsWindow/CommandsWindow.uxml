@@ -1,11 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="CommandsWindow.uss" />
+    <Style src="/Assets/UI/ElementsStyling.uss" />
     <ui:VisualElement name="CommandsWindow">
-        <ui:VisualElement name="CommandsHeader" style="flex-direction: row;">
+        <ui:VisualElement name="CommandsHeader" style="flex-direction: row; flex-shrink: 0;">
             <ui:Label text="Time" display-tooltip-when-elided="true" name="TimeLabel" class="no-padding small-text-size time" style="flex-grow: 0; flex-basis: 0; -unity-text-align: upper-center; -unity-font-style: bold;" />
             <ui:Label text="Commands" display-tooltip-when-elided="true" name="CommandsLabel" class="no-padding small-text-size" style="flex-grow: 1; flex-basis: 0; -unity-text-align: upper-center; -unity-font-style: bold;" />
         </ui:VisualElement>
-        <ui:SliderInt picking-mode="Ignore" label="Timeline" value="0" high-value="100" name="TimelineSlider" />
+        <ui:VisualElement name="TimelineRow" style="flex-direction: row; flex-shrink: 0;">
+            <ui:Button text="Generate" display-tooltip-when-elided="true" name="BGenerateTimeline" />
+            <ui:SliderInt picking-mode="Ignore" label="Timeline" value="0" high-value="0" name="STimeline" class="min-width2" style="flex-grow: 1;" />
+        </ui:VisualElement>
         <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="CommandsBody" />
     </ui:VisualElement>
 </ui:UXML>

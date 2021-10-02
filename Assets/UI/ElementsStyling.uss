@@ -1,0 +1,6 @@
+.min-width > .unity-base-field__label {
+}
+
+.min-width2 .unity-base-field__label {
+    min-width: 50px;
+}

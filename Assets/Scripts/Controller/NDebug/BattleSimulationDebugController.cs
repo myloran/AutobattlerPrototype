@@ -1,17 +1,19 @@
+using System;
 using Controller.Exts;
 using Controller.NBattleSimulation;
 using Model.NBattleSimulation;
 using UniRx;
+using UnityEngine.UIElements;
 using View.Presenters;
 using View.UIs;
 
 namespace Controller.NDebug {
-  public class BattleSimulationDebugController {
-    public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui, 
-        AiContext context, PlayerContext playerContext, 
-        PlayerPresenterContext playerPresenterContext,
-        RealtimeBattleSimulationController realtimeBattleSimulationController, 
-        BattleSimulationPresenter simulationPresenter) {
+  public class BattleSimulationDebugController : IDisposable {
+    public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui,
+      AiContext context, PlayerContext playerContext,
+      PlayerPresenterContext playerPresenterContext,
+      RealtimeBattleSimulationController realtimeBattleSimulationController,
+      BattleSimulationPresenter simulationPresenter, CommandDebugUI commandDebugUI) {
       this.simulation = simulation;
       this.ui = ui;
       this.context = context;
@@ -19,12 +21,45 @@ namespace Controller.NDebug {
       this.playerPresenterContext = playerPresenterContext;
       this.realtimeBattleSimulationController = realtimeBattleSimulationController;
       this.simulationPresenter = simulationPresenter;
+      this.commandDebugUI = commandDebugUI;
     }
 
-    public void SubToUI() {
+    public void SubToUI(CompositeDisposable disposable) {
       BattleControlSubs();
       BattleSimulationSubs();
+    //extract to Timeline
+      commandDebugUI.BGenerateTimeline.clicked += GenerateTimeline;
+      commandDebugUI.STimeline.RegisterCallback<ChangeEvent<int>>(OnTimelineChange);
+      disposable.Add(this);
     }
+
+    public void Dispose() {
+      commandDebugUI.STimeline.UnregisterCallback<ChangeEvent<int>>(OnTimelineChange);
+      commandDebugUI.BGenerateTimeline.clicked -= GenerateTimeline;
+    }
+    
+    void GenerateTimeline() {
+      StartBattle();
+      commandCount = 0;
+
+      while (!simulation.IsBattleOver) {
+        ExecuteNextCommand();
+        commandCount++;
+      }
+
+      commandDebugUI.STimeline.highValue = commandCount;
+    }
+
+    void OnTimelineChange(ChangeEvent<int> evt) {
+      StartBattle();
+
+      var commandsLeft = evt.newValue;
+      while (commandsLeft-- > 0 && !simulation.IsBattleOver) {
+        ExecuteNextCommand();
+        commandCount++;
+      }
+    }
+    //extract to Timeline
 
     void BattleSimulationSubs() {
       ui.BExecuteNextDecision.Sub(ExecuteNextCommand);
@@ -33,14 +68,9 @@ namespace Controller.NDebug {
     }
 
     void BattleControlSubs() {
-      ui.OStart.OnValueChangedAsObservable().Where(b => b)
-        .Subscribe(StartBattle).AddTo(ui.OStart);
-
-      ui.OPause.OnValueChangedAsObservable()
-        .Subscribe(SetPaused).AddTo(ui.OPause);
-
-      ui.SSpeed.OnValueChangedAsObservable()
-        .Subscribe(SetSpeed).AddTo(ui.SSpeed);
+      ui.OStart.OnValueChangedAsObservable().Subscribe(StartBattle).AddTo(ui.OStart);
+      ui.OPause.OnValueChangedAsObservable().Subscribe(SetPaused).AddTo(ui.OPause);
+      ui.SSpeed.OnValueChangedAsObservable().Subscribe(SetSpeed).AddTo(ui.SSpeed);
     }
 
     public void StartBattle() {
@@ -73,8 +103,11 @@ namespace Controller.NDebug {
       ui.Disable();
     }
 
+    int commandCount;
     readonly BattleSimulation simulation;
+    readonly BattleSimulationUI2 ui2;
     readonly BattleSimulationPresenter simulationPresenter;
+    readonly CommandDebugUI commandDebugUI;
     readonly BattleSimulationUI ui;
     readonly AiContext context;
     readonly PlayerContext playerContext;

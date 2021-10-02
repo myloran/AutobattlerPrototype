@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace View.UIToolkit {
-  public class CommandsDebugUI : MonoBehaviour {
+  public class CommandDebugWindowUI : MonoBehaviour {
     public UIDocument Document;
     public VisualTreeAsset CommandTemplate,
       CommandRowTemplate,

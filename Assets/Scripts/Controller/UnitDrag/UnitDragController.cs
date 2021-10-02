@@ -57,7 +57,6 @@ namespace Controller.UnitDrag {
         DragEnded.Subscribe(StopDrag).AddTo(disposable);
       }
     }
-    
 
     DragEndedEvent Coords() => new DragEndedEvent(startCoord, lastCoord);
     void UpdateLastCoord(CoordChangedEvent e) => lastCoord = e.To;

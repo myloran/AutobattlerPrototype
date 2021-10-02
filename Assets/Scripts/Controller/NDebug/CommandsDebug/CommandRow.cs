@@ -8,8 +8,8 @@ using View.UIToolkit;
 namespace Controller.NDebug.CommandsDebug {
   public class CommandRow {
     public CommandRow(EventRow eventRow, CommandButtonStyler styler,
-      CommandsDebugUI ui) {
-      this.ui = ui;
+      CommandDebugWindowUI windowUI) {
+      this.windowUI = windowUI;
       this.eventRow = eventRow;
       this.styler = styler;
     }
@@ -21,7 +21,7 @@ namespace Controller.NDebug.CommandsDebug {
     }
     
     public TemplateContainer InstantiateCommandRow(F32 time, ICommand command) {
-      var template = ui.CommandRowTemplate.Instantiate();
+      var template = windowUI.CommandRowTemplate.Instantiate();
       var timeLabel = template.Q<Label>("Time");
       timeLabel.text = $"{time.Float:F}";
       var commandRow = template.Q<VisualElement>("Commands");
@@ -31,7 +31,7 @@ namespace Controller.NDebug.CommandsDebug {
     }
 
     public TemplateContainer InstantiateCommandButton(ICommand command) {
-      var template = ui.CommandTemplate.Instantiate();
+      var template = windowUI.CommandTemplate.Instantiate();
       var button = ConfigureButton(template, command);
       if (command is BaseCommand baseCommand) {
         commandStuff[button] = new CommandButtonStuff(baseCommand.Unit, command, template);
@@ -75,7 +75,7 @@ namespace Controller.NDebug.CommandsDebug {
 
     readonly Dictionary<IUnit, List<Button>> unitCommands = new Dictionary<IUnit, List<Button>>();
     readonly Dictionary<Button, CommandButtonStuff> commandStuff = new Dictionary<Button, CommandButtonStuff>();
-    readonly CommandsDebugUI ui;
+    readonly CommandDebugWindowUI windowUI;
     readonly EventRow eventRow;
     readonly CommandButtonStyler styler;
   }

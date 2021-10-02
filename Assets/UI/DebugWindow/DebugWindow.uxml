@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="/Assets/UI/ElementsStyling.uss" />
+    <ui:GroupBox name="GBattleSimulation" style="top: 60%; max-width: 308px; width: 200px;">
+        <ui:Label text="Battle simulation" display-tooltip-when-elided="true" name="CBattleSimulation" style="-unity-text-align: upper-center; -unity-font-style: bold; padding-bottom: 5px; font-size: 15px;" />
+        <ui:Toggle label="Realltime mode" name="TRealtimeMode" />
+        <ui:Slider picking-mode="Ignore" label="Speed" value="42" high-value="100" name="SSpeed" class="min-width2" />
+        <ui:Button text="Reset" display-tooltip-when-elided="true" name="BReset" />
+        <ui:Button text="Execute next decision" display-tooltip-when-elided="true" name="BExecuteNextDecision" />
+        <ui:Button text="Execute all decisions" display-tooltip-when-elided="true" name="BExecuteAllDecisions" />
+    </ui:GroupBox>
+</ui:UXML>

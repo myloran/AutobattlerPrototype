@@ -8,10 +8,10 @@ using View.UIToolkit;
 
 namespace Controller.NDebug.CommandsDebug {
   public class CommandsDebugController {
-    public CommandsDebugController(AiHeap aiHeap, CommandRow commandRow, CommandsDebugUI commandsDebugUI) {
+    public CommandsDebugController(AiHeap aiHeap, CommandRow commandRow, CommandDebugWindowUI commandDebugWindowUI) {
       this.aiHeap = aiHeap;
       this.commandRow = commandRow;
-      ui = commandsDebugUI;
+      windowUI = commandDebugWindowUI;
     }
 
     public void Init() {
@@ -21,9 +21,9 @@ namespace Controller.NDebug.CommandsDebug {
     }
     
     void InitUI() {
-      var root = ui.Document.rootVisualElement;
+      var root = windowUI.Document.rootVisualElement;
       commandsContainer = root.Q<VisualElement>("CommandsBody");
-      ui.Document.rootVisualElement.visible = false;
+      root.visible = false;
     }
 
     void OnReset() {
@@ -83,7 +83,7 @@ namespace Controller.NDebug.CommandsDebug {
     }
 
     readonly AiHeap aiHeap;
-    readonly CommandsDebugUI ui;
+    readonly CommandDebugWindowUI windowUI;
     readonly Dictionary<F32, TemplateContainer> commandRows = new Dictionary<F32, TemplateContainer>();
     readonly SortedDictionary<F32, PriorityCommand> sortedCommands = new SortedDictionary<F32, PriorityCommand>();
     readonly CommandRow commandRow;

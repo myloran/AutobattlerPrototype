@@ -26,8 +26,8 @@ namespace Controller.NDebug {
     
     public UIDebugController(BattleSetupUI battleSetupUI, BattleSaveUI battleSaveUI,
         BattleSimulationUI battleSimulationUI, UnitModelDebugController unitModelDebugController,
-        CommandsDebugUI commandsDebugUI) {
-      commandsDebug = new ComponentEnabler(SetActiveUI(commandsDebugUI.Document));
+        CommandDebugWindowUI commandDebugWindowUI) {
+      commandsDebug = new ComponentEnabler(SetActiveUI(commandDebugWindowUI.Document));
       battleSave = new ComponentEnabler(SetActiveMonoBehaviour(battleSaveUI));
       battleSetup = new ComponentEnabler(SetActiveMonoBehaviour(battleSetupUI));
       battleSimulation = new ComponentEnabler(SetActiveMonoBehaviour(battleSimulationUI));

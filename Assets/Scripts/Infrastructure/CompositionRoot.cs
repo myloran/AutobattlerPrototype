@@ -15,6 +15,7 @@ using Controller.Save;
 using Controller.Test;
 using Controller.UnitDrag;
 using Controller.Update;
+using Infrastructure.OkwyLoggingUnity;
 using Model.NBattleSimulation;
 using Model.NUnit;
 using UnityEngine;
@@ -48,7 +49,8 @@ namespace Infrastructure {
     public BattleSimulationUI BattleSimulationUI;
     public UnitTooltipUI UnitTooltipUI;
     public ModelUI ModelUI;
-    public CommandsDebugUI CommandsDebugUI;
+    public CommandDebugWindowUI CommandDebugWindowUI;
+    public DebugWindowUI DebugWindowUI;
 
     #endregion
     #region View
@@ -66,7 +68,7 @@ namespace Infrastructure {
       
       #region Config
       
-      log.Info("\n\nStart");
+      OkwyDefaultLog.DefaultInit();
       var units = new UnitInfoLoader().Load();
       var abilities = new AbilityInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
@@ -97,6 +99,11 @@ namespace Infrastructure {
         new PlayerPresenter(unitViewFactory, unitViewCoordChangedHandler), 
         new PlayerPresenter(unitViewFactory, unitViewCoordChangedHandler));
       
+      var battleSimulationUI2 = new BattleSimulationUI2();
+      var commandDebugUI = new CommandDebugUI();
+      
+      CommandDebugWindowUI.gameObject.SetActive(true);
+      DebugWindowUI.gameObject.SetActive(true);
       #endregion
       #region Model
       var decisionTreeLookup = new DecisionTreeLookup();
@@ -155,16 +162,6 @@ namespace Infrastructure {
       var attackController = new AttackController(boardPresenter, unitTooltipController);
       var animationController = new AnimationController(boardPresenter);
       var unitViewController = new UnitViewController(boardPresenter);
-      eventBus.Register<StartMoveEvent>(movementController, animationController); //TODO: register implicitly?
-      eventBus.Register<FinishMoveEvent>(movementController);
-      eventBus.Register<RotateEvent>(movementController);
-      eventBus.Register<UpdateHealthEvent>(attackController);
-      eventBus.Register<UpdateManaEvent>(attackController);
-      eventBus.Register<DeathEvent>(attackController);
-      eventBus.Register<IdleEvent>(animationController);
-      eventBus.Register<StartAttackEvent>(animationController);
-      eventBus.Register<StartCastEvent>(animationController);
-      eventBus.Register<UpdateSilenceDurationEvent>(unitViewController);
 
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, movementController, movementController);
@@ -176,11 +173,10 @@ namespace Infrastructure {
 
       #endregion
       #region Debug
-      
-      var battleSimulationDebugController = new BattleSimulationDebugController(
-        battleSimulation, BattleSimulationUI, 
-        aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController,
-        battleSimulationPresenter);
+
+      var battleSimulationDebugController = new BattleSimulationDebugController(battleSimulation, BattleSimulationUI, 
+        aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController, battleSimulationPresenter,
+        commandDebugUI);
       
       var battleSaveController = new BattleSaveController(playerContext, 
         playerPresenterContext, BattleSaveUI, saveDataLoader, saves,
@@ -189,10 +185,10 @@ namespace Infrastructure {
       var battleSetupController = new BattleSetupController(playerContext, 
         playerPresenterContext, BattleSetupUI);
 
-      var commandEvents = new EventRow(battleSimulation, eventBus, CommandsDebugUI.EventTemplate);
+      var commandEvents = new EventRow(battleSimulation, eventBus, CommandDebugWindowUI.EventTemplate);
       var commandButtonStyler = new CommandButtonStyler(boardPresenter);
-      var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandsDebugUI);
-      var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandsDebugUI);
+      var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandDebugWindowUI);
+      var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandDebugWindowUI);
 
       var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
         DebugController.Info, unitSelectionController);
@@ -205,13 +201,12 @@ namespace Infrastructure {
       
       var uiDebugController = new UIDebugController(
         BattleSetupUI, BattleSaveUI, BattleSimulationUI,
-        unitModelDebugController, CommandsDebugUI);
+        unitModelDebugController, CommandDebugWindowUI);
 
       #endregion
       
       #endregion
 
-      yield return null;
       #region Infrastructure
 
       tickController.InitObservable(takenCoordDebugController, targetDebugController, 
@@ -222,6 +217,8 @@ namespace Infrastructure {
       #endregion
       #region View
 
+      battleSimulationUI2.Init(DebugWindowUI.Document);
+      commandDebugUI.FillReferences(CommandDebugWindowUI.Document);
       BattleSetupUI.SetDropdownOptions(units.Keys.ToList());
       BattleSaveUI.SubToUI(saves.Keys.ToList());
       tileSpawner.SpawnTiles();
@@ -230,6 +227,16 @@ namespace Infrastructure {
       #region Model
 
       decisionTreeCreatorVisitor.Init();
+      eventBus.Register<StartMoveEvent>(movementController, animationController); //TODO: register implicitly?
+      eventBus.Register<FinishMoveEvent>(movementController);
+      eventBus.Register<RotateEvent>(movementController);
+      eventBus.Register<UpdateHealthEvent>(attackController);
+      eventBus.Register<UpdateManaEvent>(attackController);
+      eventBus.Register<DeathEvent>(attackController);
+      eventBus.Register<IdleEvent>(animationController);
+      eventBus.Register<StartAttackEvent>(animationController);
+      eventBus.Register<StartCastEvent>(animationController);
+      eventBus.Register<UpdateSilenceDurationEvent>(unitViewController);
 
       #endregion
       #region Controller
@@ -246,7 +253,7 @@ namespace Infrastructure {
       battleSaveController.SubToUI();
       battleSetupController.SubToUI();
       unitModelDebugController.SubToUnitSelection(disposable);
-      battleSimulationDebugController.SubToUI();
+      battleSimulationDebugController.SubToUI(disposable);
       commandEvents.Init(disposable);
       commandsDebugController.Init();
       DebugController.Init(UnitTooltipUI);
@@ -256,6 +263,8 @@ namespace Infrastructure {
       #endregion
 
       MonoBehaviourCallBackController.StartUpdating(tickController);
+
+      yield return null;
     }
 
     void OnDestroy() => disposable.Clear();
