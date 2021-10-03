@@ -174,6 +174,11 @@ namespace Infrastructure {
       #endregion
       #region Debug
 
+      var commandEvents = new EventRow(battleSimulation, eventBus, CommandDebugWindowUI.EventTemplate);
+      var commandButtonStyler = new CommandButtonStyler(boardPresenter);
+      var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandDebugWindowUI);
+      var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandDebugWindowUI);
+
       var battleSimulationDebugController = new BattleSimulationDebugController(battleSimulation, BattleSimulationUI, 
         aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController, battleSimulationPresenter,
         commandDebugUI);
@@ -184,11 +189,6 @@ namespace Infrastructure {
       
       var battleSetupController = new BattleSetupController(playerContext, 
         playerPresenterContext, BattleSetupUI);
-
-      var commandEvents = new EventRow(battleSimulation, eventBus, CommandDebugWindowUI.EventTemplate);
-      var commandButtonStyler = new CommandButtonStyler(boardPresenter);
-      var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandDebugWindowUI);
-      var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandDebugWindowUI);
 
       var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
         DebugController.Info, unitSelectionController);
@@ -219,6 +219,7 @@ namespace Infrastructure {
 
       battleSimulationUI2.Init(DebugWindowUI.Document);
       commandDebugUI.FillReferences(CommandDebugWindowUI.Document);
+      
       BattleSetupUI.SetDropdownOptions(units.Keys.ToList());
       BattleSaveUI.SubToUI(saves.Keys.ToList());
       tileSpawner.SpawnTiles();

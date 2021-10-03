@@ -1,8 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Model.NUnit;
 using Model.NUnit.Abstraction;
-using Shared;
 using Shared.Exts;
 using Shared.Primitives;
 using static Shared.Const;
@@ -11,21 +10,35 @@ namespace Model.NBattleSimulation {
   public class Board {
     #region Dict
 
-    public IEnumerable<IUnit> Values => units.Values;
-    public void AddUnit(Coord coord, IUnit unit) => units[coord] = unit;
-    public void RemoveUnit(Coord coord) => units.Remove(coord);
-    public bool ContainsUnit(Coord coord) => units.ContainsKey(coord);
+    public IEnumerable<IUnit> Values => units.Where(u => u != null);
     
-    public IUnit TryGetUnit(Coord coord) {
-      units.TryGetValue(coord, out var unit);
-      return unit;
+    public void AddUnit(Coord coord, IUnit unit) {
+      if (!IsCorrectIndex(coord)) {
+        throw new Exception($"Index is not correct: {coord}");
+      }
+      units[Index(coord)] = unit;
     }
+
+    public void RemoveUnit(Coord coord) {
+      if (!IsCorrectIndex(coord)) {
+        throw new Exception($"Index is not correct: {coord}");
+      }
+      units[Index(coord)] = null;
+    }
+
+    public bool ContainsUnit(Coord coord) => IsCorrectIndex(coord) && units[Index(coord)] != null;
+    public IUnit TryGetUnit(Coord coord) => IsCorrectIndex(coord) ? units[Index(coord)] : null;
 
     #endregion
     
-    public void SetContext(PlayerContext context) {
+    static bool IsCorrectIndex(Coord coord) => coord.X >= 0 && coord.X < BoardSizeX && coord.Y >= 0 && coord.Y < BoardSizeY;
+    int Index(Coord coord) => coord.X * BoardSizeY + coord.Y;
+
+    public void Reset(PlayerContext context) {
       this.context = context;
-      units = context.BoardUnits();
+      units = new IUnit[MaxTilesOnBoard];
+      foreach (var unit in context.BoardUnits()) 
+        AddUnit(unit.Key, unit.Value);
     }
 
     public IEnumerable<IUnit> GetPlayerUnits(EPlayer player) => context.GetBoardUnits(player);
@@ -36,7 +49,7 @@ namespace Model.NBattleSimulation {
         for (int y = -1; y <= 1; y++) {
           var newCoord = coord + (x, y);
           if (!newCoord.IsInsideBoard()) continue;
-          if (!units.ContainsKey(newCoord)) return false;
+          if (!ContainsUnit(newCoord)) return false;
         }
       }
       return true;
@@ -50,9 +63,8 @@ namespace Model.NBattleSimulation {
           if (x == 0 && y == 0) continue; 
           
           var newCoord = coord + (x, y);
-          
-          if (units.ContainsKey(newCoord))
-            result.Add(units[newCoord]);
+          var unit = TryGetUnit(newCoord);
+          if (unit != null) result.Add(unit);
         }
       }
       
@@ -68,15 +80,16 @@ namespace Model.NBattleSimulation {
       return result;
       
         void AddUnit(Coord diff) {
-          units.TryGetValue(coord + diff, out var value);
-          if (value != null) result.Add(value);
+          var unit = TryGetUnit(coord + diff);
+          if (unit != null) result.Add(unit);
         }
     }
     
     public IUnit FindClosestUnitTo(Coord coord, EPlayer player) => 
       GetPlayerUnits(player).Where(u => u.IsAlive).MinBy(u => CoordExt.SqrDistance(coord, u.Coord));
 
-    Dictionary<Coord, IUnit> units = new Dictionary<Coord, IUnit>(MaxUnitsOnBoard * 2); //when unit moves it occupies tile thus * 2
+    IUnit[] units = new IUnit[MaxTilesOnBoard];
+    // Dictionary<Coord, IUnit> units = new Dictionary<Coord, IUnit>(MaxUnitsOnBoard * 2); //when unit moves it occupies tile thus * 2
     PlayerContext context;
   }
 }

@@ -8,7 +8,6 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
   public class AiHeap : IAiHeap {
-    public readonly SortedDictionary<F32, PriorityCommand> DebugTree = new SortedDictionary<F32, PriorityCommand>();
     public Action<F32, ICommand> OnInsert = (v, c) => {};
     public Action OnReset = () => {};
 
@@ -28,7 +27,6 @@ namespace Model.NBattleSimulation {
       var pCommand = new PriorityCommand(command);
       var node = new FibonacciHeapNode<PriorityCommand, F32>(pCommand, nextTime);
       aiHeap.Insert(node);
-      DebugTree[nextTime] = pCommand;
       nodes[nextTime] = node;
       OnInsert(nextTime, command);
     }
@@ -42,7 +40,6 @@ namespace Model.NBattleSimulation {
       var time = node.Key;
       var command = node.Data;
       CurrentTime = time;
-      DebugTree.Remove(time);
       nodes.Remove(time);
       return (false, command);
     }

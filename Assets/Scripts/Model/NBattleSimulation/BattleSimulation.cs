@@ -1,3 +1,4 @@
+using System;
 using Model.NAI.Commands;
 using Shared.Addons.Examples.FixMath;
 using Shared.Addons.OkwyLogging;
@@ -15,7 +16,7 @@ namespace Model.NBattleSimulation {
     }
 
     public void PrepareBattle(PlayerContext playerContext) {
-      board.SetContext(playerContext);
+      board.Reset(playerContext);
       
       foreach (var unit in board.Values) {
         unit.Reset();
@@ -53,8 +54,14 @@ namespace Model.NBattleSimulation {
     public void ExecuteCommandsTill(F32 time) {
       while (!IsBattleOver && heap.HasEventInHeap && heap.NextEventTime < time) {
         ExecuteNextCommand();
+        counter++;
+        if (counter == 1000) {
+          throw new Exception();
+        }
       }
     }
+
+    int counter;
 
     readonly AiContext context;
     readonly AiHeap heap;

@@ -3,6 +3,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Shared {
   public static class Const {
+    public static int MaxTilesOnBoard = 48;
     public static int MaxUnitsOnBoard = 20;
     public static int MaxUnitsOnBench = 10;
     public static int StraightMoveTime = 1;
