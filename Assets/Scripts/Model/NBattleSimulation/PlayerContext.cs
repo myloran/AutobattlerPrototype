@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using Model.NUnit;
 using Model.NUnit.Abstraction;
-using Shared;
 using Shared.Exts;
 using Shared.Primitives;
 
 namespace Model.NBattleSimulation {
   public class PlayerContext {
-    public Dictionary<Coord, IUnit> GetBoardUnitDict(EPlayer player) => Get(player).BoardUnits;
-    public Dictionary<Coord, IUnit> GetBenchUnitDict(EPlayer player) => Get(player).BenchUnits;
+    public Dictionary<Coord, IUnit> GetBoardUnitDict(EPlayer player) => ToDictionary(Get(player).BoardUnits);
+    public Dictionary<Coord, IUnit> GetBenchUnitDict(EPlayer player) => ToDictionary(Get(player).BenchUnits);
     
     public PlayerContext(Player player1, Player player2) {
       this.player1 = player1;
@@ -19,10 +17,10 @@ namespace Model.NBattleSimulation {
     #region Player
 
     public IEnumerable<IUnit> GetBoardUnits(EPlayer player) => 
-      Get(player).BoardUnits.Values;
+      Get(player).BoardUnits;
 
     public bool HasAliveUnits(EPlayer player) =>
-      Get(player).BoardUnits.Values.Any(u => u.IsAlive);
+      Get(player).BoardUnits.Any(u => u.IsAlive);
 
     public void MoveUnit(Coord from, Coord to, EPlayer player) => 
       Get(player).MoveUnit(from, to);
@@ -54,7 +52,13 @@ namespace Model.NBattleSimulation {
       return default;
     }
 
-    public Dictionary<Coord, IUnit> BoardUnits() => player1.BoardUnits.With(player2.BoardUnits);
+    Dictionary<Coord, IUnit> ToDictionary(List<IUnit> list) {
+      var dict = new Dictionary<Coord, IUnit>();
+      foreach (var unit in list) dict[unit.Coord] = unit;
+      return dict;
+    }
+
+    public IEnumerable<IUnit> BoardUnits() => player1.BoardUnits.Concat(player2.BoardUnits);
     Player Get(EPlayer player) => player == EPlayer.First ? player1 : player2;
     
     readonly Player player1;

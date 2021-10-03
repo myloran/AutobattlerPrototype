@@ -29,16 +29,16 @@ namespace Model.NBattleSimulation {
     public bool ContainsUnit(Coord coord) => IsCorrectIndex(coord) && units[Index(coord)] != null;
     public IUnit TryGetUnit(Coord coord) => IsCorrectIndex(coord) ? units[Index(coord)] : null;
 
-    #endregion
-    
     static bool IsCorrectIndex(Coord coord) => coord.X >= 0 && coord.X < BoardSizeX && coord.Y >= 0 && coord.Y < BoardSizeY;
     int Index(Coord coord) => coord.X * BoardSizeY + coord.Y;
+    
+    #endregion
 
     public void Reset(PlayerContext context) {
       this.context = context;
       units = new IUnit[MaxTilesOnBoard];
       foreach (var unit in context.BoardUnits()) 
-        AddUnit(unit.Key, unit.Value);
+        AddUnit(unit.StartingCoord, unit);
     }
 
     public IEnumerable<IUnit> GetPlayerUnits(EPlayer player) => context.GetBoardUnits(player);
