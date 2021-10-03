@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="test.uss" />
+    <ui:Button text="Button" display-tooltip-when-elided="true" class="test-style" style="position: absolute; right: 100px; bottom: 56px; width: 353px; height: 155px;" />
+</ui:UXML>
