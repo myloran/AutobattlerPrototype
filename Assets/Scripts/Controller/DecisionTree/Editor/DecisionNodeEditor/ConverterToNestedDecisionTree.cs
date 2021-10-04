@@ -10,7 +10,7 @@ namespace Controller.DecisionTree.Editor.DecisionNodeEditor {
 		  nestedDecisionTreeGraphCreator = new NestedDecisionTreeGraphCreator(target, nodeOperations);
 	  }
 	  
-		public void ConvertToNestedDecisionTree() {
+		public void ConvertToNewNestedDecisionTree() {
 			if (!nestedGraphAssetPath.TryGetNestedGraphAssetPath(out var assetPath)) return;
 			
 			var nestedGraph = nestedDecisionTreeGraphCreator.CreateNestedDecisionTreeGraph();

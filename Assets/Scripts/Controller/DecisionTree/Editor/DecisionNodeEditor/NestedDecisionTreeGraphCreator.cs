@@ -37,7 +37,8 @@ namespace Controller.DecisionTree.Editor.DecisionNodeEditor {
       var decisionNode = (DecisionNode)NodeEditorWindow.current.graph.nodes.MinBy(n => n.position.x);
       var decisionPort = decisionNode.GetInputPort(nameof(decisionNode.Input));
       var offset = new Vector2(-300, 0);
-      var parentNode = (ParentDecisionTreeNode)NodeEditorWindow.current.graphEditor.CreateNode(typeof(ParentDecisionTreeNode), decisionNode.position + offset);
+      var parentNode = (ParentDecisionTreeNode)NodeEditorWindow.current.graphEditor
+        .CreateNode(typeof(ParentDecisionTreeNode), decisionNode.position + offset);
       var parentPort = parentNode.GetOutputPort(nameof(parentNode.Output));
       parentNode.Graph = targetGraph;
       parentPort.Connect(decisionPort);

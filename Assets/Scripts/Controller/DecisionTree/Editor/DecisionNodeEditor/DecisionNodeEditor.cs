@@ -51,7 +51,7 @@ namespace Controller.DecisionTree.Editor {
 
     public override void AddContextMenuItems(GenericMenu menu) {
 	    base.AddContextMenuItems(menu);
-	    menu.AddItem(new GUIContent("Convert To New Nested Decision Tree"), false, converter.ConvertToNestedDecisionTree);
+	    menu.AddItem(new GUIContent("Convert To New Nested Decision Tree"), false, converter.ConvertToNewNestedDecisionTree);
 	    menu.AddItem(new GUIContent("Convert To Existing Nested Decision Tree"), false, converter.ConvertToExistingDecisionTree);
     }
 
