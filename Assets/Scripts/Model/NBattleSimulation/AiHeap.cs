@@ -2,23 +2,24 @@ using System;
 using System.Collections.Generic;
 using FibonacciHeap;
 using Model.NAI.Commands;
+using Newtonsoft.Json;
 using Shared.Addons.Examples.FixMath;
 using Shared.Addons.OkwyLogging;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
   public class AiHeap : IAiHeap {
-    public Action<F32, ICommand> OnInsert = (v, c) => {};
-    public Action OnReset = () => {};
+    [JsonIgnore] public Action<F32, ICommand> OnInsert = (v, c) => {};
+    [JsonIgnore] public Action OnReset = () => {};
 
-    public F32 CurrentTime { get; set; }
+    [JsonIgnore] public F32 CurrentTime { get; set; }
     
     //execute event on state change, so that command window can subscribe to changes
     public void InsertCommand(F32 time, ICommand command) {
       var nextTime = CurrentTime + time;
 
       if (nodes.ContainsKey(nextTime)) {
-        var priorityCommand = nodes[nextTime].Data;
+        var priorityCommand = nodes[nextTime];
         priorityCommand.AddChild(command);
         OnInsert(nextTime, command);
         return;
@@ -27,7 +28,7 @@ namespace Model.NBattleSimulation {
       var pCommand = new PriorityCommand(command);
       var node = new FibonacciHeapNode<PriorityCommand, F32>(pCommand, nextTime);
       aiHeap.Insert(node);
-      nodes[nextTime] = node;
+      nodes[nextTime] = node.Data;
       OnInsert(nextTime, command);
     }
 
@@ -44,8 +45,8 @@ namespace Model.NBattleSimulation {
       return (false, command);
     }
     
-    public bool HasEventInHeap => aiHeap.Min() != null;
-    public F32 NextEventTime => aiHeap.Min().Key;
+    [JsonIgnore] public bool HasEventInHeap => aiHeap.Min() != null;
+    [JsonIgnore] public F32 NextEventTime => aiHeap.Min().Key;
     
     public void Reset() {
       aiHeap.Clear();
@@ -57,8 +58,8 @@ namespace Model.NBattleSimulation {
       new FibonacciHeap<PriorityCommand, F32>(MinValue); //TODO: Pool commands
     
     //TODO: optimize capacity
-    readonly Dictionary<F32, FibonacciHeapNode<PriorityCommand, F32>> nodes = 
-      new Dictionary<F32, FibonacciHeapNode<PriorityCommand, F32>>(100); //TODO: fix allocations inside heap
+    [JsonProperty] readonly Dictionary<F32, PriorityCommand> nodes = 
+      new Dictionary<F32, PriorityCommand>(100); //TODO: fix allocations inside heap
     static readonly Logger log = MainLog.GetLogger(nameof(AiContext));
   }
 }

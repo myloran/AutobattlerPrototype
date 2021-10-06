@@ -19,6 +19,7 @@ namespace Model.NUnit.Components {
     public void Reset() {
       Coord = StartingCoord;
       TakenCoord = Coord.Invalid;
+      NextMove = new MoveInfo();
     }
     
     public F32 TimeToMove(bool isDiagonal) => isDiagonal 

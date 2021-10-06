@@ -1,5 +1,6 @@
 using System;
 using MessagePack;
+using Newtonsoft.Json;
 using static Shared.Const;
 using static Shared.Exts.MathExt;
 
@@ -25,9 +26,9 @@ namespace Shared.Primitives {
       }
     }
 
-    [IgnoreMember] public bool IsDiagonal => X != 0 && Y != 0;
-    [IgnoreMember] public int SqrMagnitude => X * X + Y * Y; 
-    [IgnoreMember] public Coord Normalized => new Coord(Clamp(X, -1, 1), Clamp(Y, -1, 1));
+    [JsonIgnore][IgnoreMember] public bool IsDiagonal => X != 0 && Y != 0;
+    [JsonIgnore][IgnoreMember] public int SqrMagnitude => X * X + Y * Y; 
+    [JsonIgnore][IgnoreMember] public Coord Normalized => new Coord(Clamp(X, -1, 1), Clamp(Y, -1, 1));
 
     public static implicit operator (int x, int y)(Coord coord) => (coord.X, coord.Y);
     public static implicit operator Coord ((int x, int y) coord) => new Coord(coord.x, coord.y);

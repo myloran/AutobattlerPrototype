@@ -11,6 +11,7 @@ namespace Model.NUnit.Components {
     public F32 TimeWhenDecisionWillBeExecuted { get; private set; }
 
     public void Reset() {
+      CurrentDecision = null;
       DecisionTime = Zero;
       TimeWhenDecisionWillBeExecuted = Zero;
     }
@@ -24,7 +25,7 @@ namespace Model.NUnit.Components {
       CurrentDecision = decisionTree.MakeDecision(context);
 
     public void SetDecisionTree(IDecisionTreeNode decisionTree) => 
-      this.decisionTree = CurrentDecision = decisionTree;
+      this.decisionTree = decisionTree;
 
     public override string ToString() => $"{nameof(CurrentDecision)}: {CurrentDecision.GetType().Name}, {nameof(DecisionTime)}: {DecisionTime}, {nameof(TimeWhenDecisionWillBeExecuted)}: {TimeWhenDecisionWillBeExecuted}";
     

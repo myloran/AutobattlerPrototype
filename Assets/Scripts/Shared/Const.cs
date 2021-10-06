@@ -15,5 +15,6 @@ namespace Shared {
     public static int BoardSizeY = 6;
     public static int BenchSizeX = 10;
     public static int LeftButton = 0;
+    public static F32 MaxBattleDuration = ToF32(100);
   }
 }

@@ -1,8 +1,8 @@
 using System;
 using Model.NUnit.Abstraction;
-using Shared;
 using Shared.Addons.Examples.FixMath;
 using static Shared.Addons.Examples.FixMath.F32;
+using static Shared.Const;
 using static Shared.Primitives.CoordExt;
 
 namespace Model.NUnit.Components {
@@ -35,7 +35,7 @@ namespace Model.NUnit.Components {
       SqrDistance(movement.Coord, target.Coord) <= sqrRange; //TODO: check if coord == coord.Normalized is more performant
 
     public void StartAttack(F32 currentTime) => lastStartAttackTime = currentTime;
-    public void EndAttack() => lastStartAttackTime = ToF32(-100);
+    public void EndAttack() => lastStartAttackTime = -MaxBattleDuration;
 
     public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
     

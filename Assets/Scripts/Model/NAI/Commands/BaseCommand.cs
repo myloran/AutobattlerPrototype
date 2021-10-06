@@ -1,4 +1,7 @@
 using Model.NUnit.Abstraction;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Shared.Primitives;
 
 namespace Model.NAI.Commands {
   public abstract class BaseCommand : ICommand {
@@ -6,8 +9,10 @@ namespace Model.NAI.Commands {
       Unit = unit;
     }
     
+    [JsonConverter(typeof(StringEnumConverter))] 
     public virtual ECommand Type { get; } = ECommand.Other;
-    public IUnit Unit { get; }
+    [JsonIgnore] public IUnit Unit { get; }
+    public Coord Coord => Unit.Coord; //to test determinism
     
     public abstract void Execute();
   }

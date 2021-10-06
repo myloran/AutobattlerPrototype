@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Model.NAI.Commands;
-using Model.NUnit;
 using Model.NUnit.Abstraction;
+using Newtonsoft.Json;
 using Shared.Addons.Examples.FixMath;
 using Shared.Primitives;
 using Shared.Shared.Client.Abstraction;
@@ -59,8 +59,8 @@ namespace Model.NBattleSimulation {
       CheckBattleIsOver();
     }
     
-    readonly Board board;
-    readonly AiHeap heap;
+    [JsonProperty] readonly Board board;
+    [JsonProperty] readonly AiHeap heap;
     F32 playerDeathTime;
   }
 }

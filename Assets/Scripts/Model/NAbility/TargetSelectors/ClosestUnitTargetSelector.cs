@@ -15,6 +15,7 @@ namespace Model.NAbility {
         return context.FindClosestUnitTo(unit.Coord, unit.Player.Opposite());
       }
 
+      //TODO: handle null target properly, maybe check if i ability target exist first
       return null;
     }
 

@@ -6,6 +6,7 @@ using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Model.NUnit.Components;
+using Newtonsoft.Json;
 using Shared.Addons.Examples.FixMath;
 using Shared.Primitives;
 
@@ -39,11 +40,14 @@ namespace Model.NUnit {
     public void StartAttack(F32 currentTime) => attack.StartAttack(currentTime);
     public void EndAttack() => attack.EndAttack();
 
-    public IEnumerable<IUnit> ArrivingTargets {
+    [JsonIgnore] public IEnumerable<IUnit> ArrivingTargets {
       get => target.ArrivingTargets;
       set => target.ArrivingTargets = value;
     }
-    public IUnit Target => target.Target;
+
+    public IEnumerable<Coord> ArrivingTargetCoords => target.ArrivingTargetCoords; //to test determinism
+    [JsonIgnore] public IUnit Target => target.Target;
+    public Coord TargetCoord => target.TargetCoord; //to test determinism
     public bool TargetExists => target.TargetExists;
     public void ClearTarget() => target.ClearTarget();
     public void ChangeTargetTo(IUnit unit) => target.ChangeTargetTo(unit);
@@ -78,15 +82,16 @@ namespace Model.NUnit {
     public EPlayer Player => stats.Player;
     public bool IsAllyWith(EPlayer player) => stats.IsAllyWith(player);
 
-    public IUnit AbilityTarget => ability.AbilityTarget;
+    [JsonIgnore] public IUnit AbilityTarget => ability.AbilityTarget;
+    public Coord AbilityTargetCoord => ability.AbilityTargetCoord; //to test determinism
     public F32 Mana => ability.Mana;
     public F32 CastHitTime => ability.CastHitTime;
     public F32 TimeToFinishCast => ability.TimeToFinishCast;
     public bool HasManaAccumulated => ability.HasManaAccumulated;
     public void AccumulateMana() => ability.AccumulateMana();
     public bool IsWithinAbilityRange(AiContext context) => ability.IsWithinAbilityRange(context);
-    public bool CanStartCasting(F32 currentTime) => ability.CanStartCasting(currentTime);
-    public void StartCasting(F32 currentTime) => ability.StartCasting(currentTime);
+    public bool CanStartCasting(F32 time) => ability.CanStartCasting(time);
+    public void StartCasting(F32 time) => ability.StartCasting(time);
     public void EndCasting() => ability.EndCasting();
     public void CastAbility(AiContext context) => ability.CastAbility(context);
     public void SetAbility(Ability ability) => this.ability.Ability = ability;

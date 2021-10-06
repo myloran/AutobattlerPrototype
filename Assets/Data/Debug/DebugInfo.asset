@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6459bf8160354053ab4e826542a48a9a, type: 3}
   m_Name: DebugInfo
   m_EditorClassIdentifier: 
-  IsLogEnabled: 0
+  IsLogEnabled: 1
   IsDebugOn: 1

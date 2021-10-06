@@ -1,14 +1,18 @@
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
+using Newtonsoft.Json;
 using Shared.Addons.Examples.FixMath;
+using Shared.Primitives;
 using static Shared.Addons.Examples.FixMath.F32;
+using static Shared.Const;
 using static Shared.Primitives.CoordExt;
 
 namespace Model.NAbility {
   public class AbilityComponent : IAbility {
     public Ability Ability { get; set; }
     public ISilence Silence { get; }
-    public IUnit AbilityTarget { get; private set; }
+    [JsonIgnore] public IUnit AbilityTarget { get; private set; }
+    public Coord AbilityTargetCoord => AbilityTarget?.Coord ?? Coord.Invalid; //to test determinism
     public F32 CastHitTime { get; }
     public F32 Mana { get; private set; } //TODO: extract stuff related to mana into separate component
 
@@ -37,8 +41,10 @@ namespace Model.NAbility {
     #endregion
     
     public void Reset() {
+      AbilityTarget = null;
       Mana = Zero;
       Ability.Reset();
+      EndCasting();
     }
 
     public bool HasManaAccumulated => Mana == 100;
@@ -54,9 +60,9 @@ namespace Model.NAbility {
     }
     
     public F32 TimeToFinishCast => animationTotalTime - CastHitTime;
-    public bool CanStartCasting(F32 currentTime) => lastStartCastTime + CastHitTime < currentTime;
-    public void StartCasting(F32 currentTime) => lastStartCastTime = currentTime;
-    public void EndCasting() => lastStartCastTime = Zero;
+    public bool CanStartCasting(F32 time) => lastStartCastTime + CastHitTime < time;
+    public void StartCasting(F32 time) => lastStartCastTime = time;
+    public void EndCasting() => lastStartCastTime = -MaxBattleDuration;
     
     public void CastAbility(AiContext context) {
       Reset();

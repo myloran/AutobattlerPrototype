@@ -10,9 +10,9 @@ namespace Model.NAI.Commands {
     }
     
     public override void Execute() {
+      unit.EndAttack();
       if (!unit.IsAlive) return;
       
-      unit.EndAttack();
       bus.Raise(new IdleEvent(unit.Coord));
     }
 

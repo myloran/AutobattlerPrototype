@@ -10,9 +10,9 @@ namespace Model.NAI.Commands {
     }
     
     public override void Execute() {
+      unit.EndCasting();
       if (!unit.IsAlive) return;
       
-      unit.EndCasting();
       bus.Raise(new IdleEvent(unit.Coord));
     }
 

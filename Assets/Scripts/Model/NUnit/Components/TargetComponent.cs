@@ -1,20 +1,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using Model.NUnit.Abstraction;
-using Shared;
+using Newtonsoft.Json;
 using Shared.Exts;
+using Shared.Primitives;
 using static Shared.Primitives.CoordExt;
 
 namespace Model.NUnit.Components {
   public class TargetComponent : ITarget {
-    public IUnit Target { get; private set; }
-    public IEnumerable<IUnit> ArrivingTargets { get; set; }
+    [JsonIgnore] public IUnit Target { get; private set; }
+    public Coord TargetCoord => Target?.Coord ?? Coord.Invalid; //to test determinism
+    [JsonIgnore] public IEnumerable<IUnit> ArrivingTargets { get; set; }
+    public IEnumerable<Coord> ArrivingTargetCoords => ArrivingTargets?.Select(t => t.Coord); //to test determinism
 
     public TargetComponent(IMovement movement) => this.movement = movement;
 
     public bool TargetExists => Target != null;
-    public void Reset() => Target = null;
     
+    public void Reset() {
+      Target = null;
+      ArrivingTargets = null;
+    }
+
     public void ClearTarget() {
       if (!TargetExists) return;
       
