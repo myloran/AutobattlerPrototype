@@ -1,7 +1,6 @@
 using System;
 using Model.Determinism;
 using Model.NAI.Commands;
-using Newtonsoft.Json;
 using Shared.Addons.Examples.FixMath;
 using Shared.Addons.OkwyLogging;
 using static Shared.Addons.Examples.FixMath.F32;
@@ -35,24 +34,13 @@ namespace Model.NBattleSimulation {
         context.InsertCommand(Zero, new MakeDecisionCommand(unit, context, Zero));
       }
 
-      hashResult = "";
+      hashCalculator.Reset();
     }
 
     public void ExecuteNextCommand() {
-      var settings = new JsonSerializerSettings() {
-        ContractResolver = new PrivateContractResolver(),
-        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-      };
-      var serialized = JsonConvert.SerializeObject(context, Formatting.Indented/*, settings*/);
-      var stringified = context.GetType().Name + serialized;
-      log.Info($"stringified: {stringified}");
-      
-      var hash = hashCalculator.GetObjectHash(context);
-      var hex = hashCalculator.BytesToHex(hash);
-      
       var (isEmpty, priorityCommand) = context.RemoveMin();
-      hashResult += "\n" + hex + " - " + priorityCommand;
-      log.Info($"{context.CurrentTime}: {priorityCommand}, {nameof(hash)}: {hex}");
+      hashCalculator.Calculate(context, priorityCommand, context.CurrentTime);
+      
       IsBattleOver = isEmpty || context.IsBattleOver;
       if (IsBattleOver) return;
       
@@ -66,7 +54,7 @@ namespace Model.NBattleSimulation {
       while (!IsBattleOver) {
         ExecuteNextCommand();
       }
-      log.Info($"{nameof(hashResult)}: {hashResult}");
+      hashCalculator.PrintReport();
     }
 
     public void ExecuteCommandsTill(F32 time) {
@@ -77,7 +65,7 @@ namespace Model.NBattleSimulation {
           throw new Exception();
         }
       }
-      log.Info($"{nameof(hashResult)}: {hashResult}");
+      hashCalculator.PrintReport();
     }
 
     int counter;
@@ -86,7 +74,5 @@ namespace Model.NBattleSimulation {
     readonly AiHeap heap;
     readonly Board board;
     readonly HashCalculator hashCalculator;
-    string hashResult;
-    static readonly Logger log = MainLog.GetLogger(nameof(BattleSimulation));
   }
 }
