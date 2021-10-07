@@ -22,7 +22,7 @@ namespace Controller.NBattleSimulation {
     public void StopBattle() => isStarted = false;
 
     public void Tick() {
-      if (!isStarted || isPaused) return;
+      if (!isStarted || isPaused || simulation.IsBattleOver) return;
 
       currentTime += ToF32(Time.deltaTime);
       simulation.ExecuteCommandsTill(currentTime);
