@@ -42,6 +42,7 @@ namespace Controller.Save {
       };
       
       saveInfoLoader.Save(save);
+      //TODO: reload saves, so that if we save to an existing one, it's updated
     }
 
     Dictionary<Coord, string> GetUnits(Dictionary<Coord, IUnit> dict) => dict
@@ -72,7 +73,7 @@ namespace Controller.Save {
         playerContext.InstantiateToBoard(name, coord, EPlayer.Second);
         playerPresenterContext.InstantiateToBoard(name, coord, EPlayer.Second);
       }
-      battleSimulationController.StartBattle();
+      battleSimulationController.ResetBattle();
       Time.timeScale = timeScaleBefore;
     }
     

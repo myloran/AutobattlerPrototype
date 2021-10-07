@@ -39,7 +39,7 @@ namespace Controller.NDebug {
     }
     
     void GenerateTimeline() {
-      StartBattle();
+      ResetBattle();
       commandCount = 0;
 
       while (!simulation.IsBattleOver) {
@@ -51,7 +51,7 @@ namespace Controller.NDebug {
     }
 
     void OnTimelineChange(ChangeEvent<int> evt) {
-      StartBattle();
+      ResetBattle();
 
       var commandsLeft = evt.newValue;
       while (commandsLeft-- > 0 && !simulation.IsBattleOver) {
@@ -68,12 +68,12 @@ namespace Controller.NDebug {
     }
 
     void BattleControlSubs() {
-      ui.OStart.OnValueChangedAsObservable().Subscribe(StartBattle).AddTo(ui.OStart);
+      ui.OStart.OnValueChangedAsObservable().Subscribe(ResetBattle).AddTo(ui.OStart);
       ui.OPause.OnValueChangedAsObservable().Subscribe(SetPaused).AddTo(ui.OPause);
       ui.SSpeed.OnValueChangedAsObservable().Subscribe(SetSpeed).AddTo(ui.SSpeed);
     }
 
-    public void StartBattle() {
+    public void ResetBattle() {
       realtimeBattleSimulationController.StopBattle();
       simulation.PrepareBattle(playerContext);
       simulationPresenter.Reset(playerPresenterContext);
