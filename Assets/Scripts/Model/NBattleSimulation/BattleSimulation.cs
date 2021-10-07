@@ -58,14 +58,11 @@ namespace Model.NBattleSimulation {
     }
 
     public void ExecuteCommandsTill(F32 time) {
+      counter = 0;
       while (!IsBattleOver && heap.HasEventInHeap && heap.NextEventTime < time) {
         ExecuteNextCommand();
-        counter++;
-        if (counter == 1000) {
-          throw new Exception();
-        }
+        if (++counter == 1000) throw new Exception();
       }
-      hashCalculator.PrintReport();
     }
 
     int counter;
