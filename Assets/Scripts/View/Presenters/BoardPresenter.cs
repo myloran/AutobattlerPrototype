@@ -21,7 +21,8 @@ namespace View.Presenters {
     #endregion
 
     public void MoveUnit(Coord from, Coord to) {
-      var unit = units[from];
+      if (!units.TryGetValue(from, out var unit)) return;
+      
       handler.Handle(new UnitCoordChanged<UnitView>(unit, to));
       AddUnit(to, unit);
       RemoveUnit(from);
