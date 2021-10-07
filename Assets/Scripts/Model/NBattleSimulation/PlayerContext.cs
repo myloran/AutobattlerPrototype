@@ -54,7 +54,7 @@ namespace Model.NBattleSimulation {
 
     Dictionary<Coord, IUnit> ToDictionary(List<IUnit> list) {
       var dict = new Dictionary<Coord, IUnit>();
-      foreach (var unit in list) dict[unit.Coord] = unit;
+      foreach (var unit in list) dict[unit.StartingCoord] = unit;
       return dict;
     }
 
