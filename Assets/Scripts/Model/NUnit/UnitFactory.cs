@@ -28,10 +28,10 @@ namespace Model.NUnit {
       var sqrRange = ToF32(abilityInfo.Range * abilityInfo.Range);
       
       var abilityComponent = new AbilityComponent(movement, sqrRange, ToF32(info.ManaPerAttack),
-        ToF32(abilityInfo.AnimationHitTime), ToF32(abilityInfo.AnimationTotalTime), new SilenceComponent());
+        ToF32(abilityInfo.AnimationHitTime), ToF32(abilityInfo.AnimationTotalTime));
 
       var unit = new Unit(health, attack, movement, new TargetComponent(movement), 
-        new AiComponent(), new StatsComponent(name, 1, player), abilityComponent);
+        new AiComponent(), new StatsComponent(name, 1, player), abilityComponent, new SilenceComponent());
 
       unit.SetDecisionTree(decisionFactory.Create(unit));
       unit.SetAbility(abilityFactory.Create(unit, info.AbilityName));

@@ -13,7 +13,7 @@ using Shared.Primitives;
 namespace Model.NUnit {
   public class Unit : IUnit {
     public Unit(HealthComponent health, AttackComponent attack, MovementComponent movement, TargetComponent target,
-        AiComponent ai, StatsComponent stats, AbilityComponent ability) {
+        AiComponent ai, StatsComponent stats, AbilityComponent ability, SilenceComponent silence) {
       this.health = health;
       this.attack = attack;
       this.movement = movement;
@@ -21,6 +21,7 @@ namespace Model.NUnit {
       this.ai = ai;
       this.stats = stats;
       this.ability = ability;
+      this.silence = silence;
     }
     
     #region Components
@@ -84,7 +85,10 @@ namespace Model.NUnit {
 
     [JsonIgnore] public IUnit AbilityTarget => ability.AbilityTarget;
     public Coord AbilityTargetCoord => ability.AbilityTargetCoord; //to test determinism
-    public F32 Mana => ability.Mana;
+    public F32 Mana {
+      get => ability.Mana;
+      set => ability.Mana = value;
+    }
     public F32 CastHitTime => ability.CastHitTime;
     public F32 TimeToFinishCast => ability.TimeToFinishCast;
     public bool HasManaAccumulated => ability.HasManaAccumulated;
@@ -95,9 +99,9 @@ namespace Model.NUnit {
     public void EndCasting() => ability.EndCasting();
     public void CastAbility(AiContext context) => ability.CastAbility(context);
     public void SetAbility(Ability ability) => this.ability.Ability = ability;
-    public bool IsSilenced => ability.IsSilenced;
-    public F32 SilenceDuration => ability.SilenceDuration;
-    public void ApplySilence(F32 duration) => ability.ApplySilence(duration);
+    public bool IsSilenced(F32 currentTime) => silence.IsSilenced(currentTime);
+    public F32 SilenceEndTime => silence.SilenceEndTime;
+    public void ApplySilence(F32 duration) => silence.ApplySilence(duration);
 
     #endregion
     
@@ -109,6 +113,7 @@ namespace Model.NUnit {
       ai.Reset();
       stats.Reset();
       ability.Reset();
+      silence.Reset();
     }
 
     public override string ToString() => new StringBuilder()
@@ -118,6 +123,7 @@ namespace Model.NUnit {
       .Append(ai).Append("\n")
       .Append(stats).Append("\n")
       .Append(ability).Append("\n")
+      .Append(silence).Append("\n")
       .Append(target).Append("\n")
       .ToString();
     
@@ -128,5 +134,6 @@ namespace Model.NUnit {
     readonly AiComponent ai;
     readonly StatsComponent stats;
     readonly AbilityComponent ability;
+    readonly SilenceComponent silence;
   }
 }       

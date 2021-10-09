@@ -27,7 +27,7 @@ namespace Model.NUnit.Components {
     public void SetDecisionTree(IDecisionTreeNode decisionTree) => 
       this.decisionTree = decisionTree;
 
-    public override string ToString() => $"{nameof(CurrentDecision)}: {CurrentDecision.GetType().Name}, {nameof(DecisionTime)}: {DecisionTime}, {nameof(TimeWhenDecisionWillBeExecuted)}: {TimeWhenDecisionWillBeExecuted}";
+    public override string ToString() => $"{nameof(CurrentDecision)}: {CurrentDecision?.GetType().Name}, {nameof(DecisionTime)}: {DecisionTime}, {nameof(TimeWhenDecisionWillBeExecuted)}: {TimeWhenDecisionWillBeExecuted}";
     
     IDecisionTreeNode decisionTree;
   }

@@ -10,34 +10,19 @@ using static Shared.Primitives.CoordExt;
 namespace Model.NAbility {
   public class AbilityComponent : IAbility {
     public Ability Ability { get; set; }
-    public ISilence Silence { get; }
     [JsonIgnore] public IUnit AbilityTarget { get; private set; }
     public Coord AbilityTargetCoord => AbilityTarget?.Coord ?? Coord.Invalid; //to test determinism
     public F32 CastHitTime { get; }
-    public F32 Mana { get; private set; } //TODO: extract stuff related to mana into separate component
+    public F32 Mana { get; set; } //TODO: extract stuff related to mana into separate component
 
     public AbilityComponent(IMovement movement, F32 sqrRange, F32 manaPerAttack, F32 castAnimationHitTime, 
-        F32 animationTotalTime, ISilence silence) {
+        F32 animationTotalTime) {
       this.sqrRange = sqrRange;
       this.manaPerAttack = manaPerAttack;
       CastHitTime = castAnimationHitTime;
       this.animationTotalTime = animationTotalTime;
       this.movement = movement;
-      Silence = silence;
     }
-    //TODO: THE PLAN, don't forget about it
-    //create IsSilencedDecision
-    //subscribe to silence event
-    //react to silence event(clean up ability casting logic, notify view, make new instant decision)
-    //display silence on the view properly
-
-    #region Silence
-
-    public bool IsSilenced => Silence.IsSilenced;
-    public F32 SilenceDuration => Silence.SilenceDuration;
-    public void ApplySilence(F32 duration) => Silence.ApplySilence(duration);
-    
-    #endregion
     
     public void Reset() {
       AbilityTarget = null;

@@ -17,9 +17,10 @@ namespace Model.NBattleSimulation {
       BenchUnits.Add(unit);
     }
 
-    public void InstantiateToBoard(string name, Coord coord, EPlayer player) {
+    public IUnit InstantiateToBoard(string name, Coord coord, EPlayer player) {
       var unit = unitFactory.Create(name, coord, player);
       BoardUnits.Add(unit);
+      return unit;
     }
 
     public (bool, Coord) InstantiateToBenchStart(string name, EPlayer player) {

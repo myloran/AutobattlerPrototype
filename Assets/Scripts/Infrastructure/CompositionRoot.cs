@@ -13,6 +13,7 @@ using Controller.NTile;
 using Controller.NUnit;
 using Controller.Save;
 using Controller.Test;
+using Controller.TestCases;
 using Controller.UnitDrag;
 using Controller.Update;
 using Infrastructure.OkwyLoggingUnity;
@@ -179,9 +180,10 @@ namespace Infrastructure {
       var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandDebugWindowUI);
       var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandDebugWindowUI);
 
+      var testFramework = new TestFramework(playerContext, playerPresenterContext);
       var battleSimulationDebugController = new BattleSimulationDebugController(battleSimulation, BattleSimulationUI, 
         aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController, battleSimulationPresenter,
-        commandDebugUI);
+        commandDebugUI, testFramework);
       
       var battleSaveController = new BattleSaveController(playerContext, 
         playerPresenterContext, BattleSaveUI, saveDataLoader, saves,
@@ -191,7 +193,7 @@ namespace Infrastructure {
         playerPresenterContext, BattleSetupUI);
 
       var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
-        DebugController.Info, unitSelectionController);
+        DebugController.Info, unitSelectionController, aiHeap);
       
       var takenCoordDebugController = new TakenCoordDebugController(board, DebugController,
         tileSpawner);

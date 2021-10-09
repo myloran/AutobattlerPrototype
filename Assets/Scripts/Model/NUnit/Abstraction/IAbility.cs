@@ -4,10 +4,10 @@ using Shared.Addons.Examples.FixMath;
 using Shared.Primitives;
 
 namespace Model.NUnit.Abstraction {
-  public interface IAbility : ISilence {
+  public interface IAbility {
     [JsonIgnore] IUnit AbilityTarget { get; }
     public Coord AbilityTargetCoord { get; } //to test determinism
-    F32 Mana { get; }
+    F32 Mana { get; set; }
     F32 CastHitTime { get; }
     F32 TimeToFinishCast { get; }
     bool HasManaAccumulated { get; }

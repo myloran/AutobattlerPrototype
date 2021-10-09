@@ -34,7 +34,7 @@ namespace Model.NBattleSimulation {
     public void InstantiateToBench(string name, Coord coord, EPlayer player) => 
       Get(player).InstantiateToBench(name, coord, player);
 
-    public void InstantiateToBoard(string name, Coord coord, EPlayer player) => 
+    public IUnit InstantiateToBoard(string name, Coord coord, EPlayer player) => 
       Get(player).InstantiateToBoard(name, coord, player);
     
     public void DestroyAll() {

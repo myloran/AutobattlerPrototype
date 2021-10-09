@@ -25,7 +25,7 @@ namespace View.Presenters {
       BenchUnits.Remove(coord);
     } 
     
-    public void InstantiateToBoard(string name, Coord coord, EPlayer player) => 
+    public UnitView InstantiateToBoard(string name, Coord coord, EPlayer player) => 
       BoardUnits[coord] = factory.Create(name, coord, player);
     
     

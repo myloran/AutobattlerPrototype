@@ -2,6 +2,7 @@
   "Name": "TroglodyteAbility",
   "NestedAbilities": [
     "DamageOverTime",
+	"Silence",
   ],
   "Target": "Unit",
   "UnitTargetingRule": "Closest",

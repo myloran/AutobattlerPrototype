@@ -18,7 +18,7 @@ namespace View.Presenters {
     public void InstantiateToBench(string name, Coord coord, EPlayer player) => 
       Get(player).InstantiateToBench(name, coord, player);
 
-    public void InstantiateToBoard(string name, Coord coord, EPlayer player) => 
+    public UnitView InstantiateToBoard(string name, Coord coord, EPlayer player) => 
       Get(player).InstantiateToBoard(name, coord, player);
 
     public void DestroyFromBench(EPlayer player, Coord coord) =>

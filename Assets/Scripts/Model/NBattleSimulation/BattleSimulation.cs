@@ -2,7 +2,6 @@ using System;
 using Model.Determinism;
 using Model.NAI.Commands;
 using Shared.Addons.Examples.FixMath;
-using Shared.Addons.OkwyLogging;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
@@ -19,22 +18,18 @@ namespace Model.NBattleSimulation {
 
     public void PrepareBattle(PlayerContext playerContext) {
       board.Reset(playerContext);
-      
-      foreach (var unit in board.Values) {
-        unit.Reset();
-      }
-      
+      foreach (var unit in board.Values) unit.Reset();
       heap.Reset();
       context.Reset();
-      
+      hashCalculator.Reset();
+    }
+
+    public void StartBattle() {
       IsBattleOver = context.IsBattleOver;
       if (IsBattleOver) return;
-            
-      foreach (var unit in board.Values) {
-        context.InsertCommand(Zero, new MakeDecisionCommand(unit, context, Zero));
-      }
 
-      hashCalculator.Reset();
+      foreach (var unit in board.Values)
+        context.InsertCommand(Zero, new MakeDecisionCommand(unit, context, Zero));
     }
 
     public void ExecuteNextCommand() {

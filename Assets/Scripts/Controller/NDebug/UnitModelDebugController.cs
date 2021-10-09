@@ -8,12 +8,13 @@ using Model.NUnit.Abstraction;
 namespace Controller.NDebug {
   public class UnitModelDebugController : ITick {
     public UnitModelDebugController(PlayerContext playerContext, Board board,
-        ModelUI ui, DebugInfo debugInfo, UnitSelectionController unitSelectionController) {
+        ModelUI ui, DebugInfo debugInfo, UnitSelectionController unitSelectionController, AiHeap heap) {
       this.playerContext = playerContext;
       this.board = board;
       this.ui = ui;
       this.debugInfo = debugInfo;
       this.unitSelectionController = unitSelectionController;
+      this.heap = heap;
     }
 
     public void SubToUnitSelection(CompositeDisposable disposable) {
@@ -24,7 +25,7 @@ namespace Controller.NDebug {
     public void Tick() {
       if (!debugInfo.IsDebugOn || !isOn || unit == null) return;
       
-      ui.UpdateText(unit.ToString());
+      ui.UpdateText(unit + $"\nCurrentTime:{heap.CurrentTime}");
     }
 
     void Hide() => SetActive(false);
@@ -42,6 +43,7 @@ namespace Controller.NDebug {
     readonly ModelUI ui;
     readonly DebugInfo debugInfo;
     readonly UnitSelectionController unitSelectionController;
+    readonly AiHeap heap;
     IUnit unit;
     bool isOn;
   }
