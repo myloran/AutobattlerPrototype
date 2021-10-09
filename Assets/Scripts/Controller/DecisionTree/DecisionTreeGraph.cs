@@ -17,6 +17,8 @@ namespace Controller.DecisionTree {
 		public Action OnInit = () => {};
 
 		public void Init() {
+			//TODO: go through all old decision and action type ids and compare them with new ones and if they differ, don't load them and instead prompt user to save them 
+			
 			Lookup<BaseDecision>(out DecisionTypeNames, out DecisionTypeIds);
 			Lookup<BaseAction>(out ActionTypeNames, out ActionTypeIds);
 
@@ -34,7 +36,6 @@ namespace Controller.DecisionTree {
 			ids = decisionEnums.Cast<int>().ToArray();
 		}
 
-		//TODO: extract
 		IEnumerable<EDecisionTreeType> LookupDecisionTreeEnums(Type type) =>
 			AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(s => s.GetTypes())
@@ -42,6 +43,7 @@ namespace Controller.DecisionTree {
 				.Where(t => t != type)
 				.Select(Activator.CreateInstance)
 				.Cast<IDecisionTreeNode>()
-				.Select(n => n.Type);
+				.Select(n => n.Type)
+				.OrderBy(n => n);
 	}
 }
