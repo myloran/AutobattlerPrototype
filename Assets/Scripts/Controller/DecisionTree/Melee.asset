@@ -63,7 +63,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 6
+  typeId: 9
 --- !u!114 &-8758006679594716261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
-  typeId: 6
+  typeId: 2
 --- !u!114 &-4559473351971188747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 1
+  typeId: 8
 --- !u!114 &-1670534342119498710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,7 +339,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
-  typeId: 7
+  typeId: 3
 --- !u!114 &-1590002221757261746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,7 +371,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 5
+  typeId: 4
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,33 +404,34 @@ MonoBehaviour:
   - {fileID: -4559473351971188747}
   - {fileID: 9191871452403730401}
   DecisionTypeNames:
-  - AreEnemiesArrivingToAdjacentTile
-  - CanCastAbility
   - CanMove
   - CanStartAttack
-  - CanStartCastingAbility
-  - HasManaAccumulated
   - HasTarget
   - IsAlive
   - IsPlayerDead
   - IsSurrounded
-  - IsWithingAbilityRange
   - IsWithingAttackRange
+  - AreEnemiesArrivingToAdjacentTile
   - NeedToWaitFirstEnemyArriving
+  - CanCastAbility
+  - IsWithingAbilityRange
+  - CanStartCastingAbility
+  - HasManaAccumulated
   - NeedTwoTileAttackRange
+  - IsSilenced
   ActionTypeNames:
+  - Move
   - Attack
-  - Cast
   - DoNothing
   - FindNearestTarget
-  - Move
   - StartAttack
-  - StartCastAction
   - WaitDiffBetweenDiagonalAndStraightMove
   - WaitFirstEnemyArriving
   - WaitForAlliesToMove
-  DecisionTypeIds: 12000000140000000b0000000c00000016000000190000000d0000000e0000000f000000100000001500000011000000130000001a000000
-  ActionTypeIds: 0400000017000000050000000600000003000000070000001800000008000000090000000a000000
+  - Cast
+  - StartCastAction
+  DecisionTypeIds: 0b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000190000001a0000001b000000
+  ActionTypeIds: 030000000400000005000000060000000700000008000000090000000a0000001700000018000000
 --- !u!114 &363313222150888289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +523,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
-  typeId: 3
+  typeId: 1
 --- !u!114 &2885964064266078890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,7 +583,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
-  typeId: 4
+  typeId: 11
 --- !u!114 &3836123975078638995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,7 +674,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
-  typeId: 8
+  typeId: 4
 --- !u!114 &6795503429350582341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -705,7 +706,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 0
+  typeId: 1
 --- !u!114 &6911448149560134484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -765,7 +766,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
-  typeId: 11
+  typeId: 6
 --- !u!114 &9191871452403730401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,4 +858,4 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
-  typeId: 5
+  typeId: 12

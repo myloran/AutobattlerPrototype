@@ -28,5 +28,6 @@ namespace Model.NAI.NDecisionTree {
     StartCastAction = 24,
     HasManaAccumulated = 25,
     NeedTwoTileAttackRange = 26,
+    IsSilenced = 27, 
   }
 }

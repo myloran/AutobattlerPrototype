@@ -38,9 +38,6 @@ namespace Controller.DecisionTree.Data {
           serializer.Serialize(writer, component, typeof(DecisionTreeComponent));
         }
 
-
-        // var serialized = JsonConvert.SerializeObject(component, Formatting.Indented, settings);
-        // WriteAllText(path, serialized);
         return true;
       }
       catch (Exception e) {

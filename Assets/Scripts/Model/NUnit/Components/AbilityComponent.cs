@@ -26,7 +26,6 @@ namespace Model.NAbility {
       Silence = silence;
     }
     //TODO: THE PLAN, don't forget about it
-    //refactor decision tree graph to compose multiple components into one or at least allow to accept input from multiple sources
     //create IsSilencedDecision
     //subscribe to silence event
     //react to silence event(clean up ability casting logic, notify view, make new instant decision)
