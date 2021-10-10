@@ -1,8 +1,6 @@
-using Shared.Shared.Client;
 using Shared.Shared.Client.Abstraction;
+using SharedClient.Abstraction;
 using UnityEngine;
-using View.Exts;
-using View.Presenters;
 
 namespace View {
   public class MoveRoutine : ISimulationTick {

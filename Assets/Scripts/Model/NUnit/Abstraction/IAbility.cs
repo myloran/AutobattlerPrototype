@@ -1,3 +1,4 @@
+using Model.NAbility;
 using Model.NBattleSimulation;
 using Newtonsoft.Json;
 using Shared.Addons.Examples.FixMath;
@@ -5,6 +6,7 @@ using Shared.Primitives;
 
 namespace Model.NUnit.Abstraction {
   public interface IAbility {
+    Ability Ability { get; }
     [JsonIgnore] IUnit AbilityTarget { get; }
     public Coord AbilityTargetCoord { get; } //to test determinism
     F32 Mana { get; set; }

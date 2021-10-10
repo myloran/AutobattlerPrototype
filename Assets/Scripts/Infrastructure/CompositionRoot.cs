@@ -23,8 +23,10 @@ using UnityEngine;
 using Model;
 using Model.NAbility;
 using PlasticFloor.EventBus;
+using Shared.Abstraction;
 using Shared.Addons.OkwyLogging;
 using Shared.Shared.Client.Events;
+using SharedClient.Abstraction;
 using UniRx;
 using View.NTile;
 using View.NUnit;
@@ -162,15 +164,18 @@ namespace Infrastructure {
       var movementController = new MovementController(boardPresenter, coordFinder);
       var attackController = new AttackController(boardPresenter, unitTooltipController);
       var animationController = new AnimationController(boardPresenter);
-      var unitViewController = new UnitViewController(boardPresenter);
+      var silenceController = new SilenceController(boardPresenter);
 
+      var compositeSimulationTick = new CompositeSimulationTick(movementController, silenceController);
+      var compositeReset = new CompositeReset(movementController, silenceController);
+      
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
-        boardPresenter, movementController, movementController);
+        boardPresenter, compositeSimulationTick, compositeReset);
       
       var battleSimulation = new BattleSimulation(aiContext, board, aiHeap);
       
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
-        movementController, battleSimulation);
+        compositeSimulationTick, battleSimulation);
 
       #endregion
       #region Debug
@@ -193,7 +198,7 @@ namespace Infrastructure {
         playerPresenterContext, BattleSetupUI);
 
       var unitModelDebugController = new UnitModelDebugController(playerContext, board, ModelUI, 
-        DebugController.Info, unitSelectionController, aiHeap);
+        DebugController.Info, unitSelectionController, aiHeap, coordFinder);
       
       var takenCoordDebugController = new TakenCoordDebugController(board, DebugController,
         tileSpawner);
@@ -239,7 +244,7 @@ namespace Infrastructure {
       eventBus.Register<IdleEvent>(animationController);
       eventBus.Register<StartAttackEvent>(animationController);
       eventBus.Register<StartCastEvent>(animationController);
-      eventBus.Register<UpdateSilenceDurationEvent>(unitViewController);
+      eventBus.Register<UpdateSilenceDurationEvent>(silenceController);
 
       #endregion
       #region Controller

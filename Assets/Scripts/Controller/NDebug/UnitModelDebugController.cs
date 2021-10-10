@@ -4,17 +4,20 @@ using UniRx;
 using Controller.NUnit;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
+using UnityEngine;
+using View.NTile;
 
 namespace Controller.NDebug {
   public class UnitModelDebugController : ITick {
-    public UnitModelDebugController(PlayerContext playerContext, Board board,
-        ModelUI ui, DebugInfo debugInfo, UnitSelectionController unitSelectionController, AiHeap heap) {
+    public UnitModelDebugController(PlayerContext playerContext, Board board, ModelUI ui, DebugInfo debugInfo, 
+        UnitSelectionController unitSelectionController, AiHeap heap, CoordFinder coordFinder) {
       this.playerContext = playerContext;
       this.board = board;
       this.ui = ui;
       this.debugInfo = debugInfo;
       this.unitSelectionController = unitSelectionController;
       this.heap = heap;
+      this.coordFinder = coordFinder;
     }
 
     public void SubToUnitSelection(CompositeDisposable disposable) {
@@ -26,6 +29,11 @@ namespace Controller.NDebug {
       if (!debugInfo.IsDebugOn || !isOn || unit == null) return;
       
       ui.UpdateText(unit + $"\nCurrentTime:{heap.CurrentTime}");
+
+      foreach (var target in unit.Ability.TargetsSelected) {
+        var from = coordFinder.PositionAt(target.Coord);
+        Debug.DrawLine(from, from + Vector3.up, Color.blue);
+      }
     }
 
     void Hide() => SetActive(false);
@@ -44,6 +52,7 @@ namespace Controller.NDebug {
     readonly DebugInfo debugInfo;
     readonly UnitSelectionController unitSelectionController;
     readonly AiHeap heap;
+    readonly CoordFinder coordFinder;
     IUnit unit;
     bool isOn;
   }

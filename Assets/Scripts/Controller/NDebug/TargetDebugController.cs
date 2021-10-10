@@ -2,7 +2,6 @@ using Controller.Update;
 using Model.NBattleSimulation;
 using UnityEngine;
 using View.NTile;
-using View.Presenters;
 
 namespace Controller.NDebug {
   public class TargetDebugController : ITick {

@@ -18,20 +18,20 @@ namespace Model.NAbility {
     public Ability Create(IUnit unit, string abilityName) {
       var info = abilities[abilityName];
 
-      ITargetSelector targetSelector = null;
+      IMainTargetSelector targetSelector = null;
       if (info.Target == ETarget.Unit && info.UnitTargetingRule == EUnitTargetingRule.Closest) {
         targetSelector = new ClosestUnitTargetSelector(info, unit);
       }
 
-      ITargetsSelector targetsSelector = new SingleTargetsSelector();
+      IAdditionalTargetsSelector targetsSelector = null;
+      if (info.AdditionalTargets == EAdditionalTargets.None)
+        targetsSelector = new SingleTargetsSelector();
+      else if (info.AdditionalTargets == EAdditionalTargets.AlongLine)
+        targetsSelector = new AlongLineTargetsSelector(unit);
 
       var effects = new List<IEffect>();
-      if (info.Damage > 0) {
-        effects.Add(new DamageEffect(bus, ToF32(info.Damage)));
-      }
-      else if (info.SilenceDuration > 0) {
-        effects.Add(new SilenceEffect(bus, ToF32(info.SilenceDuration)));
-      }
+      if (info.Damage > 0) effects.Add(new DamageEffect(bus, ToF32(info.Damage)));
+      if (info.SilenceDuration > 0) effects.Add(new SilenceEffect(bus, ToF32(info.SilenceDuration)));
 
       ITiming timing = null;
       if (info.Timing == ETiming.Once) {

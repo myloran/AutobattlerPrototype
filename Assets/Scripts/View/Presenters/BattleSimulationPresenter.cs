@@ -1,8 +1,6 @@
-using Shared;
 using Shared.Abstraction;
 using Shared.Exts;
-using Shared.Shared.Client;
-using Shared.Shared.Client.Abstraction;
+using SharedClient.Abstraction;
 using View.Exts;
 using View.NTile;
 

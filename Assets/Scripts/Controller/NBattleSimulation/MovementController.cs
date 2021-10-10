@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using PlasticFloor.EventBus;
 using Shared.Abstraction;
 using Shared.Primitives;
-using Shared.Shared.Client.Abstraction;
 using Shared.Shared.Client.Events;
+using SharedClient.Abstraction;
 using View;
 using View.Exts;
 using View.NTile;
@@ -19,7 +19,9 @@ namespace Controller.NBattleSimulation {
     }
     
     public void HandleEvent(StartMoveEvent e) {
-      var unit = board.GetUnit(e.From);
+      var unit = board.TryGetUnit(e.From);
+      if (unit == null) return;
+      
       var from = finder.PositionAt(e.From).WithY(unit.Height);
       var to = finder.PositionAt(e.To).WithY(unit.Height);
       routines[e.From] = new MoveRoutine(unit.transform, from, to, e.StartingTime.Float, e.Duration.Float);
@@ -31,12 +33,17 @@ namespace Controller.NBattleSimulation {
       board.MoveUnit(e.From, e.To);
     }
     
-    public void HandleEvent(RotateEvent e) => 
-      board.GetUnit(e.From).transform.rotation = (e.To - e.From).ToQuaternion();
+    public void HandleEvent(RotateEvent e) {
+      var unit = board.TryGetUnit(e.From);
+      if (unit == null) return;
+      
+      unit.transform.rotation = (e.To - e.From).ToQuaternion();
+    }
 
     public void SimulationTick(float time) {
       foreach (var routine in routines.Values) 
         routine.SimulationTick(time);
+      //remove marked items
     }
     
     public void Reset() => routines.Clear();

@@ -1,4 +1,4 @@
-namespace Shared.Shared.Client.Abstraction {
+namespace SharedClient.Abstraction {
   public interface ISimulationTick {
     void SimulationTick(float time);
   }

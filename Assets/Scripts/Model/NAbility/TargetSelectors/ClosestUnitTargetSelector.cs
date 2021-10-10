@@ -4,7 +4,7 @@ using Model.NUnit.Abstraction;
 using Shared.Primitives;
 
 namespace Model.NAbility {
-  public class ClosestUnitTargetSelector : ITargetSelector {
+  public class ClosestUnitTargetSelector : IMainTargetSelector {
     public ClosestUnitTargetSelector(AbilityInfo info, IUnit unit) {
       this.info = info;
       this.unit = unit;

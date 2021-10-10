@@ -16,19 +16,23 @@ namespace Controller.NBattleSimulation {
       this.unitTooltipController = unitTooltipController;
     }
 
-    public void HandleEvent(UpdateHealthEvent e) { 
-      boardPresenter.GetUnit(e.Coord).SetHealth(e.Health.Float);
-      unitTooltipController.UpdateHealth(boardPresenter.GetUnit(e.Coord), e.Health.Float);
+    public void HandleEvent(UpdateHealthEvent e) {
+      var unit = boardPresenter.TryGetUnit(e.Coord);
+      if (unit == null) return;
+      
+      unit.SetHealth(e.Health.Float);
+      unitTooltipController.UpdateHealth(unit, e.Health.Float);
     }
     
     public void HandleEvent(UpdateManaEvent e) {
-      if (!boardPresenter.TryGetUnit(e.Coord, out var unit)) return;
+      var unit = boardPresenter.TryGetUnit(e.Coord);
+      if (unit == null) return;
       
       unit.SetMana(e.Mana.Float);
     }
 
     public void HandleEvent(DeathEvent e) {
-      boardPresenter.GetUnit(e.Coord).Hide();
+      boardPresenter.TryGetUnit(e.Coord).Hide();
       boardPresenter.RemoveUnit(e.Coord);
     }
     

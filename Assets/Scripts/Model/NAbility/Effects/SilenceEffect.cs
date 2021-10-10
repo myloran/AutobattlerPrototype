@@ -16,7 +16,7 @@ namespace Model.NAbility.Effects {
     public void Apply(AiContext context, IEnumerable<IUnit> units) {
       foreach (var unit in units) {
         unit.ApplySilence(context.CurrentTime + duration);
-        // bus.Raise(new UpdateSilenceDurationEvent(unit.SilenceEndTime, unit.Coord));
+        bus.Raise(new UpdateSilenceDurationEvent(unit.SilenceEndTime, unit.Coord));
       }
     }
 

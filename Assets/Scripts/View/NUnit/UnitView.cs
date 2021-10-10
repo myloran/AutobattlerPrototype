@@ -5,6 +5,7 @@ using Shared.Primitives;
 using UnityEngine;
 using View.Exts;
 using View.NUnit.States;
+using View.NUnit.UI;
 
 namespace View.NUnit {
   public class UnitView : MonoBehaviour {
@@ -14,10 +15,11 @@ namespace View.NUnit {
     public EPlayer Player;
     public int Level = 1; 
     
-    public UnitView Init(UnitInfo info, EPlayer player, HealthBar healthBar, ManaBar manaBar) {
+    public UnitView Init(UnitInfo info, EPlayer player, HealthBar healthBar, ManaBar manaBar, SilenceCross silenceCross) {
       this.info = new UnitInfo(info);
       this.healthBar = healthBar;
       this.manaBar = manaBar;
+      this.silenceCross = silenceCross;
       Player = player;
       Stats = new UnitStats(info);
       fsm = new UnitFsm(this);
@@ -39,6 +41,7 @@ namespace View.NUnit {
       transform.rotation = Player.ToQuaternion();
       SetHealth(info.Health);
       SetMana(0);
+      HideSilenceCross();
       this.Show();
     }
 
@@ -50,10 +53,6 @@ namespace View.NUnit {
     public void SetMana(float amount) {
       Stats.Mana = amount;
       manaBar.SetCurrentMana(amount);
-    }
-    
-    public void UpdateSilenceDuration(float duration) {
-      //TODO: do the thing  
     }
     
     public void Highlight() {
@@ -69,11 +68,15 @@ namespace View.NUnit {
       }
     }
 
+    public void ShowSilenceCross() => silenceCross.Show();
+    public void HideSilenceCross() => silenceCross.Hide();
+
     readonly List<Material> debugMaterials = new List<Material>();
     readonly List<Color> debugMaterialInitialColors = new List<Color>();
     UnitFsm fsm;
     UnitInfo info;
     HealthBar healthBar;
-    ManaBar manaBar; //TODO: rename manaUI
+    ManaBar manaBar;
+    SilenceCross silenceCross;
   }
 }

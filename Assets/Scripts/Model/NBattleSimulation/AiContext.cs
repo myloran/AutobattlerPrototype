@@ -38,6 +38,7 @@ namespace Model.NBattleSimulation {
     public IEnumerable<IUnit> GetAdjacentUnits(Coord coord) => board.GetAdjacentUnits(coord);
     public bool IsSurrounded(Coord coord) => board.IsSurrounded(coord);
     public bool IsTileEmpty(Coord coord) => !board.ContainsUnit(coord) && coord.IsInsideBoard();
+    public IUnit TryGetUnit(Coord coord) => board.TryGetUnit(coord);
     public void AddUnit(Coord coord, IUnit unit) => board.AddUnit(coord, unit);
     public void RemoveUnit(Coord coord) => board.RemoveUnit(coord);
     public IUnit FindClosestUnitTo(Coord coord, EPlayer player) => board.FindClosestUnitTo(coord, player);

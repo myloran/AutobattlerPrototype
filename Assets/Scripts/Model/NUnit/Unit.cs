@@ -83,6 +83,7 @@ namespace Model.NUnit {
     public EPlayer Player => stats.Player;
     public bool IsAllyWith(EPlayer player) => stats.IsAllyWith(player);
 
+    public Ability Ability => ability.Ability;
     [JsonIgnore] public IUnit AbilityTarget => ability.AbilityTarget;
     public Coord AbilityTargetCoord => ability.AbilityTargetCoord; //to test determinism
     public F32 Mana {

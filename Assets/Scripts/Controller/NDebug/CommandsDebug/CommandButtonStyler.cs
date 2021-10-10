@@ -25,14 +25,16 @@ namespace Controller.NDebug.CommandsDebug {
     void UnhighlightButton(Button button) => button.style.backgroundColor = defaultButtonBackgroundColor;
                   
     public void Highlight(List<Button> buttons, IUnit unit) {
-      if (!boardPresenter.TryGetUnit(unit.Coord, out var unitView)) return;
+      var unitView = boardPresenter.TryGetUnit(unit.Coord);
+      if (unitView == null) return;
       
       unitView.Highlight();
       foreach (var b in buttons) HighlightButton(b);
     }
 
     public void Unhighlight(List<Button> buttons, IUnit unit) {
-      if (!boardPresenter.TryGetUnit(unit.Coord, out var unitView)) return;
+      var unitView = boardPresenter.TryGetUnit(unit.Coord);
+      if (unitView == null) return;
       
       unitView.Unhighlight();
       foreach (var b in buttons) UnhighlightButton(b);

@@ -13,6 +13,11 @@ namespace Shared.Primitives {
     Farest,
   }
 
+  public enum EAdditionalTargets {
+    None,
+    AlongLine,
+  }
+
   public enum ETiming {
     Once,
     Period,
@@ -24,6 +29,7 @@ namespace Shared.Primitives {
     public List<string> NestedAbilities = new List<string>();
     public ETarget Target;
     public EUnitTargetingRule UnitTargetingRule;
+    public EAdditionalTargets AdditionalTargets;
     public ETiming Timing;
     public bool IsTimingOverridden;
     public float Damage;
@@ -41,6 +47,7 @@ namespace Shared.Primitives {
       Name = info.Name;
       Target = info.Target;
       UnitTargetingRule = info.UnitTargetingRule;
+      AdditionalTargets = info.AdditionalTargets;
       Damage = info.Damage;
       Range = info.Range;
       Timing = info.Timing;

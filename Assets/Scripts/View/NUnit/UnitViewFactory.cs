@@ -4,6 +4,7 @@ using Shared.Primitives;
 using UnityEngine;
 using View.Exts;
 using View.NTile;
+using View.NUnit.UI;
 
 namespace View.NUnit {
   public class UnitViewFactory {
@@ -31,11 +32,14 @@ namespace View.NUnit {
       var manaBar = obj.GetComponentInChildren<ManaBar>()
         .Init(100, mainCamera);
       
+      var silenceCross = obj.GetComponentInChildren<SilenceCross>()
+        .Init(mainCamera);
+      
       obj.Animator = obj.GetComponentInChildren<Animator>();
       obj.Animator.runtimeAnimatorController = viewInfo.AnimatorController;
       obj.Animator.applyRootMotion = false;
        
-      return obj.Init(new UnitInfo(unitInfo), player, healthBar, manaBar);
+      return obj.Init(new UnitInfo(unitInfo), player, healthBar, manaBar, silenceCross);
     }
 
     readonly CoordFinder coordFinder;

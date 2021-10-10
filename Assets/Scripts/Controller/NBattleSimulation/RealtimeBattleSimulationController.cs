@@ -2,6 +2,7 @@ using Controller.Update;
 using Model.NBattleSimulation;
 using Shared.Addons.Examples.FixMath;
 using Shared.Shared.Client.Abstraction;
+using SharedClient.Abstraction;
 using UnityEngine;
 using static Shared.Addons.Examples.FixMath.F32;
 
