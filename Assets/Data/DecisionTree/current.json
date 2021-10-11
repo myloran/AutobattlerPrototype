@@ -17,8 +17,16 @@
             "OnTrue": {
               "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
               "OnTrue": {
-                "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                "Type": "StartAttack"
+                "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                "OnTrue": {
+                  "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                  "Type": "StartAttack"
+                },
+                "OnFalse": {
+                  "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                  "Type": "StartAttack"
+                },
+                "Type": "IsRanged"
               },
               "OnFalse": {
                 "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
@@ -123,8 +131,16 @@
           "OnTrue": {
             "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
             "OnTrue": {
-              "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-              "Type": "StartAttack"
+              "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+              "OnTrue": {
+                "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                "Type": "StartAttack"
+              },
+              "OnFalse": {
+                "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                "Type": "StartAttack"
+              },
+              "Type": "IsRanged"
             },
             "OnFalse": {
               "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",

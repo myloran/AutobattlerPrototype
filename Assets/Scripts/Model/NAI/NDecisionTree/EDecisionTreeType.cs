@@ -29,5 +29,6 @@ namespace Model.NAI.NDecisionTree {
     HasManaAccumulated = 25,
     NeedTwoTileAttackRange = 26,
     IsSilenced = 27, 
+    IsRanged = 28,
   }
 }

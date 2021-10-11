@@ -36,6 +36,7 @@ namespace Model.NUnit {
     public F32 AttackAnimationHitTime => attack.AttackAnimationHitTime;
     public F32 TimeToFinishAttackAnimation => attack.TimeToFinishAttackAnimation;
     public F32 AttackSpeedTime => attack.AttackSpeedTime;
+    public bool IsRanged => attack.IsRanged;
     public bool CanStartAttack(F32 currentTime) => attack.CanStartAttack(currentTime);
     public bool IsWithinAttackRange(IMovement target) => attack.IsWithinAttackRange(target);
     public void StartAttack(F32 currentTime) => attack.StartAttack(currentTime);

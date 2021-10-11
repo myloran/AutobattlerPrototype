@@ -22,6 +22,8 @@ namespace Model.NUnit.Components {
 
     public void Reset() => EndAttack();
 
+    public bool IsRanged => sqrRange > 1;
+
     public bool CanStartAttack(F32 currentTime) => 
       lastStartAttackTime + AttackAnimationHitTime < currentTime;
 
