@@ -11,6 +11,7 @@ namespace Controller.DecisionTree.Editor {
 	  public override void OnCreate() {
 		  base.OnCreate();
       converter = new ConverterToNestedDecisionTree(target as DecisionNode);
+      nodeOperations = new NodeOperations(target);
 	  }
 
 	  public override void OnBodyGUI() {
@@ -53,8 +54,20 @@ namespace Controller.DecisionTree.Editor {
 	    base.AddContextMenuItems(menu);
 	    menu.AddItem(new GUIContent("Convert To New Nested Decision Tree"), false, converter.ConvertToNewNestedDecisionTree);
 	    menu.AddItem(new GUIContent("Convert To Existing Nested Decision Tree"), false, converter.ConvertToExistingDecisionTree);
+      menu.AddItem(new GUIContent("Save"), false, Save);
     }
 
+    void Save() {
+      var saveNode = nodeOperations.TrySearchInInputsRecursively<DecisionTreeSaverNode>(target);
+      if (saveNode != null) 
+        saveNode.Save();
+      else 
+        IfNotFound();
+    }
+
+    void IfNotFound() => EditorUtility.DisplayDialog("Save", "DecisionTreeSaverNode is not found", "Ok");
+
     ConverterToNestedDecisionTree converter;
+    NodeOperations nodeOperations;
   }
 }
