@@ -10,17 +10,23 @@ namespace Model.NUnit.Components {
     public F32 Damage { get; }
     public F32 AttackAnimationHitTime { get; }
     
-    public AttackComponent(IMovement movement, F32 damage, F32 speed, F32 sqrRange, 
-        F32 attackAnimationHitTime, F32 attackAnimationTotalTime) {
+    public AttackComponent(IMovement movement, F32 damage, F32 speed, F32 sqrRange,
+      F32 attackAnimationHitTime, F32 attackAnimationTotalTime, F32 projectileTravelTimePerTile) {
       this.movement = movement;
       this.sqrRange = sqrRange;
       this.attackAnimationTotalTime = attackAnimationTotalTime;
+      this.projectileTravelTimePerTile = projectileTravelTimePerTile;
       Damage = damage;
       attackSpeed = speed;
       AttackAnimationHitTime = attackAnimationHitTime;
     }
 
     public void Reset() => EndAttack();
+    
+    public F32 ProjectileTravelTimeTo(IMovement target) {
+      var diff = movement.Coord.Diff(target.Coord);
+      return (diff.X + diff.Y) * projectileTravelTimePerTile;
+    }
 
     public bool IsRanged => sqrRange > 1;
 
@@ -43,6 +49,7 @@ namespace Model.NUnit.Components {
     
     readonly IMovement movement;
     readonly F32 attackAnimationTotalTime;
+    readonly F32 projectileTravelTimePerTile;
     F32 attackSpeed;
     F32 lastStartAttackTime;
     F32 sqrRange;

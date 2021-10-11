@@ -9,6 +9,7 @@ namespace Model.NUnit.Abstraction {
     bool IsRanged { get; }
     bool CanStartAttack(F32 currentTime);
     bool IsWithinAttackRange(IMovement target);
+    F32 ProjectileTravelTimeTo(IMovement target);
     void StartAttack(F32 currentTime);
     void EndAttack();
   }

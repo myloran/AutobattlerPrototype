@@ -4,12 +4,13 @@ using Model.NBattleSimulation;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAI.Actions {
-  public class AttackAction : BaseAction {
-    public override EDecisionTreeType Type { get; } = EDecisionTreeType.MeleeAttack;
-    public override IDecisionTreeNode Clone() => BaseClone(this, new AttackAction());
+  public class RangedAttackAction : BaseAction {
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.RangedAttack;
+    public override IDecisionTreeNode Clone() => BaseClone(this, new RangedAttackAction());
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
-      context.InsertCommand(Zero, new ApplyDamageCommand(Unit, context, Bus)); //inserting to heap because units can attack at the same time
+      var projectileTravelTime = Unit.ProjectileTravelTimeTo(Unit.Target);
+      context.InsertCommand(projectileTravelTime, new ApplyDamageCommand(Unit, context, Bus)); //inserting to heap because units can attack at the same time
       context.InsertCommand(Unit.TimeToFinishAttackAnimation, new FinishAttackCommand(Unit, Bus));
       
       var time = Max(Unit.AttackSpeedTime, Unit.TimeToFinishAttackAnimation);

@@ -9,6 +9,7 @@ namespace Shared.Primitives {
     public float Damage;
     public float AttackSpeed;
     public float AttackRange;
+    public float ProjectileTravelTimePerTile;
     public float MoveSpeed;
     public float AttackAnimationHitTime;
     public float AttackAnimationTotalTime;
@@ -24,6 +25,7 @@ namespace Shared.Primitives {
       Damage = info.Damage;
       AttackSpeed = info.AttackSpeed;
       AttackRange = info.AttackRange;
+      ProjectileTravelTimePerTile = info.ProjectileTravelTimePerTile;
       MoveSpeed = info.MoveSpeed;
       AttackAnimationHitTime = info.AttackAnimationHitTime;
       AttackAnimationTotalTime = info.AttackAnimationTotalTime;

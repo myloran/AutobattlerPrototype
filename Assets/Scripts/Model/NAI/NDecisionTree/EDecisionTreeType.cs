@@ -5,7 +5,7 @@ namespace Model.NAI.NDecisionTree {
     BaseAction = 1,
     LoggingDecorator = 2,
     Move = 3,
-    Attack = 4,
+    MeleeAttack = 4,
     DoNothing = 5,
     FindNearestTarget = 6,
     StartAttack = 7,
@@ -30,5 +30,6 @@ namespace Model.NAI.NDecisionTree {
     NeedTwoTileAttackRange = 26,
     IsSilenced = 27, 
     IsRanged = 28,
+    RangedAttack = 29,
   }
 }

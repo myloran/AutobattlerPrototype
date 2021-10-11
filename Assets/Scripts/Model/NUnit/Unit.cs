@@ -39,6 +39,7 @@ namespace Model.NUnit {
     public bool IsRanged => attack.IsRanged;
     public bool CanStartAttack(F32 currentTime) => attack.CanStartAttack(currentTime);
     public bool IsWithinAttackRange(IMovement target) => attack.IsWithinAttackRange(target);
+    public F32 ProjectileTravelTimeTo(IMovement target) => attack.ProjectileTravelTimeTo(target);
     public void StartAttack(F32 currentTime) => attack.StartAttack(currentTime);
     public void EndAttack() => attack.EndAttack();
 

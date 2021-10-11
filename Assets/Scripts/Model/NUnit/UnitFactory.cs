@@ -22,7 +22,7 @@ namespace Model.NUnit {
       
       var attack = new AttackComponent(movement, ToF32(info.Damage), ToF32(info.AttackSpeed), 
         ToF32(info.AttackRange * info.AttackRange), ToF32(info.AttackAnimationHitTime),
-        ToF32(info.AttackAnimationTotalTime));
+        ToF32(info.AttackAnimationTotalTime), ToF32(info.ProjectileTravelTimePerTile));
       
       var abilityInfo = abilities[info.AbilityName];
       var sqrRange = ToF32(abilityInfo.Range * abilityInfo.Range);

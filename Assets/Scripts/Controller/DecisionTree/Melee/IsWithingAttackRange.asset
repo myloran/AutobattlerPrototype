@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: Action
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1340, y: 103.5}
+  position: {x: 1352, y: -88}
   ports:
     keys:
     - Input
@@ -55,7 +55,7 @@ MonoBehaviour:
       _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: Output2
+      - fieldName: Output1
         node: {fileID: 5513173051144814497}
         reroutePoints: []
       _direction: 0
@@ -63,7 +63,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 1
+  typeId: 4
 --- !u!114 &-261228793445980058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   - IsRanged
   ActionTypeNames:
   - Move
-  - Attack
+  - MeleeAttack
   - DoNothing
   - FindNearestTarget
   - StartAttack
@@ -145,8 +145,9 @@ MonoBehaviour:
   - WaitForAlliesToMove
   - Cast
   - StartCastAction
+  - RangedAttack
   DecisionTypeIds: 0b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000190000001a0000001b0000001c000000
-  ActionTypeIds: 030000000400000005000000060000000700000008000000090000000a0000001700000018000000
+  ActionTypeIds: 030000000400000005000000060000000700000008000000090000000a00000017000000180000001d000000
 --- !u!114 &4588290238464069688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +161,7 @@ MonoBehaviour:
   m_Name: Decision
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1352, y: -88}
+  position: {x: 1352, y: 104}
   ports:
     keys:
     - Input
@@ -172,7 +173,7 @@ MonoBehaviour:
       _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: Output1
+      - fieldName: Output2
         node: {fileID: 5513173051144814497}
         reroutePoints: []
       _direction: 0
@@ -245,7 +246,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: 4588290238464069688}
+        node: {fileID: -649554100112693890}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -257,7 +258,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: -649554100112693890}
+        node: {fileID: 4588290238464069688}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -340,7 +341,7 @@ MonoBehaviour:
   m_Name: Action
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1608, y: -8}
+  position: {x: 1608, y: 184}
   ports:
     keys:
     - Input
@@ -358,7 +359,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 4
+  typeId: 1
 --- !u!114 &8475046099723068276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,7 +373,7 @@ MonoBehaviour:
   m_Name: Action
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1608, y: -168}
+  position: {x: 1608, y: 40}
   ports:
     keys:
     - Input
@@ -390,4 +391,4 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 4
+  typeId: 10
