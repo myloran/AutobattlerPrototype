@@ -6,7 +6,6 @@ namespace Model.NAI.Decisions {
     public override EDecisionTreeType Type { get; } = EDecisionTreeType.CanStartAttack;
     public override IDecisionTreeNode Clone() => BaseClone(this, new CanStartAttack());
     
-    protected override bool GetBranch(AiContext context) => 
-      Unit.CanStartAttack(context.CurrentTime);
+    protected override bool GetBranch(AiContext context) => Unit.CanStartAttack(context.CurrentTime);
   }
 }
