@@ -10,7 +10,8 @@ namespace Shared.Primitives {
   public enum EUnitTargetingRule {
     Random,
     Closest,
-    Farest,
+    Farthest,
+    MaxAbilityRange
   }
 
   public enum EAdditionalTargets {

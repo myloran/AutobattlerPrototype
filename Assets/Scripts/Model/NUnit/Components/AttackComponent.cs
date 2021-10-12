@@ -1,7 +1,6 @@
 using System;
 using Model.NUnit.Abstraction;
 using Shared.Addons.Examples.FixMath;
-using static Shared.Addons.Examples.FixMath.F32;
 using static Shared.Const;
 using static Shared.Primitives.CoordExt;
 

@@ -5,21 +5,12 @@ using Shared.Primitives;
 
 namespace Model.NAbility {
   public class ClosestUnitTargetSelector : IMainTargetSelector {
-    public ClosestUnitTargetSelector(AbilityInfo info, IUnit unit) {
-      this.info = info;
+    public ClosestUnitTargetSelector(IUnit unit) {
       this.unit = unit;
     }
 
-    public IUnit Select(AiContext context) {
-      if (info.UnitTargetingRule == EUnitTargetingRule.Closest) {
-        return context.FindClosestUnitTo(unit.Coord, unit.Player.Opposite());
-      }
+    public IUnit Select(AiContext context) => context.FindClosestUnitTo(unit.Coord, unit.Player.Opposite());
 
-      //TODO: handle null target properly, maybe check if i ability target exist first
-      return null;
-    }
-
-    readonly AbilityInfo info;
     readonly IUnit unit;
   }
 }

@@ -19,9 +19,13 @@ namespace Model.NAbility {
       var info = abilities[abilityName];
 
       IMainTargetSelector targetSelector = null;
-      if (info.Target == ETarget.Unit && info.UnitTargetingRule == EUnitTargetingRule.Closest) {
-        targetSelector = new ClosestUnitTargetSelector(info, unit);
-      }
+      if (info.Target == ETarget.Unit) {
+        if(info.UnitTargetingRule == EUnitTargetingRule.Closest) {
+          targetSelector = new ClosestUnitTargetSelector(unit);
+        } else if(info.UnitTargetingRule == EUnitTargetingRule.MaxAbilityRange) {
+          targetSelector = new MaxAbilityRangeTargetSelector(info, unit);
+        }
+      } 
 
       IAdditionalTargetsSelector targetsSelector = null;
       if (info.AdditionalTargets == EAdditionalTargets.None)

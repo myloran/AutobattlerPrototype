@@ -1,7 +1,7 @@
 {
   "Name": "GhostAbility",
   "Target": "Unit",
-  "UnitTargetingRule": "Closest",
+  "UnitTargetingRule": "MaxAbilityRange",
   "AdditionalTargets": "AlongLine",
   "Damage": 100,  
   "Range": 3,

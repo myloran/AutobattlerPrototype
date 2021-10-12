@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Model.NUnit.Abstraction;
+using Shared.Addons.Examples.FixMath;
 using Shared.Exts;
 using Shared.Primitives;
 using static Shared.Const;
@@ -87,6 +88,14 @@ namespace Model.NBattleSimulation {
     
     public IUnit FindClosestUnitTo(Coord coord, EPlayer player) => 
       GetPlayerUnits(player).Where(u => u.IsAlive).MinBy(u => CoordExt.SqrDistance(coord, u.Coord));
+    
+    public IUnit FindUnitOnMaxAbilityRange(Coord coord, F32 maxRange, EPlayer player) {
+      var units = GetPlayerUnits(player).Where(u => u.IsAlive)
+        .Where(u => CoordExt.SqrDistance(coord, u.Coord) <= maxRange);
+      return units.Any() 
+        ? units.MaxBy(u => CoordExt.SqrDistance(coord, u.Coord))
+        : null;
+    }
 
     IUnit[] units = new IUnit[MaxTilesOnBoard];
     // Dictionary<Coord, IUnit> units = new Dictionary<Coord, IUnit>(MaxUnitsOnBoard * 2); //when unit moves it occupies tile thus * 2

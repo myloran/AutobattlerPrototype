@@ -94,6 +94,7 @@ namespace Model.NUnit {
     }
     public F32 CastHitTime => ability.CastHitTime;
     public F32 TimeToFinishCast => ability.TimeToFinishCast;
+    public F32 AbilitySqrRange => ability.AbilitySqrRange;
     public bool HasManaAccumulated => ability.HasManaAccumulated;
     public void AccumulateMana() => ability.AccumulateMana();
     public bool IsWithinAbilityRange(AiContext context) => ability.IsWithinAbilityRange(context);

@@ -42,6 +42,7 @@ namespace Model.NBattleSimulation {
     public void AddUnit(Coord coord, IUnit unit) => board.AddUnit(coord, unit);
     public void RemoveUnit(Coord coord) => board.RemoveUnit(coord);
     public IUnit FindClosestUnitTo(Coord coord, EPlayer player) => board.FindClosestUnitTo(coord, player);
+    public IUnit FindUnitOnMaxAbilityRange(Coord coord, F32 maxRange, EPlayer player) => board.FindUnitOnMaxAbilityRange(coord, maxRange, player);
 
     #endregion
 

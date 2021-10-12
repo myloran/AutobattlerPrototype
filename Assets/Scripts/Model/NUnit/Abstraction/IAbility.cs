@@ -12,6 +12,7 @@ namespace Model.NUnit.Abstraction {
     F32 Mana { get; set; }
     F32 CastHitTime { get; }
     F32 TimeToFinishCast { get; }
+    F32 AbilitySqrRange { get; }
     bool HasManaAccumulated { get; }
     void AccumulateMana();
     bool IsWithinAbilityRange(AiContext context);
