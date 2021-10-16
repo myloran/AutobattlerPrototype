@@ -1,27 +1,35 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Model.NAbility.Abstraction;
+using Model.NAbility.TilesSelector;
 using Model.NAI.Commands;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Newtonsoft.Json;
 using Shared.Addons.Examples.FixMath;
+using Shared.Primitives;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAbility {
   public class Ability {
     [JsonIgnore] public readonly IUnit Unit;
-    [JsonIgnore] public List<IUnit> TargetsSelected = new List<IUnit>();
+    [JsonIgnore] public IEnumerable<IUnit> TargetsSelected = new List<IUnit>();
+    [JsonIgnore] public IEnumerable<Coord> TilesSelected = new List<Coord>();
 
-    public Ability(IUnit unit, IMainTargetSelector targetSelector, IAdditionalTargetsSelector targetsSelector, List<IEffect> effects, 
-      ITiming timing, bool isTimingOverridden = false, IEnumerable<Ability> nestedAbilities = null) {
+    public Ability(IUnit unit, EPlayer player, IMainTargetSelector targetSelector,
+      IAdditionalTargetsSelector targetsSelector,
+      AlongLineTilesSelector tilesSelector, List<IEffect> effects,
+      ITiming timing, bool isTimingOverridden = false, bool needRecalculateTarget = false,
+      IEnumerable<Ability> nestedAbilities = null) {
       Unit = unit;
+      this.player = player;
       this.targetSelector = targetSelector;
       this.targetsSelector = targetsSelector;
+      this.tilesSelector = tilesSelector;
       this.effects = effects;
       this.timing = timing;
       this.isTimingOverridden = isTimingOverridden;
+      this.needRecalculateTarget = needRecalculateTarget;
       this.nestedAbilities = nestedAbilities ?? new List<Ability>();
     }
 
@@ -31,11 +39,20 @@ namespace Model.NAbility {
 
     public void Execute(AiContext context) {
       var target = targetSelector.Select(context);
-      TargetsSelected = targetsSelector.Select(target, context).ToList();
+      
+      if (!needRecalculateTarget && !isRecalculated && tilesSelector != null) {
+        isRecalculated = true;
+        TilesSelected = tilesSelector.Select(target.Coord, context);
+      }
+      
+      TargetsSelected = tilesSelector != null 
+        ? context.GetUnits(TilesSelected, player) 
+        : targetsSelector.Select(target, context); //TODO: if target is null, either don't do anything, or do it on last known target location
+
       HandleTiming(context, TargetsSelected, ApplyEffects);
     }
 
-    void HandleTiming(AiContext context, List<IUnit> targets, Action<AiContext, List<IUnit>> applyEffects) {
+    void HandleTiming(AiContext context, IEnumerable<IUnit> targets, Action<AiContext, IEnumerable<IUnit>> applyEffects) {
       if (!timing.HasNext()) return;
 
       if (timing.IsTimeReset || timing.GetNext() == Zero) {
@@ -50,36 +67,40 @@ namespace Model.NAbility {
       Cast(timing.GetNext(), context);
     }
 
-    void ApplyEffects(AiContext context, List<IUnit> targets) {
+    void ApplyEffects(AiContext context, IEnumerable<IUnit> targets) {
       foreach (var effect in effects)
         effect.Apply(context, targets);
 
       foreach (var ability in nestedAbilities) {
         ability.targetSelector = targetSelector;
         ability.targetsSelector = targetsSelector;
+        ability.tilesSelector = tilesSelector;
         
         //if target selector is overriden, we need to reevaluate targets
         //nestedAbility.Execute(context); //wasted performance, share result if target selector is the same
-        if (ability.isTimingOverridden) {
+        if (ability.isTimingOverridden)
           ability.HandleTiming(context, targets, ability.ApplyEffects);
-        }
-        else {
+        else
           foreach (var effect in ability.effects)
             effect.Apply(context, targets);
-        }
       }
     }
 
     public void Reset() {
       timing.Reset();
       foreach (var ability in nestedAbilities) ability.Reset();
+      isRecalculated = false;
     }
     
     readonly IEnumerable<Ability> nestedAbilities;
     readonly List<IEffect> effects;
     readonly ITiming timing;
     readonly bool isTimingOverridden;
+    readonly bool needRecalculateTarget;
+    readonly EPlayer player;
     IMainTargetSelector targetSelector;
     IAdditionalTargetsSelector targetsSelector;
+    AlongLineTilesSelector tilesSelector;
+    bool isRecalculated;
   }
 }

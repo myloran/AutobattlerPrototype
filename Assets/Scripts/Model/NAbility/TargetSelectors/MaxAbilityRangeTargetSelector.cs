@@ -11,7 +11,7 @@ namespace Model.NAbility {
     }
 
     public IUnit Select(AiContext context) => 
-      context.FindUnitOnMaxAbilityRange(unit.Coord, unit.AbilitySqrRange, unit.Player.Opposite());
+      context.TryFindUnitOnMaxAbilityRange(unit.Coord, unit.AbilitySqrRange, unit.Player.Opposite());
 
     readonly AbilityInfo info;
     readonly IUnit unit;

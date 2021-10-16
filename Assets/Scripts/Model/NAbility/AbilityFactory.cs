@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Model.NAbility.Abstraction;
 using Model.NAbility.Effects;
+using Model.NAbility.TilesSelector;
 using Model.NAbility.Timings;
 using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
@@ -19,35 +20,39 @@ namespace Model.NAbility {
       var info = abilities[abilityName];
 
       IMainTargetSelector targetSelector = null;
-      if (info.Target == ETarget.Unit) {
-        if(info.UnitTargetingRule == EUnitTargetingRule.Closest) {
-          targetSelector = new ClosestUnitTargetSelector(unit);
-        } else if(info.UnitTargetingRule == EUnitTargetingRule.MaxAbilityRange) {
-          targetSelector = new MaxAbilityRangeTargetSelector(info, unit);
-        }
-      } 
-
       IAdditionalTargetsSelector targetsSelector = null;
-      if (info.AdditionalTargets == EAdditionalTargets.None)
-        targetsSelector = new SingleTargetsSelector();
-      else if (info.AdditionalTargets == EAdditionalTargets.AlongLine)
-        targetsSelector = new AlongLineTargetsSelector(unit);
+      AlongLineTilesSelector tilesSelector = null;
+      
+      if (info.UnitTargetingRule == EUnitTargetingRule.Closest)
+        targetSelector = new ClosestUnitTargetSelector(unit);
+      else if (info.UnitTargetingRule == EUnitTargetingRule.MaxAbilityRange)
+        targetSelector = new MaxAbilityRangeTargetSelector(info, unit);
+
+      if (info.Target == ETarget.Unit) {
+        if (info.AdditionalTargets == EAdditionalTargets.None)
+          targetsSelector = new SingleTargetsSelector();
+        else if (info.AdditionalTargets == EAdditionalTargets.AlongLine)
+          targetsSelector = new AlongLineTargetsSelector(unit);
+      }
+      else if (info.Target == ETarget.Tile)
+        tilesSelector = new AlongLineTilesSelector(unit);
 
       var effects = new List<IEffect>();
       if (info.Damage > 0) effects.Add(new DamageEffect(bus, ToF32(info.Damage)));
       if (info.SilenceDuration > 0) effects.Add(new SilenceEffect(bus, ToF32(info.SilenceDuration)));
 
       ITiming timing = null;
-      if (info.Timing == ETiming.Once) {
+      if (info.Timing == ETiming.Once)
         timing = new OnceTiming();
-      } 
-      else if (info.Timing == ETiming.Period) {
+      else if (info.Timing == ETiming.Period) 
         timing = new PeriodTiming(ToF32(info.TimingPeriod), info.TimingCount);
-      }
-      
+
       var nestedAbilities = info.NestedAbilities.Select(a => Create(unit, a));
 
-      return new Ability(unit, targetSelector, targetsSelector, effects, timing, info.IsTimingOverridden, nestedAbilities);
+      var targetPlayer = info.TargetPlayer.GetPlayer(unit.Player);
+      
+      return new Ability(unit, targetPlayer, targetSelector, targetsSelector, tilesSelector, effects, timing, info.IsTimingOverridden, 
+        info.NeedRecalculateTarget, nestedAbilities);
     }
 
     readonly Dictionary<string, AbilityInfo> abilities;

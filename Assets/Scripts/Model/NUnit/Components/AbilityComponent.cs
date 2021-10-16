@@ -54,7 +54,7 @@ namespace Model.NAbility {
       Ability.Cast(context);
     }
 
-    public override string ToString() => $"{nameof(Mana)}: {Mana}, {nameof(lastStartCastTime)}: {lastStartCastTime}";
+    public override string ToString() => $"{nameof(Mana)}: {Mana}, {nameof(lastStartCastTime)}: {lastStartCastTime}, {nameof(AbilityTarget)}: {AbilityTarget?.Coord}";
     
     readonly IMovement movement;
 

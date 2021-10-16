@@ -8,8 +8,8 @@ namespace Shared.Primitives {
   }
 
   public enum EUnitTargetingRule {
-    Random,
     Closest,
+    Random,
     Farthest,
     MaxAbilityRange
   }
@@ -23,16 +23,23 @@ namespace Shared.Primitives {
     Once,
     Period,
   }
+
+  public enum ETargetPlayer {
+    Enemy,
+    Friend,
+  }
   
   [Serializable]
   public class AbilityInfo {
     public string Name;
     public List<string> NestedAbilities = new List<string>();
+    public ETargetPlayer TargetPlayer;
     public ETarget Target;
     public EUnitTargetingRule UnitTargetingRule;
     public EAdditionalTargets AdditionalTargets;
     public ETiming Timing;
     public bool IsTimingOverridden;
+    public bool NeedRecalculateTarget;
     public float Damage;
     public float Range;
     public float AnimationHitTime;
@@ -46,6 +53,7 @@ namespace Shared.Primitives {
 
     public AbilityInfo(AbilityInfo info) {
       Name = info.Name;
+      TargetPlayer = info.TargetPlayer;
       Target = info.Target;
       UnitTargetingRule = info.UnitTargetingRule;
       AdditionalTargets = info.AdditionalTargets;
@@ -55,7 +63,23 @@ namespace Shared.Primitives {
       TimingPeriod = info.TimingPeriod;
       TimingCount = info.TimingCount;
       IsTimingOverridden = info.IsTimingOverridden;
+      NeedRecalculateTarget = info.NeedRecalculateTarget;
       TimingInitialDelay = info.TimingInitialDelay;
+    }
+  }
+
+  public static class AbilityInfoExt {
+    public static EPlayer GetPlayer(this ETargetPlayer targetPlayer, EPlayer self) {
+      switch (targetPlayer) {
+        case ETargetPlayer.Enemy:
+          return self.Opposite();
+          break;
+        case ETargetPlayer.Friend:
+          return self;
+          break;
+        default:
+          throw new ArgumentOutOfRangeException(nameof(targetPlayer), targetPlayer, null);
+      }
     }
   }
 }
