@@ -1,6 +1,7 @@
 using Model.NAI.Commands;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
+using Shared.Shared.Client.Events;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAI.Actions {
@@ -15,6 +16,8 @@ namespace Model.NAI.Actions {
       
       var time = Max(Unit.AttackSpeedTime, Unit.TimeToFinishAttackAnimation);
       context.InsertCommand(time, new MakeDecisionCommand(Unit, context, time));
+      
+      Bus.Raise(new SpawnProjectileEvent(Unit.Coord, Unit.Target.Coord, context.CurrentTime, projectileTravelTime));
       return this;
     }
   }

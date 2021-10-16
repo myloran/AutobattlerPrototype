@@ -1,29 +1,30 @@
-using Shared.Shared.Client.Abstraction;
 using SharedClient.Abstraction;
 using UnityEngine;
 
 namespace View {
   public class MoveRoutine : ISimulationTick {
-    public MoveRoutine(Transform unit, Vector3 from, Vector3 to, 
+    public readonly Transform Obj;
+    public readonly float EndTime;
+
+    public MoveRoutine(Transform obj, Vector3 from, Vector3 to, 
         float startTime, float duration) {
-      this.unit = unit;
+      this.Obj = obj;
       this.from = from;
       this.to = to;
       this.duration = duration;
       this.startTime = startTime;
-      endTime = startTime + duration;
+      EndTime = startTime + duration;
     }
     
     public void SimulationTick(float time) {
-      var timeClamped = Mathf.Clamp(time, startTime, endTime);
+      var timeClamped = Mathf.Clamp(time, startTime, EndTime);
       var durationPassed = timeClamped - startTime;
       var t = durationPassed / duration;
-      unit.transform.position = Vector3.Lerp(from, to, t);
+      Obj.transform.position = Vector3.Lerp(from, to, t);
     }
 
-    readonly Transform unit;
     readonly Vector3 from;
     readonly Vector3 to;
-    readonly float duration, startTime, endTime;
+    readonly float duration, startTime;
   }
 }

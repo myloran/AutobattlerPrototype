@@ -165,9 +165,10 @@ namespace Infrastructure {
       var attackController = new AttackController(boardPresenter, unitTooltipController);
       var animationController = new AnimationController(boardPresenter);
       var silenceController = new SilenceController(boardPresenter);
+      var projectileController = new ProjectileController(boardPresenter, coordFinder);
 
-      var compositeSimulationTick = new CompositeSimulationTick(movementController, silenceController);
-      var compositeReset = new CompositeReset(movementController, silenceController);
+      var compositeSimulationTick = new CompositeSimulationTick(movementController, silenceController, projectileController);
+      var compositeReset = new CompositeReset(movementController, silenceController, projectileController);
       
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, compositeSimulationTick, compositeReset);
@@ -245,6 +246,7 @@ namespace Infrastructure {
       eventBus.Register<StartAttackEvent>(animationController);
       eventBus.Register<StartCastEvent>(animationController);
       eventBus.Register<UpdateSilenceDurationEvent>(silenceController);
+      eventBus.Register<SpawnProjectileEvent>(projectileController);
 
       #endregion
       #region Controller

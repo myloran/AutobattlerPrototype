@@ -43,7 +43,6 @@ namespace Controller.NBattleSimulation {
     public void SimulationTick(float time) {
       foreach (var routine in routines.Values) 
         routine.SimulationTick(time);
-      //remove marked items
     }
     
     public void Reset() => routines.Clear();

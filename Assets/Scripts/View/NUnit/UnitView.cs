@@ -11,15 +11,18 @@ namespace View.NUnit {
   public class UnitView : MonoBehaviour {
     public UnitStats Stats;
     public Animator Animator { get; set; }
+    public GameObject Projectile;
     public float Height = 0.25f; //TODO: remove when replaced with pivot point
     public EPlayer Player;
     public int Level = 1; 
     
-    public UnitView Init(UnitInfo info, EPlayer player, HealthBar healthBar, ManaBar manaBar, SilenceCross silenceCross) {
+    public UnitView Init(UnitInfo info, EPlayer player, HealthBar healthBar, ManaBar manaBar, SilenceCross silenceCross,
+      GameObject projectile) {
       this.info = new UnitInfo(info);
       this.healthBar = healthBar;
       this.manaBar = manaBar;
       this.silenceCross = silenceCross;
+      Projectile = projectile;
       Player = player;
       Stats = new UnitStats(info);
       fsm = new UnitFsm(this);

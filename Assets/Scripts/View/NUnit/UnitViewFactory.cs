@@ -24,7 +24,7 @@ namespace View.NUnit {
       
       var obj = Object.Instantiate(unit, position, rotation);
       var viewInfo = unitViewInfoHolder.Infos[name];
-      Object.Instantiate(viewInfo.Model, obj.transform);
+      Object.Instantiate(viewInfo.UnitModel, obj.transform);
       
       var healthBar = obj.GetComponentInChildren<HealthBar>()
         .Init(player.ToColor(), unitInfo.Health, mainCamera);
@@ -39,7 +39,7 @@ namespace View.NUnit {
       obj.Animator.runtimeAnimatorController = viewInfo.AnimatorController;
       obj.Animator.applyRootMotion = false;
        
-      return obj.Init(new UnitInfo(unitInfo), player, healthBar, manaBar, silenceCross);
+      return obj.Init(new UnitInfo(unitInfo), player, healthBar, manaBar, silenceCross, viewInfo.ProjectileModel);
     }
 
     readonly CoordFinder coordFinder;
