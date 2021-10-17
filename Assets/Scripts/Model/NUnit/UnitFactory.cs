@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Model.NAbility;
 using Model.NUnit.Abstraction;
@@ -25,8 +26,9 @@ namespace Model.NUnit {
         ToF32(info.AttackAnimationTotalTime), ToF32(info.ProjectileTravelTimePerTile));
       
       var abilityInfo = abilities[info.AbilityName];
-      
-      var abilityComponent = new AbilityComponent(movement, ToF32(abilityInfo.Range), ToF32(info.ManaPerAttack),
+      abilityInfo.AbilityRange = Math.Max(1, abilityInfo.AbilityRange); //TODO: add clamping logic for other members
+
+      var abilityComponent = new AbilityComponent(movement, ToF32(abilityInfo.AbilityRange), ToF32(info.ManaPerAttack),
         ToF32(abilityInfo.AnimationHitTime), ToF32(abilityInfo.AnimationTotalTime));
 
       var unit = new Unit(health, attack, movement, new TargetComponent(movement), 
