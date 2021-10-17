@@ -14,11 +14,11 @@ namespace Model.NAbility {
     public Coord AbilityTargetCoord => AbilityTarget?.Coord ?? Coord.Invalid; //to test determinism
     public F32 CastHitTime { get; }
     public F32 Mana { get; set; } //TODO: extract stuff related to mana into separate component
-    public F32 AbilitySqrRange { get; } //TODO: move it to ability
+    public F32 TargetingSqrRange { get; } //TODO: move it to ability
 
-    public AbilityComponent(IMovement movement, F32 range, F32 manaPerAttack, F32 castAnimationHitTime, 
-        F32 animationTotalTime) {
-      AbilitySqrRange = range * range;
+    public AbilityComponent(IMovement movement, F32 targetingRange, F32 manaPerAttack, F32 castAnimationHitTime,
+      F32 animationTotalTime) {
+      TargetingSqrRange = targetingRange * targetingRange;
       this.manaPerAttack = manaPerAttack;
       CastHitTime = castAnimationHitTime;
       this.animationTotalTime = animationTotalTime;
@@ -41,7 +41,7 @@ namespace Model.NAbility {
 
     public bool IsWithinAbilityRange(AiContext context) {
       AbilityTarget = Ability.SelectTarget(context);
-      return AbilityTarget != null && SqrDistance(movement.Coord, AbilityTarget.Coord) <= AbilitySqrRange;
+      return AbilityTarget != null && SqrDistance(movement.Coord, AbilityTarget.Coord) <= TargetingSqrRange;
     }
     
     public F32 TimeToFinishCast => animationTotalTime - CastHitTime;
@@ -57,7 +57,6 @@ namespace Model.NAbility {
     public override string ToString() => $"{nameof(Mana)}: {Mana}, {nameof(lastStartCastTime)}: {lastStartCastTime}, {nameof(AbilityTarget)}: {AbilityTarget?.Coord}";
     
     readonly IMovement movement;
-
     readonly F32 manaPerAttack;
     readonly F32 animationTotalTime;
 

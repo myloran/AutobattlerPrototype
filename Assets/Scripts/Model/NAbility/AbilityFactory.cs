@@ -26,7 +26,7 @@ namespace Model.NAbility {
       if (info.UnitTargetingRule == EUnitTargetingRule.Closest)
         targetSelector = new ClosestUnitTargetSelector(unit);
       else if (info.UnitTargetingRule == EUnitTargetingRule.MaxAbilityRange)
-        targetSelector = new MaxAbilityRangeTargetSelector(info, unit);
+        targetSelector = new MaxAbilityRangeTargetSelector(unit);
 
       if (info.Target == ETarget.Unit) {
         if (info.AdditionalTargets == EAdditionalTargets.None)

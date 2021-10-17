@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FibonacciHeap;
 using Model.NAI.Commands;
 using Newtonsoft.Json;
@@ -48,7 +49,7 @@ namespace Model.NBattleSimulation {
 
     void CheckForRecursiveBehaviour(F32 time) {
       if (time != CurrentTime) counter = 0;
-      if (counter++ == 100) throw new Exception("Recursive behaviour found!");
+      if (counter++ == 100) throw new Exception($"Recursive behaviour found"); //TODO: wait one more time, record last decision, extract that logic from here 
     }
 
     [JsonIgnore] public bool HasEventInHeap => aiHeap.Min() != null;
