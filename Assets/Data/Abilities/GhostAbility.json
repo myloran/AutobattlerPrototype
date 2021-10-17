@@ -6,7 +6,8 @@
   "Target": "Tile",
   "UnitTargetingRule": "MaxAbilityRange",
   "AdditionalTargets": "AlongLine",
-  "Range": 3,
+  "TargetingRange": 3,
+  "AbilityRange": 3,
   "AnimationHitTime": 0.5,
   "AnimationTotalTime": 1,
 }

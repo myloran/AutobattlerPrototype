@@ -2,8 +2,8 @@
   "Name": "CoupDeGrace",
   "Target": "Unit",
   "UnitTargetingRule": "Closest",
-  "Damage": 200,  
-  "Range": 1,
+  "Damage": 200,
+  "TargetingRange": 1,  
   "AnimationHitTime": 0.5,
   "AnimationTotalTime": 1,
 }

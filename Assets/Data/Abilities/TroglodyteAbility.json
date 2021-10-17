@@ -7,7 +7,8 @@
   "Target": "Unit",
   "UnitTargetingRule": "Closest",
   "Damage": 0,  
-  "Range": 1,
+  "TargetingRange": 3,
+  "AbilityRange": 3,
   "AnimationHitTime": 0.5,
   "AnimationTotalTime": 1,
 }

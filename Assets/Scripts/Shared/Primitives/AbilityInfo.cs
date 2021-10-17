@@ -41,7 +41,8 @@ namespace Shared.Primitives {
     public bool IsTimingOverridden;
     public bool NeedRecalculateTarget;
     public float Damage;
-    public float Range;
+    public float TargetingRange;
+    public float AbilityRange; //TargetingRange, AbilityRange
     public float AnimationHitTime;
     public float AnimationTotalTime;
     public float TimingPeriod;
@@ -58,7 +59,7 @@ namespace Shared.Primitives {
       UnitTargetingRule = info.UnitTargetingRule;
       AdditionalTargets = info.AdditionalTargets;
       Damage = info.Damage;
-      Range = info.Range;
+      AbilityRange = info.AbilityRange;
       Timing = info.Timing;
       TimingPeriod = info.TimingPeriod;
       TimingCount = info.TimingCount;
