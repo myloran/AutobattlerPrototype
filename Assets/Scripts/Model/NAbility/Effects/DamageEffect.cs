@@ -16,6 +16,8 @@ namespace Model.NAbility.Effects {
     
     public void Apply(AiContext context, IEnumerable<IUnit> units) {
       foreach (var unit in units) {
+        if (!unit.IsAlive) return;
+        
         unit.TakeDamage(damage);
       
         if (!unit.IsAlive) 
