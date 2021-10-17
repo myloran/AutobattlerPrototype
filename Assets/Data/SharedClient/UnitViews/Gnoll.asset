@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b70062526c3a484aa32042229322d29a, type: 3}
   m_Name: Gnoll
   m_EditorClassIdentifier: 
-  Model: {fileID: -927199367670048503, guid: 6df0b65e0df1ca64babb36c9d0252075, type: 3}
+  UnitModel: {fileID: -927199367670048503, guid: 6df0b65e0df1ca64babb36c9d0252075,
+    type: 3}
+  ProjectileModel: {fileID: 0}
   AnimatorController: {fileID: 9100000, guid: 1c0a1e7ee1f0d304095ad2562a901d8a, type: 2}
