@@ -40,11 +40,17 @@ namespace Model.NBattleSimulation {
       }
       var time = node.Key;
       var command = node.Data;
+      CheckForRecursiveBehaviour(time);
       CurrentTime = time;
       nodes.Remove(time);
       return (false, command);
     }
-    
+
+    void CheckForRecursiveBehaviour(F32 time) {
+      if (time != CurrentTime) counter = 0;
+      if (counter++ == 100) throw new Exception("Recursive behaviour found!");
+    }
+
     [JsonIgnore] public bool HasEventInHeap => aiHeap.Min() != null;
     [JsonIgnore] public F32 NextEventTime => aiHeap.Min().Key;
     
@@ -61,5 +67,6 @@ namespace Model.NBattleSimulation {
     [JsonProperty] readonly Dictionary<F32, PriorityCommand> nodes = 
       new Dictionary<F32, PriorityCommand>(100); //TODO: fix allocations inside heap
     static readonly Logger log = MainLog.GetLogger(nameof(AiContext));
+    int counter;
   }
 }

@@ -53,14 +53,10 @@ namespace Model.NBattleSimulation {
     }
 
     public void ExecuteCommandsTill(F32 time) {
-      counter = 0;
       while (!IsBattleOver && heap.HasEventInHeap && heap.NextEventTime < time) {
         ExecuteNextCommand();
-        if (++counter == 1000) throw new Exception();
       }
     }
-
-    int counter;
 
     readonly AiContext context;
     readonly AiHeap heap;
