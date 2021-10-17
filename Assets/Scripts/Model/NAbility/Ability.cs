@@ -40,16 +40,30 @@ namespace Model.NAbility {
     public void Execute(AiContext context) {
       var target = targetSelector.Select(context);
       
-      if (!needRecalculateTarget && !isRecalculated && tilesSelector != null) {
-        isRecalculated = true;
-        TilesSelected = tilesSelector.Select(target.Coord, context);
-      }
-      
-      TargetsSelected = tilesSelector != null 
-        ? context.GetUnits(TilesSelected, player) 
-        : targetsSelector.Select(target, context); //TODO: if target is null, either don't do anything, or do it on last known target location
+      if (tilesSelector != null)
+        SelectTargetsBasedOnTilesCached(context, target);
+      else
+        SelectTargets(context, target);
 
       HandleTiming(context, TargetsSelected, ApplyEffects);
+    }
+
+    void SelectTargets(AiContext context, IUnit target) {
+      if (needRecalculateTarget)
+        TargetsSelected = targetsSelector.Select(target, context); //TODO: if target is null, we do anything, consider do use last known target location instead
+      else if (!isCached) {
+        isCached = true;
+        TargetsSelected = targetsSelector.Select(target, context);
+      }
+    }
+
+    void SelectTargetsBasedOnTilesCached(AiContext context, IUnit target) {
+      if (!isCached) {
+        isCached = true;
+        TilesSelected = tilesSelector.Select(target.Coord, context);
+      }
+
+      TargetsSelected = context.GetUnits(TilesSelected, player);
     }
 
     void HandleTiming(AiContext context, IEnumerable<IUnit> targets, Action<AiContext, IEnumerable<IUnit>> applyEffects) {
@@ -87,9 +101,10 @@ namespace Model.NAbility {
     }
 
     public void Reset() {
+      //TODO: create new ability if previous is not finished yet
       timing.Reset();
       foreach (var ability in nestedAbilities) ability.Reset();
-      isRecalculated = false;
+      isCached = false;
     }
     
     readonly IEnumerable<Ability> nestedAbilities;
@@ -101,6 +116,6 @@ namespace Model.NAbility {
     IMainTargetSelector targetSelector;
     IAdditionalTargetsSelector targetsSelector;
     AlongLineTilesSelector tilesSelector;
-    bool isRecalculated;
+    bool isCached;
   }
 }
