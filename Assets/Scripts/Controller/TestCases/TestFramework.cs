@@ -1,9 +1,5 @@
 using Model.NBattleSimulation;
-using Model.NUnit.Abstraction;
-using Shared.Primitives;
-using View.NUnit;
 using View.Presenters;
-using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Controller.TestCases {
   public class TestFramework {

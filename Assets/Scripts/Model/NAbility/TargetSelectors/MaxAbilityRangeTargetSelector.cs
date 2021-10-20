@@ -10,7 +10,7 @@ namespace Model.NAbility {
     }
 
     public IUnit Select(AiContext context) => 
-      context.TryFindUnitOnMaxAbilityRange(unit.Coord, unit.TargetingSqrRange, unit.Player.Opposite());
+      context.TryFindUnitOnMaxSqrRange(unit.Coord, unit.TargetingSqrRange, unit.Player.Opposite());
 
     readonly IUnit unit;
   }

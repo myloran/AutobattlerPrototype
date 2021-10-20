@@ -12,12 +12,12 @@ using Shared.Primitives;
 
 namespace Model.NUnit {
   public class Unit : IUnit {
-    public Unit(HealthComponent health, AttackComponent attack, MovementComponent movement, TargetComponent target,
+    public Unit(HealthComponent health, AttackComponent attack, MovementComponent movement, TargetingComponent targeting,
         AiComponent ai, StatsComponent stats, AbilityComponent ability, SilenceComponent silence) {
       this.health = health;
       this.attack = attack;
       this.movement = movement;
-      this.target = target;
+      this.targeting = targeting;
       this.ai = ai;
       this.stats = stats;
       this.ability = ability;
@@ -29,8 +29,8 @@ namespace Model.NUnit {
     public F32 Health => health.Health;
     public bool IsAlive => health.IsAlive;
     public void TakeDamage(F32 damage) => health.TakeDamage(damage);
-    public void SubToDeath(ITarget target) => health.SubToDeath(target);
-    public void UnsubFromDeath(ITarget target) => health.UnsubFromDeath(target);
+    public void SubToDeath(ITargeting targeting) => health.SubToDeath(targeting);
+    public void UnsubFromDeath(ITargeting targeting) => health.UnsubFromDeath(targeting);
     
     public F32 Damage => attack.Damage;
     public F32 AttackAnimationHitTime => attack.AttackAnimationHitTime;
@@ -44,17 +44,16 @@ namespace Model.NUnit {
     public void EndAttack() => attack.EndAttack();
 
     [JsonIgnore] public IEnumerable<IUnit> ArrivingTargets {
-      get => target.ArrivingTargets;
-      set => target.ArrivingTargets = value;
+      get => targeting.ArrivingTargets;
+      set => targeting.ArrivingTargets = value;
     }
 
-    public IEnumerable<Coord> ArrivingTargetCoords => target.ArrivingTargetCoords; //to test determinism
-    [JsonIgnore] public IUnit Target => target.Target;
-    public Coord TargetCoord => target.TargetCoord; //to test determinism
-    public bool TargetExists => target.TargetExists;
-    public void ClearTarget() => target.ClearTarget();
-    public void ChangeTargetTo(IUnit unit) => target.ChangeTargetTo(unit);
-    public IUnit FindNearestTarget(IEnumerable<IUnit> units) => target.FindNearestTarget(units);
+    public IEnumerable<Coord> ArrivingTargetCoords => targeting.ArrivingTargetCoords; //to test determinism
+    [JsonIgnore] public IUnit Target => targeting.Target;
+    public Coord TargetCoord => targeting.TargetCoord; //to test determinism
+    public bool TargetExists => targeting.TargetExists;
+    public void ClearTarget() => targeting.ClearTarget();
+    public void ChangeTargetTo(IUnit unit) => targeting.ChangeTargetTo(unit);
 
     public Coord StartingCoord {
       get => movement.StartingCoord;
@@ -95,6 +94,7 @@ namespace Model.NUnit {
     public F32 CastHitTime => ability.CastHitTime;
     public F32 TimeToFinishCast => ability.TimeToFinishCast;
     public F32 TargetingSqrRange => ability.TargetingSqrRange;
+    public F32 AbilitySqrRadius => ability.AbilitySqrRadius;
     public bool HasManaAccumulated => ability.HasManaAccumulated;
     public void AccumulateMana() => ability.AccumulateMana();
     public bool IsWithinAbilityRange(AiContext context) => ability.IsWithinAbilityRange(context);
@@ -113,7 +113,7 @@ namespace Model.NUnit {
       health.Reset();
       attack.Reset();
       movement.Reset();
-      target.Reset();
+      targeting.Reset();
       ai.Reset();
       stats.Reset();
       ability.Reset();
@@ -128,12 +128,12 @@ namespace Model.NUnit {
       .Append(stats).Append("\n")
       .Append(ability).Append("\n")
       .Append(silence).Append("\n")
-      .Append(target).Append("\n")
+      .Append(targeting).Append("\n")
       .ToString();
     
     readonly HealthComponent health;
     readonly AttackComponent attack;
-    readonly TargetComponent target;
+    readonly TargetingComponent targeting;
     readonly MovementComponent movement;
     readonly AiComponent ai;
     readonly StatsComponent stats;

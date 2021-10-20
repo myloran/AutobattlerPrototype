@@ -85,11 +85,14 @@ namespace Model.NBattleSimulation {
           if (unit != null) result.Add(unit);
         }
     }
-    
+
+    public IEnumerable<IUnit> FindUnitsWithinSqrRange(Coord coord, EPlayer player, F32 radius) => 
+      GetPlayerUnits(player).Where(u => u.IsAlive).Where(u => CoordExt.SqrDistance(coord, u.Coord) <= radius);
+
     public IUnit FindClosestUnitTo(Coord coord, EPlayer player) => 
       GetPlayerUnits(player).Where(u => u.IsAlive).MinBy(u => CoordExt.SqrDistance(coord, u.Coord));
     
-    public IUnit TryFindUnitOnMaxAbilityRange(Coord coord, F32 maxRange, EPlayer player) {
+    public IUnit TryFindUnitOnMaxSqrRange(Coord coord, F32 maxRange, EPlayer player) {
       var units = GetPlayerUnits(player).Where(u => u.IsAlive)
         .Where(u => CoordExt.SqrDistance(coord, u.Coord) <= maxRange);
       return units.Any() 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Model.NAbility.Abstraction;
@@ -24,15 +25,24 @@ namespace Model.NAbility {
       AlongLineTilesSelector tilesSelector = null;
       
       if (info.UnitTargetingRule == EUnitTargetingRule.Closest)
-        targetSelector = new ClosestUnitTargetSelector(unit);
+        targetSelector = new InheritTargetFromTargeting(unit);
       else if (info.UnitTargetingRule == EUnitTargetingRule.MaxAbilityRange)
         targetSelector = new MaxAbilityRangeTargetSelector(unit);
 
+      Func<Coord> getAbilityOrigin = () => { //TODO: probably move to runtime and pass context/target from ability
+        if (info.AbilityOrigin == EAbilityOrigin.Target) return unit.Target?.Coord ?? Coord.Invalid;
+        if (info.AbilityOrigin == EAbilityOrigin.Self) return unit.Coord;
+        
+        return Coord.Invalid;
+      };
+      
       if (info.Target == ETarget.Unit) {
         if (info.AdditionalTargets == EAdditionalTargets.None)
           targetsSelector = new SingleTargetsSelector();
         else if (info.AdditionalTargets == EAdditionalTargets.AlongLine)
           targetsSelector = new AlongLineTargetsSelector(unit);
+        else if (info.AdditionalTargets == EAdditionalTargets.WithinRadius)
+          targetsSelector = new WithinRadiusTargetsSelector(unit, getAbilityOrigin);
       }
       else if (info.Target == ETarget.Tile)
         tilesSelector = new AlongLineTilesSelector(unit);

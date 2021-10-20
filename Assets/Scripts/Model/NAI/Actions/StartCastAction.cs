@@ -11,6 +11,7 @@ namespace Model.NAI.Actions {
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       Unit.StartCasting(context.CurrentTime);
       context.InsertCommand(Unit.CastHitTime, new MakeDecisionCommand(Unit, context, Unit.CastHitTime));
+      
       Bus.Raise(new RotateEvent(Unit.Coord, Unit.AbilityTarget.Coord));
       Bus.Raise(new StartCastEvent(Unit.Coord));
       return this;

@@ -15,14 +15,16 @@ namespace Model.NAbility {
     public F32 CastHitTime { get; }
     public F32 Mana { get; set; } //TODO: extract stuff related to mana into separate component
     public F32 TargetingSqrRange { get; } //TODO: move it to ability
+    public F32 AbilitySqrRadius { get; }
 
-    public AbilityComponent(IMovement movement, F32 targetingRange, F32 manaPerAttack, F32 castAnimationHitTime,
-      F32 animationTotalTime) {
+    public AbilityComponent(IMovement movement, F32 abilitySqrRadius, F32 targetingRange, F32 manaPerAttack,
+      F32 castAnimationHitTime, F32 animationTotalTime) {
+      this.movement = movement;
       TargetingSqrRange = targetingRange * targetingRange;
+      AbilitySqrRadius = abilitySqrRadius * abilitySqrRadius;
       this.manaPerAttack = manaPerAttack;
       CastHitTime = castAnimationHitTime;
       this.animationTotalTime = animationTotalTime;
-      this.movement = movement;
     }
     
     public void Reset() {
@@ -41,7 +43,8 @@ namespace Model.NAbility {
 
     public bool IsWithinAbilityRange(AiContext context) {
       AbilityTarget = Ability.SelectTarget(context);
-      return AbilityTarget != null && SqrDistance(movement.Coord, AbilityTarget.Coord) <= TargetingSqrRange;
+      var isWithinAbilityRange = AbilityTarget != null && SqrDistance(movement.Coord, AbilityTarget.Coord) <= TargetingSqrRange;
+      return isWithinAbilityRange;
     }
     
     public F32 TimeToFinishCast => animationTotalTime - CastHitTime;

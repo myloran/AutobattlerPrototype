@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Shared.Primitives;
 
 namespace Model.NUnit.Abstraction {
-  public interface ITarget {
+  public interface ITargeting {
     IEnumerable<IUnit> ArrivingTargets { get; set; }
     IEnumerable<Coord> ArrivingTargetCoords { get; } //to test determinism
     IUnit Target { get; }
@@ -10,6 +10,5 @@ namespace Model.NUnit.Abstraction {
     bool TargetExists { get; }
     void ClearTarget();
     void ChangeTargetTo(IUnit unit);
-    IUnit FindNearestTarget(IEnumerable<IUnit> units);
   }
 }

@@ -19,8 +19,8 @@ namespace Model.NUnit.Components {
       observers.Clear();
     }
 
-    public void SubToDeath(ITarget target) => observers.Add(target);
-    public void UnsubFromDeath(ITarget target) => observers.Remove(target);
+    public void SubToDeath(ITargeting targeting) => observers.Add(targeting);
+    public void UnsubFromDeath(ITargeting targeting) => observers.Remove(targeting);
 
     public void TakeDamage(F32 damage) {
       var damageDealt = damage - damage * armor / (armor + 10); //TODO: take magic resist into account when taking ability damage
@@ -38,7 +38,7 @@ namespace Model.NUnit.Components {
 
     public override string ToString() => $"{nameof(startingHealth)}: {startingHealth}, {nameof(Health)}: {Health}, {nameof(armor)}: {armor}";
 
-    readonly List<ITarget> observers = new List<ITarget>();
+    readonly List<ITargeting> observers = new List<ITargeting>();
     F32 startingHealth;
     F32 armor;
   }

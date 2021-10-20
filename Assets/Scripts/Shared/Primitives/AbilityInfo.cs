@@ -4,19 +4,20 @@ using System.Collections.Generic;
 namespace Shared.Primitives {
   public enum ETarget {
     Unit,
-    Tile
+    Tile,
   }
 
   public enum EUnitTargetingRule {
     Closest,
     Random,
     Farthest,
-    MaxAbilityRange
+    MaxAbilityRange,
   }
 
   public enum EAdditionalTargets {
     None,
     AlongLine,
+    WithinRadius,
   }
 
   public enum ETiming {
@@ -29,26 +30,53 @@ namespace Shared.Primitives {
     Friend,
   }
   
+  public enum EStartingPosition {
+    Target,
+    Self,
+    Custom,
+  }
+
+  public enum EAbilityOrigin {
+    Target,
+    Self,
+    Custom
+  }
+  
   [Serializable]
   public class AbilityInfo {
+    //id
     public string Name;
+    
+    //nested abilities
     public List<string> NestedAbilities = new List<string>();
+    public bool IsTimingOverridden;
+    
+    //targeting
     public ETargetPlayer TargetPlayer;
     public ETarget Target;
     public EUnitTargetingRule UnitTargetingRule;
     public EAdditionalTargets AdditionalTargets;
-    public ETiming Timing;
-    public bool IsTimingOverridden;
-    public bool NeedRecalculateTarget;
-    public float Damage;
+    public EAbilityOrigin AbilityOrigin;
     public float TargetingRange;
-    public float AbilityRange; //TargetingRange, AbilityRange
-    public float AnimationHitTime;
-    public float AnimationTotalTime;
+    public bool NeedRecalculateTarget;
+    public bool IsReusingAttackTarget;
+    
+    //?
+    public float AbilityRadius;
+    
+    //timing
+    public ETiming Timing;
     public float TimingPeriod;
     public int TimingCount;
     public float TimingInitialDelay;
+    
+    //properties
+    public float Damage;
     public float SilenceDuration;
+    
+    //visual stuff
+    public float AnimationHitTime;
+    public float AnimationTotalTime;
 
     public AbilityInfo() { }
 
@@ -59,13 +87,14 @@ namespace Shared.Primitives {
       UnitTargetingRule = info.UnitTargetingRule;
       AdditionalTargets = info.AdditionalTargets;
       Damage = info.Damage;
-      AbilityRange = info.AbilityRange;
+      AbilityRadius = info.AbilityRadius;
       Timing = info.Timing;
       TimingPeriod = info.TimingPeriod;
       TimingCount = info.TimingCount;
       IsTimingOverridden = info.IsTimingOverridden;
       NeedRecalculateTarget = info.NeedRecalculateTarget;
       TimingInitialDelay = info.TimingInitialDelay;
+      IsReusingAttackTarget = info.IsReusingAttackTarget;
     }
   }
 

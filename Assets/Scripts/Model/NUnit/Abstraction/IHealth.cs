@@ -6,7 +6,7 @@ namespace Model.NUnit.Abstraction {
     bool IsAlive { get; }
     
     void TakeDamage(F32 damage);
-    void SubToDeath(ITarget target);
-    void UnsubFromDeath(ITarget target);
+    void SubToDeath(ITargeting targeting);
+    void UnsubFromDeath(ITargeting targeting);
   }
 }

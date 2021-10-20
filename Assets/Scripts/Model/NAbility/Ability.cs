@@ -17,14 +17,14 @@ namespace Model.NAbility {
     [JsonIgnore] public IEnumerable<Coord> TilesSelected = new List<Coord>();
 
     public Ability(IUnit unit, EPlayer player, IMainTargetSelector targetSelector,
-      IAdditionalTargetsSelector targetsSelector,
+      IAdditionalTargetsSelector additionalTargetsSelector,
       AlongLineTilesSelector tilesSelector, List<IEffect> effects,
       ITiming timing, bool isTimingOverridden = false, bool needRecalculateTarget = false,
       IEnumerable<Ability> nestedAbilities = null) {
       Unit = unit;
       this.player = player;
       this.targetSelector = targetSelector;
-      this.targetsSelector = targetsSelector;
+      this.additionalTargetsSelector = additionalTargetsSelector;
       this.tilesSelector = tilesSelector;
       this.effects = effects;
       this.timing = timing;
@@ -38,28 +38,30 @@ namespace Model.NAbility {
     public IUnit SelectTarget(AiContext context) => targetSelector.Select(context);
 
     public void Execute(AiContext context) {
-      var target = targetSelector.Select(context);
-      
       if (tilesSelector != null)
-        SelectTargetsBasedOnTilesCached(context, target);
+        SelectTargetsBasedOnTilesCached(context);
       else
-        SelectTargets(context, target);
+        SelectTargets(context);
 
       HandleTiming(context, TargetsSelected, ApplyEffects);
     }
 
-    void SelectTargets(AiContext context, IUnit target) {
-      if (needRecalculateTarget)
-        TargetsSelected = targetsSelector.Select(target, context); //TODO: if target is null, we do anything, consider do use last known target location instead
+    void SelectTargets(AiContext context) {
+      if (needRecalculateTarget) {
+        var target = targetSelector.Select(context);
+        TargetsSelected = additionalTargetsSelector.Select(target, context); //TODO: if target is null, we do anything, consider do use last known target location instead
+      }
       else if (!isCached) {
         isCached = true;
-        TargetsSelected = targetsSelector.Select(target, context);
+        var target = targetSelector.Select(context);
+        TargetsSelected = additionalTargetsSelector.Select(target, context);
       }
     }
 
-    void SelectTargetsBasedOnTilesCached(AiContext context, IUnit target) {
+    void SelectTargetsBasedOnTilesCached(AiContext context) {
       if (!isCached) {
         isCached = true;
+        var target = targetSelector.Select(context);
         TilesSelected = tilesSelector.Select(target.Coord, context);
       }
 
@@ -87,7 +89,7 @@ namespace Model.NAbility {
 
       foreach (var ability in nestedAbilities) {
         ability.targetSelector = targetSelector;
-        ability.targetsSelector = targetsSelector;
+        ability.additionalTargetsSelector = additionalTargetsSelector;
         ability.tilesSelector = tilesSelector;
         
         //if target selector is overriden, we need to reevaluate targets
@@ -114,7 +116,7 @@ namespace Model.NAbility {
     readonly bool needRecalculateTarget;
     readonly EPlayer player;
     IMainTargetSelector targetSelector;
-    IAdditionalTargetsSelector targetsSelector;
+    IAdditionalTargetsSelector additionalTargetsSelector;
     AlongLineTilesSelector tilesSelector;
     bool isCached;
   }
