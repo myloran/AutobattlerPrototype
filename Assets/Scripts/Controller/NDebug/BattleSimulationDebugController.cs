@@ -71,8 +71,11 @@ namespace Controller.NDebug {
     void BattleControlSubs() {
       ui.OStart.OnValueChangedAsObservable().Subscribe(ResetBattle).AddTo(ui.OStart);
       ui.OPause.OnValueChangedAsObservable().Subscribe(SetPaused).AddTo(ui.OPause);
+      ui.OTestMode.OnValueChangedAsObservable().Subscribe(SetTestMode).AddTo(ui.OPause);
       ui.SSpeed.OnValueChangedAsObservable().Subscribe(SetSpeed).AddTo(ui.SSpeed);
     }
+
+    void SetTestMode(bool isTestMode) => testFramework.IsOn = isTestMode;
 
     public void ResetBattle() {
       realtimeBattleSimulationController.StopBattle();

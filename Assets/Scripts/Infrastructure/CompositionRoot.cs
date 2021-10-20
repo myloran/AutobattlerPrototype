@@ -185,8 +185,8 @@ namespace Infrastructure {
       var commandButtonStyler = new CommandButtonStyler(boardPresenter);
       var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandDebugWindowUI);
       var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandDebugWindowUI);
-
       var testFramework = new TestFramework(playerContext, playerPresenterContext);
+      
       var battleSimulationDebugController = new BattleSimulationDebugController(battleSimulation, BattleSimulationUI, 
         aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController, battleSimulationPresenter,
         commandDebugUI, testFramework);
