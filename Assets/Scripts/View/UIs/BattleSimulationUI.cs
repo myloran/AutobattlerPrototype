@@ -6,7 +6,8 @@ namespace View.UIs {
       BExecuteAllDecisions,
       BExecuteInRealtime;
     public Toggle OStart,
-      OPause;
+      OPause,
+      OTestMode;
     public Slider SSpeed;
 
     public void Disable() => SetEnabled(false);
