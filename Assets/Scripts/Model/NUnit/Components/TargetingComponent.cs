@@ -10,6 +10,7 @@ namespace Model.NUnit.Components {
     public Coord TargetCoord => Target?.Coord ?? Coord.Invalid; //to test determinism
     [JsonIgnore] public IEnumerable<IUnit> ArrivingTargets { get; set; }
     public IEnumerable<Coord> ArrivingTargetCoords => ArrivingTargets?.Select(t => t.Coord); //to test determinism
+    public bool IsTaunted { get; private set; }
 
     public bool TargetExists => Target != null;
     
@@ -25,8 +26,9 @@ namespace Model.NUnit.Components {
       Target = null;
     }
 
-    public void ChangeTargetTo(IUnit unit) {
+    public void ChangeTargetTo(IUnit unit, bool isTaunted = false) {
       ClearTarget();
+      IsTaunted = isTaunted;
       Target = unit;
       Target.SubToDeath(this);
     }

@@ -58,7 +58,7 @@ namespace Controller.DecisionTree.Editor {
     }
 
     void Save() {
-      var saveNode = nodeOperations.TrySearchInInputsRecursively<DecisionTreeSaverNode>(target);
+      var saveNode = nodeHelper.TrySearchInInputsRecursively<DecisionTreeSaverNode>(target);
       if (saveNode != null) 
         saveNode.Save();
       else 
@@ -69,5 +69,6 @@ namespace Controller.DecisionTree.Editor {
 
     ConverterToNestedDecisionTree converter;
     NodeOperations nodeOperations;
+    readonly NodeHelper nodeHelper = new NodeHelper();
   }
 }

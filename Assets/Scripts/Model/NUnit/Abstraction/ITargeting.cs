@@ -8,7 +8,8 @@ namespace Model.NUnit.Abstraction {
     IUnit Target { get; }
     Coord TargetCoord { get; } //to test determinism
     bool TargetExists { get; }
+    bool IsTaunted { get; }
     void ClearTarget();
-    void ChangeTargetTo(IUnit unit);
+    void ChangeTargetTo(IUnit unit, bool isTaunted = false);
   }
 }

@@ -13,7 +13,7 @@ namespace Model.NAI.Decisions {
       var timeToArrive = target.TimeWhenDecisionWillBeExecuted - context.CurrentTime;
       Unit.ChangeTargetTo(target);
 
-      return timeToArrive < StraightMoveTime ? true : false;
+      return timeToArrive < StraightMoveTime;
     }
   }
 }

@@ -32,5 +32,6 @@ namespace Model.NAI.NDecisionTree {
     IsRanged = 28,
     RangedAttack = 29,
     HasAttackStarted = 30,
+    IsTaunted = 31,
   }
 }

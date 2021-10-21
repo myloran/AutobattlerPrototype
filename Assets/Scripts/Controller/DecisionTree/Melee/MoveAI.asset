@@ -25,8 +25,8 @@ MonoBehaviour:
       _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: Output
-        node: {fileID: -3905376310583942650}
+      - fieldName: Output2
+        node: {fileID: -3036316094831582548}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
@@ -50,7 +50,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: 3813126446496785732}
+        node: {fileID: -2210785037031457654}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -59,7 +59,39 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
-  typeId: 0
+  typeId: 7
+--- !u!114 &-5872173928080081945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc029cbc587e4973becea2344faec57e, type: 3}
+  m_Name: Nested Decision Tree
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1064, y: 136}
+  ports:
+    keys:
+    - Input
+    values:
+    - _fieldName: Input
+      _node: {fileID: -5872173928080081945}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Output1
+        node: {fileID: -3036316094831582548}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Input: 0
+  Graph: {fileID: 11400000, guid: 2c5940532e52e7444935055effc5316c, type: 2}
 --- !u!114 &-5358545232698805128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +123,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 7
+  typeId: 5
 --- !u!114 &-3905376310583942650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,7 +137,7 @@ MonoBehaviour:
   m_Name: Parent Decision Tree
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 768, y: 348}
+  position: {x: 552, y: 232}
   ports:
     keys:
     - Output
@@ -116,7 +148,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: -8854110826624090628}
+        node: {fileID: -3036316094831582548}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -124,6 +156,98 @@ MonoBehaviour:
       _dynamic: 0
   Output: 0
   Graph: {fileID: 11400000, guid: f5488adedc33cdb4e949ce7521879352, type: 2}
+--- !u!114 &-3036316094831582548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9299d933e196941b2bb68892e19626, type: 3}
+  m_Name: Decision
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 808, y: 232}
+  ports:
+    keys:
+    - Input
+    - Output1
+    - Output2
+    values:
+    - _fieldName: Input
+      _node: {fileID: -3036316094831582548}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Output
+        node: {fileID: -3905376310583942650}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output1
+      _node: {fileID: -3036316094831582548}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Input
+        node: {fileID: -5872173928080081945}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output2
+      _node: {fileID: -3036316094831582548}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Input
+        node: {fileID: -8854110826624090628}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Input: 0
+  Output1: 0
+  Output2: 0
+  typeId: 17
+--- !u!114 &-2210785037031457654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc029cbc587e4973becea2344faec57e, type: 3}
+  m_Name: Nested Decision Tree
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1340, y: 508}
+  ports:
+    keys:
+    - Input
+    values:
+    - _fieldName: Input
+      _node: {fileID: -2210785037031457654}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Output2
+        node: {fileID: -8854110826624090628}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Input: 0
+  Graph: {fileID: 11400000, guid: 2c5940532e52e7444935055effc5316c, type: 2}
 --- !u!114 &-1942858737335601553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +307,7 @@ MonoBehaviour:
   Input: 0
   Output1: 0
   Output2: 0
-  typeId: 12
+  typeId: 8
 --- !u!114 &-1612012233383734014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,39 +339,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 8
---- !u!114 &-1340181342192309498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 592f411b75506c2428ef1c89b0159c55, type: 3}
-  m_Name: Action
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 1612, y: 460}
-  ports:
-    keys:
-    - Input
-    values:
-    - _fieldName: Input
-      _node: {fileID: -1340181342192309498}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Output1
-        node: {fileID: 3813126446496785732}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  Input: 0
-  typeId: 4
+  typeId: 6
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,221 +357,40 @@ MonoBehaviour:
   - {fileID: -1942858737335601553}
   - {fileID: -1612012233383734014}
   - {fileID: -5358545232698805128}
-  - {fileID: 3813126446496785732}
-  - {fileID: -1340181342192309498}
-  - {fileID: 3288822776059653299}
-  - {fileID: 5501572218980021336}
-  - {fileID: 4370084857450630685}
   - {fileID: -3905376310583942650}
+  - {fileID: -2210785037031457654}
+  - {fileID: -3036316094831582548}
+  - {fileID: -5872173928080081945}
   DecisionTypeNames:
-  - AreEnemiesArrivingToAdjacentTile
-  - CanCastAbility
   - CanMove
   - CanStartAttack
-  - CanStartCastingAbility
-  - HasManaAccumulated
   - HasTarget
   - IsAlive
   - IsPlayerDead
   - IsSurrounded
-  - IsWithingAbilityRange
   - IsWithingAttackRange
+  - AreEnemiesArrivingToAdjacentTile
   - NeedToWaitFirstEnemyArriving
+  - CanCastAbility
+  - IsWithingAbilityRange
+  - CanStartCastingAbility
+  - HasManaAccumulated
   - NeedTwoTileAttackRange
+  - IsSilenced
+  - IsRanged
+  - HasAttackStarted
+  - IsTaunted
   ActionTypeNames:
-  - Attack
-  - Cast
+  - Move
+  - MeleeAttack
   - DoNothing
   - FindNearestTarget
-  - Move
   - StartAttack
-  - StartCastAction
   - WaitDiffBetweenDiagonalAndStraightMove
   - WaitFirstEnemyArriving
   - WaitForAlliesToMove
-  DecisionTypeIds: 12000000140000000b0000000c00000016000000190000000d0000000e0000000f000000100000001500000011000000130000001a000000
-  ActionTypeIds: 0400000017000000050000000600000003000000070000001800000008000000090000000a000000
---- !u!114 &3288822776059653299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a9299d933e196941b2bb68892e19626, type: 3}
-  m_Name: Decision
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 1612, y: 588}
-  ports:
-    keys:
-    - Input
-    - Output1
-    - Output2
-    values:
-    - _fieldName: Input
-      _node: {fileID: 3288822776059653299}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Output2
-        node: {fileID: 3813126446496785732}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: Output1
-      _node: {fileID: 3288822776059653299}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Input
-        node: {fileID: 5501572218980021336}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: Output2
-      _node: {fileID: 3288822776059653299}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Input
-        node: {fileID: 4370084857450630685}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  Input: 0
-  Output1: 0
-  Output2: 0
-  typeId: 9
---- !u!114 &3813126446496785732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a9299d933e196941b2bb68892e19626, type: 3}
-  m_Name: Decision
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 1340, y: 508}
-  ports:
-    keys:
-    - Input
-    - Output1
-    - Output2
-    values:
-    - _fieldName: Input
-      _node: {fileID: 3813126446496785732}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Output2
-        node: {fileID: -8854110826624090628}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: Output1
-      _node: {fileID: 3813126446496785732}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Input
-        node: {fileID: -1340181342192309498}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: Output2
-      _node: {fileID: 3813126446496785732}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Input
-        node: {fileID: 3288822776059653299}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  Input: 0
-  Output1: 0
-  Output2: 0
-  typeId: 2
---- !u!114 &4370084857450630685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 592f411b75506c2428ef1c89b0159c55, type: 3}
-  m_Name: Action
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 1884, y: 668}
-  ports:
-    keys:
-    - Input
-    values:
-    - _fieldName: Input
-      _node: {fileID: 4370084857450630685}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Output2
-        node: {fileID: 3288822776059653299}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  Input: 0
-  typeId: 2
---- !u!114 &5501572218980021336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 592f411b75506c2428ef1c89b0159c55, type: 3}
-  m_Name: Action
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 1884, y: 556}
-  ports:
-    keys:
-    - Input
-    values:
-    - _fieldName: Input
-      _node: {fileID: 5501572218980021336}
-      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: Output1
-        node: {fileID: 3288822776059653299}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-  Input: 0
-  typeId: 9
+  - Cast
+  - StartCastAction
+  - RangedAttack
+  DecisionTypeIds: 0b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000190000001a0000001b0000001c0000001e0000001f000000
+  ActionTypeIds: 030000000400000005000000060000000700000008000000090000000a00000017000000180000001d000000

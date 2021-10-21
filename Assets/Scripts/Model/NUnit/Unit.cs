@@ -52,8 +52,9 @@ namespace Model.NUnit {
     [JsonIgnore] public IUnit Target => targeting.Target;
     public Coord TargetCoord => targeting.TargetCoord; //to test determinism
     public bool TargetExists => targeting.TargetExists;
+    public bool IsTaunted => targeting.IsTaunted;
     public void ClearTarget() => targeting.ClearTarget();
-    public void ChangeTargetTo(IUnit unit) => targeting.ChangeTargetTo(unit);
+    public void ChangeTargetTo(IUnit unit, bool isTaunted = false) => targeting.ChangeTargetTo(unit, isTaunted);
 
     public Coord StartingCoord {
       get => movement.StartingCoord;

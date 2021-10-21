@@ -56,18 +56,6 @@
                     "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
                     "OnTrue": {
                       "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                      "Type": "WaitFirstEnemyArriving"
-                    },
-                    "OnFalse": {
-                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                      "Type": "WaitDiffBetweenDiagonalAndStraightMove"
-                    },
-                    "Type": "NeedToWaitFirstEnemyArriving"
-                  },
-                  "OnFalse": {
-                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
-                    "OnTrue": {
-                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
                       "Type": "Move"
                     },
                     "OnFalse": {
@@ -84,7 +72,43 @@
                     },
                     "Type": "CanMove"
                   },
-                  "Type": "AreEnemiesArrivingToAdjacentTile"
+                  "OnFalse": {
+                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                    "OnTrue": {
+                      "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                      "OnTrue": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "WaitFirstEnemyArriving"
+                      },
+                      "OnFalse": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "WaitDiffBetweenDiagonalAndStraightMove"
+                      },
+                      "Type": "NeedToWaitFirstEnemyArriving"
+                    },
+                    "OnFalse": {
+                      "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                      "OnTrue": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "Move"
+                      },
+                      "OnFalse": {
+                        "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                        "OnTrue": {
+                          "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                          "Type": "WaitForAlliesToMove"
+                        },
+                        "OnFalse": {
+                          "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                          "Type": "DoNothing"
+                        },
+                        "Type": "IsSurrounded"
+                      },
+                      "Type": "CanMove"
+                    },
+                    "Type": "AreEnemiesArrivingToAdjacentTile"
+                  },
+                  "Type": "IsTaunted"
                 },
                 "Type": "IsWithingAttackRange"
               },
@@ -108,18 +132,6 @@
                     "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
                     "OnTrue": {
                       "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                      "Type": "WaitFirstEnemyArriving"
-                    },
-                    "OnFalse": {
-                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                      "Type": "WaitDiffBetweenDiagonalAndStraightMove"
-                    },
-                    "Type": "NeedToWaitFirstEnemyArriving"
-                  },
-                  "OnFalse": {
-                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
-                    "OnTrue": {
-                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
                       "Type": "Move"
                     },
                     "OnFalse": {
@@ -136,7 +148,43 @@
                     },
                     "Type": "CanMove"
                   },
-                  "Type": "AreEnemiesArrivingToAdjacentTile"
+                  "OnFalse": {
+                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                    "OnTrue": {
+                      "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                      "OnTrue": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "WaitFirstEnemyArriving"
+                      },
+                      "OnFalse": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "WaitDiffBetweenDiagonalAndStraightMove"
+                      },
+                      "Type": "NeedToWaitFirstEnemyArriving"
+                    },
+                    "OnFalse": {
+                      "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                      "OnTrue": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "Move"
+                      },
+                      "OnFalse": {
+                        "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                        "OnTrue": {
+                          "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                          "Type": "WaitForAlliesToMove"
+                        },
+                        "OnFalse": {
+                          "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                          "Type": "DoNothing"
+                        },
+                        "Type": "IsSurrounded"
+                      },
+                      "Type": "CanMove"
+                    },
+                    "Type": "AreEnemiesArrivingToAdjacentTile"
+                  },
+                  "Type": "IsTaunted"
                 },
                 "Type": "IsWithingAbilityRange"
               },
@@ -170,18 +218,6 @@
                   "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
                   "OnTrue": {
                     "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                    "Type": "WaitFirstEnemyArriving"
-                  },
-                  "OnFalse": {
-                    "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                    "Type": "WaitDiffBetweenDiagonalAndStraightMove"
-                  },
-                  "Type": "NeedToWaitFirstEnemyArriving"
-                },
-                "OnFalse": {
-                  "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
-                  "OnTrue": {
-                    "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
                     "Type": "Move"
                   },
                   "OnFalse": {
@@ -198,7 +234,43 @@
                   },
                   "Type": "CanMove"
                 },
-                "Type": "AreEnemiesArrivingToAdjacentTile"
+                "OnFalse": {
+                  "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                  "OnTrue": {
+                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                    "OnTrue": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "WaitFirstEnemyArriving"
+                    },
+                    "OnFalse": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "WaitDiffBetweenDiagonalAndStraightMove"
+                    },
+                    "Type": "NeedToWaitFirstEnemyArriving"
+                  },
+                  "OnFalse": {
+                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                    "OnTrue": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "Move"
+                    },
+                    "OnFalse": {
+                      "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                      "OnTrue": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "WaitForAlliesToMove"
+                      },
+                      "OnFalse": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "DoNothing"
+                      },
+                      "Type": "IsSurrounded"
+                    },
+                    "Type": "CanMove"
+                  },
+                  "Type": "AreEnemiesArrivingToAdjacentTile"
+                },
+                "Type": "IsTaunted"
               },
               "Type": "IsWithingAttackRange"
             },
@@ -238,18 +310,6 @@
                   "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
                   "OnTrue": {
                     "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                    "Type": "WaitFirstEnemyArriving"
-                  },
-                  "OnFalse": {
-                    "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                    "Type": "WaitDiffBetweenDiagonalAndStraightMove"
-                  },
-                  "Type": "NeedToWaitFirstEnemyArriving"
-                },
-                "OnFalse": {
-                  "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
-                  "OnTrue": {
-                    "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
                     "Type": "Move"
                   },
                   "OnFalse": {
@@ -266,7 +326,43 @@
                   },
                   "Type": "CanMove"
                 },
-                "Type": "AreEnemiesArrivingToAdjacentTile"
+                "OnFalse": {
+                  "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                  "OnTrue": {
+                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                    "OnTrue": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "WaitFirstEnemyArriving"
+                    },
+                    "OnFalse": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "WaitDiffBetweenDiagonalAndStraightMove"
+                    },
+                    "Type": "NeedToWaitFirstEnemyArriving"
+                  },
+                  "OnFalse": {
+                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                    "OnTrue": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "Move"
+                    },
+                    "OnFalse": {
+                      "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                      "OnTrue": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "WaitForAlliesToMove"
+                      },
+                      "OnFalse": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "DoNothing"
+                      },
+                      "Type": "IsSurrounded"
+                    },
+                    "Type": "CanMove"
+                  },
+                  "Type": "AreEnemiesArrivingToAdjacentTile"
+                },
+                "Type": "IsTaunted"
               },
               "Type": "IsWithingAttackRange"
             },
@@ -290,18 +386,6 @@
                   "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
                   "OnTrue": {
                     "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                    "Type": "WaitFirstEnemyArriving"
-                  },
-                  "OnFalse": {
-                    "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                    "Type": "WaitDiffBetweenDiagonalAndStraightMove"
-                  },
-                  "Type": "NeedToWaitFirstEnemyArriving"
-                },
-                "OnFalse": {
-                  "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
-                  "OnTrue": {
-                    "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
                     "Type": "Move"
                   },
                   "OnFalse": {
@@ -318,7 +402,43 @@
                   },
                   "Type": "CanMove"
                 },
-                "Type": "AreEnemiesArrivingToAdjacentTile"
+                "OnFalse": {
+                  "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                  "OnTrue": {
+                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                    "OnTrue": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "WaitFirstEnemyArriving"
+                    },
+                    "OnFalse": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "WaitDiffBetweenDiagonalAndStraightMove"
+                    },
+                    "Type": "NeedToWaitFirstEnemyArriving"
+                  },
+                  "OnFalse": {
+                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                    "OnTrue": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "Move"
+                    },
+                    "OnFalse": {
+                      "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                      "OnTrue": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "WaitForAlliesToMove"
+                      },
+                      "OnFalse": {
+                        "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                        "Type": "DoNothing"
+                      },
+                      "Type": "IsSurrounded"
+                    },
+                    "Type": "CanMove"
+                  },
+                  "Type": "AreEnemiesArrivingToAdjacentTile"
+                },
+                "Type": "IsTaunted"
               },
               "Type": "IsWithingAbilityRange"
             },
@@ -352,18 +472,6 @@
                 "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
                 "OnTrue": {
                   "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                  "Type": "WaitFirstEnemyArriving"
-                },
-                "OnFalse": {
-                  "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-                  "Type": "WaitDiffBetweenDiagonalAndStraightMove"
-                },
-                "Type": "NeedToWaitFirstEnemyArriving"
-              },
-              "OnFalse": {
-                "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
-                "OnTrue": {
-                  "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
                   "Type": "Move"
                 },
                 "OnFalse": {
@@ -380,7 +488,43 @@
                 },
                 "Type": "CanMove"
               },
-              "Type": "AreEnemiesArrivingToAdjacentTile"
+              "OnFalse": {
+                "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                "OnTrue": {
+                  "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                  "OnTrue": {
+                    "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                    "Type": "WaitFirstEnemyArriving"
+                  },
+                  "OnFalse": {
+                    "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                    "Type": "WaitDiffBetweenDiagonalAndStraightMove"
+                  },
+                  "Type": "NeedToWaitFirstEnemyArriving"
+                },
+                "OnFalse": {
+                  "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                  "OnTrue": {
+                    "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                    "Type": "Move"
+                  },
+                  "OnFalse": {
+                    "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
+                    "OnTrue": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "WaitForAlliesToMove"
+                    },
+                    "OnFalse": {
+                      "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
+                      "Type": "DoNothing"
+                    },
+                    "Type": "IsSurrounded"
+                  },
+                  "Type": "CanMove"
+                },
+                "Type": "AreEnemiesArrivingToAdjacentTile"
+              },
+              "Type": "IsTaunted"
             },
             "Type": "IsWithingAttackRange"
           },
