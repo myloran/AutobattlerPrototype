@@ -10,10 +10,10 @@ using IDecisionTreeNode = Model.NAI.NDecisionTree.IDecisionTreeNode;
 namespace Controller.DecisionTree {
 	[CreateAssetMenu]
 	public class DecisionTreeGraph : NodeGraph {
-		[HideInInspector] public string[] DecisionTypeNames;
-		[HideInInspector] public string[] ActionTypeNames;
-		[HideInInspector] public int[] DecisionTypeIds;
-		[HideInInspector] public int[] ActionTypeIds;
+		/*[HideInInspector]*/ public string[] DecisionTypeNames;
+		/*[HideInInspector]*/ public string[] ActionTypeNames;
+		/*[HideInInspector]*/ public int[] DecisionTypeIds;
+		/*[HideInInspector]*/ public int[] ActionTypeIds;
 		public Action OnInit = () => {};
 
 		public void Init() {
@@ -22,9 +22,21 @@ namespace Controller.DecisionTree {
 			Lookup<BaseDecision>(out DecisionTypeNames, out DecisionTypeIds);
 			Lookup<BaseAction>(out ActionTypeNames, out ActionTypeIds);
 
-			foreach (var node in nodes)
-				if (node is DecisionTreeSaverNode saver)
+			var nodesVisited = new HashSet<DecisionTreeSaverNode>();
+			foreach (var node in nodes) {
+				if (node is DecisionTreeSaverNode saver && !nodesVisited.Contains(saver)) {
 					saver.Load();
+					nodesVisited.Add(saver);
+				}
+				
+				if (node is NestedDecisionTreeNode nestedNode) {
+					var saveNode = nodeHelper.TrySearchInInputsRecursively<DecisionTreeSaverNode>(nestedNode);
+					if (saveNode != null && !nodesVisited.Contains(saveNode)) {
+						saveNode.Load();
+						nodesVisited.Add(saveNode);
+					}
+				}
+			}
 			
 			OnInit();
 			OnInit = () => { };
@@ -45,5 +57,7 @@ namespace Controller.DecisionTree {
 				.Cast<IDecisionTreeNode>()
 				.Select(n => n.Type)
 				.OrderBy(n => n);
+		
+		readonly NodeHelper nodeHelper = new NodeHelper();
 	}
 }
