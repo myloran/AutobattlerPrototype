@@ -128,7 +128,7 @@ namespace Infrastructure {
       #endregion
       #region Shared
 
-      var worldContext = new PlayerSharedContext(playerContext, playerPresenterContext, BattleSetupUI);
+      var playerSharedContext = new PlayerSharedContext(playerContext, playerPresenterContext, BattleSetupUI);
 
       #endregion
       #region Controller
@@ -156,7 +156,7 @@ namespace Infrastructure {
       var tileHighlightController = new TileHighlighterController(tileSpawner, 
         unitDragController);
 
-      var unitMoveController = new UnitMoveController(worldContext, unitDragController);
+      var unitMoveController = new UnitMoveController(playerSharedContext, unitDragController);
 
       #endregion
       #region Battle simulation
@@ -185,7 +185,7 @@ namespace Infrastructure {
       var commandButtonStyler = new CommandButtonStyler(boardPresenter);
       var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandDebugWindowUI);
       var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandDebugWindowUI);
-      var testFramework = new TestFramework(playerContext, playerPresenterContext);
+      var testFramework = new TestFramework(playerSharedContext);
       
       var battleSimulationDebugController = new BattleSimulationDebugController(battleSimulation, BattleSimulationUI, 
         aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController, battleSimulationPresenter,

@@ -3,8 +3,8 @@ using Shared.Primitives;
 using View.NUnit;
 
 namespace Controller.TestCases {
-  public class WithinRadiusTest : IBattleTest {
-    public WithinRadiusTest(PlayerSharedContext playerContext) {
+  public class TauntTest : IBattleTest {
+    public TauntTest(PlayerSharedContext playerContext) {
       this.playerContext = playerContext;
     }
 
@@ -13,7 +13,12 @@ namespace Controller.TestCases {
 
       var unitName = "BattleDwarf";
       unit1 = playerContext.InstantiateToBoard(unitName, (3, 2), EPlayer.First);
-      unit2 = playerContext.InstantiateToBoard(unitName, (3, 5), EPlayer.Second);
+      playerContext.InstantiateToBoard(unitName, (2, 2), EPlayer.First);
+      playerContext.InstantiateToBoard(unitName, (4, 2), EPlayer.First);
+      
+      playerContext.InstantiateToBoard(unitName, (3, 3), EPlayer.Second);
+      playerContext.InstantiateToBoard(unitName, (2, 3), EPlayer.Second);
+      playerContext.InstantiateToBoard(unitName, (4, 3), EPlayer.Second);
     }
 
     public void PrepareState() {
@@ -28,4 +33,3 @@ namespace Controller.TestCases {
     UnitView unitPresenter1, unitPresenter2;
   }
 }
-  

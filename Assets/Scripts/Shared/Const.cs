@@ -6,7 +6,7 @@ namespace Shared {
     public static int MaxTilesOnBoard = 48;
     public static int MaxUnitsOnBoard = 20;
     public static int MaxUnitsOnBench = 10;
-    public static int StraightMoveTime = 1;
+    public static int StraightMoveTime = 1; //TODO: it does not take into account speed, fix that
     public static F32 MoveDiffTime = Half;
     public static int Player1BenchId = -1;
     public static int Player2BenchId = -2;

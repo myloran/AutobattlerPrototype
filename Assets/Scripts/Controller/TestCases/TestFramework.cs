@@ -1,13 +1,12 @@
-using Model.NBattleSimulation;
-using View.Presenters;
-
 namespace Controller.TestCases {
   public class TestFramework {
     public bool IsOn;
 
-    public TestFramework(PlayerContext playerContext, PlayerPresenterContext playerPresenterContext) {
-      battleTest = new SilenceTest(playerContext, playerPresenterContext);
-      battleTest = new WithinRadiusTest(playerContext, playerPresenterContext);
+    //TODO: add dropdown to battle simulation ui to allow select specific test case
+    public TestFramework(PlayerSharedContext playerContext) {
+      battleTest = new SilenceTest(playerContext);
+      battleTest = new WithinRadiusTest(playerContext);
+      battleTest = new TauntTest(playerContext);
     }
 
     public void Reset() => battleTest.Reset();
