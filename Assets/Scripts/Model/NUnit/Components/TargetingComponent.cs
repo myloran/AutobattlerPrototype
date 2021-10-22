@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Model.NUnit.Abstraction;
 using Newtonsoft.Json;
+using Shared;
+using Shared.Addons.Examples.FixMath;
 using Shared.Primitives;
 
 namespace Model.NUnit.Components {
@@ -10,13 +12,16 @@ namespace Model.NUnit.Components {
     public Coord TargetCoord => Target?.Coord ?? Coord.Invalid; //to test determinism
     [JsonIgnore] public IEnumerable<IUnit> ArrivingTargets { get; set; }
     public IEnumerable<Coord> ArrivingTargetCoords => ArrivingTargets?.Select(t => t.Coord); //to test determinism
-    public bool IsTaunted { get; private set; }
+    public F32 TauntEndTime { get; private set; }
 
     public bool TargetExists => Target != null;
+
+    public bool IsTaunted(F32 currentTime) => TauntEndTime > currentTime;
     
     public void Reset() {
       Target = null;
       ArrivingTargets = null;
+      TauntEndTime = -Const.MaxBattleDuration;
     }
 
     public void ClearTarget() {
@@ -26,14 +31,18 @@ namespace Model.NUnit.Components {
       Target = null;
     }
 
-    public void ChangeTargetTo(IUnit unit, bool isTaunted = false) {
+    public void Taunt(IUnit unit, F32 tauntEndTime) {
+      TauntEndTime = tauntEndTime;
+      ChangeTargetTo(unit);
+    }
+
+    public void ChangeTargetTo(IUnit unit) {
       ClearTarget();
-      IsTaunted = isTaunted;
       Target = unit;
       Target.SubToDeath(this);
     }
-    
-    //TODO: log target without it's target?
-    public override string ToString() => TargetExists ? $"Target coord: {Target.Coord}" : "";
+    // public override string ToString() => TargetExists ? $"Target coord: {Target.Coord}" : "" + $"{nameof(TauntEndTime)}: {TauntEndTime}";
+
+    public override string ToString() => $"{nameof(TargetCoord)}: {TargetCoord}, {nameof(TauntEndTime)}: {TauntEndTime}, {nameof(TargetExists)}: {TargetExists}, {nameof(ArrivingTargetCoords)}: {string.Join(",", ArrivingTargetCoords ?? Enumerable.Empty<Coord>())}";
   }
 }

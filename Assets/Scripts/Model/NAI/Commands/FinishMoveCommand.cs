@@ -1,7 +1,6 @@
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
-using Shared;
 using Shared.Primitives;
 using Shared.Shared.Client.Events;
 
@@ -19,7 +18,7 @@ namespace Model.NAI.Commands {
       context.RemoveUnit(from);
       unit.Coord = to;
       unit.TakenCoord = Coord.Invalid;
-      unit.ClearTarget();
+      if (!unit.IsTaunted(context.CurrentTime)) unit.ClearTarget();
       bus.Raise(new FinishMoveEvent(from, to));
     }
 

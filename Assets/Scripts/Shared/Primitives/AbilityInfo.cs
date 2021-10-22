@@ -73,6 +73,7 @@ namespace Shared.Primitives {
     //properties
     public float Damage;
     public float SilenceDuration;
+    public float TauntDuration;
     
     //visual stuff
     public float AnimationHitTime;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Shared.Addons.Examples.FixMath;
 using Shared.Primitives;
 
 namespace Model.NUnit.Abstraction {
@@ -8,8 +9,10 @@ namespace Model.NUnit.Abstraction {
     IUnit Target { get; }
     Coord TargetCoord { get; } //to test determinism
     bool TargetExists { get; }
-    bool IsTaunted { get; }
+    F32 TauntEndTime { get; }
+    bool IsTaunted(F32 currentTime);
+    void Taunt(IUnit unit, F32 tauntEndTime);
     void ClearTarget();
-    void ChangeTargetTo(IUnit unit, bool isTaunted = false);
+    void ChangeTargetTo(IUnit unit);
   }
 }
