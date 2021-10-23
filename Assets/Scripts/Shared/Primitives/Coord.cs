@@ -35,6 +35,8 @@ namespace Shared.Primitives {
 
     public static Coord operator +(Coord a, Coord b) => new Coord(a.X + b.X, a.Y + b.Y);
     public static Coord operator -(Coord a, Coord b) => new Coord(a.X - b.X, a.Y - b.Y);
+    public static Coord operator *(Coord a, int b) => new Coord(a.X * b, a.Y * b);
+    public static Coord operator /(Coord a, int b) => new Coord(a.X / b, a.Y / b);
     public static bool operator ==(Coord a, Coord b) => a.X == b.X && a.Y == b.Y;
     public static bool operator !=(Coord a, Coord b) => a.X != b.X || a.Y != b.Y;
     public static bool operator ==(Coord a, (int x, int y) b) => a.X == b.x && a.Y == b.y;
