@@ -1,22 +1,28 @@
 using System.Collections.Generic;
-using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Shared.Primitives;
 
 namespace Model.NAbility.TilesSelector {
   public class AlongLineTilesSelector {
-    public AlongLineTilesSelector(IMovement unit) {
+    public AlongLineTilesSelector(IUnit unit) {
       this.unit = unit;
     }
 
-    public IEnumerable<Coord> Select(Coord targetCoord, AiContext context) {
-      foreach (Coord coord in Bresenham.New(targetCoord, unit.Coord)) {
+    public IEnumerable<Coord> Select(Coord targetCoord) {
+      //TODO: expand coord to max ability range based on targetCoord
+      var diff = targetCoord - unit.Coord;
+      var extendedTarget = targetCoord + diff;
+
+      while (CoordExt.SqrDistance(unit.Coord, extendedTarget) > unit.AbilitySqrRadius) 
+        extendedTarget += diff;
+
+      foreach (Coord coord in Bresenham.New(unit.Coord, extendedTarget)) {
+        if (CoordExt.SqrDistance(unit.Coord, coord) > unit.AbilitySqrRadius) break;
+        
         yield return coord;
-        // var additionalTarget = context.TryGetUnit(coord);
-        // if (additionalTarget != null && additionalTarget.Player == target.Player) yield return additionalTarget;
       }
     }
 
-    readonly IMovement unit;
+    readonly IUnit unit;
   }
 }

@@ -62,7 +62,7 @@ namespace Model.NAbility {
       if (!isCached) {
         isCached = true;
         var target = targetSelector.Select(context);
-        TilesSelected = tilesSelector.Select(target.Coord, context);
+        TilesSelected = tilesSelector.Select(target.Coord);
       }
 
       TargetsSelected = context.GetUnits(TilesSelected, player);

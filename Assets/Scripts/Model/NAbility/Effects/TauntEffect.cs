@@ -4,7 +4,6 @@ using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared.Addons.Examples.FixMath;
-using Shared.Shared.Client.Events;
 
 namespace Model.NAbility.Effects {
   public class TauntEffect : IEffect {
