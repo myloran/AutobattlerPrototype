@@ -1,25 +1,19 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Controller.Exts;
 using Controller.NDebug;
-using Model.NBattleSimulation;
-using Model.NUnit;
 using Model.NUnit.Abstraction;
-using Shared;
 using Shared.Exts;
 using Shared.Primitives;
 using UnityEngine;
-using View.Presenters;
 using View.UIs;
 
 namespace Controller.Save {
   public class BattleSaveController {
-    public BattleSaveController(PlayerContext playerContext, PlayerPresenterContext playerPresenterContext,
+    public BattleSaveController(PlayerSharedContext playerContext, 
       BattleSaveUI ui, SaveInfoLoader saveInfoLoader, Dictionary<string, SaveInfo> saves,
       BattleSimulationDebugController battleSimulationController) {
       this.playerContext = playerContext;
-      this.playerPresenterContext = playerPresenterContext;
       this.ui = ui;
       this.saveInfoLoader = saveInfoLoader;
       this.saves = saves;
@@ -53,25 +47,20 @@ namespace Controller.Save {
       Time.timeScale = 0;
       
       playerContext.DestroyAll(); 
-      playerPresenterContext.DestroyAll();
 
       var save = saves[ui.GetSelectedSaveName];
       
       foreach (var (coord, name) in save.Player1BenchUnits) {
         playerContext.InstantiateToBench(name, coord, EPlayer.First);
-        playerPresenterContext.InstantiateToBench(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BenchUnits) {
         playerContext.InstantiateToBench(name, coord, EPlayer.Second);
-        playerPresenterContext.InstantiateToBench(name, coord, EPlayer.Second);
       }
       foreach (var (coord, name) in save.Player1BoardUnits) {
         playerContext.InstantiateToBoard(name, coord, EPlayer.First);
-        playerPresenterContext.InstantiateToBoard(name, coord, EPlayer.First);
       }
       foreach (var (coord, name) in save.Player2BoardUnits) {
         playerContext.InstantiateToBoard(name, coord, EPlayer.Second);
-        playerPresenterContext.InstantiateToBoard(name, coord, EPlayer.Second);
       }
       battleSimulationController.ResetBattle();
       Time.timeScale = timeScaleBefore;
@@ -83,7 +72,6 @@ namespace Controller.Save {
     readonly SaveInfoLoader saveInfoLoader;
     readonly Dictionary<string, SaveInfo> saves;
     readonly BattleSimulationDebugController battleSimulationController;
-    readonly PlayerContext playerContext;
-    readonly PlayerPresenterContext playerPresenterContext;
+    readonly PlayerSharedContext playerContext;
   }
 }

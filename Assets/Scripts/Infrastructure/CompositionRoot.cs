@@ -191,8 +191,8 @@ namespace Infrastructure {
         aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController, battleSimulationPresenter,
         commandDebugUI, testFramework);
       
-      var battleSaveController = new BattleSaveController(playerContext, 
-        playerPresenterContext, BattleSaveUI, saveDataLoader, saves,
+      var battleSaveController = new BattleSaveController(playerSharedContext, 
+        BattleSaveUI, saveDataLoader, saves,
         battleSimulationDebugController);
       
       var battleSetupController = new BattleSetupController(playerContext, 

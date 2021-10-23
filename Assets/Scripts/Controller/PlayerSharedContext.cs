@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Controller.NUnit;
 using Model.NBattleSimulation;
+using Model.NUnit.Abstraction;
 using Shared.Primitives;
 using View.Presenters;
 using View.UIs;
@@ -29,6 +31,14 @@ namespace Controller {
       playerPresenterContext.DestroyAll();
     }
     
+    public void InstantiateToBench(string name, Coord coord, EPlayer first) {
+      playerContext.InstantiateToBench(name, coord, first);
+      playerPresenterContext.InstantiateToBench(name, coord, first);
+    }
+    
+    public Dictionary<Coord, IUnit> GetBenchUnitDict(EPlayer first) => playerContext.GetBenchUnitDict(first);
+    public Dictionary<Coord, IUnit> GetBoardUnitDict(EPlayer first) => playerContext.GetBoardUnitDict(first);
+
     readonly PlayerContext playerContext;
     readonly PlayerPresenterContext playerPresenterContext;
     readonly BattleSetupUI battleSetupUI;
