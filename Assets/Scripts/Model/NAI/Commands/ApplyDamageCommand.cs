@@ -12,19 +12,20 @@ namespace Model.NAI.Commands {
     }
 
     public override void Execute() {
+      unit.AccumulateMana();
+      bus.Raise(new UpdateManaEvent(unit.Mana, unit.Coord));
+      
       if (!unit.TargetExists) return;
       
       var target = unit.Target;
       if (!target.IsAlive) return;
       
-      unit.AccumulateMana();
       target.TakeDamage(unit.Damage);
       
       if (!target.IsAlive) 
         new DeathCommand(target, context).Execute();
       
       bus.Raise(new UpdateHealthEvent(target.Health, target.Coord));
-      bus.Raise(new UpdateManaEvent(unit.Mana, unit.Coord));
       
       if (!target.IsAlive) 
         bus.Raise(new DeathEvent(target.Coord));
