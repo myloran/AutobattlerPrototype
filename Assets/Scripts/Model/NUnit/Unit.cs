@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Model.NAbility;
@@ -13,7 +14,7 @@ using Shared.Primitives;
 namespace Model.NUnit {
   public class Unit : IUnit {
     public Unit(HealthComponent health, AttackComponent attack, MovementComponent movement, TargetingComponent targeting,
-        AiComponent ai, StatsComponent stats, AbilityComponent ability, SilenceComponent silence) {
+        AiComponent ai, StatsComponent stats, AbilityComponent ability, SilenceComponent silence, StunComponent stun) {
       this.health = health;
       this.attack = attack;
       this.movement = movement;
@@ -22,6 +23,7 @@ namespace Model.NUnit {
       this.stats = stats;
       this.ability = ability;
       this.silence = silence;
+      this.stun = stun;
     }
     
     #region Components
@@ -79,6 +81,10 @@ namespace Model.NUnit {
     public IDecisionTreeNode CurrentDecision => ai.CurrentDecision;
     public F32 DecisionTime => ai.DecisionTime;
     public F32 TimeWhenDecisionWillBeExecuted => ai.TimeWhenDecisionWillBeExecuted;
+    public Action<F32> OnDecisionExecutionTimeUpdated {
+      get => ai.OnDecisionExecutionTimeUpdated;
+      set => ai.OnDecisionExecutionTimeUpdated = value;
+    }
     public void MakeDecision(AiContext context) => ai.MakeDecision(context);
     public void SetDecisionTime(F32 currentTime, F32 time) => ai.SetDecisionTime(currentTime, time);
     public void SetDecisionTree(IDecisionTreeNode decisionTree) => ai.SetDecisionTree(decisionTree);
@@ -106,9 +112,13 @@ namespace Model.NUnit {
     public void EndCasting() => ability.EndCasting();
     public void CastAbility(AiContext context) => ability.CastAbility(context);
     public void SetAbility(Ability ability) => this.ability.Ability = ability;
-    public bool IsSilenced(F32 currentTime) => silence.IsSilenced(currentTime);
+    
     public F32 SilenceEndTime => silence.SilenceEndTime;
+    public bool IsSilenced(F32 currentTime) => silence.IsSilenced(currentTime);
     public void ApplySilence(F32 endTime) => silence.ApplySilence(endTime);
+    
+    public F32 StunEndTime => stun.StunEndTime;
+    public void ApplyStun(F32 endTime) => stun.ApplyStun(endTime);
 
     #endregion
     
@@ -121,6 +131,7 @@ namespace Model.NUnit {
       stats.Reset();
       ability.Reset();
       silence.Reset();
+      stun.Reset();
     }
 
     public override string ToString() => new StringBuilder()
@@ -142,5 +153,6 @@ namespace Model.NUnit {
     readonly StatsComponent stats;
     readonly AbilityComponent ability;
     readonly SilenceComponent silence;
+    readonly StunComponent stun;
   }
 }       

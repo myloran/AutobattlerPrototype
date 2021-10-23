@@ -29,12 +29,15 @@ namespace Model.NUnit {
       abilityInfo.TargetingRange = Math.Max(1, abilityInfo.TargetingRange); 
       abilityInfo.AbilityRadius = Math.Max(1, abilityInfo.AbilityRadius); //TODO: add clamping logic for other members
 
-      var abilityComponent = new AbilityComponent(movement, ToF32(abilityInfo.AbilityRadius),
+      var ability = new AbilityComponent(movement, ToF32(abilityInfo.AbilityRadius),
         ToF32(abilityInfo.TargetingRange), ToF32(info.ManaPerAttack), ToF32(abilityInfo.AnimationHitTime), 
         ToF32(abilityInfo.AnimationTotalTime));
 
-      var unit = new Unit(health, attack, movement, new TargetingComponent(), 
-        new AiComponent(), new StatsComponent(name, 1, player), abilityComponent, new SilenceComponent());
+      var ai = new AiComponent();
+      var stun = new StunComponent(attack, ability, ai);
+      
+      var unit = new Unit(health, attack, movement, new TargetingComponent(), ai, 
+        new StatsComponent(name, 1, player), ability, new SilenceComponent(), stun);
 
       unit.SetDecisionTree(decisionFactory.Create(unit));
       unit.SetAbility(abilityFactory.Create(unit, info.AbilityName));

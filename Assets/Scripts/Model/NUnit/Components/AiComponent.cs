@@ -1,3 +1,4 @@
+using System;
 using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
@@ -9,6 +10,7 @@ namespace Model.NUnit.Components {
     public IDecisionTreeNode CurrentDecision { get; private set; }
     public F32 DecisionTime { get; private set; }
     public F32 TimeWhenDecisionWillBeExecuted { get; private set; }
+    public Action<F32> OnDecisionExecutionTimeUpdated { get; set; } = time => { };
 
     public void Reset() {
       CurrentDecision = null;
@@ -26,6 +28,8 @@ namespace Model.NUnit.Components {
 
     public void SetDecisionTree(IDecisionTreeNode decisionTree) => 
       this.decisionTree = decisionTree;
+    
+    public void UpdateNextDecisionExecutionTime(F32 time) => OnDecisionExecutionTimeUpdated(time);
 
     public override string ToString() => $"{nameof(CurrentDecision)}: {CurrentDecision?.GetType().Name}, {nameof(DecisionTime)}: {DecisionTime}, {nameof(TimeWhenDecisionWillBeExecuted)}: {TimeWhenDecisionWillBeExecuted}";
     

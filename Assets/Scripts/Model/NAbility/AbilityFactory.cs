@@ -51,6 +51,7 @@ namespace Model.NAbility {
       if (info.Damage > 0) effects.Add(new DamageEffect(bus, ToF32(info.Damage)));
       if (info.SilenceDuration > 0) effects.Add(new SilenceEffect(bus, ToF32(info.SilenceDuration)));
       if (info.TauntDuration > 0) effects.Add(new TauntEffect(bus, unit, ToF32(info.TauntDuration)));
+      if (info.StunDuration > 0) effects.Add(new StunEffect(bus, ToF32(info.StunDuration)));
 
       ITiming timing = null;
       if (info.Timing == ETiming.Once)

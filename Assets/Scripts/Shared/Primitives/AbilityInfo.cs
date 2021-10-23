@@ -74,29 +74,13 @@ namespace Shared.Primitives {
     public float Damage;
     public float SilenceDuration;
     public float TauntDuration;
+    public float StunDuration;
     
     //visual stuff
     public float AnimationHitTime;
     public float AnimationTotalTime;
 
     public AbilityInfo() { }
-
-    public AbilityInfo(AbilityInfo info) {
-      Name = info.Name;
-      TargetPlayer = info.TargetPlayer;
-      Target = info.Target;
-      UnitTargetingRule = info.UnitTargetingRule;
-      AdditionalTargets = info.AdditionalTargets;
-      Damage = info.Damage;
-      AbilityRadius = info.AbilityRadius;
-      Timing = info.Timing;
-      TimingPeriod = info.TimingPeriod;
-      TimingCount = info.TimingCount;
-      IsTimingOverridden = info.IsTimingOverridden;
-      NeedRecalculateTarget = info.NeedRecalculateTarget;
-      TimingInitialDelay = info.TimingInitialDelay;
-      IsReusingAttackTarget = info.IsReusingAttackTarget;
-    }
   }
 
   public static class AbilityInfoExt {

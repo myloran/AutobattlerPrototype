@@ -8,7 +8,7 @@ namespace Model.NUnit.Components {
     public F32 SilenceEndTime { get; private set; }
     
     public bool IsSilenced(F32 currentTime) => SilenceEndTime >= currentTime;
-    public void ApplySilence(F32 duration) => SilenceEndTime = Max(SilenceEndTime, duration);
+    public void ApplySilence(F32 endTime) => SilenceEndTime = Max(SilenceEndTime, endTime);
     public void Reset() => SilenceEndTime = -MaxBattleDuration;
 
     public override string ToString() => $"{nameof(SilenceEndTime)}: {SilenceEndTime}";
