@@ -108,7 +108,7 @@ namespace Model.NUnit {
     public void SetAbility(Ability ability) => this.ability.Ability = ability;
     public bool IsSilenced(F32 currentTime) => silence.IsSilenced(currentTime);
     public F32 SilenceEndTime => silence.SilenceEndTime;
-    public void ApplySilence(F32 duration) => silence.ApplySilence(duration);
+    public void ApplySilence(F32 endTime) => silence.ApplySilence(endTime);
 
     #endregion
     
