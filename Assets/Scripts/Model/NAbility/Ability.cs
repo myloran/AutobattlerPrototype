@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Model.NAbility.Abstraction;
 using Model.NAbility.TilesSelector;
 using Model.NAI.Commands;
@@ -13,7 +14,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 namespace Model.NAbility {
   public class Ability {
     [JsonIgnore] public readonly IUnit Unit;
-    [JsonIgnore] public IEnumerable<IUnit> TargetsSelected = new List<IUnit>();
+    [JsonIgnore] public IEnumerable<IUnit> TargetsSelected = new List<IUnit>(); //TODO: expose IEnumerable<Coord> for determinism testing
     [JsonIgnore] public IEnumerable<Coord> TilesSelected = new List<Coord>();
 
     public Ability(IUnit unit, EPlayer player, IMainTargetSelector targetSelector,
@@ -107,6 +108,8 @@ namespace Model.NAbility {
       timing.Reset();
       foreach (var ability in nestedAbilities) ability.Reset();
       isCached = false;
+      TargetsSelected = Enumerable.Empty<IUnit>();
+      TilesSelected = Enumerable.Empty<Coord>();
     }
     
     readonly IEnumerable<Ability> nestedAbilities;
