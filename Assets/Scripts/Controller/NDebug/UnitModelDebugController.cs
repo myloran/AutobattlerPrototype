@@ -1,3 +1,4 @@
+using System.Linq;
 using Controller.Update;
 using View.UIs;
 using UniRx;
@@ -30,10 +31,19 @@ namespace Controller.NDebug {
       
       ui.UpdateText(unit + $"\nCurrentTime:{heap.CurrentTime}");
 
-      foreach (var target in unit.Ability.TargetsSelected) {
-        var from = coordFinder.PositionAt(target.Coord);
-        Debug.DrawLine(from, from + Vector3.up, Color.blue);
+      if (unit.Ability.TilesSelected.Any()) {
+        foreach (var tile in unit.Ability.TilesSelected) {
+          var from = coordFinder.PositionAt(tile);
+          Debug.DrawLine(from, from + Vector3.up, Color.blue);
+        }
       }
+      else {
+        foreach (var target in unit.Ability.TargetsSelected) {
+          var from = coordFinder.PositionAt(target.Coord);
+          Debug.DrawLine(from, from + Vector3.up, Color.blue);
+        }
+      }
+
     }
 
     void Hide() => SetActive(false);
