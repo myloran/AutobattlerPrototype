@@ -1,0 +1,11 @@
+{
+  "Name": "GnollAbility",
+  "NestedAbilities": [
+    "DamageOverTime",
+  ],
+  "Target": "Unit",
+  "Damage": 100,  
+  "TargetingRange": 3,
+  "AnimationHitTime": 0.5,
+  "AnimationTotalTime": 1,
+}
