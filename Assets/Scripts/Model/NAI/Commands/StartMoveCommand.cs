@@ -18,9 +18,7 @@ namespace Model.NAI.Commands {
     }
 
     public override void Execute() {
-      context.AddUnit(newCoord, unit);
-      unit.TakenCoord = newCoord;
-      bus.Raise(new StartMoveEvent(unit.Coord, newCoord, startingTime, duration));
+
     }
 
     readonly AiContext context;

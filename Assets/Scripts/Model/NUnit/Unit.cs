@@ -76,6 +76,9 @@ namespace Model.NUnit {
       get => movement.NextMove;
       set => movement.NextMove = value;
     }
+    public bool CanStartMove(F32 currentTime) => movement.CanStartMove(currentTime);
+    public void StartMove(F32 endTime) => movement.StartMove(endTime);
+    public void FinishMove() => movement.FinishMove();
     public F32 TimeToMove(bool isDiagonal = true) => movement.TimeToMove(isDiagonal);
 
     public IDecisionTreeNode CurrentDecision => ai.CurrentDecision;

@@ -14,12 +14,7 @@ namespace Model.NAI.Commands {
     }
 
     public override void Execute() {
-      var from = unit.Coord;
-      context.RemoveUnit(from);
-      unit.Coord = to;
-      unit.TakenCoord = Coord.Invalid;
-      if (!unit.IsTaunted(context.CurrentTime)) unit.ClearTarget();
-      bus.Raise(new FinishMoveEvent(from, to));
+
     }
 
     readonly AiContext context;

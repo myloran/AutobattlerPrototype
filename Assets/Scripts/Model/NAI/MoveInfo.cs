@@ -20,5 +20,7 @@ namespace Model.NAI {
       coord = Coord;
       time = Time;
     }
+
+    public override string ToString() => $"{nameof(Coord)}: {Coord}, {nameof(Time)}: {Time}";
   }
 }
