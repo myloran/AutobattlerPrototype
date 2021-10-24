@@ -34,7 +34,7 @@ namespace Model.NUnit {
         ToF32(abilityInfo.AnimationTotalTime));
 
       var ai = new AiComponent();
-      var stun = new StunComponent(attack, ability, ai);
+      var stun = new StunComponent(attack, ability, ai, movement);
       
       var unit = new Unit(health, attack, movement, new TargetingComponent(), ai, 
         new StatsComponent(name, 1, player), ability, new SilenceComponent(), stun);

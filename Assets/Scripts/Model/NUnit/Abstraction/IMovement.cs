@@ -8,10 +8,12 @@ namespace Model.NUnit.Abstraction {
     Coord TakenCoord { get; set; }
     Coord Coord { get; set; }
     MoveInfo NextMove { get; set; }
+    F32 MovementTimeLeft { get; }
+    bool WasMovePaused { get; }
 
-    bool CanStartMove(F32 currentTime);
-    void StartMove(F32 endTime);
-    void FinishMove();
+    bool CanStartMovement(F32 currentTime);
+    void StartMovement(F32 endTime);
+    void FinishMovement();
     F32 TimeToMove(bool isDiagonal = true);
   }
 }

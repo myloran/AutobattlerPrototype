@@ -10,7 +10,7 @@ namespace Model.NAI.Actions {
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var (coord, time) = Unit.NextMove;
-      Unit.StartMove(context.CurrentTime + time);
+      Unit.StartMovement(context.CurrentTime + time);
       context.AddUnit(coord, Unit);
       context.InsertCommand(time, new MakeDecisionCommand(Unit, context, time));
       

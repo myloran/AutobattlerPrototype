@@ -1,0 +1,11 @@
+{
+  "Name": "RunePriestAbility",
+  "AbilityOrigin": "Self",  
+  "AdditionalTargets": "WithinRadius",
+  "TargetingRange": 3,
+  "AbilityRadius": 3,
+  "Damage": 50,
+  "StunDuration": 5,
+  "AnimationHitTime": 0.5,
+  "AnimationTotalTime": 1,
+}

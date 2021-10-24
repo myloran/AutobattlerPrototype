@@ -13,7 +13,7 @@ namespace Model.NAI.Actions {
       var from = Unit.Coord;
       var to = Unit.NextMove.Coord;
       
-      Unit.FinishMove();
+      Unit.FinishMovement();
       if (!Unit.IsTaunted(context.CurrentTime)) Unit.ClearTarget();
       
       context.RemoveUnit(from);

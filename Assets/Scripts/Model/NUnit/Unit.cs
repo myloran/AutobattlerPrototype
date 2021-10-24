@@ -76,9 +76,11 @@ namespace Model.NUnit {
       get => movement.NextMove;
       set => movement.NextMove = value;
     }
-    public bool CanStartMove(F32 currentTime) => movement.CanStartMove(currentTime);
-    public void StartMove(F32 endTime) => movement.StartMove(endTime);
-    public void FinishMove() => movement.FinishMove();
+    public F32 MovementTimeLeft => movement.MovementTimeLeft;
+    public bool WasMovePaused => movement.WasMovePaused;
+    public bool CanStartMovement(F32 currentTime) => movement.CanStartMovement(currentTime);
+    public void StartMovement(F32 endTime) => movement.StartMovement(endTime);
+    public void FinishMovement() => movement.FinishMovement();
     public F32 TimeToMove(bool isDiagonal = true) => movement.TimeToMove(isDiagonal);
 
     public IDecisionTreeNode CurrentDecision => ai.CurrentDecision;
@@ -121,7 +123,7 @@ namespace Model.NUnit {
     public void ApplySilence(F32 endTime) => silence.ApplySilence(endTime);
     
     public F32 StunEndTime => stun.StunEndTime;
-    public void ApplyStun(F32 endTime) => stun.ApplyStun(endTime);
+    public void ApplyStun(F32 currentTime, F32 duration) => stun.ApplyStun(currentTime, duration);
 
     #endregion
     
@@ -141,11 +143,12 @@ namespace Model.NUnit {
       .Append(health).Append("\n")
       .Append(attack).Append("\n")
       .Append(movement).Append("\n")
+      .Append(targeting).Append("\n")
       .Append(ai).Append("\n")
       .Append(stats).Append("\n")
       .Append(ability).Append("\n")
       .Append(silence).Append("\n")
-      .Append(targeting).Append("\n")
+      .Append(stun).Append("\n")
       .ToString();
     
     readonly HealthComponent health;

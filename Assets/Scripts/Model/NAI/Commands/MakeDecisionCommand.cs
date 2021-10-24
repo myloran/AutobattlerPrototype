@@ -11,20 +11,19 @@ namespace Model.NAI.Commands {
       this.ai = ai;
       this.context = context;
       ai.SetDecisionTime(context.CurrentTime, time);
-      ai.OnDecisionExecutionTimeUpdated += OnDecisionExecutionTimeUpdated(context);
+      ai.OnDecisionExecutionTimeUpdated += OnDecisionExecutionTimeUpdated;
     }
 
-    Action<F32> OnDecisionExecutionTimeUpdated(AiContext context) =>
-      newTime => {
-        ai.OnDecisionExecutionTimeUpdated -= OnDecisionExecutionTimeUpdated(context);
-        context.InsertCommand(newTime, new MakeDecisionCommand(Unit, context, newTime));
-        isCurrentDecisionInvalidated = true;
-      };
+    void OnDecisionExecutionTimeUpdated(F32 time) {
+      ai.OnDecisionExecutionTimeUpdated -= OnDecisionExecutionTimeUpdated;
+      context.InsertCommand(time, new MakeDecisionCommand(Unit, context, time));
+      isCurrentDecisionInvalidated = true;
+    }
 
     public override void Execute() {
       if (isCurrentDecisionInvalidated) return;
       
-      ai.OnDecisionExecutionTimeUpdated -= OnDecisionExecutionTimeUpdated(context);
+      ai.OnDecisionExecutionTimeUpdated -= OnDecisionExecutionTimeUpdated;
       ai.MakeDecision(context);
     }
 

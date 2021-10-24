@@ -17,7 +17,7 @@ namespace Model.NAbility.Effects {
       foreach (var unit in units) {
         if (!unit.IsAlive) return;
         
-        unit.ApplyStun(context.CurrentTime + duration);
+        unit.ApplyStun(context.CurrentTime, duration);
         // bus.Raise(new UpdateSilenceDurationEvent(unit.SilenceEndTime, unit.Coord));
       }
     }

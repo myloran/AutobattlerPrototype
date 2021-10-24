@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Action
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -136, y: -136}
+  position: {x: -392, y: -168}
   ports:
     keys:
     - Input
@@ -32,6 +32,66 @@ MonoBehaviour:
       _dynamic: 0
   Input: 0
   typeId: 2
+--- !u!114 &-8281485736781659700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9299d933e196941b2bb68892e19626, type: 3}
+  m_Name: Decision
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -392, y: -344}
+  ports:
+    keys:
+    - Input
+    - Output1
+    - Output2
+    values:
+    - _fieldName: Input
+      _node: {fileID: -8281485736781659700}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Output1
+        node: {fileID: -1670534342119498710}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output1
+      _node: {fileID: -8281485736781659700}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Input
+        node: {fileID: 402570179237598364}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output2
+      _node: {fileID: -8281485736781659700}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Input
+        node: {fileID: 8152386262404495189}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Input: 0
+  Output1: 0
+  Output2: 0
+  typeId: 18
 --- !u!114 &-8209366726961965468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,7 +307,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   Input: 0
-  typeId: 11
+  typeId: 12
 --- !u!114 &-1670534342119498710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,7 +321,7 @@ MonoBehaviour:
   m_Name: Decision
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -424, y: -216}
+  position: {x: -680, y: -248}
   ports:
     keys:
     - Output2
@@ -286,7 +346,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: Input
-        node: {fileID: 8152386262404495189}
+        node: {fileID: -8281485736781659700}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -337,6 +397,8 @@ MonoBehaviour:
   - {fileID: 8810023551513669998}
   - {fileID: 8152386262404495189}
   - {fileID: -3057171753624325325}
+  - {fileID: -8281485736781659700}
+  - {fileID: 402570179237598364}
   DecisionTypeNames:
   - CanMove
   - CanStartAttack
@@ -356,6 +418,7 @@ MonoBehaviour:
   - IsRanged
   - HasAttackStarted
   - HasMoveStarted
+  - WasMoveInterrupted
   ActionTypeNames:
   - StartMove
   - MeleeAttack
@@ -368,9 +431,10 @@ MonoBehaviour:
   - Cast
   - StartCastAction
   - RangedAttack
+  - DelayMove
   - FinishMove
-  DecisionTypeIds: 0b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000190000001a0000001b0000001c0000001e0000001f000000
-  ActionTypeIds: 030000000400000005000000060000000700000008000000090000000a00000017000000180000001d00000022000000
+  DecisionTypeIds: 0b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000190000001a0000001b0000001c0000001e0000001f00000020000000
+  ActionTypeIds: 030000000400000005000000060000000700000008000000090000000a00000017000000180000001d0000002100000022000000
 --- !u!114 &291341365006821784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,7 +480,7 @@ MonoBehaviour:
   m_Name: Action
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -424, y: -328}
+  position: {x: -680, y: -360}
   ports:
     keys:
     - Input
@@ -435,6 +499,38 @@ MonoBehaviour:
       _dynamic: 0
   Input: 0
   typeId: 2
+--- !u!114 &402570179237598364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 592f411b75506c2428ef1c89b0159c55, type: 3}
+  m_Name: Action
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: -408}
+  ports:
+    keys:
+    - Input
+    values:
+    - _fieldName: Input
+      _node: {fileID: 402570179237598364}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Output1
+        node: {fileID: -8281485736781659700}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  Input: 0
+  typeId: 11
 --- !u!114 &444331210760418372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,7 +604,7 @@ MonoBehaviour:
   m_Name: Decision Tree Saver
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -968, y: -264}
+  position: {x: -1224, y: -296}
   ports:
     keys:
     - Output
@@ -599,7 +695,7 @@ MonoBehaviour:
   m_Name: Decision
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -696, y: -264}
+  position: {x: -952, y: -296}
   ports:
     keys:
     - Output2
@@ -691,7 +787,7 @@ MonoBehaviour:
   m_Name: Decision
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -136, y: -296}
+  position: {x: -136, y: -280}
   ports:
     keys:
     - Input
@@ -703,8 +799,8 @@ MonoBehaviour:
       _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: Output1
-        node: {fileID: -1670534342119498710}
+      - fieldName: Output2
+        node: {fileID: -8281485736781659700}
         reroutePoints: []
       _direction: 0
       _connectionType: 1
