@@ -10,9 +10,8 @@ using View.NTile;
 using View.Presenters;
 
 namespace Controller.NBattleSimulation {
-  public class MovementController : IEventHandler<StartMoveEvent>, 
-      IEventHandler<FinishMoveEvent>, IEventHandler<RotateEvent>, 
-      ISimulationTick, IReset {
+  public class MovementController : IEventHandler<StartMoveEvent>, IEventHandler<FinishMoveEvent>, 
+    IEventHandler<PauseMoveEvent>, IEventHandler<ContinueMoveEvent>, IEventHandler<RotateEvent>, ISimulationTick, IReset {
     public MovementController(BoardPresenter board, CoordFinder finder) {
       this.board = board;
       this.finder = finder;
@@ -33,6 +32,9 @@ namespace Controller.NBattleSimulation {
       board.MoveUnit(e.From, e.To);
     }
     
+    public void HandleEvent(PauseMoveEvent e) => routines[e.Coord].Pause(e.PauseDuration.Float);
+    public void HandleEvent(ContinueMoveEvent e) => routines[e.Coord].Unpause(); 
+
     public void HandleEvent(RotateEvent e) {
       var unit = board.TryGetUnit(e.From);
       if (unit == null) return;

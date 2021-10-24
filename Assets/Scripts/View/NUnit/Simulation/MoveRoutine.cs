@@ -17,14 +17,26 @@ namespace View {
     }
     
     public void SimulationTick(float time) {
-      var timeClamped = Mathf.Clamp(time, startTime, EndTime);
+      if (isPaused) return;
+      
+      var adjustedTime = time - pauseTimeLeft;
+      var timeClamped = Mathf.Clamp(adjustedTime, startTime, EndTime);
       var durationPassed = timeClamped - startTime;
       var t = durationPassed / duration;
       Obj.transform.position = Vector3.Lerp(from, to, t);
     }
+    
+    public void Pause(float durationLeft) {
+      isPaused = true;
+      pauseTimeLeft += durationLeft;
+    }
+    
+    public void Unpause() => isPaused = false;
 
     readonly Vector3 from;
     readonly Vector3 to;
     readonly float duration, startTime;
+    float pauseTimeLeft;
+    bool isPaused;
   }
 }

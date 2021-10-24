@@ -11,7 +11,7 @@ namespace Model.NUnit.Components {
     public Coord TakenCoord { get; set; } = Coord.Invalid; //make private
     public Coord Coord { get; set; }
     public MoveInfo NextMove { get; set; }
-    public bool WasMovePaused { get; private set; }
+    public bool IsMovePaused { get; private set; }
     public F32 MovementTimeLeft { get; private set; } = MaxBattleDuration; 
     
     public MovementComponent(Coord coord, F32 speed) {
@@ -24,7 +24,7 @@ namespace Model.NUnit.Components {
     public void StartMovement(F32 endTime) {
       moveEndTime = endTime;
       TakenCoord = NextMove.Coord;
-      WasMovePaused = false;
+      IsMovePaused = false;
     }
 
     public void FinishMovement() {
@@ -34,7 +34,7 @@ namespace Model.NUnit.Components {
     }
 
     public void TryPauseMovement(F32 currentTime) {
-      WasMovePaused = TakenCoord != Coord.Invalid;
+      IsMovePaused = TakenCoord != Coord.Invalid;
       MovementTimeLeft = moveEndTime - currentTime;
     }
 
@@ -46,11 +46,11 @@ namespace Model.NUnit.Components {
       TakenCoord = Coord.Invalid;
       NextMove = new MoveInfo();
       moveEndTime = -MaxBattleDuration;
-      WasMovePaused = false;
+      IsMovePaused = false;
       MovementTimeLeft = MaxBattleDuration;
     }
 
-    public override string ToString() => $"{nameof(StartingCoord)}: {StartingCoord}, {nameof(TakenCoord)}: {TakenCoord}, {nameof(Coord)}: {Coord}, {nameof(speed)}: {speed}, {nameof(moveEndTime)}: {moveEndTime}, {nameof(NextMove)}: {NextMove}, {nameof(WasMovePaused)}: {WasMovePaused}, {nameof(MovementTimeLeft)}: {MovementTimeLeft}";
+    public override string ToString() => $"{nameof(StartingCoord)}: {StartingCoord}, {nameof(TakenCoord)}: {TakenCoord}, {nameof(Coord)}: {Coord}, {nameof(speed)}: {speed}, {nameof(moveEndTime)}: {moveEndTime}, {nameof(NextMove)}: {NextMove}, {nameof(IsMovePaused)}: {IsMovePaused}, {nameof(MovementTimeLeft)}: {MovementTimeLeft}";
     
     static F32 Straight => One;
     static F32 Diagonal => Sqrt(Two);

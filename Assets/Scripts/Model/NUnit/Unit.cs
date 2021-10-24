@@ -77,7 +77,7 @@ namespace Model.NUnit {
       set => movement.NextMove = value;
     }
     public F32 MovementTimeLeft => movement.MovementTimeLeft;
-    public bool WasMovePaused => movement.WasMovePaused;
+    public bool IsMovePaused => movement.IsMovePaused;
     public bool CanStartMovement(F32 currentTime) => movement.CanStartMovement(currentTime);
     public void StartMovement(F32 endTime) => movement.StartMovement(endTime);
     public void FinishMovement() => movement.FinishMovement();
@@ -122,6 +122,7 @@ namespace Model.NUnit {
     public bool IsSilenced(F32 currentTime) => silence.IsSilenced(currentTime);
     public void ApplySilence(F32 endTime) => silence.ApplySilence(endTime);
     
+    public F32 StunEndTime => stun.StunEndTime;
     public void ApplyStun(F32 currentTime, F32 duration) => stun.ApplyStun(currentTime, duration);
 
     #endregion

@@ -165,10 +165,13 @@ namespace Infrastructure {
       var attackController = new AttackController(boardPresenter, unitTooltipController);
       var animationController = new AnimationController(boardPresenter);
       var silenceController = new SilenceController(boardPresenter);
+      var stunController = new StunController(boardPresenter);
       var projectileController = new ProjectileController(boardPresenter, coordFinder);
 
-      var compositeSimulationTick = new CompositeSimulationTick(movementController, silenceController, projectileController);
-      var compositeReset = new CompositeReset(movementController, silenceController, projectileController);
+      var compositeSimulationTick = new CompositeSimulationTick(movementController, silenceController, 
+        stunController, projectileController);
+      var compositeReset = new CompositeReset(movementController, silenceController, stunController,
+        projectileController);
       
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, compositeSimulationTick, compositeReset);
@@ -239,6 +242,8 @@ namespace Infrastructure {
       eventBus.Register<StartMoveEvent>(movementController, animationController); //TODO: register implicitly?
       eventBus.Register<FinishMoveEvent>(movementController);
       eventBus.Register<RotateEvent>(movementController);
+      eventBus.Register<PauseMoveEvent>(movementController);
+      eventBus.Register<ContinueMoveEvent>(movementController);
       eventBus.Register<UpdateHealthEvent>(attackController);
       eventBus.Register<UpdateManaEvent>(attackController);
       eventBus.Register<DeathEvent>(attackController);
@@ -246,6 +251,7 @@ namespace Infrastructure {
       eventBus.Register<StartAttackEvent>(animationController);
       eventBus.Register<StartCastEvent>(animationController);
       eventBus.Register<UpdateSilenceDurationEvent>(silenceController);
+      eventBus.Register<UpdateStunDurationEvent>(stunController);
       eventBus.Register<SpawnProjectileEvent>(projectileController);
 
       #endregion

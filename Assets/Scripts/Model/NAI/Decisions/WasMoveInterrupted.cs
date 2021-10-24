@@ -6,6 +6,6 @@ namespace Model.NAI.Decisions {
     public override EDecisionTreeType Type { get; } = EDecisionTreeType.WasMoveInterrupted;
     public override IDecisionTreeNode Clone() => BaseClone(this, new WasMoveInterrupted());
     
-    protected override bool GetBranch(AiContext context) => Unit.WasMovePaused;
+    protected override bool GetBranch(AiContext context) => Unit.IsMovePaused;
   }
 }
