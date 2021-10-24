@@ -122,7 +122,6 @@ namespace Model.NUnit {
     public bool IsSilenced(F32 currentTime) => silence.IsSilenced(currentTime);
     public void ApplySilence(F32 endTime) => silence.ApplySilence(endTime);
     
-    public F32 StunEndTime => stun.StunEndTime;
     public void ApplyStun(F32 currentTime, F32 duration) => stun.ApplyStun(currentTime, duration);
 
     #endregion

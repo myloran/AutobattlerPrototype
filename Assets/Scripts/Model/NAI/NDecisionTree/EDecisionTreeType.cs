@@ -34,7 +34,7 @@ namespace Model.NAI.NDecisionTree {
     HasAttackStarted = 30,
     HasMoveStarted = 31,
     WasMoveInterrupted = 32,
-    DelayMove = 33,
+    ContinueMove = 33,
     FinishMove = 34,
   }
 }

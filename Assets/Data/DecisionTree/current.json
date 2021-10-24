@@ -10,7 +10,7 @@
       "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",
       "OnTrue": {
         "$type": "Controller.DecisionTree.Data.ActionData, DecisionTreeGraph",
-        "Type": "DelayMove"
+        "Type": "ContinueMove"
       },
       "OnFalse": {
         "$type": "Controller.DecisionTree.Data.DecisionData, DecisionTreeGraph",

@@ -4,9 +4,9 @@ using Model.NBattleSimulation;
 using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Actions {
-  public class DelayMoveAction : BaseAction {
-    public override EDecisionTreeType Type { get; } = EDecisionTreeType.DelayMove;
-    public override IDecisionTreeNode Clone() => BaseClone(this, new DelayMoveAction());
+  public class ContinueMoveAction : BaseAction {
+    public override EDecisionTreeType Type { get; } = EDecisionTreeType.ContinueMove;
+    public override IDecisionTreeNode Clone() => BaseClone(this, new ContinueMoveAction());
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       Unit.StartMovement(context.CurrentTime + Unit.MovementTimeLeft);
