@@ -35,6 +35,7 @@ namespace View.NUnit {
       var silenceCross = obj.GetComponentInChildren<SilenceCross>()
         .Init(mainCamera);
       
+      obj.name = name;
       obj.Animator = obj.GetComponentInChildren<Animator>();
       obj.Animator.runtimeAnimatorController = viewInfo.AnimatorController;
       obj.Animator.applyRootMotion = false;
