@@ -188,11 +188,20 @@ namespace Infrastructure {
       var commandButtonStyler = new CommandButtonStyler(boardPresenter);
       var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandDebugWindowUI);
       var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandDebugWindowUI);
-      var testFramework = new TestFramework(playerSharedContext);
+      
+      var battleTests = new List<IBattleTest> {
+        new SilenceTest(playerSharedContext),
+        new WithinRadiusTest(playerSharedContext),
+        new TauntTest(playerSharedContext),
+        new PeriodicStunTest(playerSharedContext),
+        new SecondStunDuringMovementShouldApplyDifferenceOnly(playerSharedContext),
+        new StunTest(playerSharedContext),
+      };
+      var battleTestController = new BattleTestController(BattleSimulationUI, battleTests);
       
       var battleSimulationDebugController = new BattleSimulationDebugController(battleSimulation, BattleSimulationUI, 
         aiContext, playerContext, playerPresenterContext, realtimeBattleSimulationController, battleSimulationPresenter,
-        commandDebugUI, testFramework);
+        commandDebugUI, battleTestController);
       
       var battleSaveController = new BattleSaveController(playerSharedContext, 
         BattleSaveUI, saveDataLoader, saves,
@@ -269,6 +278,7 @@ namespace Infrastructure {
       battleSaveController.SubToUI();
       battleSetupController.SubToUI();
       unitModelDebugController.SubToUnitSelection(disposable);
+      battleTestController.SubToUI();
       battleSimulationDebugController.SubToUI(disposable);
       commandEvents.Init(disposable);
       commandsDebugController.Init();

@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UniRx;
 using UnityEngine.UI;
 
@@ -7,6 +8,13 @@ namespace Controller.Exts {
     public static void Sub(this Button button, Action action) =>
       button.onClick.AsObservable().Subscribe(_ => action()).AddTo(button);
     
+    public static IObservable<int> OnValueChangedAsObservable(this TMP_Dropdown toggle) =>
+      Observable.CreateWithState<int, TMP_Dropdown>(toggle, (t, observer) =>
+      {
+        observer.OnNext(t.value);
+        return t.onValueChanged.AsObservable().Subscribe(observer);
+      });
+
     public static IDisposable Subscribe<T>(this IObservable<T> self, Action action) => 
       self.Subscribe(_ => action());
     

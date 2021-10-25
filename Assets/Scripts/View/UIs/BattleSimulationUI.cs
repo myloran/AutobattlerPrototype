@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine.UI;
+using View.Exts;
 
 namespace View.UIs {
   public class BattleSimulationUI : AutoReferencer<BattleSimulationUI> {
@@ -9,7 +12,10 @@ namespace View.UIs {
       OPause,
       OTestMode;
     public Slider SSpeed;
-
+    public TMP_Dropdown DBattleTest;
+    
+    public void SetBattleTests(IEnumerable<string> names) => DBattleTest.ResetOptions(names);
+    public string GetSelectedBattleTest => DBattleTest.options[DBattleTest.value].text;
     public void Disable() => SetEnabled(false);
 
     public void SetEnabled(bool isOn) {

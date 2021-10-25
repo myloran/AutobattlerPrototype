@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Controller.Exts;
 using Controller.NBattleSimulation;
 using Controller.TestCases;
@@ -13,7 +14,7 @@ namespace Controller.NDebug {
     public BattleSimulationDebugController(BattleSimulation simulation, BattleSimulationUI ui, AiContext context, 
         PlayerContext playerContext, PlayerPresenterContext playerPresenterContext, 
         RealtimeBattleSimulationController realtimeBattleSimulationController,
-        BattleSimulationPresenter simulationPresenter, CommandDebugUI commandDebugUI, TestFramework testFramework) {
+        BattleSimulationPresenter simulationPresenter, CommandDebugUI commandDebugUI, BattleTestController battleTestController) {
       this.simulation = simulation;
       this.ui = ui;
       this.context = context;
@@ -22,7 +23,7 @@ namespace Controller.NDebug {
       this.realtimeBattleSimulationController = realtimeBattleSimulationController;
       this.simulationPresenter = simulationPresenter;
       this.commandDebugUI = commandDebugUI;
-      this.testFramework = testFramework;
+      this.battleTestController = battleTestController;
     }
 
     public void SubToUI(CompositeDisposable disposable) {
@@ -71,18 +72,17 @@ namespace Controller.NDebug {
     void BattleControlSubs() {
       ui.OStart.OnValueChangedAsObservable().Subscribe(ResetBattle).AddTo(ui.OStart);
       ui.OPause.OnValueChangedAsObservable().Subscribe(SetPaused).AddTo(ui.OPause);
-      ui.OTestMode.OnValueChangedAsObservable().Subscribe(SetTestMode).AddTo(ui.OPause);
       ui.SSpeed.OnValueChangedAsObservable().Subscribe(SetSpeed).AddTo(ui.SSpeed);
     }
 
-    void SetTestMode(bool isTestMode) => testFramework.IsOn = isTestMode;
-
     public void ResetBattle() {
       realtimeBattleSimulationController.StopBattle();
-      if (testFramework.IsOn) testFramework.Reset();
+      battleTestController.Reset();
       simulationPresenter.Reset(playerPresenterContext);
+      
       simulation.PrepareBattle(playerContext);
-      if (testFramework.IsOn) testFramework.PrepareState();
+      battleTestController.PrepareState();
+      
       simulation.StartBattle();
       ui.SetEnabled(!simulation.IsBattleOver);
     }
@@ -115,7 +115,7 @@ namespace Controller.NDebug {
     readonly BattleSimulationUI2 ui2;
     readonly BattleSimulationPresenter simulationPresenter;
     readonly CommandDebugUI commandDebugUI;
-    readonly TestFramework testFramework;
+    readonly BattleTestController battleTestController;
     readonly BattleSimulationUI ui;
     readonly AiContext context;
     readonly PlayerContext playerContext;
