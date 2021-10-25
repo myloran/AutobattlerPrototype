@@ -243,7 +243,7 @@ namespace Infrastructure {
       eventBus.Register<FinishMoveEvent>(movementController);
       eventBus.Register<RotateEvent>(movementController);
       eventBus.Register<PauseMoveEvent>(movementController);
-      eventBus.Register<ContinueMoveEvent>(movementController);
+      eventBus.Register<ContinueMoveEvent>(movementController, animationController);
       eventBus.Register<UpdateHealthEvent>(attackController);
       eventBus.Register<UpdateManaEvent>(attackController);
       eventBus.Register<DeathEvent>(attackController);
@@ -251,7 +251,7 @@ namespace Infrastructure {
       eventBus.Register<StartAttackEvent>(animationController);
       eventBus.Register<StartCastEvent>(animationController);
       eventBus.Register<UpdateSilenceDurationEvent>(silenceController);
-      eventBus.Register<UpdateStunDurationEvent>(stunController);
+      eventBus.Register<UpdateStunDurationEvent>(stunController, animationController);
       eventBus.Register<SpawnProjectileEvent>(projectileController);
 
       #endregion

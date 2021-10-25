@@ -7,9 +7,9 @@ namespace Controller.TestCases {
       battleTest = new SilenceTest(playerContext);
       battleTest = new WithinRadiusTest(playerContext);
       battleTest = new TauntTest(playerContext);
-      battleTest = new StunTest(playerContext);
       battleTest = new PeriodicStunTest(playerContext);
       battleTest = new SecondStunDuringMovementShouldApplyDifferenceOnly(playerContext);
+      battleTest = new StunTest(playerContext);
     }
 
     public void Reset() => battleTest.Reset();
