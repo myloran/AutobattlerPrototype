@@ -32,8 +32,8 @@ namespace Controller.NBattleSimulation {
       board.MoveUnit(e.From, e.To);
     }
     
-    public void HandleEvent(PauseMoveEvent e) => routines[e.Coord].Pause(e.PauseDuration.Float);
-    public void HandleEvent(ContinueMoveEvent e) => routines[e.Coord].Unpause(); 
+    public void HandleEvent(PauseMoveEvent e) => routines[e.Coord].Pause();
+    public void HandleEvent(ContinueMoveEvent e) => routines[e.Coord].Unpause(e.StartingTime.Float, e.Duration.Float); 
 
     public void HandleEvent(RotateEvent e) {
       var unit = board.TryGetUnit(e.From);

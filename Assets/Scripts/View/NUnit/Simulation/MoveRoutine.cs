@@ -4,7 +4,7 @@ using UnityEngine;
 namespace View {
   public class MoveRoutine : ISimulationTick {
     public readonly Transform Obj;
-    public readonly float EndTime;
+    public float EndTime { get; private set; }
 
     public MoveRoutine(Transform obj, Vector3 from, Vector3 to, 
         float startTime, float duration) {
@@ -19,24 +19,26 @@ namespace View {
     public void SimulationTick(float time) {
       if (isPaused) return;
       
-      var adjustedTime = time - pauseTimeLeft;
-      var timeClamped = Mathf.Clamp(adjustedTime, startTime, EndTime);
+      var timeClamped = Mathf.Clamp(time, startTime, EndTime);
       var durationPassed = timeClamped - startTime;
       var t = durationPassed / duration;
       Obj.transform.position = Vector3.Lerp(from, to, t);
     }
-    
-    public void Pause(float durationLeft) {
-      isPaused = true;
-      pauseTimeLeft += durationLeft;
-    }
-    
-    public void Unpause() => isPaused = false;
 
-    readonly Vector3 from;
+    public void Pause() => isPaused = true;
+    
+    public void Unpause(float startTime, float duration) {
+      this.startTime = startTime;
+      this.duration = duration;
+      isPaused = false;
+      from = Obj.transform.position;
+      EndTime = startTime + duration;
+    }
+
+    Vector3 from;
     readonly Vector3 to;
-    readonly float duration, startTime;
-    float pauseTimeLeft;
+    float duration;
+    float startTime;
     bool isPaused;
   }
 }

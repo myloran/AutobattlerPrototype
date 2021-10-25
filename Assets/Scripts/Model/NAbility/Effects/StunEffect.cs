@@ -5,7 +5,6 @@ using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared.Addons.Examples.FixMath;
 using Shared.Shared.Client.Events;
-using static Shared.Const;
 
 namespace Model.NAbility.Effects {
   public class StunEffect : IEffect {
@@ -18,16 +17,10 @@ namespace Model.NAbility.Effects {
       foreach (var unit in units) {
         if (!unit.IsAlive) return;
 
-        var oldStunEndTime = unit.StunEndTime == -MaxBattleDuration ? F32.Zero : unit.StunEndTime;
         unit.ApplyStun(context.CurrentTime, duration);
         
         bus.Raise(new UpdateStunDurationEvent(unit.StunEndTime, unit.Coord));
-        if (unit.IsMovePaused) {
-          var movementAlreadyDone = unit.NextMove.Time - unit.MovementTimeLeft; 
-          var stunDurationLeft = unit.StunEndTime - oldStunEndTime;
-          var pauseDuration = stunDurationLeft - movementAlreadyDone;
-          bus.Raise(new PauseMoveEvent(pauseDuration, unit.Coord));
-        }
+        if (unit.IsMovePaused) bus.Raise(new PauseMoveEvent(unit.Coord));
       }
     }
 

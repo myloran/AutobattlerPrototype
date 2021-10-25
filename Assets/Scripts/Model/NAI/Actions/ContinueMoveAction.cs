@@ -13,7 +13,7 @@ namespace Model.NAI.Actions {
       context.AddUnit(Unit.TakenCoord, Unit);
       context.InsertCommand(Unit.MovementTimeLeft, new MakeDecisionCommand(Unit, context, Unit.MovementTimeLeft));
       
-      Bus.Raise(new ContinueMoveEvent(Unit.Coord));
+      Bus.Raise(new ContinueMoveEvent(Unit.Coord, context.CurrentTime, Unit.MovementTimeLeft));
       return this;
     }
   }
