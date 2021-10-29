@@ -57,7 +57,7 @@ namespace Model.NAbility {
       if (info.Timing == ETiming.Once)
         timing = new OnceTiming();
       else if (info.Timing == ETiming.Period) 
-        timing = new PeriodTiming(ToF32(info.TimingPeriod), info.TimingCount, ToF32(info.TimingInitialDelay));
+        timing = new PeriodTiming(ToF32(info.TimingInitialDelay), ToF32(info.TimingPeriod), info.TimingCount);
 
       var nestedAbilities = info.NestedAbilities.Select(a => Create(unit, a)).ToList();
 

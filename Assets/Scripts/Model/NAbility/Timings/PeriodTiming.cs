@@ -1,38 +1,27 @@
 using Model.NAbility.Abstraction;
 using Shared.Addons.Examples.FixMath;
-using static Shared.Const;
 
 namespace Model.NAbility.Timings {
   public class PeriodTiming : ITiming {
+    public F32 InitialDelay { get; }
     public F32 Period { get; }
+    public bool InitialDelayHandled { get; set; }
 
-    public PeriodTiming(F32 period, int count, F32 initialDelay) {
+    public PeriodTiming(F32 initialDelay, F32 period, int count) {
       Period = period;
+      InitialDelay = initialDelay;
       this.count = count;
-      this.initialDelay = initialDelay;
     }
 
     public bool HasNext() => periodsTaken < count;
+    public void TakeNext() => periodsTaken++;
     
-    public F32 GetNext(F32 currentTime) {
-      if (lastPeriodTime == -MaxBattleDuration)
-        return initialDelay;
-      return currentTime - lastPeriodTime;
-    }
-
-    public void TakeNext(F32 currentTime) {
-      lastPeriodTime = currentTime + Period; 
-      periodsTaken++;
-    }
-
     public void Reset() {
-      lastPeriodTime = -MaxBattleDuration;
       periodsTaken = 0;
+      InitialDelayHandled = false;
     }
 
-    readonly F32 initialDelay;
     readonly int count;
-    F32 lastPeriodTime;
     int periodsTaken;
   }
 }

@@ -34,7 +34,11 @@ namespace Model.NAbility {
       this.nestedAbilities = nestedAbilities ?? new List<Ability>();
     }
 
-    public void Cast(AiContext context) => Cast(Zero, context);
+    public void Cast(AiContext context) {
+      Cast(Zero, context);
+      
+    }
+
     void Cast(F32 time, AiContext context) => context.InsertCommand(time, new ExecuteAbilityCommand(this, context));
     public IUnit SelectTarget(AiContext context) => targetSelector.Select(context);
 
@@ -72,14 +76,24 @@ namespace Model.NAbility {
     }
 
     void HandleTiming(AiContext context, IEnumerable<IUnit> targets, Action<AiContext, IEnumerable<IUnit>> applyEffects) {
-      if (timing.GetNext(context.CurrentTime) == Zero) {
-        timing.TakeNext(context.CurrentTime);
-        applyEffects(context, targets);
+      if (!timing.InitialDelayHandled)
+      {
+        timing.InitialDelayHandled = true;
+
+        if (timing.InitialDelay == Zero)
+          ApplyEffectsNow(context, targets, applyEffects);
+        else
+          Cast(timing.InitialDelay, context);
       }
+      else ApplyEffectsNow(context, targets, applyEffects);
+    }
 
-      if (!timing.HasNext()) return;
+    void ApplyEffectsNow(AiContext context, IEnumerable<IUnit> targets, Action<AiContext, IEnumerable<IUnit>> applyEffects) {
+      timing.TakeNext();
+      applyEffects(context, targets);
 
-      Cast(timing.Period, context);
+      if (timing.HasNext()) 
+        Cast(timing.Period, context);
     }
 
     void ApplyEffects(AiContext context, IEnumerable<IUnit> targets) {
