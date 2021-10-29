@@ -26,8 +26,10 @@ namespace Model.NUnit {
         ToF32(info.AttackAnimationTotalTime), ToF32(info.ProjectileTravelTimePerTile));
       
       var abilityInfo = abilities[info.AbilityName];
+      //TODO: add clamping logic for other members
       abilityInfo.TargetingRange = Math.Max(1, abilityInfo.TargetingRange); 
-      abilityInfo.AbilityRadius = Math.Max(1, abilityInfo.AbilityRadius); //TODO: add clamping logic for other members
+      abilityInfo.AbilityRadius = Math.Max(1, abilityInfo.AbilityRadius); 
+      abilityInfo.TimingInitialDelay = Math.Max(0, abilityInfo.TimingInitialDelay);
 
       var ability = new AbilityComponent(movement, ToF32(abilityInfo.AbilityRadius),
         ToF32(abilityInfo.TargetingRange), ToF32(info.ManaPerAttack), ToF32(abilityInfo.AnimationHitTime), 

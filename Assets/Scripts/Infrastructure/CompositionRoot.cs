@@ -196,6 +196,7 @@ namespace Infrastructure {
         new PeriodicStunTest(playerSharedContext),
         new SecondStunDuringMovementShouldApplyDifferenceOnly(playerSharedContext),
         new StunTest(playerSharedContext),
+        new NestedAbilityPeriodTest(playerSharedContext),
       };
       var battleTestController = new BattleTestController(BattleSimulationUI, battleTests);
       

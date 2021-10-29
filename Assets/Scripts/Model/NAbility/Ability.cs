@@ -48,15 +48,17 @@ namespace Model.NAbility {
     }
 
     void SelectTargets(AiContext context) {
-      if (needRecalculateTarget) {
-        var target = targetSelector.Select(context);
-        TargetsSelected = additionalTargetsSelector.Select(target, context); //TODO: if target is null, we do anything, consider do use last known target location instead
-      }
+      if (needRecalculateTarget)
+        SelectTargetsBasedOnTargeting(context);
       else if (!isCached) {
         isCached = true;
-        var target = targetSelector.Select(context);
-        TargetsSelected = additionalTargetsSelector.Select(target, context);
+        SelectTargetsBasedOnTargeting(context);
       }
+    }
+
+    void SelectTargetsBasedOnTargeting(AiContext context) {
+      var target = targetSelector.Select(context);
+      TargetsSelected = additionalTargetsSelector.Select(target, context);//TODO: if target is null, we do anything, consider do use last known target location instead
     }
 
     void SelectTargetsBasedOnTilesCached(AiContext context) {
@@ -70,18 +72,14 @@ namespace Model.NAbility {
     }
 
     void HandleTiming(AiContext context, IEnumerable<IUnit> targets, Action<AiContext, IEnumerable<IUnit>> applyEffects) {
-      if (!timing.HasNext()) return;
-
-      if (timing.IsTimeReset || timing.GetNext() == Zero) {
-        timing.IsTimeReset = false;
-        timing.Tick();
+      if (timing.GetNext(context.CurrentTime) == Zero) {
+        timing.TakeNext(context.CurrentTime);
         applyEffects(context, targets);
       }
 
       if (!timing.HasNext()) return;
 
-      timing.IsTimeReset = true;
-      Cast(timing.GetNext(), context);
+      Cast(timing.Period, context);
     }
 
     void ApplyEffects(AiContext context, IEnumerable<IUnit> targets) {

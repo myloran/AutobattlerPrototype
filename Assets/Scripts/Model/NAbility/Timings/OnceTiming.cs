@@ -4,17 +4,12 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAbility.Timings {
   public class OnceTiming : ITiming {
-    public bool IsTimeReset { get; set; }
-    
-    public bool HasNext() => !isTicked;
-    public F32 GetNext() => Zero;
-    public void Tick() => isTicked = true;
-    
-    public void Reset() {
-      IsTimeReset = false;
-      isTicked = false;
-    }
+    public F32 Period { get; }
+    public bool HasNext() => hasNext;
+    public F32 GetNext(F32 currentTime) => Zero;
+    public void TakeNext(F32 currentTime) => hasNext = false;
+    public void Reset() => hasNext = true;
 
-    bool isTicked;
+    bool hasNext;
   }
 }

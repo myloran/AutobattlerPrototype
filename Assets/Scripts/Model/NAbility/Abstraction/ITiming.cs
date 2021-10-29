@@ -2,11 +2,11 @@ using Shared.Addons.Examples.FixMath;
 
 namespace Model.NAbility.Abstraction {
   public interface ITiming {
-    bool IsTimeReset { get; set; }
+    F32 Period { get; }
     
     bool HasNext();
-    F32 GetNext();
-    void Tick();
+    F32 GetNext(F32 currentTime);
+    void TakeNext(F32 currentTime);
     void Reset();
   }
 }
