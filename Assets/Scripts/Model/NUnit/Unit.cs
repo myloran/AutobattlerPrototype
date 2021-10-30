@@ -78,6 +78,11 @@ namespace Model.NUnit {
     }
     public F32 MovementTimeLeft => movement.MovementTimeLeft;
     public bool IsMovePaused => movement.IsMovePaused;
+    public Action OnMoveFinished {
+      get => movement.OnMoveFinished;
+      set => movement.OnMoveFinished = value;
+    }
+
     public bool CanStartMovement(F32 currentTime) => movement.CanStartMovement(currentTime);
     public void StartMovement(F32 endTime) => movement.StartMovement(endTime);
     public void FinishMovement() => movement.FinishMovement();

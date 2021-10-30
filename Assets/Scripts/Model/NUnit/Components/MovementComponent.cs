@@ -1,3 +1,4 @@
+using System;
 using Model.NAI;
 using Model.NUnit.Abstraction;
 using Shared.Addons.Examples.FixMath;
@@ -12,7 +13,9 @@ namespace Model.NUnit.Components {
     public Coord Coord { get; set; }
     public MoveInfo NextMove { get; set; }
     public bool IsMovePaused { get; private set; }
-    public F32 MovementTimeLeft { get; private set; } = MaxBattleDuration; 
+    public F32 MovementTimeLeft { get; private set; } = MaxBattleDuration;
+    
+    public Action OnMoveFinished { get; set; } = () => { };
     
     public MovementComponent(Coord coord, F32 speed) {
       StartingCoord = coord;
@@ -31,6 +34,7 @@ namespace Model.NUnit.Components {
       Coord = TakenCoord;
       TakenCoord = Coord.Invalid;
       moveEndTime = -MaxBattleDuration;
+      OnMoveFinished();
     }
 
     public void TryPauseMovement(F32 currentTime) {
@@ -48,6 +52,7 @@ namespace Model.NUnit.Components {
       moveEndTime = -MaxBattleDuration;
       IsMovePaused = false;
       MovementTimeLeft = MaxBattleDuration;
+      OnMoveFinished = () => { };
     }
 
     public override string ToString() => $"{nameof(StartingCoord)}: {StartingCoord}, {nameof(TakenCoord)}: {TakenCoord}, {nameof(Coord)}: {Coord}, {nameof(speed)}: {speed}, {nameof(moveEndTime)}: {moveEndTime}, {nameof(NextMove)}: {NextMove}, {nameof(IsMovePaused)}: {IsMovePaused}, {nameof(MovementTimeLeft)}: {MovementTimeLeft}";

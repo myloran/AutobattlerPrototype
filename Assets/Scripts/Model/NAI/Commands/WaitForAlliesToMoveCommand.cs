@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
-using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
-using Shared.Addons.OkwyLogging;
+using Shared.Primitives;
+using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAI.Commands {
   public class WaitForAlliesToMoveCommand : BaseCommand {
@@ -12,19 +13,26 @@ namespace Model.NAI.Commands {
     }
 
     public override void Execute() {
-      var units = context.GetSurroundUnits(unit.Coord)
-        .Where(u => u.CurrentDecision.Type == EDecisionTreeType.StartMove); //TODO: instead of waiting for someone to move, do nothing and when enemy / surrounding allies move, recheck
+      var allyUnits = context.GetSurroundUnits(unit.Coord);
+      var enemyUnits = context.EnemyUnits(Unit.Player.Opposite());
+      var units = allyUnits.Concat(enemyUnits).ToList();
+      MakeDecisionOnMoveFinished(units);
+    }
+
+    void MakeDecisionOnMoveFinished(List<IUnit> units) {
+      var isHandled = false;
+      foreach (var u in units) u.OnMoveFinished += OnMoveFinished;
       
-      if (!units.Any()) {
-        log.Error("Surrounded, but allies are not moving"); //TODO: handle that case
-        return;
+      void OnMoveFinished() {
+        if (isHandled) return;
+        
+        isHandled = true;
+        foreach (var u in units) u.OnMoveFinished -= OnMoveFinished;
+        context.InsertCommand(Zero, new MakeDecisionCommand(unit, context, Zero));
       }
-      var time = units.Min(u => u.DecisionTime);
-      context.InsertCommand(time, new MakeDecisionCommand(unit, context, time));
     }
 
     readonly IUnit unit;
     readonly AiContext context;
-    static readonly Logger log = MainLog.GetLogger(nameof(WaitForAlliesToMoveCommand));
   }
 }

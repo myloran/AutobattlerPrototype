@@ -1,3 +1,4 @@
+using System;
 using Model.NAI;
 using Shared.Addons.Examples.FixMath;
 using Shared.Primitives;
@@ -10,6 +11,7 @@ namespace Model.NUnit.Abstraction {
     MoveInfo NextMove { get; set; }
     F32 MovementTimeLeft { get; }
     bool IsMovePaused { get; }
+    Action OnMoveFinished { get; set; }
 
     bool CanStartMovement(F32 currentTime);
     void StartMovement(F32 endTime);
