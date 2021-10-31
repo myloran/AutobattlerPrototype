@@ -9,11 +9,12 @@ using static Shared.Addons.Examples.FixMath.F32;
 namespace Model.NUnit {
   public class UnitFactory {
     public UnitFactory(Dictionary<string, UnitInfo> infos, IDecisionTreeFactory decisionFactory,
-        Dictionary<string, AbilityInfo> abilities, AbilityFactory abilityFactory) {
+        Dictionary<string, AbilityInfo> abilities, AbilityFactory abilityFactory, SystemRandomEmbedded random) {
       this.infos = infos;
       this.decisionFactory = decisionFactory;
       this.abilities = abilities;
       this.abilityFactory = abilityFactory;
+      this.random = random;
     }
     
     public IUnit Create(string name, Coord coord, EPlayer player) {
@@ -21,7 +22,7 @@ namespace Model.NUnit {
       var movement = new MovementComponent(coord, ToF32(info.MoveSpeed));
       var health = new HealthComponent(ToF32(info.Health), ToF32(info.Armor));
       
-      var attack = new AttackComponent(movement, ToF32(info.Damage), ToF32(info.AttackSpeed), 
+      var attack = new AttackComponent(movement, random, ToF32(info.Damage), ToF32(info.AttackSpeed), 
         ToF32(info.AttackRange * info.AttackRange), ToF32(info.AttackAnimationHitTime),
         ToF32(info.AttackAnimationTotalTime), ToF32(info.ProjectileTravelTimePerTile));
       
@@ -51,5 +52,6 @@ namespace Model.NUnit {
     readonly IDecisionTreeFactory decisionFactory;
     readonly Dictionary<string, AbilityInfo> abilities;
     readonly AbilityFactory abilityFactory;
+    readonly SystemRandomEmbedded random;
   }
 }

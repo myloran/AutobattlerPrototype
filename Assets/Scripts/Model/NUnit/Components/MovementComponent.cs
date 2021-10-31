@@ -43,7 +43,7 @@ namespace Model.NUnit.Components {
     }
 
     public F32 TimeToMove(bool isDiagonal) => isDiagonal 
-      ? Diagonal * speed : Straight * speed;
+      ? diagonal * speed : straight * speed;
     
     public void Reset() {
       Coord = StartingCoord;
@@ -56,9 +56,9 @@ namespace Model.NUnit.Components {
     }
 
     public override string ToString() => $"{nameof(StartingCoord)}: {StartingCoord}, {nameof(TakenCoord)}: {TakenCoord}, {nameof(Coord)}: {Coord}, {nameof(speed)}: {speed}, {nameof(moveEndTime)}: {moveEndTime}, {nameof(NextMove)}: {NextMove}, {nameof(IsMovePaused)}: {IsMovePaused}, {nameof(MovementTimeLeft)}: {MovementTimeLeft}";
-    
-    static F32 Straight => One;
-    static F32 Diagonal => Sqrt(Two);
+
+    readonly F32 straight = One;
+    readonly F32 diagonal = Sqrt(Two);
     readonly F32 speed;
     F32 moveEndTime;
   }

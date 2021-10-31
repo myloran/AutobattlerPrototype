@@ -20,7 +20,7 @@ namespace Model.NAI.Commands {
       var target = unit.Target;
       if (!target.IsAlive) return;
       
-      target.TakeDamage(unit.Damage);
+      target.TakeDamage(unit.CalculateDamage());
       
       if (!target.IsAlive) 
         new DeathCommand(target, context).Execute();

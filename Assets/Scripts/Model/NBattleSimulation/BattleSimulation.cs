@@ -9,14 +9,16 @@ namespace Model.NBattleSimulation {
     public ICommand LastCommandBeingExecuted;
     public bool IsBattleOver { get; private set; }
 
-    public BattleSimulation(AiContext context, Board board, AiHeap heap) {
+    public BattleSimulation(AiContext context, Board board, AiHeap heap, SystemRandomEmbedded random) {
       this.context = context;
       this.board = board;
       this.heap = heap;
+      this.random = random;
       hashCalculator = new HashCalculator();
     }
 
     public void PrepareBattle(PlayerContext playerContext) {
+      random.Reset(0);
       board.Reset(playerContext);
       foreach (var unit in board.Values) unit.Reset();
       heap.Reset();
@@ -62,5 +64,6 @@ namespace Model.NBattleSimulation {
     readonly AiHeap heap;
     readonly Board board;
     readonly HashCalculator hashCalculator;
+    readonly SystemRandomEmbedded random;
   }
 }

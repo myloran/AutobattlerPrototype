@@ -9,9 +9,10 @@ namespace Model.NUnit.Components {
     public F32 Damage { get; }
     public F32 AttackAnimationHitTime { get; }
     
-    public AttackComponent(IMovement movement, F32 damage, F32 speed, F32 sqrRange,
+    public AttackComponent(IMovement movement, SystemRandomEmbedded random, F32 damage, F32 speed, F32 sqrRange,
       F32 attackAnimationHitTime, F32 attackAnimationTotalTime, F32 projectileTravelTimePerTile) {
       this.movement = movement;
+      this.random = random;
       this.sqrRange = sqrRange;
       this.attackAnimationTotalTime = attackAnimationTotalTime;
       this.projectileTravelTimePerTile = projectileTravelTimePerTile;
@@ -19,6 +20,8 @@ namespace Model.NUnit.Components {
       attackSpeed = speed;
       AttackAnimationHitTime = attackAnimationHitTime;
     }
+
+    public F32 CalculateDamage() => random.Next(100) < CritChance ? Damage * critDamageBonus : Damage;
 
     public void Reset() => EndAttack();
     
@@ -47,8 +50,11 @@ namespace Model.NUnit.Components {
     public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
     
     readonly IMovement movement;
+    readonly SystemRandomEmbedded random;
     readonly F32 attackAnimationTotalTime;
     readonly F32 projectileTravelTimePerTile;
+    readonly F32 critDamageBonus = F32.ToF32(1.5f);
+    const int CritChance = 15;
     F32 attackSpeed;
     F32 lastStartAttackTime;
     F32 sqrRange;

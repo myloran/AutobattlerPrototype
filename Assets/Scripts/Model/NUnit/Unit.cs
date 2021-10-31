@@ -34,11 +34,11 @@ namespace Model.NUnit {
     public void SubToDeath(ITargeting targeting) => health.SubToDeath(targeting);
     public void UnsubFromDeath(ITargeting targeting) => health.UnsubFromDeath(targeting);
     
-    public F32 Damage => attack.Damage;
     public F32 AttackAnimationHitTime => attack.AttackAnimationHitTime;
     public F32 TimeToFinishAttackAnimation => attack.TimeToFinishAttackAnimation;
     public F32 AttackSpeedTime => attack.AttackSpeedTime;
     public bool IsRanged => attack.IsRanged;
+    public F32 CalculateDamage() => attack.CalculateDamage();
     public bool CanStartAttack(F32 currentTime) => attack.CanStartAttack(currentTime);
     public bool IsWithinAttackRange(IMovement target) => attack.IsWithinAttackRange(target);
     public F32 ProjectileTravelTimeTo(IMovement target) => attack.ProjectileTravelTimeTo(target);

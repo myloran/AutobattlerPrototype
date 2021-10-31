@@ -115,9 +115,10 @@ namespace Infrastructure {
       var decisionTreeCreatorVisitor = new DecisionTreeCreatorVisitor(eventBus, 
         d => new LoggingDecorator(d, DebugController.Info, makeDecisionLog), decisionTreeLookup);
 
+      var systemRandomEmbedded = new SystemRandomEmbedded(0);
       var unitFactory = new UnitFactory(units, new DecisionFactory(
         decisionTreeCreatorVisitor, decisionTreeComponent), abilities, 
-        new AbilityFactory(abilities, eventBus));
+        new AbilityFactory(abilities, eventBus), systemRandomEmbedded);
       
       //TODO: replace board/bench dictionaries with array?               
       var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));
@@ -176,7 +177,7 @@ namespace Infrastructure {
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, compositeSimulationTick, compositeReset);
       
-      var battleSimulation = new BattleSimulation(aiContext, board, aiHeap);
+      var battleSimulation = new BattleSimulation(aiContext, board, aiHeap, systemRandomEmbedded);
       
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
         compositeSimulationTick, battleSimulation);
