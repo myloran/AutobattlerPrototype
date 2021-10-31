@@ -10,6 +10,9 @@ namespace Controller.NDebug {
       if (isOk) return;
       isOk = true;
 
+      TestOldVersusNew();
+      TestReset();
+      
       Stopwatch stopWatch = new Stopwatch();
       stopWatch.Start();
       BenchmarkOld();
@@ -21,13 +24,26 @@ namespace Controller.NDebug {
       BenchmarkNew();
       stopWatch2.Stop();
       Debug.Log($"After.stopWatch.ElapsedMilliseconds: {stopWatch2.ElapsedMilliseconds}");
-      
+    }
+
+    void TestOldVersusNew() {
       TestOld();
       TestNew();
     }
+    
+    void TestReset() {
+      random.Reset(0);
+      TestOld();
+      random.Reset(0);
+      TestOldReset();
+    }
 
     void TestOld() {
-      int min = int.MaxValue, max = int.MinValue;
+      randomNumbers.Clear();
+      incorrectNumbers = 0;
+      int min = int.MaxValue; 
+      int max = int.MinValue;
+      
       for (int i = 0; i < maxIterations; i++) {
         var num = random.Next(maxValue);
         randomNumbers.Add(num);
@@ -39,8 +55,26 @@ namespace Controller.NDebug {
       Debug.Log($"max: {max}");
     }    
     
+    void TestOldReset() {
+      int min = int.MaxValue; 
+      int max = int.MinValue;
+      
+      for (int i = 0; i < maxIterations; i++) {
+        var num = random.Next(maxValue);
+        if (randomNumbers[i] != num) incorrectNumbers++;
+        max = Math.Max(max, num);
+        min = Math.Min(min, num);
+      }
+
+      Debug.Log($"min: {min}");
+      Debug.Log($"max: {max}");
+      Debug.Log($"incorrectNumbers when comparing old implementation before and after reset: {incorrectNumbers}");
+    }  
+    
     void TestNew() {
-      int min = int.MaxValue, max = int.MinValue;
+      int min = int.MaxValue;
+      int max = int.MinValue;
+      
       for (int i = 0; i < maxIterations; i++) {
         var num = r2.Next(maxValue);
         if (randomNumbers[i] != num) incorrectNumbers++;
@@ -50,7 +84,7 @@ namespace Controller.NDebug {
 
       Debug.Log($"min: {min}");
       Debug.Log($"max: {max}");
-      Debug.Log($"incorrectNumbers: {incorrectNumbers}");
+      Debug.Log($"incorrectNumbers when new implementation is compared to an old one: {incorrectNumbers}");
     }
     
     void BenchmarkOld() {
@@ -61,8 +95,8 @@ namespace Controller.NDebug {
       for (int i = 0; i < maxIterations; i++) r2.Next(maxValue);
     }
 
-    readonly Random r2 = new Random(0);
-    readonly SystemRandom random = new SystemRandom(0);
+    Random r2 = new Random(0);
+    readonly SystemRandomEmbedded random = new SystemRandomEmbedded(0);
     readonly List<int> randomNumbers = new List<int>();
     const int maxValue = 32000;
     const int maxIterations = 10_000_000;

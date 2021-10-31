@@ -4,18 +4,19 @@ using Shared.Addons.Examples.FixMath;
 //It's embedded version of System.Random
 //It's ~3.5 times slower, supports max range up to 32000, has reduced accuracy
 //But it should be deterministic across platforms and supports FixedMath 
-public class SystemRandom {
-  int[] SeedArray = new int[56];
+public class SystemRandomEmbedded {
+  int[] SeedArray;
   const int MBIG = 2147483647;
   const int MSEED = 161803398;
   const int MZ = 0;
   int inext;
   int inextp;
 
-  public SystemRandom()
-    : this(Environment.TickCount) { }
+  public SystemRandomEmbedded() : this(Environment.TickCount) { }
+  public SystemRandomEmbedded(int Seed) => Reset(Seed);
 
-  public SystemRandom(int Seed) {
+  public void Reset(int Seed) {
+    SeedArray = new int[56];
     var num1 = 161803398 - (Seed == int.MinValue ? int.MaxValue : Math.Abs(Seed));
     SeedArray[55] = num1;
     var num2 = 1;
