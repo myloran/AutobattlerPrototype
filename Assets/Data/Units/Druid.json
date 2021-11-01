@@ -4,10 +4,10 @@
   "Armor": 1,
   "Damage": 85,
   "AttackSpeed": 0.65,
-  "AttackRange": 1,
+  "AttackRange": 3,
   "MoveSpeed": 1,
   "AttackAnimationHitTime": 0.5,
   "AttackAnimationTotalTime": 1,
   "ManaPerAttack": 30,
-  "AbilityName": "CoupDeGrace",
+  "AbilityName": "DruidAbility",
 }

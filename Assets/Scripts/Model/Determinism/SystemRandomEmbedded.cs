@@ -89,7 +89,19 @@ public class SystemRandomEmbedded {
   public virtual int Next(int maxValue) {
     if (maxValue < 0)
       throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)}: {maxValue}");
-    return F32.FloorToInt((Sample() * maxValue).F32);
+    
+    var result = Sample() * maxValue;
+    
+    return F32.FloorToInt(result.F32);
+  }
+  
+  public virtual F32 NextF32(int maxValue) {
+    if (maxValue < 0)
+      throw new ArgumentOutOfRangeException(nameof(maxValue), $"{nameof(maxValue)}: {maxValue}");
+    
+    var result = Sample() * maxValue;
+    
+    return result.F32;
   }
 
   // public virtual double NextDouble()

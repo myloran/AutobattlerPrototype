@@ -37,7 +37,7 @@ namespace Controller.NBattleSimulation {
 
     public void HandleEvent(RotateEvent e) {
       var unit = board.TryGetUnit(e.From);
-      if (unit == null) return;
+      if (unit == null || e.From == e.To) return;
       
       unit.transform.rotation = (e.To - e.From).ToQuaternion();
     }

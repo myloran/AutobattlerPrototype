@@ -12,6 +12,7 @@ namespace Shared.Primitives {
     Random,
     Farthest,
     MaxAbilityRange,
+    Self
   }
 
   public enum EAdditionalTargets {
@@ -72,6 +73,8 @@ namespace Shared.Primitives {
     
     //properties
     public float Damage;
+    public float Heal;
+    public float ModifyCritChance;
     public float SilenceDuration;
     public float TauntDuration;
     public float StunDuration;

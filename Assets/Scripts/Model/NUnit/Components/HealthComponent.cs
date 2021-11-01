@@ -22,6 +22,11 @@ namespace Model.NUnit.Components {
     public void SubToDeath(ITargeting targeting) => observers.Add(targeting);
     public void UnsubFromDeath(ITargeting targeting) => observers.Remove(targeting);
 
+    public void ApplyHeal(F32 heal) {
+      Health += heal;
+      Health = Clamp(Health, Zero, startingHealth);
+    }
+
     public void TakeDamage(F32 damage) {
       var damageDealt = damage - damage * armor / (armor + 10); //TODO: take magic resist into account when taking ability damage
       Health -= damageDealt;

@@ -28,6 +28,8 @@ namespace Model.NAbility {
         targetSelector = new InheritTargetFromTargeting(unit);
       else if (info.UnitTargetingRule == EUnitTargetingRule.MaxAbilityRange)
         targetSelector = new MaxAbilityRangeTargetSelector(unit);
+      else if (info.UnitTargetingRule == EUnitTargetingRule.Self)
+        targetSelector = new SelfTargetSelector(unit);
 
       Func<Coord> getAbilityOrigin = () => { //TODO: probably move to runtime and pass context/target from ability
         if (info.AbilityOrigin == EAbilityOrigin.Target) return unit.Target?.Coord ?? Coord.Invalid;
@@ -52,7 +54,9 @@ namespace Model.NAbility {
       if (info.SilenceDuration > 0) effects.Add(new SilenceEffect(bus, ToF32(info.SilenceDuration)));
       if (info.TauntDuration > 0) effects.Add(new TauntEffect(bus, unit, ToF32(info.TauntDuration)));
       if (info.StunDuration > 0) effects.Add(new StunEffect(bus, ToF32(info.StunDuration)));
-
+      if (info.Heal > 0) effects.Add(new HealEffect(bus, ToF32(info.Heal)));
+      if (info.ModifyCritChance > 0) effects.Add(new ModifyCritChanceEffect(bus, ToF32(info.ModifyCritChance)));
+                
       ITiming timing = null;
       if (info.Timing == ETiming.Once)
         timing = new OnceTiming();

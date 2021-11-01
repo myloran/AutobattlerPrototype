@@ -1,6 +1,7 @@
 using System;
 using Model.NUnit.Abstraction;
 using Shared.Addons.Examples.FixMath;
+using static Shared.Addons.Examples.FixMath.F32;
 using static Shared.Const;
 using static Shared.Primitives.CoordExt;
 
@@ -21,7 +22,12 @@ namespace Model.NUnit.Components {
       AttackAnimationHitTime = attackAnimationHitTime;
     }
 
-    public F32 CalculateDamage() => random.Next(100) < CritChance ? Damage * critDamageBonus : Damage;
+    public void ModifyCritChance(F32 amount) {
+      critChance += amount;
+      critChance = Clamp(critChance, Zero, maxCritChance); // refactor if crit chance needs to be restored to a previous value
+    }
+
+    public F32 CalculateDamage() => random.NextF32(100) < critChance ? Damage * critDamageMultiplier : Damage;
 
     public void Reset() => EndAttack();
     
@@ -47,14 +53,15 @@ namespace Model.NUnit.Components {
     public void StartAttack(F32 currentTime) => lastStartAttackTime = currentTime;
     public void EndAttack() => lastStartAttackTime = -MaxBattleDuration;
 
-    public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
+    public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(critChance)}: {critChance}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
     
     readonly IMovement movement;
     readonly SystemRandomEmbedded random;
     readonly F32 attackAnimationTotalTime;
     readonly F32 projectileTravelTimePerTile;
-    readonly F32 critDamageBonus = F32.ToF32(1.5f);
-    const int CritChance = 15;
+    readonly F32 critDamageMultiplier = ToF32(1.5f);
+    readonly F32 maxCritChance = ToF32(100f);
+    F32 critChance = ToF32(15);
     F32 attackSpeed;
     F32 lastStartAttackTime;
     F32 sqrRange;

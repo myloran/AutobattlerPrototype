@@ -6,6 +6,8 @@ namespace Model.NUnit.Abstraction {
     F32 TimeToFinishAttackAnimation { get; }
     F32 AttackSpeedTime { get; }
     bool IsRanged { get; }
+
+    void ModifyCritChance(F32 amount);
     F32 CalculateDamage();
     bool CanStartAttack(F32 currentTime);
     bool IsWithinAttackRange(IMovement target);
