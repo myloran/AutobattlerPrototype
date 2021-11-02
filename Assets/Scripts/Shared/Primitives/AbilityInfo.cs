@@ -44,9 +44,9 @@ namespace Shared.Primitives {
   }
   
   [Serializable]
-  public class AbilityInfo {
+  public class AbilityInfo : IInfo {
     //id
-    public string Name;
+    public string Name { get; set; }
     
     //nested abilities
     public List<string> NestedAbilities = new List<string>();

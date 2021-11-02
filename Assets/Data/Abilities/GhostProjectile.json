@@ -1,5 +1,4 @@
 {
-  "Name": "GhostProjectile",
   "IsTimingOverridden": true,
   "Timing": "Period",
   "TimingPeriod": 0.5,

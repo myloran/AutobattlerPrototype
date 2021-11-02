@@ -1,5 +1,4 @@
 {
-  "Name": "BattleDwarfAbility",
   "AbilityOrigin": "Self",  
   "AdditionalTargets": "WithinRadius",
   "TargetingRange": 3,

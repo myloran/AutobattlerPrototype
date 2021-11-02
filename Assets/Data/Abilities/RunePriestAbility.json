@@ -1,5 +1,4 @@
 {
-  "Name": "RunePriestAbility",
   "AbilityOrigin": "Self",  
   "AdditionalTargets": "WithinRadius",
   

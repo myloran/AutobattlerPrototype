@@ -1,5 +1,4 @@
 {
-  "Name": "IncreaseStunChanceBig",
   "ModifyStunChance": 25,
   "ModifyStunChanceDuration": 1.5,
 }

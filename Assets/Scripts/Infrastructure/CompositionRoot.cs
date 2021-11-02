@@ -27,6 +27,7 @@ using Model.NSynergy;
 using PlasticFloor.EventBus;
 using Shared.Abstraction;
 using Shared.Addons.OkwyLogging;
+using Shared.Primitives;
 using Shared.Shared.Client.Events;
 using SharedClient.Abstraction;
 using UniRx;
@@ -75,9 +76,10 @@ namespace Infrastructure {
       
       OkwyDefaultLog.DefaultInit();
       var units = new UnitInfoLoader().Load();
-      var abilities = new AbilityInfoLoader().Load();
-      var synergies = new SynergyInfoLoader().Load();
-      var effectInfos = new EffectInfoLoader().Load();
+      var infoLoader = new InfoLoader();
+      var abilities = infoLoader.Load<AbilityInfo>("Abilities");
+      var synergies = infoLoader.Load<SynergyInfo>("Synergies");
+      var effectInfos = infoLoader.Load<EffectInfo>("Effects");
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
       var decisionTreeLoader = new DecisionTreeDataLoader();

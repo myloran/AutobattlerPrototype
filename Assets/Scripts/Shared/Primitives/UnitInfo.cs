@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Shared.Primitives {
   [Serializable]
-  public class UnitInfo {
-    public string Name;
+  public class UnitInfo : IInfo {
+    public string Name { get; set; }
     public float Health;
     public int Armor;
     public float Damage;

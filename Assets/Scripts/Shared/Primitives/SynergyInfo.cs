@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
 namespace Shared.Primitives {
-  public class SynergyInfo {
-    public string Name;
+  public class SynergyInfo : IInfo {
+    public string Name { get; set; }
     public List<SynergyLevel> SynergyLevels = new List<SynergyLevel>();
 
   }

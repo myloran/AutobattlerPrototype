@@ -1,5 +1,4 @@
 {
-  "Name": "DamageOverTime",
   "IsTimingOverridden": true,
   "Timing": "Period",
   "Damage": 50,  

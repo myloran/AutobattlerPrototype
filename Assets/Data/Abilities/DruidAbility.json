@@ -1,5 +1,4 @@
 {
-  "Name": "DruidAbility",  
   "UnitTargetingRule": "Self",
   "TargetPlayer": "Friend",
   "TargetingRange": 3,

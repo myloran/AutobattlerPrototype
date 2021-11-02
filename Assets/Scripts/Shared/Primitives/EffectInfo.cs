@@ -2,8 +2,8 @@ using System;
 
 namespace Shared.Primitives {
   [Serializable]
-  public class EffectInfo {
-    public string Name;
+  public class EffectInfo : IInfo {
+    public string Name { get; set; }
     public float Damage;
     public float Heal;
     public float ModifyCritChance;
