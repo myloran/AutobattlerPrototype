@@ -16,6 +16,7 @@ namespace Model.NUnit.Components {
       CurrentDecision = null;
       DecisionTime = Zero;
       TimeWhenDecisionWillBeExecuted = Zero;
+      OnDecisionExecutionTimeUpdated = _ => { };
     }
 
     public void SetDecisionTime(F32 currentTime, F32 time) {
