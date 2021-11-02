@@ -24,6 +24,8 @@ namespace Model.NAbility {
       if (info.ModifyCritChance > 0) effects.Add(new ModifyCritChanceEffect(bus, ToF32(info.ModifyCritChance)));
       if (info.ModifyStunChance > 0) effects.Add(new ModifyStunChanceEffect(bus, ToF32(info.ModifyStunChance)));
       if (info.ModifyStunChanceDuration > 0) effects.Add(new ModifyStunChanceDurationEffect(bus, ToF32(info.ModifyStunChanceDuration)));
+      if (info.ModifySilenceChance > 0) effects.Add(new ModifySilenceChanceEffect(bus, ToF32(info.ModifySilenceChance)));
+      if (info.ModifySilenceChanceDuration > 0) effects.Add(new ModifySilenceChanceDurationEffect(bus, ToF32(info.ModifySilenceChanceDuration)));
 
       return new CompositeEffect(effects.ToArray());
     }

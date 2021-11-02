@@ -9,8 +9,8 @@ namespace Model.NUnit.Components {
   public class AttackComponent : IAttack {
     public F32 Damage { get; }
     public F32 AttackAnimationHitTime { get; }
-    public Property StunChanceDuration { get; private set; }
-    public Property SilenceChanceDuration { get; private set; }
+    public Property StunChanceDuration { get; private set; } = Zero;
+    public Property SilenceChanceDuration { get; private set; } = Zero;
     
     public AttackComponent(IMovement movement, SystemRandomEmbedded random, F32 damage, F32 speed, F32 sqrRange,
       F32 attackAnimationHitTime, F32 attackAnimationTotalTime, F32 projectileTravelTimePerTile) {
@@ -28,9 +28,9 @@ namespace Model.NUnit.Components {
 
     public void ModifyCritChance(F32 amount) => critChance.Modify(amount);
     public void ModifyStunChance(F32 amount) => stunChance.Modify(amount);
-    public void ModifySilenceChance(F32 amount) => stunChance.Modify(amount);
+    public void ModifySilenceChance(F32 amount) => silenceChance.Modify(amount);
     public void ModifyStunChanceDuration(F32 amount) => StunChanceDuration.Modify(amount);
-    public void ModifySilenceChanceDuration(F32 amount) => StunChanceDuration.Modify(amount);
+    public void ModifySilenceChanceDuration(F32 amount) => SilenceChanceDuration.Modify(amount);
 
     public bool CalculateStun() => random.NextF32(100) < stunChance;
     public bool CalculateSilence() => random.NextF32(100) < silenceChance;
@@ -39,7 +39,9 @@ namespace Model.NUnit.Components {
     public void Reset() {
       critChance.Reset();
       stunChance.Reset();
+      silenceChance.Reset();
       StunChanceDuration.Reset();
+      SilenceChanceDuration.Reset();
       EndAttack();
     }
 
@@ -63,7 +65,7 @@ namespace Model.NUnit.Components {
     public void StartAttack(F32 currentTime) => lastStartAttackTime = currentTime;
     public void EndAttack() => lastStartAttackTime = -MaxBattleDuration;
 
-    public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(critChance)}: {critChance}, {nameof(stunChance)}: {stunChance}, {nameof(StunChanceDuration)}: {StunChanceDuration}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
+    public override string ToString() => $"{nameof(Damage)}: {Damage}, {nameof(AttackAnimationHitTime)}: {AttackAnimationHitTime}, {nameof(attackSpeed)}: {attackSpeed}, {nameof(critChance)}: {critChance}, {nameof(stunChance)}: {stunChance}, {nameof(StunChanceDuration)}: {StunChanceDuration}, {nameof(silenceChance)}: {silenceChance}, {nameof(SilenceChanceDuration)}: {SilenceChanceDuration}, {nameof(sqrRange)}: {sqrRange}, {nameof(lastStartAttackTime)}: {lastStartAttackTime}";
     
     readonly IMovement movement;
     readonly SystemRandomEmbedded random;
@@ -73,8 +75,8 @@ namespace Model.NUnit.Components {
       attackSpeed,
       sqrRange;
     Property critChance = ToF32(15),
-      stunChance,
-      silenceChance;
+      stunChance = Zero,
+      silenceChance = Zero;
     F32 lastStartAttackTime;
   }
 }

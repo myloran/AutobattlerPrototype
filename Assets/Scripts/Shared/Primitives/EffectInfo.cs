@@ -9,6 +9,8 @@ namespace Shared.Primitives {
     public float ModifyCritChance;
     public float ModifyStunChance;
     public float ModifyStunChanceDuration;
+    public float ModifySilenceChance;
+    public float ModifySilenceChanceDuration;
     public float SilenceDuration;
     public float TauntDuration;
     public float StunDuration;

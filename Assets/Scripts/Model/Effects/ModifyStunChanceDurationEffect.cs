@@ -7,8 +7,8 @@ using Shared.Addons.Examples.FixMath;
 
 namespace Model.NAbility.Effects {
   public class ModifyStunChanceDurationEffect : IEffect {
-    public ModifyStunChanceDurationEffect(IEventBus bus, F32 stunChanceDuration) {
-      this.stunChanceDuration = stunChanceDuration;
+    public ModifyStunChanceDurationEffect(IEventBus bus, F32 duration) {
+      this.duration = duration;
       this.bus = bus;
     }
     
@@ -16,11 +16,11 @@ namespace Model.NAbility.Effects {
       foreach (var unit in units) {
         if (!unit.IsAlive) return;
         
-        unit.ModifyStunChanceDuration(stunChanceDuration);
+        unit.ModifyStunChanceDuration(duration);
       }
     }
 
     readonly IEventBus bus;
-    readonly F32 stunChanceDuration;
+    readonly F32 duration;
   }
 }

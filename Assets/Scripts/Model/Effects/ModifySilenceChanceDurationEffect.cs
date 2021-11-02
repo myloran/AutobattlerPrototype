@@ -6,9 +6,9 @@ using PlasticFloor.EventBus;
 using Shared.Addons.Examples.FixMath;
 
 namespace Model.NAbility.Effects {
-  public class ModifyStunChanceEffect : IEffect {
-    public ModifyStunChanceEffect(IEventBus bus, F32 chance) {
-      this.chance = chance;
+  public class ModifySilenceChanceDurationEffect : IEffect {
+    public ModifySilenceChanceDurationEffect(IEventBus bus, F32 duration) {
+      this.duration = duration;
       this.bus = bus;
     }
     
@@ -16,11 +16,11 @@ namespace Model.NAbility.Effects {
       foreach (var unit in units) {
         if (!unit.IsAlive) return;
         
-        unit.ModifyStunChance(chance);
+        unit.ModifySilenceChanceDuration(duration);
       }
     }
 
     readonly IEventBus bus;
-    readonly F32 chance;
+    readonly F32 duration;
   }
 }

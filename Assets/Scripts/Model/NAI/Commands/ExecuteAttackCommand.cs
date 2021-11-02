@@ -30,7 +30,7 @@ namespace Model.NAI.Commands {
       }
       
       if (unit.CalculateSilence()) {
-        target.ApplySilence(context.CurrentTime + unit.StunChanceDuration);
+        target.ApplySilence(context.CurrentTime + unit.SilenceChanceDuration);
         
         bus.Raise(new UpdateSilenceDurationEvent(target.SilenceEndTime, target.Coord));
       }

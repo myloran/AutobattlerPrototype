@@ -156,9 +156,9 @@ namespace Model.NUnit {
     }
 
     public override string ToString() => new StringBuilder()
+      .Append(movement).Append("\n")
       .Append(health).Append("\n")
       .Append(attack).Append("\n")
-      .Append(movement).Append("\n")
       .Append(targeting).Append("\n")
       .Append(ai).Append("\n")
       .Append(stats).Append("\n")

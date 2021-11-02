@@ -55,7 +55,7 @@ namespace Model.NUnit.Components {
       OnMoveFinished = () => { };
     }
 
-    public override string ToString() => $"{nameof(StartingCoord)}: {StartingCoord}, {nameof(TakenCoord)}: {TakenCoord}, {nameof(Coord)}: {Coord}, {nameof(speed)}: {speed}, {nameof(moveEndTime)}: {moveEndTime}, {nameof(NextMove)}: {NextMove}, {nameof(IsMovePaused)}: {IsMovePaused}, {nameof(MovementTimeLeft)}: {MovementTimeLeft}";
+    public override string ToString() => $"{nameof(Coord)}: {Coord}, {nameof(TakenCoord)}: {TakenCoord}, {nameof(StartingCoord)}: {StartingCoord}, {nameof(speed)}: {speed}, {nameof(moveEndTime)}: {moveEndTime}, {nameof(NextMove)}: {NextMove}, {nameof(IsMovePaused)}: {IsMovePaused}, {nameof(MovementTimeLeft)}: {MovementTimeLeft}";
 
     readonly F32 straight = One;
     readonly F32 diagonal = Sqrt(Two);
