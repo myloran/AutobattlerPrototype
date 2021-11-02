@@ -10,5 +10,9 @@
   "AttackAnimationHitTime": 0.5,
   "AttackAnimationTotalTime": 1,
   "ManaPerAttack": 30,
+  "SynergyNames": [
+    "Spirit",
+    "Necropolis"
+  ],
   "AbilityName": "GhostAbility",
 }

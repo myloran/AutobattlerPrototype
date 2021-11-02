@@ -29,6 +29,12 @@ namespace Model.NAI.Commands {
         if (unit.IsMovePaused) bus.Raise(new PauseMoveEvent(target.Coord));
       }
       
+      if (unit.CalculateSilence()) {
+        target.ApplySilence(context.CurrentTime + unit.StunChanceDuration);
+        
+        bus.Raise(new UpdateSilenceDurationEvent(target.SilenceEndTime, target.Coord));
+      }
+      
       if (!target.IsAlive) 
         new DeathCommand(target, context).Execute();
       

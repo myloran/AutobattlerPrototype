@@ -38,12 +38,16 @@ namespace Model.NUnit {
     public F32 AttackAnimationHitTime => attack.AttackAnimationHitTime;
     public F32 TimeToFinishAttackAnimation => attack.TimeToFinishAttackAnimation;
     public F32 AttackSpeedTime => attack.AttackSpeedTime;
-    public F32 StunChanceDuration => attack.StunChanceDuration;
+    public Property StunChanceDuration => attack.StunChanceDuration;
+    public Property SilenceChanceDuration => attack.SilenceChanceDuration;
     public bool IsRanged => attack.IsRanged;
     public void ModifyCritChance(F32 amount) => attack.ModifyCritChance(amount);
     public bool CalculateStun() => attack.CalculateStun();
     public void ModifyStunChance(F32 amount) => attack.ModifyStunChance(amount);
     public void ModifyStunChanceDuration(F32 amount) => attack.ModifyStunChanceDuration(amount);
+    public bool CalculateSilence() => attack.CalculateSilence();
+    public void ModifySilenceChance(F32 amount) => attack.ModifySilenceChance(amount);
+    public void ModifySilenceChanceDuration(F32 amount) => attack.ModifySilenceChanceDuration(amount);
     public F32 CalculateDamage() => attack.CalculateDamage();
     public bool CanStartAttack(F32 currentTime) => attack.CanStartAttack(currentTime);
     public bool IsWithinAttackRange(IMovement target) => attack.IsWithinAttackRange(target);

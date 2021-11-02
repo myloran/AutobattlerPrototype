@@ -9,7 +9,8 @@ namespace Model.NUnit.Components {
   public class AttackComponent : IAttack {
     public F32 Damage { get; }
     public F32 AttackAnimationHitTime { get; }
-    public F32 StunChanceDuration { get; private set; }
+    public Property StunChanceDuration { get; private set; }
+    public Property SilenceChanceDuration { get; private set; }
     
     public AttackComponent(IMovement movement, SystemRandomEmbedded random, F32 damage, F32 speed, F32 sqrRange,
       F32 attackAnimationHitTime, F32 attackAnimationTotalTime, F32 projectileTravelTimePerTile) {
@@ -24,32 +25,21 @@ namespace Model.NUnit.Components {
     }
     
     public bool IsRanged => sqrRange > 1;
-    
 
-    public void ModifyCritChance(F32 amount) {
-      critChance += amount;
-      critChance = Clamp(critChance, Zero, maxChance); // refactor if crit chance needs to be restored to a previous value
-    }
-    
-    public void ModifyStunChance(F32 amount) {
-      actualStunChance += amount;
-      stunChance = actualStunChance;
-      stunChance = Clamp(stunChance, Zero, maxChance);
-    }
-        
-    public void ModifyStunChanceDuration(F32 amount) {
-      StunChanceDuration += amount;
-      StunChanceDuration = Clamp(StunChanceDuration, Zero, maxChance); // refactor if crit chance needs to be restored to a previous value
-    }
-    
+    public void ModifyCritChance(F32 amount) => critChance.Modify(amount);
+    public void ModifyStunChance(F32 amount) => stunChance.Modify(amount);
+    public void ModifySilenceChance(F32 amount) => stunChance.Modify(amount);
+    public void ModifyStunChanceDuration(F32 amount) => StunChanceDuration.Modify(amount);
+    public void ModifySilenceChanceDuration(F32 amount) => StunChanceDuration.Modify(amount);
+
     public bool CalculateStun() => random.NextF32(100) < stunChance;
+    public bool CalculateSilence() => random.NextF32(100) < silenceChance;
     public F32 CalculateDamage() => random.NextF32(100) < critChance ? Damage * critDamageMultiplier : Damage;
 
     public void Reset() {
-      actualStunChance = Zero;
-      critChance = Zero;
-      stunChance = Zero;
-      StunChanceDuration = Zero;
+      critChance.Reset();
+      stunChance.Reset();
+      StunChanceDuration.Reset();
       EndAttack();
     }
 
@@ -77,15 +67,14 @@ namespace Model.NUnit.Components {
     
     readonly IMovement movement;
     readonly SystemRandomEmbedded random;
-    readonly F32 attackAnimationTotalTime;
-    readonly F32 projectileTravelTimePerTile;
-    readonly F32 critDamageMultiplier = ToF32(1.5f);
-    readonly F32 maxChance = ToF32(100f);
-    readonly F32 attackSpeed;
-    readonly F32 sqrRange;
-    F32 critChance = ToF32(15);
-    F32 stunChance;
-    F32 actualStunChance;
+    readonly F32 attackAnimationTotalTime,
+      projectileTravelTimePerTile,
+      critDamageMultiplier = ToF32(1.5f),
+      attackSpeed,
+      sqrRange;
+    Property critChance = ToF32(15),
+      stunChance,
+      silenceChance;
     F32 lastStartAttackTime;
   }
 }
