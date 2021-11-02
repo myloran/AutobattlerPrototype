@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Shared.Primitives {
   [Serializable]
@@ -15,6 +16,7 @@ namespace Shared.Primitives {
     public float AttackAnimationTotalTime;
     public float ManaPerAttack;
     public string AbilityName;
+    public List<string> SynergyNames = new List<string>();
 
     public UnitInfo() { }
 

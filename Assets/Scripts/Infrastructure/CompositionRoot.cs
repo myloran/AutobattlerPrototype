@@ -22,6 +22,8 @@ using Model.NUnit;
 using UnityEngine;
 using Model;
 using Model.NAbility;
+using Model.NAbility.Abstraction;
+using Model.NSynergy;
 using PlasticFloor.EventBus;
 using Shared.Abstraction;
 using Shared.Addons.OkwyLogging;
@@ -74,6 +76,8 @@ namespace Infrastructure {
       OkwyDefaultLog.DefaultInit();
       var units = new UnitInfoLoader().Load();
       var abilities = new AbilityInfoLoader().Load();
+      var synergies = new SynergyInfoLoader().Load();
+      var effectInfos = new EffectInfoLoader().Load();
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
       var decisionTreeLoader = new DecisionTreeDataLoader();
@@ -162,6 +166,7 @@ namespace Infrastructure {
       #endregion
       #region Battle simulation
 
+      // new SystemRandomTests().ExecuteTests();
       var movementController = new MovementController(boardPresenter, coordFinder);
       var attackController = new AttackController(boardPresenter, unitTooltipController);
       var animationController = new AnimationController(boardPresenter);
@@ -176,8 +181,10 @@ namespace Infrastructure {
       
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, compositeSimulationTick, compositeReset);
-      
-      var battleSimulation = new BattleSimulation(aiContext, board, aiHeap, systemRandomEmbedded);
+
+      var effectFactory = new EffectFactory(effectInfos, eventBus);
+      var synergyEffectApplier = new SynergyEffectApplier(board, aiContext, synergies, effectFactory);
+      var battleSimulation = new BattleSimulation(aiContext, board, aiHeap, systemRandomEmbedded, synergyEffectApplier);
       
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
         compositeSimulationTick, battleSimulation);
@@ -187,7 +194,8 @@ namespace Infrastructure {
 
       var commandEvents = new EventRow(battleSimulation, eventBus, CommandDebugWindowUI.EventTemplate);
       var commandButtonStyler = new CommandButtonStyler(boardPresenter);
-      var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandDebugWindowUI);
+      var commandsHandler = new CommandRow(commandEvents, commandButtonStyler, CommandDebugWindowUI, aiContext, 
+        battleSimulation);
       var commandsDebugController = new CommandsDebugController(aiHeap, commandsHandler, CommandDebugWindowUI);
       
       var battleTests = new List<IBattleTest> {
@@ -237,6 +245,13 @@ namespace Infrastructure {
       inputController.InitObservables();
 
       #endregion
+
+      #region Model
+
+      synergyEffectApplier.Init();
+
+      #endregion
+      
       #region View
 
       battleSimulationUI2.Init(DebugWindowUI.Document);
@@ -283,6 +298,7 @@ namespace Infrastructure {
       battleTestController.SubToUI();
       battleSimulationDebugController.SubToUI(disposable);
       commandEvents.Init(disposable);
+      commandsHandler.Init(disposable);
       commandsDebugController.Init();
       DebugController.Init(UnitTooltipUI);
 

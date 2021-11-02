@@ -4,12 +4,11 @@ using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
 using Shared.Addons.Examples.FixMath;
-using Shared.Shared.Client.Events;
 
 namespace Model.NAbility.Effects {
-  public class ModifyCritChanceEffect : IEffect {
-    public ModifyCritChanceEffect(IEventBus bus, F32 critChance) {
-      this.critChance = critChance;
+  public class ModifyStunChanceDurationEffect : IEffect {
+    public ModifyStunChanceDurationEffect(IEventBus bus, F32 stunChanceDuration) {
+      this.stunChanceDuration = stunChanceDuration;
       this.bus = bus;
     }
     
@@ -17,13 +16,11 @@ namespace Model.NAbility.Effects {
       foreach (var unit in units) {
         if (!unit.IsAlive) return;
         
-        unit.ModifyCritChance(critChance);
-      
-        bus.Raise(new UpdateHealthEvent(unit.Health, unit.Coord));
+        unit.ModifyStunChanceDuration(stunChanceDuration);
       }
     }
 
     readonly IEventBus bus;
-    readonly F32 critChance;
+    readonly F32 stunChanceDuration;
   }
 }

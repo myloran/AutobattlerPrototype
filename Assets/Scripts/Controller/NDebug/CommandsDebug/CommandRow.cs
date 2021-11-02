@@ -1,23 +1,43 @@
+using System;
 using System.Collections.Generic;
 using Model.NAI.Commands;
+using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
 using Shared.Addons.Examples.FixMath;
+using UniRx;
 using UnityEngine.UIElements;
 using View.UIToolkit;
 
 namespace Controller.NDebug.CommandsDebug {
-  public class CommandRow {
-    public CommandRow(EventRow eventRow, CommandButtonStyler styler,
-      CommandDebugWindowUI windowUI) {
+  public class CommandRow : IDisposable {
+    public CommandRow(EventRow eventRow, CommandButtonStyler styler, CommandDebugWindowUI windowUI, AiContext context,
+        BattleSimulation battleSimulation) {
       this.windowUI = windowUI;
+      this.context = context;
+      this.battleSimulation = battleSimulation;
       this.eventRow = eventRow;
       this.styler = styler;
+    }
+    
+    public void Init(CompositeDisposable disposable) {
+      context.OnMakeDecisionExecuted += OnMakeDecisionExecuted;
+      disposable.Add(this);
     }
     
     public void OnReset() {
       eventRow.OnReset();
       commandStuff.Clear();
+      commandButtonStuff.Clear();
       unitCommands.Clear();
+    }
+
+    public void Dispose() => context.OnMakeDecisionExecuted -= OnMakeDecisionExecuted;
+
+    void OnMakeDecisionExecuted(string makeDecisionCommand) {
+      if (commandButtonStuff.TryGetValue(battleSimulation.LastCommandBeingExecuted, out var stuff)) {
+        var button = stuff.Template.Q<Button>();
+        button.text = makeDecisionCommand;
+      }
     }
     
     public TemplateContainer InstantiateCommandRow(F32 time, ICommand command) {
@@ -35,6 +55,7 @@ namespace Controller.NDebug.CommandsDebug {
       var button = ConfigureButton(template, command);
       if (command is BaseCommand baseCommand) {
         commandStuff[button] = new CommandButtonStuff(baseCommand.Unit, command, template);
+        commandButtonStuff[command] = new CommandButtonStuff(baseCommand.Unit, command, template);
         
         if (unitCommands.TryGetValue(baseCommand.Unit, out var commands))
           commands.Add(button);
@@ -75,7 +96,10 @@ namespace Controller.NDebug.CommandsDebug {
 
     readonly Dictionary<IUnit, List<Button>> unitCommands = new Dictionary<IUnit, List<Button>>();
     readonly Dictionary<Button, CommandButtonStuff> commandStuff = new Dictionary<Button, CommandButtonStuff>();
+    readonly Dictionary<ICommand, CommandButtonStuff> commandButtonStuff = new Dictionary<ICommand, CommandButtonStuff>();
     readonly CommandDebugWindowUI windowUI;
+    readonly AiContext context;
+    readonly BattleSimulation battleSimulation;
     readonly EventRow eventRow;
     readonly CommandButtonStyler styler;
   }

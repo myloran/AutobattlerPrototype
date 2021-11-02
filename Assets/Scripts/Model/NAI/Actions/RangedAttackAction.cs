@@ -11,7 +11,7 @@ namespace Model.NAI.Actions {
 
     public override IDecisionTreeNode MakeDecision(AiContext context) {
       var projectileTravelTime = Unit.ProjectileTravelTimeTo(Unit.Target);
-      context.InsertCommand(projectileTravelTime, new ApplyDamageCommand(Unit, context, Bus)); //inserting to heap because units can attack at the same time
+      context.InsertCommand(projectileTravelTime, new ExecuteAttackCommand(Unit, context, Bus)); //inserting to heap because units can attack at the same time
       context.InsertCommand(Unit.TimeToFinishAttackAnimation, new FinishAttackCommand(Unit, Bus));
       
       var time = Max(Unit.AttackSpeedTime, Unit.TimeToFinishAttackAnimation);

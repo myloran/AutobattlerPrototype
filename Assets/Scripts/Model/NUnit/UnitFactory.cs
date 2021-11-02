@@ -38,9 +38,10 @@ namespace Model.NUnit {
 
       var ai = new AiComponent();
       var stun = new StunComponent(attack, ability, ai, movement);
-      
+
+      var stats = new StatsComponent(name, 1, player, info.SynergyNames);
       var unit = new Unit(health, attack, movement, new TargetingComponent(), ai, 
-        new StatsComponent(name, 1, player), ability, new SilenceComponent(), stun);
+        stats, ability, new SilenceComponent(), stun);
 
       unit.SetDecisionTree(decisionFactory.Create(unit));
       unit.SetAbility(abilityFactory.Create(unit, info.AbilityName));

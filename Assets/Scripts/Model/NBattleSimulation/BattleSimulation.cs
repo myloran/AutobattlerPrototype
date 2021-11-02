@@ -1,6 +1,6 @@
-using System;
 using Model.Determinism;
 using Model.NAI.Commands;
+using Model.NSynergy;
 using Shared.Addons.Examples.FixMath;
 using static Shared.Addons.Examples.FixMath.F32;
 
@@ -9,18 +9,22 @@ namespace Model.NBattleSimulation {
     public ICommand LastCommandBeingExecuted;
     public bool IsBattleOver { get; private set; }
 
-    public BattleSimulation(AiContext context, Board board, AiHeap heap, SystemRandomEmbedded random) {
+    public BattleSimulation(AiContext context, Board board, AiHeap heap, SystemRandomEmbedded random, 
+        SynergyEffectApplier synergyEffectApplier) {
       this.context = context;
       this.board = board;
       this.heap = heap;
       this.random = random;
+      this.synergyEffectApplier = synergyEffectApplier;
       hashCalculator = new HashCalculator();
     }
+
 
     public void PrepareBattle(PlayerContext playerContext) {
       random.Reset(0);
       board.Reset(playerContext);
       foreach (var unit in board.Values) unit.Reset();
+      synergyEffectApplier.ApplyEffects();
       heap.Reset();
       context.Reset();
       hashCalculator.Reset();
@@ -65,5 +69,6 @@ namespace Model.NBattleSimulation {
     readonly Board board;
     readonly HashCalculator hashCalculator;
     readonly SystemRandomEmbedded random;
+    readonly SynergyEffectApplier synergyEffectApplier;
   }
 }

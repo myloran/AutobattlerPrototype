@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Debug = UnityEngine.Debug;
 using Random = System.Random;
 
@@ -44,13 +45,14 @@ namespace Controller.NDebug {
       int min = int.MaxValue; 
       int max = int.MinValue;
       
-      for (int i = 0; i < maxIterations; i++) {
-        var num = random.Next(maxValue);
+      for (int i = 0; i < MaxIterations; i++) {
+        var num = random.Next(MaxValue);
         randomNumbers.Add(num);
         max = Math.Max(max, num);
         min = Math.Min(min, num);
       }
 
+      Debug.Log($"numbers: {string.Join(",", randomNumbers)}");
       Debug.Log($"min: {min}");
       Debug.Log($"max: {max}");
     }    
@@ -59,8 +61,8 @@ namespace Controller.NDebug {
       int min = int.MaxValue; 
       int max = int.MinValue;
       
-      for (int i = 0; i < maxIterations; i++) {
-        var num = random.Next(maxValue);
+      for (int i = 0; i < MaxIterations; i++) {
+        var num = random.Next(MaxValue);
         if (randomNumbers[i] != num) incorrectNumbers++;
         max = Math.Max(max, num);
         min = Math.Min(min, num);
@@ -75,8 +77,8 @@ namespace Controller.NDebug {
       int min = int.MaxValue;
       int max = int.MinValue;
       
-      for (int i = 0; i < maxIterations; i++) {
-        var num = r2.Next(maxValue);
+      for (int i = 0; i < MaxIterations; i++) {
+        var num = r2.Next(MaxValue);
         if (randomNumbers[i] != num) incorrectNumbers++;
         max = Math.Max(max, num);
         min = Math.Min(min, num);
@@ -88,18 +90,18 @@ namespace Controller.NDebug {
     }
     
     void BenchmarkOld() {
-      for (int i = 0; i < maxIterations; i++) random.Next(maxValue);
+      for (int i = 0; i < MaxIterations; i++) random.Next(MaxValue);
     }    
     
     void BenchmarkNew() {
-      for (int i = 0; i < maxIterations; i++) r2.Next(maxValue);
+      for (int i = 0; i < MaxIterations; i++) r2.Next(MaxValue);
     }
 
     Random r2 = new Random(0);
     readonly SystemRandomEmbedded random = new SystemRandomEmbedded(0);
     readonly List<int> randomNumbers = new List<int>();
-    const int maxValue = 32000;
-    const int maxIterations = 10_000_000;
+    const int MaxValue = 32000;
+    const int MaxIterations = 10_000_000;
     int incorrectNumbers;
     bool isOk;
   }

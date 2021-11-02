@@ -1,0 +1,13 @@
+{
+  "Name": "Fortress",
+  "SynergyLevels": [
+	{
+	  "UnitCount": 2,
+	  "EffectName": "IncreaseStunChanceSmall",
+	},
+	{
+	  "UnitCount": 4,
+	  "EffectName": "IncreaseStunChanceBig",
+	},
+  ],
+}

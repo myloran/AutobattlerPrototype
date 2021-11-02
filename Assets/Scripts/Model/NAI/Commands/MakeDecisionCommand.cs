@@ -25,6 +25,7 @@ namespace Model.NAI.Commands {
       
       ai.OnDecisionExecutionTimeUpdated -= OnDecisionExecutionTimeUpdated;
       ai.MakeDecision(context);
+      context.OnMakeDecisionExecuted($"{ai.CurrentDecision.GetType().Name}");
     }
 
     readonly IAi ai;

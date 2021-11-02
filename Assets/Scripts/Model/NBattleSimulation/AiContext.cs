@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Model.NAI.Commands;
@@ -9,7 +10,9 @@ using Shared.Shared.Client.Abstraction;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NBattleSimulation {
-  public class AiContext : ITime { //TODO: make interface that won't expose reset/checkBattleIsOveer/isBattleOVer 
+  public class AiContext : ITime { //TODO: make interface that won't expose reset/checkBattleIsOveer/isBattleOVer
+    public Action<string> OnMakeDecisionExecuted = _ => { }; 
+    
     public AiContext(Board board, AiHeap heap) {
       this.board = board;
       this.heap = heap;

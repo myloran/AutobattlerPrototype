@@ -4,8 +4,8 @@ using PlasticFloor.EventBus;
 using Shared.Shared.Client.Events;
 
 namespace Model.NAI.Commands {
-  public class ApplyDamageCommand : BaseCommand {
-    public ApplyDamageCommand(IUnit unit, AiContext context, IEventBus bus) : base(unit) {
+  public class ExecuteAttackCommand : BaseCommand {
+    public ExecuteAttackCommand(IUnit unit, AiContext context, IEventBus bus) : base(unit) {
       this.unit = unit;
       this.context = context;
       this.bus = bus;
@@ -21,6 +21,13 @@ namespace Model.NAI.Commands {
       if (!target.IsAlive) return;
       
       target.TakeDamage(unit.CalculateDamage());
+
+      if (unit.CalculateStun()) {
+        target.ApplyStun(context.CurrentTime, unit.StunChanceDuration);
+        
+        bus.Raise(new UpdateStunDurationEvent(target.StunEndTime, target.Coord));
+        if (unit.IsMovePaused) bus.Raise(new PauseMoveEvent(target.Coord));
+      }
       
       if (!target.IsAlive) 
         new DeathCommand(target, context).Execute();
