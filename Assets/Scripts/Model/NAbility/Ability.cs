@@ -19,7 +19,7 @@ namespace Model.NAbility {
 
     public Ability(IUnit unit, EPlayer player, IMainTargetSelector targetSelector,
       IAdditionalTargetsSelector additionalTargetsSelector,
-      AlongLineTilesSelector tilesSelector, List<IEffect> effects,
+      AlongLineTilesSelector tilesSelector, IEffect effect,
       ITiming timing, bool isTimingOverridden = false, bool needRecalculateTarget = false,
       IEnumerable<Ability> nestedAbilities = null) {
       Unit = unit;
@@ -27,7 +27,7 @@ namespace Model.NAbility {
       this.targetSelector = targetSelector;
       this.additionalTargetsSelector = additionalTargetsSelector;
       this.tilesSelector = tilesSelector;
-      this.effects = effects;
+      this.effect = effect;
       this.timing = timing;
       this.isTimingOverridden = isTimingOverridden;
       this.needRecalculateTarget = needRecalculateTarget;
@@ -97,8 +97,7 @@ namespace Model.NAbility {
     }
 
     void ApplyEffects(AiContext context, IEnumerable<IUnit> targets) {
-      foreach (var effect in effects)
-        effect.Apply(context, targets);
+      effect.Apply(context, targets);
 
       foreach (var ability in nestedAbilities) {
         ability.targetSelector = targetSelector;
@@ -110,8 +109,7 @@ namespace Model.NAbility {
         if (ability.isTimingOverridden)
           ability.HandleTiming(context, targets, ability.ApplyEffects);
         else
-          foreach (var effect in ability.effects)
-            effect.Apply(context, targets);
+          effect.Apply(context, targets);
       }
     }
 
@@ -125,7 +123,7 @@ namespace Model.NAbility {
     }
     
     readonly IEnumerable<Ability> nestedAbilities;
-    readonly List<IEffect> effects;
+    readonly IEffect effect;
     readonly ITiming timing;
     readonly bool isTimingOverridden;
     readonly bool needRecalculateTarget;

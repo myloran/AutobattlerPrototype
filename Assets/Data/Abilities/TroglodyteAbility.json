@@ -5,7 +5,6 @@
   ],
   "Target": "Unit",
   "UnitTargetingRule": "Closest",
-  "Damage": 0,  
   "TargetingRange": 3,
   "AbilityRadius": 3,
   "AnimationHitTime": 0.5,

@@ -12,8 +12,9 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAbility {
   public class AbilityFactory {
-    public AbilityFactory(Dictionary<string, AbilityInfo> abilities, IEventBus bus) {
+    public AbilityFactory(Dictionary<string, AbilityInfo> abilities, EffectFactory effectFactory, IEventBus bus) {
       this.abilities = abilities;
+      this.effectFactory = effectFactory;
       this.bus = bus;
     }
 
@@ -49,14 +50,11 @@ namespace Model.NAbility {
       else if (info.Target == ETarget.Tile)
         tilesSelector = new AlongLineTilesSelector(unit);
 
-      var effects = new List<IEffect>();
-      if (info.Damage > 0) effects.Add(new DamageEffect(bus, ToF32(info.Damage)));
-      if (info.SilenceDuration > 0) effects.Add(new SilenceEffect(bus, ToF32(info.SilenceDuration)));
-      if (info.TauntDuration > 0) effects.Add(new TauntEffect(bus, unit, ToF32(info.TauntDuration)));
-      if (info.StunDuration > 0) effects.Add(new StunEffect(bus, ToF32(info.StunDuration)));
-      if (info.Heal > 0) effects.Add(new HealEffect(bus, ToF32(info.Heal)));
-      if (info.ModifyCritChance > 0) effects.Add(new ModifyCritChanceEffect(bus, ToF32(info.ModifyCritChance)));
-                
+      var baseEffect = effectFactory.Create(info.EffectInfo);
+      var effects = new List<IEffect> {baseEffect};
+      if (info.EffectInfo.TauntDuration > 0) effects.Add(new TauntEffect(bus, unit, ToF32(info.EffectInfo.TauntDuration)));
+      var finalEffect = new CompositeEffect(effects.ToArray());
+
       ITiming timing = null;
       if (info.Timing == ETiming.Once)
         timing = new OnceTiming();
@@ -64,14 +62,14 @@ namespace Model.NAbility {
         timing = new PeriodTiming(ToF32(info.TimingInitialDelay), ToF32(info.TimingPeriod), info.TimingCount);
 
       var nestedAbilities = info.NestedAbilities.Select(a => Create(unit, a)).ToList();
-
       var targetPlayer = info.TargetPlayer.GetPlayer(unit.Player);
       
-      return new Ability(unit, targetPlayer, targetSelector, targetsSelector, tilesSelector, effects, timing, info.IsTimingOverridden, 
+      return new Ability(unit, targetPlayer, targetSelector, targetsSelector, tilesSelector, finalEffect, timing, info.IsTimingOverridden, 
         info.NeedRecalculateTarget, nestedAbilities);
     }
 
     readonly Dictionary<string, AbilityInfo> abilities;
+    readonly EffectFactory effectFactory;
     readonly IEventBus bus;
   }
 }                      

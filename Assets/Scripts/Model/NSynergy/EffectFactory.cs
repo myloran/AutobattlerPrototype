@@ -7,13 +7,11 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAbility {
   public class EffectFactory {
-    public EffectFactory(Dictionary<string, EffectInfo> effectInfos, IEventBus bus) {
-      this.effectInfos = effectInfos;
+    public EffectFactory(IEventBus bus) {
       this.bus = bus;
     }
 
-    public IEffect Create(string name) {
-      var info = effectInfos[name];
+    public IEffect Create(EffectInfo info) {
       var effects = new List<IEffect>();
       
       if (info.Damage > 0) effects.Add(new DamageEffect(bus, ToF32(info.Damage)));
@@ -30,7 +28,6 @@ namespace Model.NAbility {
       return new CompositeEffect(effects.ToArray());
     }
 
-    readonly Dictionary<string, EffectInfo> effectInfos;
     readonly IEventBus bus;
   }
 }                      

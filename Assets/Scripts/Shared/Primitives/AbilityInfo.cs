@@ -70,14 +70,16 @@ namespace Shared.Primitives {
     public float TimingPeriod;
     public int TimingCount;
     public float TimingInitialDelay;
+
+    public EffectInfo EffectInfo = new EffectInfo();
     
-    //properties
-    public float Damage;
-    public float Heal;
-    public float ModifyCritChance;
-    public float SilenceDuration;
-    public float TauntDuration;
-    public float StunDuration;
+    // //properties
+    // public float Damage;
+    // public float Heal;
+    // public float ModifyCritChance;
+    // public float SilenceDuration;
+    // public float TauntDuration;
+    // public float StunDuration;
     
     //visual stuff
     public float AnimationHitTime;

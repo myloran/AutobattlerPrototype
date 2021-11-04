@@ -1,3 +1,5 @@
 {
-  "SilenceDuration": 5,
+  "EffectInfo": {
+    "SilenceDuration": 5
+  },
 }

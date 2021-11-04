@@ -3,8 +3,10 @@
   "AdditionalTargets": "WithinRadius",
   "TargetingRange": 3,
   "AbilityRadius": 3,
-  "Damage": 50,
-  "TauntDuration": 5,
+  "EffectInfo": {
+    "Damage": 50,
+    "TauntDuration": 5
+  },
   "AnimationHitTime": 0.5,
-  "AnimationTotalTime": 1,
+  "AnimationTotalTime": 1
 }

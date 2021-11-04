@@ -1,8 +1,10 @@
 {
   "IsTimingOverridden": true,
   "Timing": "Period",
-  "Damage": 50,  
+  "EffectInfo": {
+    "Damage": 50
+  },
   "TimingPeriod": 0.5,
   "TimingCount": 4,
-  "InitialDelay": 0.5,
+  "InitialDelay": 0.5
 }

@@ -76,10 +76,10 @@ namespace Infrastructure {
       
       OkwyDefaultLog.DefaultInit();
       var infoLoader = new InfoLoader();
-      var units = infoLoader.Load<UnitInfo>("Units");
-      var abilities = infoLoader.Load<AbilityInfo>("Abilities");
-      var synergies = infoLoader.Load<SynergyInfo>("Synergies");
-      var effectInfos = infoLoader.Load<EffectInfo>("Effects");
+      var unitsInfo = infoLoader.Load<UnitInfo>("Units");
+      var abilitiesInfo = infoLoader.Load<AbilityInfo>("Abilities");
+      var synergiesInfo = infoLoader.Load<SynergyInfo>("Synergies");
+      var effectsInfo = infoLoader.Load<EffectInfo>("Effects");
       var saveDataLoader = new SaveInfoLoader();
       var saves = saveDataLoader.Load();
       var decisionTreeLoader = new DecisionTreeDataLoader();
@@ -100,7 +100,7 @@ namespace Infrastructure {
       var mainCamera = Camera.main;
       var tileSpawner = new TilePresenter(TileStartPoints, new TileViewFactory(TileViewPrefab));
       var coordFinder = new CoordFinder(TileStartPoints);
-      var unitViewFactory = new UnitViewFactory(units, UnitViewInfoHolder, coordFinder, mainCamera);
+      var unitViewFactory = new UnitViewFactory(unitsInfo, UnitViewInfoHolder, coordFinder, mainCamera);
       var unitViewCoordChangedHandler = new UnitViewCoordChangedHandler(coordFinder);
       var boardPresenter = new BoardPresenter(unitViewCoordChangedHandler);
       
@@ -122,9 +122,10 @@ namespace Infrastructure {
         d => new LoggingDecorator(d, DebugController.Info, makeDecisionLog), decisionTreeLookup);
 
       var systemRandomEmbedded = new SystemRandomEmbedded(0);
-      var unitFactory = new UnitFactory(units, new DecisionFactory(
-        decisionTreeCreatorVisitor, decisionTreeComponent), abilities, 
-        new AbilityFactory(abilities, eventBus), systemRandomEmbedded);
+      var effectFactory = new EffectFactory(eventBus);
+      var abilityFactory = new AbilityFactory(abilitiesInfo, effectFactory, eventBus);
+      var decisionTreeFactory = new DecisionFactory(decisionTreeCreatorVisitor, decisionTreeComponent);
+      var unitFactory = new UnitFactory(unitsInfo, decisionTreeFactory, abilitiesInfo, abilityFactory, systemRandomEmbedded);
       
       //TODO: replace board/bench dictionaries with array?               
       var playerContext = new PlayerContext(new Player(unitFactory), new Player(unitFactory));
@@ -184,8 +185,7 @@ namespace Infrastructure {
       var battleSimulationPresenter = new BattleSimulationPresenter(coordFinder, 
         boardPresenter, compositeSimulationTick, compositeReset);
 
-      var effectFactory = new EffectFactory(effectInfos, eventBus);
-      var synergyEffectApplier = new SynergyEffectApplier(board, aiContext, synergies, effectFactory);
+      var synergyEffectApplier = new SynergyEffectApplier(board, aiContext, synergiesInfo, effectsInfo, effectFactory);
       var battleSimulation = new BattleSimulation(aiContext, board, aiHeap, systemRandomEmbedded, synergyEffectApplier);
       
       var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
@@ -259,7 +259,7 @@ namespace Infrastructure {
       battleSimulationUI2.Init(DebugWindowUI.Document);
       commandDebugUI.FillReferences(CommandDebugWindowUI.Document);
       
-      BattleSetupUI.SetDropdownOptions(units.Keys.ToList());
+      BattleSetupUI.SetDropdownOptions(unitsInfo.Keys.ToList());
       BattleSaveUI.SubToUI(saves.Keys.ToList());
       tileSpawner.SpawnTiles();
 

@@ -3,6 +3,8 @@
   "Timing": "Period",
   "TimingPeriod": 0.5,
   "TimingCount": 2,
-  "Damage": 100,  
-  "SilenceDuration": 0.5,
+  "EffectInfo": {
+    "Damage": 100
+  },
+  "SilenceDuration": 0.5
 }

@@ -9,9 +9,10 @@ using Shared.Primitives;
 namespace Model.NSynergy {
   public class SynergyEffectApplier {
     public SynergyEffectApplier(Board board, AiContext context, Dictionary<string, SynergyInfo> synergyInfos,
-        EffectFactory effectFactory) {
+        Dictionary<string, EffectInfo> effectInfos, EffectFactory effectFactory) {
       this.effectFactory = effectFactory;
       this.synergyInfos = synergyInfos;
+      this.effectInfos = effectInfos;
       this.board = board;
       this.context = context;
     }
@@ -19,7 +20,8 @@ namespace Model.NSynergy {
     public void Init() {
       foreach (var synergy in synergyInfos) {
         foreach (var level in synergy.Value.SynergyLevels) {
-          synergyEffects[level.EffectName] = effectFactory.Create(level.EffectName);
+          var effectInfo = effectInfos[level.EffectName];
+          synergyEffects[level.EffectName] = effectFactory.Create(effectInfo);
         }
       }
     }
@@ -74,6 +76,7 @@ namespace Model.NSynergy {
     
     readonly Dictionary<string, IEffect> synergyEffects = new Dictionary<string, IEffect>();
     readonly Dictionary<string, SynergyInfo> synergyInfos;
+    readonly Dictionary<string, EffectInfo> effectInfos;
     readonly Board board;
     readonly AiContext context;
     readonly EffectFactory effectFactory;

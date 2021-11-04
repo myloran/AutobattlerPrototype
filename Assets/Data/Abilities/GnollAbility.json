@@ -1,10 +1,12 @@
 {
   "NestedAbilities": [
-    "DamageOverTime",
+    "DamageOverTime"
   ],
   "Target": "Unit",
-  "Damage": 100,  
+  "EffectInfo": {
+    "Damage": 100
+  },
   "TargetingRange": 3,
   "AnimationHitTime": 0.5,
-  "AnimationTotalTime": 1,
+  "AnimationTotalTime": 1
 }

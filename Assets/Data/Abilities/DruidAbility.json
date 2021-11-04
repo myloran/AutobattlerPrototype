@@ -2,10 +2,10 @@
   "UnitTargetingRule": "Self",
   "TargetPlayer": "Friend",
   "TargetingRange": 3,
-  
-  "Heal": 100, 
-  "ModifyCritChance": 15,  
-  
+  "EffectInfo": {
+    "Heal": 100,
+    "ModifyCritChance": 15
+  },  
   "AnimationHitTime": 0.5,
-  "AnimationTotalTime": 1,
+  "AnimationTotalTime": 1
 }
