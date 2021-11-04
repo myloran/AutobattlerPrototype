@@ -75,8 +75,8 @@ namespace Infrastructure {
       #region Config
       
       OkwyDefaultLog.DefaultInit();
-      var units = new UnitInfoLoader().Load();
       var infoLoader = new InfoLoader();
+      var units = infoLoader.Load<UnitInfo>("Units");
       var abilities = infoLoader.Load<AbilityInfo>("Abilities");
       var synergies = infoLoader.Load<SynergyInfo>("Synergies");
       var effectInfos = infoLoader.Load<EffectInfo>("Effects");
