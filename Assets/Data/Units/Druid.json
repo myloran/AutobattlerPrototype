@@ -5,6 +5,7 @@
   "Damage": 85,
   "AttackSpeed": 0.65,
   "AttackRange": 3,
+  "ProjectileTravelTimePerTile": 0.1,
   "MoveSpeed": 1,
   "AttackAnimationHitTime": 0.5,
   "AttackAnimationTotalTime": 1,

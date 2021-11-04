@@ -1,3 +1,4 @@
+using System;
 using SharedClient.Abstraction;
 using UnityEngine;
 
@@ -22,6 +23,8 @@ namespace View {
       var timeClamped = Mathf.Clamp(time, startTime, EndTime);
       var durationPassed = timeClamped - startTime;
       var t = durationPassed / duration;
+      if (from == to) return;
+      
       Obj.transform.position = Vector3.Lerp(from, to, t);
     }
 
