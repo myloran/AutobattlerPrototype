@@ -1,0 +1,17 @@
+{
+  "Health": 500,
+  "Armor": 1,
+  "Damage": 100,
+  "AttackSpeed": 0.8,
+  "AttackRange": 4,
+  "ProjectileTravelTimePerTile": 0.1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+  "ManaPerAttack": 25,
+  "SynergyNames": [
+    "Stronghold",
+    "Hunter"
+  ],
+  "AbilityName": "CoupDeGrace",
+}

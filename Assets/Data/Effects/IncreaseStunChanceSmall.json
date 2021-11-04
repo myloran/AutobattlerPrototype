@@ -1,4 +1,4 @@
 {
-  "ModifyStunChance": 55,
-  "ModifyStunChanceDuration": 2,
+  "ModifyStunChance": 15,
+  "ModifyStunChanceDuration": 1.5,
 }

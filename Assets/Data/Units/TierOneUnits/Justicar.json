@@ -1,13 +1,16 @@
 {
-  "Name": "Justicar",
-  "Health": 500,
+  "Health": 450,
   "Armor": 2,
-  "Damage": 70,
-  "AttackSpeed": 0.6,
+  "Damage": 105,
+  "AttackSpeed": 0.61,
   "AttackRange": 1,
   "MoveSpeed": 1,
   "AttackAnimationHitTime": 0.5,
   "AttackAnimationTotalTime": 1,
-  "ManaPerAttack": 30,
+  "ManaPerAttack": 35,
+  "SynergyNames": [
+    "Haven",
+    "Assassin"
+  ],
   "AbilityName": "CoupDeGrace",
 }

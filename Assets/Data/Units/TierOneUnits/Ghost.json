@@ -1,0 +1,17 @@
+{
+  "Health": 400,
+  "Armor": 1,
+  "Damage": 100,
+  "AttackSpeed": 0.53,
+  "AttackRange": 3,
+  "ProjectileTravelTimePerTile": 0.1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+  "ManaPerAttack": 30,
+  "SynergyNames": [
+    "Spirit",
+    "Necropolis"
+  ],
+  "AbilityName": "GhostAbility",
+}

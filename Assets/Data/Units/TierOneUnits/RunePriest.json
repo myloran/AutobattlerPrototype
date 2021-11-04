@@ -1,14 +1,13 @@
 {
-  "Name": "RunePriest",
-  "Health": 600,
-  "Armor": 4,
-  "Damage": 25,
-  "AttackSpeed": 0.5,
+  "Health": 540,
+  "Armor": 3,
+  "Damage": 115,
+  "AttackSpeed": 0.57,
   "AttackRange": 1,
   "MoveSpeed": 1,
   "AttackAnimationHitTime": 0.5,
   "AttackAnimationTotalTime": 1,
-  "ManaPerAttack": 30,
+  "ManaPerAttack": 50,
   "SynergyNames": [
 	"Fortress",
 	"Mage"

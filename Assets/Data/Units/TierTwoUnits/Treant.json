@@ -1,0 +1,16 @@
+{
+  "Health": 625,
+  "Armor": 3,
+  "Damage": 90,
+  "AttackSpeed": 0.67,
+  "AttackRange": 1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+  "ManaPerAttack": 22,
+  "SynergyNames": [
+    "Sylvan",
+    "Colossus"
+  ],
+  "AbilityName": "TreantAbility",
+}

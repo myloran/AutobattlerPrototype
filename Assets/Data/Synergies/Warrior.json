@@ -1,0 +1,12 @@
+{
+  "SynergyLevels": [
+	{
+	  "UnitCount": 2,
+	  "EffectName": "IncreaseSilenceChanceSmall",
+	},
+	{
+	  "UnitCount": 4,
+	  "EffectName": "IncreaseSilenceChanceBig",
+	},
+  ],
+}

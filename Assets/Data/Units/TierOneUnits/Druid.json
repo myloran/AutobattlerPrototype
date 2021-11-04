@@ -1,14 +1,17 @@
 {
-  "Name": "Druid",
-  "Health": 450,
-  "Armor": 1,
-  "Damage": 85,
-  "AttackSpeed": 0.65,
+  "Health": 577,
+  "Armor": 2,
+  "Damage": 75,
+  "AttackSpeed": 0.74,
   "AttackRange": 3,
   "ProjectileTravelTimePerTile": 0.1,
   "MoveSpeed": 1,
   "AttackAnimationHitTime": 0.5,
   "AttackAnimationTotalTime": 1,
-  "ManaPerAttack": 30,
+  "ManaPerAttack": 25,
+  "SynergyNames": [
+    "Sylvan",
+    "Mage"
+  ],
   "AbilityName": "DruidAbility",
 }

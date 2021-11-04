@@ -1,18 +1,17 @@
 {
-  "Name": "Ghost",
-  "Health": 300,
-  "Armor": 1,
-  "Damage": 50,
-  "AttackSpeed": 0.5,
-  "AttackRange": 3,
+  "Health": 555,
+  "Armor": 2,
+  "Damage": 110,
+  "AttackSpeed": 0.65,
+  "AttackRange": 2,
   "ProjectileTravelTimePerTile": 0.1,
   "MoveSpeed": 1,
   "AttackAnimationHitTime": 0.5,
   "AttackAnimationTotalTime": 1,
   "ManaPerAttack": 30,
   "SynergyNames": [
-    "Spirit",
-    "Necropolis"
+	"Fortress",
+	"Warrior"
   ],
-  "AbilityName": "GhostAbility",
+  "AbilityName": "ValkyrieAbility",
 }

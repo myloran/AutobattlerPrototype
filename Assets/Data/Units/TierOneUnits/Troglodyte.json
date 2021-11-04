@@ -1,9 +1,8 @@
 {
-  "Name": "Troglodyte",
-  "Health": 400,
+  "Health": 395,
   "Armor": 2,
-  "Damage": 60,
-  "AttackSpeed": 0.6,
+  "Damage": 95,
+  "AttackSpeed": 0.63,
   "AttackRange": 1,  
   "ProjectileTravelTimePerTile": 0.1,
   "MoveSpeed": 1,

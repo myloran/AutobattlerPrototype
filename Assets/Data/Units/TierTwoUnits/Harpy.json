@@ -1,0 +1,16 @@
+{
+  "Health": 540,
+  "Armor": 3,
+  "Damage": 110,
+  "AttackSpeed": 0.77,
+  "AttackRange": 1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+  "ManaPerAttack": 35,
+  "SynergyNames": [
+    "Dungeon",
+    "Assassin"
+  ],
+  "AbilityName": "HarpyAbility",
+}

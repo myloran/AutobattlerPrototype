@@ -1,0 +1,16 @@
+{
+  "Health": 615,
+  "Armor": 3,
+  "Damage": 120,
+  "AttackSpeed": 0.74,
+  "AttackRange": 1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+  "ManaPerAttack": 45,
+  "SynergyNames": [
+	"Stronghold",
+	"Warrior"
+  ],
+  "AbilityName": "OrcAbility",
+}

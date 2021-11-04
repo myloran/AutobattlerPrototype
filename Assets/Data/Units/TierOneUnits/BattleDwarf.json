@@ -1,14 +1,13 @@
 {
-  "Name": "BattleDwarf",
-  "Health": 700,
-  "Armor": 5,
-  "Damage": 40,
-  "AttackSpeed": 0.4,
+  "Health": 615,
+  "Armor": 4,
+  "Damage": 145,
+  "AttackSpeed": 0.49,
   "AttackRange": 1,
   "MoveSpeed": 1,
   "AttackAnimationHitTime": 0.5,
   "AttackAnimationTotalTime": 1,
-  "ManaPerAttack": 30,
+  "ManaPerAttack": 40,
   "SynergyNames": [
 	"Fortress",
 	"Guardian"

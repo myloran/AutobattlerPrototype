@@ -1,0 +1,17 @@
+{
+  "Health": 800,
+  "Armor": 5,
+  "Damage": 130,
+  "AttackSpeed": 0.51,
+  "AttackRange": 1,
+  "ProjectileTravelTimePerTile": 0.1,
+  "MoveSpeed": 1,
+  "AttackAnimationHitTime": 0.5,
+  "AttackAnimationTotalTime": 1,
+  "ManaPerAttack": 0,
+  "SynergyNames": [
+    "Haven",
+    "Guardian"
+  ],
+  "AbilityName": "SwordmasterAbility",
+}
