@@ -34,11 +34,7 @@ namespace Model.NAbility {
       this.nestedAbilities = nestedAbilities ?? new List<Ability>();
     }
 
-    public void Cast(AiContext context) {
-      Cast(Zero, context);
-      
-    }
-
+    public void Cast(AiContext context) => Cast(Zero, context);
     void Cast(F32 time, AiContext context) => context.InsertCommand(time, new ExecuteAbilityCommand(this, context));
     public IUnit SelectTarget(AiContext context) => targetSelector.Select(context);
 

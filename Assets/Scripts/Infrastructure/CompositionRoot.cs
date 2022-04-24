@@ -247,13 +247,6 @@ namespace Infrastructure {
       inputController.InitObservables();
 
       #endregion
-
-      #region Model
-
-      synergyEffectApplier.Init();
-
-      #endregion
-      
       #region View
 
       battleSimulationUI2.Init(DebugWindowUI.Document);
@@ -262,10 +255,11 @@ namespace Infrastructure {
       BattleSetupUI.SetDropdownOptions(unitsInfo.Keys.ToList());
       BattleSaveUI.SubToUI(saves.Keys.ToList());
       tileSpawner.SpawnTiles();
-
       #endregion
+
       #region Model
 
+      synergyEffectApplier.Init();
       decisionTreeCreatorVisitor.Init();
       eventBus.Register<StartMoveEvent>(movementController, animationController); //TODO: register implicitly?
       eventBus.Register<FinishMoveEvent>(movementController);
