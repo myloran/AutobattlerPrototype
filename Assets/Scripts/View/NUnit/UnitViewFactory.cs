@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Addons.Assets.src.Scripts;
+using Shared.Abstraction;
 using Shared.Primitives;
 using UnityEngine;
 using View.Exts;
@@ -8,9 +8,9 @@ using View.NUnit.UI;
 
 namespace View.NUnit {
   public class UnitViewFactory {
-    public UnitViewFactory(Dictionary<string, UnitInfo> unitInfos, UnitViewInfoHolder unitViewInfoHolder, 
+    public UnitViewFactory(IInfoGetter<UnitInfo> unitInfoGetter, UnitViewInfoHolder unitViewInfoHolder, 
         CoordFinder coordFinder, Camera mainCamera) {
-      this.unitInfos = unitInfos;
+      this.unitInfoGetter = unitInfoGetter;
       this.unitViewInfoHolder = unitViewInfoHolder;
       this.coordFinder = coordFinder;
       this.mainCamera = mainCamera;
@@ -20,7 +20,7 @@ namespace View.NUnit {
       var unit = unitViewInfoHolder.Prefab;
       var position = coordFinder.PositionAt(coord).WithY(unit.Height);
       var rotation = player.ToQuaternion();
-      var unitInfo = unitInfos[name];
+      var unitInfo = unitInfoGetter.Infos[name];
       
       var obj = Object.Instantiate(unit, position, rotation);
       var viewInfo = unitViewInfoHolder.Infos[name];
@@ -46,6 +46,6 @@ namespace View.NUnit {
     readonly CoordFinder coordFinder;
     readonly Camera mainCamera;
     readonly UnitViewInfoHolder unitViewInfoHolder;
-    readonly Dictionary<string, UnitInfo> unitInfos;
+    readonly IInfoGetter<UnitInfo> unitInfoGetter;
   }
 }

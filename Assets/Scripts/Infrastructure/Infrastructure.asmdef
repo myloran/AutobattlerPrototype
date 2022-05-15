@@ -1,12 +1,14 @@
 {
     "name": "Infrastructure",
+    "rootNamespace": "",
     "references": [
         "GUID:0a5f0c8802980734fa3ff10acbcb1545",
         "GUID:d228a877cb3fc0e4688a979afcc663f8",
         "GUID:7336ae94182900640bb69cfc26c96384",
         "GUID:7c8cb9e2f37f21f4185af0e1d4862a6f",
         "GUID:d1e161395db85e24985be60800319e2c",
-        "GUID:472fc899b98c73147a4263fe954299c9"
+        "GUID:472fc899b98c73147a4263fe954299c9",
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
