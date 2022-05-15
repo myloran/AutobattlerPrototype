@@ -4,23 +4,24 @@ using Model.NAbility;
 using Model.NAbility.Abstraction;
 using Model.NBattleSimulation;
 using Model.NUnit.Abstraction;
+using Shared.Abstraction;
 using Shared.Primitives;
 
 namespace Model.NSynergy {
   public class SynergyEffectApplier {
-    public SynergyEffectApplier(Board board, AiContext context, Dictionary<string, SynergyInfo> synergyInfos,
-        Dictionary<string, EffectInfo> effectInfos, EffectFactory effectFactory) {
+    public SynergyEffectApplier(Board board, AiContext context, IInfoGetter<SynergyInfo> synergyInfoGetter,
+        IInfoGetter<EffectInfo> effectInfoGetter, EffectFactory effectFactory) {
       this.effectFactory = effectFactory;
-      this.synergyInfos = synergyInfos;
-      this.effectInfos = effectInfos;
+      this.synergyInfoGetter = synergyInfoGetter;
+      this.effectInfoGetter = effectInfoGetter;
       this.board = board;
       this.context = context;
     }
 
     public void Init() {
-      foreach (var synergy in synergyInfos) {
+      foreach (var synergy in synergyInfoGetter.Infos) {
         foreach (var level in synergy.Value.SynergyLevels) {
-          var effectInfo = effectInfos[level.EffectName];
+          var effectInfo = effectInfoGetter.Infos[level.EffectName];
           synergyEffects[level.EffectName] = effectFactory.Create(effectInfo);
         }
       }
@@ -55,12 +56,12 @@ namespace Model.NSynergy {
 
     void ApplySynergyEffect(List<IUnit> firstPlayerUnits, Dictionary<string, int> synergiesCount) {
       foreach (var synergyCount in synergiesCount) {
-        if (!synergyInfos.ContainsKey(synergyCount.Key)) {
+        if (!synergyInfoGetter.Infos.ContainsKey(synergyCount.Key)) {
           log.Error($"Synergy {synergyCount.Key} is missing!");
           continue;
         }
         
-        var info = synergyInfos[synergyCount.Key];
+        var info = synergyInfoGetter.Infos[synergyCount.Key];
         var levels = info.SynergyLevels.OrderByDescending(l => l.UnitCount);
 
         foreach (var level in levels) {
@@ -75,8 +76,8 @@ namespace Model.NSynergy {
 
     
     readonly Dictionary<string, IEffect> synergyEffects = new Dictionary<string, IEffect>();
-    readonly Dictionary<string, SynergyInfo> synergyInfos;
-    readonly Dictionary<string, EffectInfo> effectInfos;
+    readonly IInfoGetter<SynergyInfo> synergyInfoGetter;
+    readonly IInfoGetter<EffectInfo> effectInfoGetter;
     readonly Board board;
     readonly AiContext context;
     readonly EffectFactory effectFactory;

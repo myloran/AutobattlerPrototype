@@ -7,7 +7,7 @@ using View.NTile;
 namespace View.Presenters {
   public class BattleSimulationPresenter : ISimulationTick {
     public BattleSimulationPresenter(CoordFinder tile, BoardPresenter board,
-      ISimulationTick tickables, IReset resettables) {
+      CompositeSimulationTick tickables, CompositeReset resettables) {
       this.tile = tile;
       this.board = board;
       this.tickables = tickables;

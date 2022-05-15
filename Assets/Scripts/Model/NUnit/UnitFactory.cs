@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using Model.NAbility;
 using Model.NUnit.Abstraction;
 using Model.NUnit.Components;
+using Shared.Abstraction;
 using Shared.Primitives;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NUnit {
   public class UnitFactory {
-    public UnitFactory(Dictionary<string, UnitInfo> infos, IDecisionTreeFactory decisionFactory,
-        Dictionary<string, AbilityInfo> abilities, AbilityFactory abilityFactory, SystemRandomEmbedded random) {
-      this.infos = infos;
+    public UnitFactory(IInfoGetter<UnitInfo> unitInfoGetter, IInfoGetter<AbilityInfo> abilityInfoGetter, 
+        IDecisionTreeFactory decisionFactory, AbilityFactory abilityFactory, SystemRandomEmbedded random) {
+      this.unitInfoGetter = unitInfoGetter;
       this.decisionFactory = decisionFactory;
-      this.abilities = abilities;
+      this.abilityInfoGetter = abilityInfoGetter;
       this.abilityFactory = abilityFactory;
       this.random = random;
     }
     
     public IUnit Create(string name, Coord coord, EPlayer player) {
-      var info = infos[name];
+      var info = unitInfoGetter.Infos[name];
       ClampUnitValues(info);
       
-      var abilityInfo = abilities[info.AbilityName];
+      var abilityInfo = abilityInfoGetter.Infos[info.AbilityName];
       ClampAbilityValues(abilityInfo);
       
       var movement = new MovementComponent(coord, ToF32(info.MoveSpeed));
@@ -59,9 +60,9 @@ namespace Model.NUnit {
       abilityInfo.TimingInitialDelay = Math.Max(0, abilityInfo.TimingInitialDelay);
     }
 
-    readonly Dictionary<string, UnitInfo> infos;
+    readonly IInfoGetter<UnitInfo> unitInfoGetter;
     readonly IDecisionTreeFactory decisionFactory;
-    readonly Dictionary<string, AbilityInfo> abilities;
+    readonly IInfoGetter<AbilityInfo> abilityInfoGetter;
     readonly AbilityFactory abilityFactory;
     readonly SystemRandomEmbedded random;
   }

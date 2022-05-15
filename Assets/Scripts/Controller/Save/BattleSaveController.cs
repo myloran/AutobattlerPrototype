@@ -11,12 +11,12 @@ using View.UIs;
 namespace Controller.Save {
   public class BattleSaveController {
     public BattleSaveController(PlayerSharedContext playerContext, 
-      BattleSaveUI ui, SaveInfoLoader saveInfoLoader, Dictionary<string, SaveInfo> saves,
+      BattleSaveUI ui, SaveInfoLoader saveInfoLoader, BattleSaveGetter battleSaveGetter,
       BattleSimulationDebugController battleSimulationController) {
       this.playerContext = playerContext;
       this.ui = ui;
       this.saveInfoLoader = saveInfoLoader;
-      this.saves = saves;
+      this.battleSaveGetter = battleSaveGetter;
       this.battleSimulationController = battleSimulationController;
     }
 
@@ -48,7 +48,7 @@ namespace Controller.Save {
       
       playerContext.DestroyAll(); 
 
-      var save = saves[ui.GetSelectedSaveName];
+      var save = battleSaveGetter.Saves[ui.GetSelectedSaveName];
       
       foreach (var (coord, name) in save.Player1BenchUnits) {
         playerContext.InstantiateToBench(name, coord, EPlayer.First);
@@ -70,7 +70,7 @@ namespace Controller.Save {
 
     readonly BattleSaveUI ui;
     readonly SaveInfoLoader saveInfoLoader;
-    readonly Dictionary<string, SaveInfo> saves;
+    readonly BattleSaveGetter battleSaveGetter;
     readonly BattleSimulationDebugController battleSimulationController;
     readonly PlayerSharedContext playerContext;
   }

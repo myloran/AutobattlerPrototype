@@ -7,19 +7,20 @@ using Model.NAbility.TilesSelector;
 using Model.NAbility.Timings;
 using Model.NUnit.Abstraction;
 using PlasticFloor.EventBus;
+using Shared.Abstraction;
 using Shared.Primitives;
 using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Model.NAbility {
   public class AbilityFactory {
-    public AbilityFactory(Dictionary<string, AbilityInfo> abilities, EffectFactory effectFactory, IEventBus bus) {
-      this.abilities = abilities;
+    public AbilityFactory(IInfoGetter<AbilityInfo> abilityInfoGetter, EffectFactory effectFactory, IEventBus bus) {
+      this.abilityInfoGetter = abilityInfoGetter;
       this.effectFactory = effectFactory;
       this.bus = bus;
     }
 
     public Ability Create(IUnit unit, string abilityName) {
-      var info = abilities[abilityName];
+      var info = abilityInfoGetter.Infos[abilityName];
 
       IMainTargetSelector targetSelector = null;
       IAdditionalTargetsSelector targetsSelector = null;
@@ -68,7 +69,7 @@ namespace Model.NAbility {
         info.NeedRecalculateTarget, nestedAbilities);
     }
 
-    readonly Dictionary<string, AbilityInfo> abilities;
+    readonly IInfoGetter<AbilityInfo> abilityInfoGetter;
     readonly EffectFactory effectFactory;
     readonly IEventBus bus;
   }

@@ -12,7 +12,7 @@ public class SystemRandomEmbedded {
   int inext;
   int inextp;
 
-  public SystemRandomEmbedded() : this(Environment.TickCount) { }
+  // public SystemRandomEmbedded() : this(Environment.TickCount) { }
   public SystemRandomEmbedded(int Seed) => Reset(Seed);
 
   public void Reset(int Seed) {

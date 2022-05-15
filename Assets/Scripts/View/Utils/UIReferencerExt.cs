@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Shared.Exts;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace View.UIs {
@@ -13,6 +15,12 @@ namespace View.UIs {
     }
     
     public static void FillReferences(this IUIReferencer iui, UIDocument document) {
+      Debug.Log(string.Join(",", iui.GetType().GetFields().Select(f => f.Name)));
+      var documentRootVisualElement = document.rootVisualElement;
+      var visualElements = documentRootVisualElement.AsEnumerable();
+      Debug.Log($"document.rootVisualElement: {document.rootVisualElement}");
+      Debug.Log(string.Join(",", document.rootVisualElement.AsEnumerable().Select(f => f.name)));
+
       foreach (var field in iui.GetType().GetFields())
         FindReference(iui, field, document.rootVisualElement.AsEnumerable(), MaxDepth);
     }

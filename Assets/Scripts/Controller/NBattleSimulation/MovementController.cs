@@ -12,6 +12,7 @@ using View.Presenters;
 namespace Controller.NBattleSimulation {
   public class MovementController : IEventHandler<StartMoveEvent>, IEventHandler<FinishMoveEvent>, 
     IEventHandler<PauseMoveEvent>, IEventHandler<ContinueMoveEvent>, IEventHandler<RotateEvent>, ISimulationTick, IReset {
+    
     public MovementController(BoardPresenter board, CoordFinder finder) {
       this.board = board;
       this.finder = finder;

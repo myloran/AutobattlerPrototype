@@ -8,7 +8,8 @@ using View.UIs;
 
 namespace Controller {
   public class PlayerSharedContext {
-    public PlayerSharedContext(PlayerContext playerContext, PlayerPresenterContext playerPresenterContext, BattleSetupUI battleSetupUI) {
+    public PlayerSharedContext(PlayerContext playerContext, PlayerPresenterContext playerPresenterContext, 
+        BattleSetupUI battleSetupUI) {
       this.playerContext = playerContext;
       this.playerPresenterContext = playerPresenterContext;
       this.battleSetupUI = battleSetupUI;

@@ -16,6 +16,7 @@ using Controller.Update;
 using Infrastructure.OkwyLoggingUnity;
 using Model;
 using Model.NAbility;
+using Model.NAI.NDecisionTree;
 using Model.NBattleSimulation;
 using Model.NSynergy;
 using Model.NUnit;
@@ -23,6 +24,7 @@ using PlasticFloor.EventBus;
 using Shared.Abstraction;
 using Shared.Addons.OkwyLogging;
 using Shared.Primitives;
+using Shared.Shared.Client.Events;
 using SharedClient.Abstraction;
 using UniRx;
 using UnityEngine;
@@ -72,27 +74,25 @@ namespace Infrastructure.ZenjectTest {
       #region Config
       
       OkwyDefaultLog.DefaultInit();
-      // var infoLoader = new InfoLoader();
       Container.Bind(typeof(InfoLoader<UnitInfo>), typeof(IInfoGetter<UnitInfo>)).To<InfoLoader<UnitInfo>>().AsSingle();
-      Container.Bind<IInfoGetter<AbilityInfo>>().To<InfoLoader<AbilityInfo>>().AsSingle();
-      Container.Bind<IInfoGetter<SynergyInfo>>().To<InfoLoader<SynergyInfo>>().AsSingle();
-      Container.Bind<IInfoGetter<EffectInfo>>().To<InfoLoader<EffectInfo>>().AsSingle();
-      // var unitsInfo = infoLoader.Load<UnitInfo>("Units");
-      // var abilitiesInfo = infoLoader.Load<AbilityInfo>("Abilities");
-      // var synergiesInfo = infoLoader.Load<SynergyInfo>("Synergies");
-      // var effectsInfo = infoLoader.Load<EffectInfo>("Effects");
-      
-      var saveDataLoader = new SaveInfoLoader();
+      Container.Bind(typeof(InfoLoader<AbilityInfo>), typeof(IInfoGetter<AbilityInfo>)).To<InfoLoader<AbilityInfo>>().AsSingle();
+      Container.Bind(typeof(InfoLoader<SynergyInfo>), typeof(IInfoGetter<SynergyInfo>)).To<InfoLoader<SynergyInfo>>().AsSingle();
+      Container.Bind(typeof(InfoLoader<EffectInfo>), typeof(IInfoGetter<EffectInfo>)).To<InfoLoader<EffectInfo>>().AsSingle();
+
+      var saveDataLoader = new SaveInfoLoader(); //rework similar to info loader
       Container.Bind<SaveInfoLoader>().FromInstance(saveDataLoader).AsSingle();
-      var saves = saveDataLoader.Load();
+      var battleSaveGetter = new BattleSaveGetter { Saves = saveDataLoader.Load() }; //remove later
+      Container.Bind<BattleSaveGetter>().FromInstance(battleSaveGetter).AsSingle();
       
       var decisionTreeLoader = new DecisionTreeDataLoader();
       Container.Bind<DecisionTreeDataLoader>().FromInstance(decisionTreeLoader).AsSingle();
       var decisionTreeComponent = decisionTreeLoader.Load();
+      Container.Bind<DecisionTreeComponent>().FromInstance(decisionTreeComponent).AsSingle();
       
       #endregion
       
-      
+      Container.BindInterfacesTo<InitializationFlow>().FromInstance(InitializationFlow).AsSingle();
+      Container.Bind<MonoBehaviourCallBackController>().FromInstance(MonoBehaviourCallBackController).AsSingle();
       Container.Bind<TickController>().AsSingle();
       Container.Bind<InputController>().AsSingle();
 
@@ -101,68 +101,50 @@ namespace Infrastructure.ZenjectTest {
       var eventBus = new EventBus { //TODO: stop using eventbus Ievent interface to remove reference on that library from model
         Log = m => log.Info($"{m}"), IsLogOn = () => DebugController.Info.IsDebugOn //TODO: remove that lmao
       };
-      Container.Bind<EventBus>().FromInstance(eventBus).AsSingle();
+      Container.Bind(typeof(IEventBus),typeof(EventBus)).FromInstance(eventBus).AsSingle();
 
       #endregion
-      // #region View
+      #region View
       
+      Container.Bind<Camera>().FromInstance(Camera.main).AsSingle();
       Container.Bind<TileView>().FromInstance(TileViewPrefab).AsSingle();
       Container.Bind<TileStartPoints>().FromInstance(TileStartPoints).AsSingle();
       Container.Bind<UnitViewInfoHolder>().FromInstance(UnitViewInfoHolder).AsSingle();
-      Container.Bind<Camera>().FromInstance(Camera.main).AsSingle();
-      
       Container.Bind<TileViewFactory>().AsSingle();
       Container.Bind<TilePresenter>().AsSingle();
       Container.Bind<CoordFinder>().AsSingle();
-      Container.Bind<UnitViewFactory>().AsSingle(); // need to pass more stuff, create class that will handle loading and supply other dependencies
-      Container.BindInterfacesTo<InitializationFlow>().FromInstance(InitializationFlow).AsSingle();
-      
-      log.Info("1");
-      // Container.Bind<UnitViewCoordChangedHandler>().AsSingle();
-      // Container.Bind<BoardPresenter>().AsSingle();
-      // Container.Bind<PlayerPresenter>().AsTransient(); //need to have 2 separate instances, as transient should work
-      // Container.Bind<PlayerPresenterContext>().AsSingle();
-      // Container.Bind<CommandDebugUI>().AsSingle();
-      //
-      //
-      // var mainCamera = Camera.main;
-      // var tileSpawner = new TilePresenter(TileStartPoints, new TileViewFactory(TileViewPrefab));
-      // var coordFinder = new CoordFinder(TileStartPoints);
-      // var unitViewFactory = new UnitViewFactory(unitsInfo, UnitViewInfoHolder, coordFinder, mainCamera);
-      // var unitViewCoordChangedHandler = new UnitViewCoordChangedHandler(coordFinder);
-      // var boardPresenter = new BoardPresenter(unitViewCoordChangedHandler);
-      //
-      // var playerPresenterContext = new PlayerPresenterContext(
-      //   new PlayerPresenter(unitViewFactory, unitViewCoordChangedHandler), 
-      //   new PlayerPresenter(unitViewFactory, unitViewCoordChangedHandler));
-      //
-      // var battleSimulationUI2 = new BattleSimulationUI2();
-      // var commandDebugUI = new CommandDebugUI();
-      //
-      // CommandDebugWindowUI.gameObject.SetActive(true);
+      Container.Bind<UnitViewFactory>().AsSingle();
+      Container.Bind<UnitViewCoordChangedHandler>().AsSingle();
+      Container.Bind<BoardPresenter>().AsSingle();
+      Container.Bind<PlayerPresenter>().AsTransient(); //need to have 2 separate instances, as transient should work
+      Container.Bind<PlayerPresenterContext>().AsSingle();
+      Container.Bind<CommandDebugUI>().AsSingle();
+
+      CommandDebugWindowUI.gameObject.SetActive(true);
       // DebugWindowUI.gameObject.SetActive(true);
-      // #endregion
-      // #region Model
-      //
-      //
-      // Container.Bind<DecisionTreeLookup>().AsSingle();
+      
+      #endregion
+      #region Model
+      
+      Container.Bind<DecisionTreeLookup>().AsSingle();
+      Container.Bind<DebugInfo>().FromInstance(DebugController.Info).AsSingle();
       // Container.Bind<LoggingDecorator>().AsSingle();  //need to pass custom func
-      // Container.Bind<DecisionTreeCreatorVisitor>().AsSingle(); //need to pass custom func
-      // Container.Bind<SystemRandomEmbedded>().AsSingle(); //need to pass int
-      // Container.Bind<EffectFactory>().AsSingle();
-      // Container.Bind<AbilityFactory>().AsSingle(); //need to pass info
-      // Container.Bind<DecisionFactory>().AsSingle();
-      // Container.Bind<UnitFactory>().AsSingle();
-      // Container.Bind<Player>().AsTransient(); //as transient should work
-      // Container.Bind<PlayerContext>().AsSingle();
-      // Container.Bind<Board>().AsSingle();
-      // Container.Bind<AiHeap>().AsSingle();
-      // Container.Bind<AiContext>().AsSingle();
-      //
-      //
+      Action makeDecisionLog = () => {};
+      Func<IDecisionTreeNode, IDecisionTreeNode> logDecisionTree = d => new LoggingDecorator(d, DebugController.Info, makeDecisionLog);
+      Container.Bind<DecisionTreeCreatorVisitor>().AsSingle().WithArguments(logDecisionTree); //need to pass custom func
+      Container.Bind<SystemRandomEmbedded>().AsSingle().WithArguments(0); //need to pass int
+      Container.Bind<EffectFactory>().AsSingle();
+      Container.Bind<AbilityFactory>().AsSingle(); //need to pass info
+      Container.Bind(typeof(IDecisionTreeFactory), typeof(DecisionFactory)).To<DecisionFactory>().AsSingle();
+      Container.Bind<UnitFactory>().AsSingle();
+      Container.Bind<Player>().AsTransient(); //as transient should work
+      Container.Bind<PlayerContext>().AsSingle();
+      Container.Bind<Board>().AsSingle();
+      Container.Bind<AiHeap>().AsSingle();
+      Container.Bind<AiContext>().AsSingle();
+      
       // var decisionTreeLookup = new DecisionTreeLookup();
       //
-      // Action makeDecisionLog = () => {};
       // var decisionTreeCreatorVisitor = new DecisionTreeCreatorVisitor(eventBus, 
       //   d => new LoggingDecorator(d, DebugController.Info, makeDecisionLog), decisionTreeLookup);
       //
@@ -177,24 +159,24 @@ namespace Infrastructure.ZenjectTest {
       // var board = new Board();
       // var aiHeap = new AiHeap();
       // var aiContext = new AiContext(board, aiHeap);
-      //
-      // #endregion
-      // #region Shared
-      //
-      // Container.Bind<PlayerSharedContext>().AsSingle(); //to pass ui need to bind it first
-      //
+      
+      #endregion
+      #region Shared
+      
+      Container.Bind<BattleSetupUI>().FromInstance(BattleSetupUI).AsSingle();
+      Container.Bind<PlayerSharedContext>().AsSingle(); //to pass ui need to bind it first
+      
       // var playerSharedContext = new PlayerSharedContext(playerContext, playerPresenterContext, BattleSetupUI);
-      //
-      // #endregion
-      //
-      // #region Unit selection
-      //
-      //
-      // Container.Bind<RaycastController>().AsSingle(); //custom ints for mask, why not mask instead?
-      // Container.Bind<UnitSelectionController>().AsSingle();
-      // Container.Bind<UnitTooltipController>().AsSingle();
-      //
-      //
+      
+      #endregion
+      #region Unit selection
+      
+      Container.Bind<UnitTooltipUI>().FromInstance(UnitTooltipUI).AsSingle();
+      Container.Bind<RaycastController>().AsSingle()
+        .WithArguments(LayerMask.GetMask("Terrain", "GlobalCollider"), LayerMask.GetMask("Unit")); //custom ints for mask, why not mask instead?
+      Container.Bind<UnitSelectionController>().AsSingle();
+      Container.Bind<UnitTooltipController>().AsSingle();
+      
       // var raycastController = new RaycastController(mainCamera, 
       //   LayerMask.GetMask("Terrain", "GlobalCollider"), LayerMask.GetMask("Unit"));
       //
@@ -203,17 +185,17 @@ namespace Infrastructure.ZenjectTest {
       //
       // var unitTooltipController = new UnitTooltipController(UnitTooltipUI, 
       //   unitSelectionController);
-      //
-      // #endregion
-      // #region Unit drag
-      //
-      //
-      // Container.Bind<BattleStateController>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<CoordFinderBySelectedPlayer>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<IPredicate<UnitSelectedEvent>>().To<CanStartDrag>().AsSingle(); //to pass ui need to bind it first, not sure if that binding should work or not
-      // Container.Bind<UnitDragController>().AsSingle();
-      // Container.Bind<TileHighlighterController>().AsSingle();
-      // Container.Bind<UnitMoveController>().AsSingle();
+      
+      #endregion
+      #region Unit drag
+      
+      Container.Bind<BattleSimulationUI>().FromInstance(BattleSimulationUI).AsSingle();
+      Container.Bind<BattleStateController>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind<CoordFinderBySelectedPlayer>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind<IPredicate<UnitSelectedEvent>>().To<CanStartDrag>().AsSingle(); //to pass ui need to bind it first, not sure if that binding should work or not
+      Container.Bind<UnitDragController>().AsSingle();
+      Container.Bind<TileHighlighterController>().AsSingle();
+      Container.Bind<UnitMoveController>().AsSingle();
       //
       //
       // var battleStateController = new BattleStateController(BattleSimulationUI);
@@ -226,23 +208,35 @@ namespace Infrastructure.ZenjectTest {
       //   unitDragController);
       //
       // var unitMoveController = new UnitMoveController(playerSharedContext, unitDragController);
-      //
-      // #endregion
-      // #region Battle simulation
-      //
-      //
-      // Container.Bind<MovementController>().AsSingle();
-      // Container.Bind<AttackController>().AsSingle();
-      // Container.Bind<AnimationController>().AsSingle();
-      // Container.Bind<SilenceController>().AsSingle();
-      // Container.Bind<StunController>().AsSingle();
-      // Container.Bind<ProjectileController>().AsSingle();
-      // Container.Bind<CompositeSimulationTick>().AsSingle();
-      // Container.Bind<CompositeReset>().AsSingle();
-      // Container.Bind<BattleSimulationPresenter>().AsSingle();
-      // Container.Bind<SynergyEffectApplier>().AsSingle();
-      // Container.Bind<BattleSimulation>().AsSingle();
-      // Container.Bind<RealtimeBattleSimulationController>().AsSingle();
+      
+      #endregion
+      #region Battle simulation
+      
+      Container.Bind(typeof(ISimulationTick), typeof(IReset), typeof(IEventHandler<StartMoveEvent>), 
+        typeof(IEventHandler<FinishMoveEvent>), typeof(IEventHandler<PauseMoveEvent>), 
+        typeof(IEventHandler<ContinueMoveEvent>), typeof(IEventHandler<RotateEvent>))
+        .To<MovementController>().AsSingle();
+      Container.Bind(typeof(AttackController), typeof(IEventHandler<UpdateHealthEvent>), 
+        typeof(IEventHandler<DeathEvent>), typeof(IEventHandler<UpdateManaEvent>)).To<AttackController>().AsSingle();
+      Container.Bind(typeof(AnimationController), typeof(IEventHandler<StartMoveEvent>), 
+        typeof(IEventHandler<IdleEvent>), typeof(IEventHandler<StartAttackEvent>), 
+        typeof(IEventHandler<StartCastEvent>), typeof(IEventHandler<UpdateStunDurationEvent>), 
+        typeof(IEventHandler<ContinueMoveEvent>)).To<AnimationController>().AsSingle();
+      Container.Bind(typeof(ISimulationTick), typeof(IReset), typeof(IEventHandler<UpdateSilenceDurationEvent>))
+        .To<SilenceController>().AsSingle();
+      Container.Bind(typeof(ISimulationTick), typeof(IReset), typeof(IEventHandler<UpdateStunDurationEvent>))
+        .To<StunController>().AsSingle();
+      Container.Bind(typeof(ISimulationTick), typeof(IReset), typeof(IEventHandler<SpawnProjectileEvent>))
+        .To<ProjectileController>().AsSingle();
+      // Container.Bind<ISimulationTick>()
+        // .To(typeof(MovementController), typeof(SilenceController), typeof(StunController), typeof(ProjectileController))
+        // .AsTransient();
+      Container.Bind<CompositeSimulationTick>().AsSingle();
+      Container.Bind<CompositeReset>().AsSingle();
+      Container.Bind<BattleSimulationPresenter>().AsSingle();
+      Container.Bind<SynergyEffectApplier>().AsSingle();
+      Container.Bind<BattleSimulation>().AsSingle();
+      Container.Bind(typeof(RealtimeBattleSimulationController), typeof(ITick)).To<RealtimeBattleSimulationController>().AsSingle();
       //
       //
       // // new SystemRandomTests().ExecuteTests();
@@ -266,32 +260,37 @@ namespace Infrastructure.ZenjectTest {
       //
       // var realtimeBattleSimulationController = new RealtimeBattleSimulationController(
       //   compositeSimulationTick, battleSimulation);
-      //
-      // #endregion
-      //
-      //
-      // Container.Bind<EventRow>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<CommandButtonStyler>().AsSingle();
-      // Container.Bind<CommandRow>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<CommandsDebugController>().AsSingle(); //to pass ui need to bind it first
-      // //need to bind into a list
-      // Container.Bind<SilenceTest>().AsSingle();
-      // Container.Bind<WithinRadiusTest>().AsSingle();
-      // Container.Bind<TauntTest>().AsSingle();
-      // Container.Bind<PeriodicStunTest>().AsSingle();
-      // Container.Bind<SecondStunDuringMovementShouldApplyDifferenceOnly>().AsSingle();
-      // Container.Bind<StunTest>().AsSingle();
-      // Container.Bind<NestedAbilityPeriodTest>().AsSingle();
-      //
-      // Container.Bind<BattleTestController>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<BattleSimulationDebugController>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<BattleSaveController>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<BattleSetupController>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<UnitModelDebugController>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<TakenCoordDebugController>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<TargetDebugController>().AsSingle(); //to pass ui need to bind it first
-      // Container.Bind<UIDebugController>().AsSingle(); //to pass ui need to bind it first
-      //
+      
+      #endregion
+      #region Debug
+      
+      Container.Bind<CommandDebugWindowUI>().FromInstance(CommandDebugWindowUI).AsSingle();
+      Container.Bind<EventRow>().AsSingle().WithArguments(CommandDebugWindowUI.EventTemplate); //to pass ui need to bind it first
+      Container.Bind<CommandButtonStyler>().AsSingle();
+      Container.Bind<CommandRow>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind<CommandsDebugController>().AsSingle(); //to pass ui need to bind it first
+      //need to bind into a list
+      Container.Bind(typeof(IBattleTest)).To<SilenceTest>().AsSingle();
+      Container.Bind(typeof(IBattleTest)).To<WithinRadiusTest>().AsSingle();
+      Container.Bind(typeof(IBattleTest)).To<TauntTest>().AsSingle();
+      Container.Bind(typeof(IBattleTest)).To<PeriodicStunTest>().AsSingle();
+      Container.Bind(typeof(IBattleTest)).To<SecondStunDuringMovementShouldApplyDifferenceOnly>().AsSingle();
+      Container.Bind(typeof(IBattleTest)).To<StunTest>().AsSingle();
+      Container.Bind(typeof(IBattleTest)).To<NestedAbilityPeriodTest>().AsSingle();
+
+      Container.Bind<BattleSaveUI>().FromInstance(BattleSaveUI).AsSingle();
+      Container.Bind<ModelUI>().FromInstance(ModelUI).AsSingle();
+      Container.Bind<BattleTestController>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind<BattleSimulationDebugController>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind<BattleSaveController>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind<BattleSetupController>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind(typeof(UnitModelDebugController), typeof(ITick)).To<UnitModelDebugController>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind(typeof(TakenCoordDebugController), typeof(ITick)).To<TakenCoordDebugController>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind(typeof(TargetDebugController), typeof(ITick)).To<TargetDebugController>().AsSingle(); //to pass ui need to bind it first
+      Container.Bind(typeof(UIDebugController), typeof(ITick)).To<UIDebugController>().AsSingle(); //to pass ui need to bind it first
+
+      Container.Bind<DebugController>().FromInstance(DebugController).AsSingle();
+
       //
       // var commandEvents = new EventRow(battleSimulation, eventBus, CommandDebugWindowUI.EventTemplate);
       // var commandButtonStyler = new CommandButtonStyler(boardPresenter);
@@ -333,9 +332,10 @@ namespace Infrastructure.ZenjectTest {
       // var uiDebugController = new UIDebugController(
       //   BattleSetupUI, BattleSaveUI, BattleSimulationUI,
       //   unitModelDebugController, CommandDebugWindowUI);
+
+      #endregion
     }
     
     static readonly Logger log = MainLog.GetLogger(nameof(CompositionRootZenject));
-    readonly CompositeDisposable disposable = new CompositeDisposable();
   }
 }

@@ -8,7 +8,7 @@ using static Shared.Addons.Examples.FixMath.F32;
 
 namespace Controller.NBattleSimulation {
   public class RealtimeBattleSimulationController : ITick {
-    public RealtimeBattleSimulationController(ISimulationTick viewSimulation, 
+    public RealtimeBattleSimulationController(CompositeSimulationTick viewSimulation, 
         BattleSimulation simulation) {
       this.viewSimulation = viewSimulation;
       this.simulation = simulation;
